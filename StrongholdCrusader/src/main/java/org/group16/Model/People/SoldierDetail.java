@@ -1,6 +1,9 @@
-package org.group16.Model.Resources;
+package org.group16.Model.People;
 
 import org.group16.Lib.Pair;
+import org.group16.Model.Resources.Resource;
+import org.group16.Model.Resources.Weaponry;
+import org.group16.Model.TargetType;
 
 import java.util.ArrayList;
 

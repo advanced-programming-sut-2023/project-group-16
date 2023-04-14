@@ -4,18 +4,18 @@ public enum CellType {
     NORMAL(1),
     SMALL_STONE(1),
     ROCK(2),
-    STONE(100000),
+    STONE(Integer.MAX_VALUE),
     IRON(1),
     GRASS(1),
     LOW_DENSITY_GRASSLAND(1),
     HIGH_DENSITY_GRASSLAND(1),
     OIL(1),
-    WET_PLAIN(100000),
+    WET_PLAIN(Integer.MAX_VALUE),
     SHALLOW_WATER(2),
     BEACH(1),
-    RIVER(100000),
-    POND(100000),
-    SEA(100000),
+    RIVER(Integer.MAX_VALUE),
+    POND(Integer.MAX_VALUE),
+    SEA(Integer.MAX_VALUE),
     ;
     //TODO: Fill this enum
 

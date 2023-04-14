@@ -1,23 +1,25 @@
 package org.group16.Model.People;
 
-import org.group16.Lib.Pair;
-import org.group16.Model.Resources.Resource;
-import org.group16.Model.Resources.SoldierDetail;
+import org.group16.Model.Siege.Siege;
 import org.group16.Model.WarCommand;
 
-import java.util.ArrayList;
-
 public class Soldier extends Human {
-    private final SoldierDetail detail;
+    private final SoldierDetail soldierDetail;
     private WarCommand warCommand;
+    private Siege siege;
+
+    public Soldier(int hp) {
+        super(hp);
+        soldierDetail = null;
+    }
 
     public Soldier(SoldierDetail detail) {
         super(detail.getHp());
-        this.detail = detail;
+        this.soldierDetail = detail;
     }
 
-    public SoldierDetail getDetail() {
-        return detail;
+    public SoldierDetail getSoldierDetail() {
+        return soldierDetail;
     }
 
     public WarCommand getWarCommand() {
@@ -41,5 +43,13 @@ public class Soldier extends Human {
     @Override
     public void onTurnEnd() {
         //TODO
+    }
+
+    public Siege getSiege() {
+        return siege;
+    }
+
+    public void setSiege(Siege siege) {
+        this.siege = siege;
     }
 }

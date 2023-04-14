@@ -41,9 +41,14 @@ public class Game {
         tradeOffers.add(trade);
     }
 
-    public void solveTrade(Trade trade) {
+    public void completeTrade(Trade trade) {
         tradeHistory.add(trade);
         tradeOffers.remove(trade);
+    }
+
+    public ArrayList<Trade> getUserTrades(User user){
+        //TODO
+        return null;
     }
 
     public Kingdom getKingdom(User user) {

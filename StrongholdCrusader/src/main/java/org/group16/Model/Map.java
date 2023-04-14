@@ -3,7 +3,7 @@ package org.group16.Model;
 public class Map {
 
     private final int width, height;
-    public Cell[][] cells;
+    private Cell[][] cells;
 
     public Map(int mapWidth, int mapHeight) {
         this.width = mapWidth;
