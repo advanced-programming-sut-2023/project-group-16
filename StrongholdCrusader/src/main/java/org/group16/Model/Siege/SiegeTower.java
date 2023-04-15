@@ -1,5 +1,7 @@
 package org.group16.Model.Siege;
 
+import org.group16.Model.Cell;
+import org.group16.Model.Kingdom;
 import org.group16.Model.People.Soldier;
 
 import java.util.ArrayList;
@@ -8,8 +10,14 @@ public class SiegeTower extends Siege {
     private final ArrayList<Soldier> soldiers = new ArrayList<>();
     private boolean isFixed;
 
-    public SiegeTower(SiegeDetail detail) {
-        super(detail);
+    public SiegeTower(Kingdom kingdom, SiegeDetail detail) {
+        super(kingdom, detail);
+    }
+
+    @Override
+    public void initialize(ArrayList<Cell> spawnCell) {
+        super.initialize(spawnCell);
+        //TODO
     }
 
     public void addSoldier(Soldier soldier) {
@@ -33,7 +41,7 @@ public class SiegeTower extends Siege {
     public ArrayList<Soldier> getSoldiers() {
         return soldiers;
     }
-    
+
 
     @Override
     public void destroy() {

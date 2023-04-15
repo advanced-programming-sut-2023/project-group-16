@@ -1,6 +1,8 @@
 package org.group16.Model.Siege;
 
+import org.group16.Model.Cell;
 import org.group16.Model.Direction;
+import org.group16.Model.Kingdom;
 import org.group16.Model.People.Engineer;
 import org.group16.Model.People.Soldier;
 
@@ -11,13 +13,19 @@ public class Siege extends Soldier {
     private Direction direction;
     private ArrayList<Engineer> operators = new ArrayList<>();
 
-    public Siege(SiegeDetail detail) {
-        super(detail.getHp());
+    public Siege(Kingdom kingdom, SiegeDetail detail) {
+        super(kingdom, detail.getHp());
         this.siegeDetail = detail;
     }
 
     public boolean isActive() {
         return operators.size() >= siegeDetail.getOperatorCount();
+    }
+
+    @Override
+    public void initialize(ArrayList<Cell> spawnCell) {
+        super.initialize(spawnCell);
+        //TODO
     }
 
     public boolean canMove() {

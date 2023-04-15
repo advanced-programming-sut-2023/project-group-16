@@ -9,17 +9,17 @@ public class LoginMenu {
         while (scanner.hasNextLine()) {
 
         }
-    }
+    }//TODO
 
     private void createUser(Matcher matcher) {
-    }
+    }//TODO
 
     private void questionPick(Matcher matcher) {
-    }
+    }//TODO
 
     private void loginUser(Matcher matcher) {
-    }
+    }//TODO
 
     private void forgotPassword(Matcher matcher) {
-    }
+    }//TODO
 }

@@ -16,45 +16,45 @@ public class ProfileMenu {
 
     private void run() {
 
-    }
+    }//TODO
 
     private void changeUsername(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void changeNickname(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void changePassword(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void changeEmail(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void changeSlogan(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void removeSlogan(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void displayHighScore(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void displayRank(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void displaySlogan(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void profileDisplay(Matcher matcher) {
 
-    }
+    }//TODO
 }

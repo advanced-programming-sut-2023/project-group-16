@@ -6,15 +6,29 @@ public class Cell {
     private final int x, y;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private CellType cellType;
+    private TreeType treeType;
 
-    public Cell(int x, int y, CellType cellType) {
+    public Cell(int x, int y, CellType cellType, TreeType treeType) {
         this.x = x;
         this.y = y;
         this.cellType = cellType;
+        this.treeType = treeType;
+    }
+
+    public Cell(int x, int y, CellType cellType) {
+        this(x, y, cellType, TreeType.NONE);
     }
 
     public Cell(int x, int y, Cell cell) {
-        this(x, y, cell.cellType);
+        this(x, y, cell.cellType, cell.treeType);
+    }
+
+    public TreeType getTreeType() {
+        return treeType;
+    }
+
+    public void setTreeType(TreeType treeType) {
+        this.treeType = treeType;
     }
 
     public int getX() {

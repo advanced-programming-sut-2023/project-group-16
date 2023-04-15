@@ -1,21 +1,31 @@
 package org.group16.Model.People;
 
+import org.group16.Model.Cell;
+import org.group16.Model.Kingdom;
 import org.group16.Model.Siege.Siege;
 import org.group16.Model.WarCommand;
+
+import java.util.ArrayList;
 
 public class Soldier extends Human {
     private final SoldierDetail soldierDetail;
     private WarCommand warCommand;
     private Siege siege;
 
-    public Soldier(int hp) {
-        super(hp);
+    public Soldier(Kingdom kingdom, int hp) {
+        super(kingdom, hp);
         soldierDetail = null;
     }
 
-    public Soldier(SoldierDetail detail) {
-        super(detail.getHp());
+    public Soldier(Kingdom kingdom, SoldierDetail detail) {
+        super(kingdom, detail.getHp());
         this.soldierDetail = detail;
+    }
+
+    @Override
+    public void initialize(ArrayList<Cell> spawnCell) {
+        super.initialize(spawnCell);
+        //TODO
     }
 
     public SoldierDetail getSoldierDetail() {

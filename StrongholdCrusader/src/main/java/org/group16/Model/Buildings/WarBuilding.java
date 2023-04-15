@@ -1,5 +1,6 @@
 package org.group16.Model.Buildings;
 
+import org.group16.Model.Cell;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
 
@@ -20,6 +21,18 @@ public class WarBuilding extends Building {
 
     @Override
     public void onTurnStart() {
+        //TODO
+    }
+
+    @Override
+    public void initialize(ArrayList<Cell> spawnCell) {
+        super.initialize(spawnCell);
+        //TODO
+    }
+
+    @Override
+    public void onTurnEnd() {
+        super.onTurnEnd();
         //TODO
     }
 

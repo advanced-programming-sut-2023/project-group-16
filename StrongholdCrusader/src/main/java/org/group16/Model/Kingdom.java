@@ -16,6 +16,7 @@ public class Kingdom {
     private int popularity;
     private int tax;
     private int fearRate;
+
     public Kingdom(KingdomType kingdomType, User user) {
         this.kingdomType = kingdomType;
         this.user = user;
@@ -96,6 +97,18 @@ public class Kingdom {
     }
 
     public void useResource(Resource resource, int count) {
+        //TODO
+    }
+
+    public void onTurnStart() {
+        //TODO
+    }
+
+    public void update(double deltaTime) {
+        //TODO
+    }
+
+    public void onTurnEnd() {
         //TODO
     }
 }

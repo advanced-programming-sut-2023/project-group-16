@@ -1,6 +1,7 @@
 package org.group16.Model.Buildings;
 
 import org.group16.Lib.Pair;
+import org.group16.Model.Cell;
 import org.group16.Model.People.Engineer;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Worker;
@@ -20,6 +21,12 @@ public class EconomicBuilding extends Building {
     }
 
     public void addResource(Resource resource, int count) {
+        //TODO
+    }
+
+    @Override
+    public void initialize(ArrayList<Cell> spawnCell) {
+        super.initialize(spawnCell);
         //TODO
     }
 
@@ -51,6 +58,12 @@ public class EconomicBuilding extends Building {
     public void destroy() {
         for (var worker : workers) worker.destroy();
         super.destroy();
+    }
+
+    @Override
+    public void onTurnEnd() {
+        super.onTurnEnd();
+        //TODO
     }
 
     @Override

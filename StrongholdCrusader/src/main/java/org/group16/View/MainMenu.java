@@ -16,17 +16,17 @@ public class MainMenu {
 
     public void run() {
 
-    }
+    }//TODO
 
     private void enterGameMenu(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void enterProfileMenu(Matcher matcher) {
 
-    }
+    }//TODO
 
     private void enterEditorMenu(Matcher matcher) {
 
-    }
+    }//TODO
 }
