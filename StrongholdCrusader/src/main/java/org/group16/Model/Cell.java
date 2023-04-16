@@ -2,7 +2,7 @@ package org.group16.Model;
 
 import java.util.ArrayList;
 
-public class Cell {
+public class Cell implements Comparable<Cell> {
     private final int x, y;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private CellType cellType;
@@ -58,4 +58,18 @@ public class Cell {
     public ArrayList<GameObject> getGameObjects() {
         return gameObjects;
     }
+
+    @Override
+    public int compareTo(Cell other) {
+        if (x == other.x) return Integer.compare(y, other.y);
+        return Integer.compare(x, other.x);
+    }
+
+    public boolean traversable() {
+        return true;
+    }//TODO
+
+    public double getTraverseCost() {
+        return 1;
+    }//TODO
 }

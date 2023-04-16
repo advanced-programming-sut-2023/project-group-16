@@ -1,6 +1,7 @@
 package org.group16.Model.Buildings;
 
 import org.group16.Model.Cell;
+import org.group16.Model.Kingdom;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
 
@@ -10,8 +11,8 @@ public class WarBuilding extends Building {
     private final ArrayList<Human> soldiers = new ArrayList<>();
     private final WarBuildingDetail detail;
 
-    public WarBuilding(WarBuildingDetail detail) {
-        super(detail.getHp());
+    public WarBuilding(Kingdom kingdom, WarBuildingDetail detail) {
+        super(kingdom, detail.getHp());
         this.detail = detail;
     }
 

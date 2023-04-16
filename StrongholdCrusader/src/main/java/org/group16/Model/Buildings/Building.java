@@ -1,17 +1,16 @@
 package org.group16.Model.Buildings;
 
 import org.group16.Model.GameObject;
-import org.group16.Model.People.Engineer;
-import org.group16.Model.People.Human;
-import org.group16.Model.People.Worker;
-
-import java.util.ArrayList;
+import org.group16.Model.Kingdom;
 
 public abstract class Building extends GameObject {
+
+    private final Kingdom kingdom;
     private int hp;
     private boolean traversable;
 
-    public Building(int hp) {
+    public Building(Kingdom kingdom, int hp) {
+        this.kingdom = kingdom;
         this.hp = hp;
     }
 

@@ -2,6 +2,7 @@ package org.group16.Model.Buildings;
 
 import org.group16.Lib.Pair;
 import org.group16.Model.Cell;
+import org.group16.Model.Kingdom;
 import org.group16.Model.People.Engineer;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Worker;
@@ -15,8 +16,8 @@ public class EconomicBuilding extends Building {
     private final EconomicBuildingDetail detail;
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
 
-    public EconomicBuilding(EconomicBuildingDetail detail) {
-        super(detail.getHp());
+    public EconomicBuilding(Kingdom kingdom, EconomicBuildingDetail detail) {
+        super(kingdom, detail.getHp());
         this.detail = detail;
     }
 

@@ -1,5 +1,10 @@
 package org.group16.Model;
 
+import jdk.dynalink.beans.StaticClass;
+import org.group16.Lib.OrderedPair;
+
+import java.util.*;
+
 public class Map {
 
     private final int width, height;
