@@ -3,15 +3,13 @@ package org.group16.Model;
 import java.util.*;
 
 public class PathFindingQuery {
+    public static final double DIAGONAL_COST_MULTIPLIER = 1.4;
     private final Map map;
     private final Cell start, end;
     private final double randomness;
     private final Random random;
-
-
     private final HashMap<Cell, Double> distance = new HashMap<>();
     private final HashMap<Cell, Cell> parent = new HashMap<>();
-    private final double DIAGONAL_COST_MULTIPLIER = 1.4;
     private final PriorityQueue<Cell> astar = new PriorityQueue<>(Comparator.comparingDouble(this::getHeuristicPath));
 
     public PathFindingQuery(Map map, Cell start, Cell end, double randomness, Random random) {
@@ -69,4 +67,7 @@ public class PathFindingQuery {
         }
     }
 
+    public Cell getNextCell(Cell cell) {
+        return parent.get(cell);
+    }
 }
