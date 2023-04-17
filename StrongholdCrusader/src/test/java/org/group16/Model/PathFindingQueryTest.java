@@ -1,7 +1,10 @@
 package org.group16.Model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.ref.Cleaner;
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,13 +13,24 @@ class PathFindingQueryTest {
     private Map map;
     private Random random;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         map = new Map(10, 20);
         random = new Random(100);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
+    void testMap() {
+        assertEquals(10, map.getWidth());
+        assertEquals(20, map.getHeight());
+        Cell cell = map.getCellAt(9, 19);
+        assertEquals(9, cell.getX());
+        assertEquals(19, cell.getY());
+        cell = map.getCellAt(10, 1);
+        assertNull(cell);
+    }
+
+    @Test
     void getCellDistance() {
         PathFindingQuery pathFindingQuery = new PathFindingQuery(map, null, null, 0, random);
         int ax = random.nextInt(10), ay = random.nextInt(20);
@@ -29,20 +43,22 @@ class PathFindingQueryTest {
         assertEquals(Math.sqrt(dx * dx + dy * dy), distance);
     }
 
-    @org.junit.jupiter.api.Test
-    void getHeuristicPath() {
-
-    }
-
-    @org.junit.jupiter.api.Test
-    void findShortestPath() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void getNextCell() {
-    }
-
     @Test
-    void getShortestPath() {
+    void findShortestPath() {
+        Cell from = map.getCellAt(0, 0);
+        Cell to = map.getCellAt(9, 19);
+
+        assertNotNull(from);
+        assertNotNull(to);
+
+        PathFindingQuery pathFindingQuery = new PathFindingQuery(map, from, to, 0, random);
+        pathFindingQuery.findShortestPath();
+        assertNotNull(pathFindingQuery.getNextCell(from));
+        ArrayList<Cell> cells = pathFindingQuery.getShortestPath();
+        for (Cell cell : cells) {
+            System.out.printf("%s , ", cell);
+        }
+        System.out.println();
+        System.out.println(pathFindingQuery.getPathLength());
     }
 }

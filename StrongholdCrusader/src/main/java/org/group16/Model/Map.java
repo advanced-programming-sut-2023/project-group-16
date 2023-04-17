@@ -15,7 +15,7 @@ public class Map {
         this.height = mapHeight;
         cells = new Cell[mapWidth][mapHeight];
         for (int i = 0; i < mapWidth; i++)
-            for (int j = 0; j < mapWidth; j++)
+            for (int j = 0; j < mapHeight; j++)
                 cells[i][j] = new Cell(i, j, CellType.NORMAL);
     }
 

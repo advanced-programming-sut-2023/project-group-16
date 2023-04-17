@@ -57,6 +57,7 @@ public class PathFindingQuery {
     }
 
     private void updateEdge(Cell from, Cell to) {
+        if (to == null) return;
         if (!to.traversable()) return;
 
         double cost = (from.getTraverseCost() + to.getTraverseCost()) / 2 + random.nextDouble() * randomness;
@@ -71,5 +72,9 @@ public class PathFindingQuery {
 
     public Cell getNextCell(Cell cell) {
         return parent.get(cell);
+    }
+
+    public double getPathLength() {
+        return distance.get(start);
     }
 }

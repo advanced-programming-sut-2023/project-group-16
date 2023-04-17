@@ -72,4 +72,9 @@ public class Cell implements Comparable<Cell> {
     public double getTraverseCost() {
         return 1;
     }//TODO
+
+    @Override
+    public String toString() {
+        return String.format("[%d,%d]", x, y);
+    }
 }
