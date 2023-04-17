@@ -8,7 +8,7 @@ import org.group16.Model.TargetType;
 import java.util.ArrayList;
 
 public enum SoldierDetail implements Resource {
-    ;
+    ;//TODO
 
     private final Weaponry armor;
     private final Weaponry weapon;

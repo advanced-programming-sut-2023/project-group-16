@@ -25,12 +25,6 @@ public class EconomicBuilding extends Building {
         //TODO
     }
 
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
-        //TODO
-    }
-
     public void useResource(Resource resource, int count) {
         //TODO
     }

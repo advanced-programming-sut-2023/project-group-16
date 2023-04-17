@@ -100,6 +100,10 @@ public class Kingdom {
         //TODO
     }
 
+    public void addResource(Resource resource, int count) {
+        //TODO
+    }
+
     public void onTurnStart() {
         //TODO
     }

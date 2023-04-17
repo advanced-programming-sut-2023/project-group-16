@@ -57,15 +57,15 @@ public class Siege extends Soldier {
     @Override
     public void onTurnStart() {
         super.onTurnStart();
-    }
+    }//TODO
 
     @Override
     public void update(double deltaTime) {
         super.update(deltaTime);
-    }
+    }//TODO
 
     @Override
     public void onTurnEnd() {
         super.onTurnEnd();
-    }
+    }//TODO
 }

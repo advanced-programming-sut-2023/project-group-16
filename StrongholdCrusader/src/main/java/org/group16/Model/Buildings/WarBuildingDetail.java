@@ -1,12 +1,13 @@
 package org.group16.Model.Buildings;
 
 public enum WarBuildingDetail {
-    ;
+    ;//TODO
 
     private final int hp;
     private final int maxSoldierCount;
     private final int attackRange;
     private final int defendRange;
+
     WarBuildingDetail(int hp, int maxSoldierCount, int attackRange, int defendRange) {
         this.hp = hp;
         this.maxSoldierCount = maxSoldierCount;

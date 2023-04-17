@@ -5,7 +5,7 @@ import org.group16.Model.Resources.ProductData;
 import org.group16.Model.Resources.StorageData;
 
 public enum EconomicBuildingDetail {
-    ;
+    ;//TODO
     private final int hp;
     private final int neededWorkers;
     private final int neededEngineers;

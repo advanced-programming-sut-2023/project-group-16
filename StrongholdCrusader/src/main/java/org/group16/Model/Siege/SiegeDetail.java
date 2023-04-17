@@ -3,7 +3,7 @@ package org.group16.Model.Siege;
 import org.group16.Model.TargetType;
 
 public enum SiegeDetail {
-    ;
+    ;//TODO
     private final int hp;
     private final boolean canMove;
     private final boolean canRotate;
