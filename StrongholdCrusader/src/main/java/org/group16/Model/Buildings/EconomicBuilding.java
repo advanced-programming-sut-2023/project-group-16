@@ -16,8 +16,8 @@ public class EconomicBuilding extends Building {
     private final EconomicBuildingDetail detail;
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
 
-    public EconomicBuilding(Kingdom kingdom, EconomicBuildingDetail detail) {
-        super(kingdom, detail.getHp());
+    public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, EconomicBuildingDetail detail) {
+        super(cells, kingdom, detail.getHp());
         this.detail = detail;
     }
 

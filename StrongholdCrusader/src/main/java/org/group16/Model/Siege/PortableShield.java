@@ -6,8 +6,8 @@ import org.group16.Model.Kingdom;
 import java.util.ArrayList;
 
 public class PortableShield extends Siege {
-    public PortableShield(Kingdom kingdom, SiegeDetail detail) {
-        super(kingdom, detail);
+    public PortableShield(ArrayList<Cell> cells, Kingdom kingdom, SiegeDetail detail) {
+        super(cells, kingdom, detail);
     }
 
     @Override
@@ -19,12 +19,6 @@ public class PortableShield extends Siege {
     @Override
     public void update(double deltaTime) {
         super.update(deltaTime);
-        //TODO
-    }
-
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
         //TODO
     }
 

@@ -13,8 +13,8 @@ public class Siege extends Soldier {
     private Direction direction;
     private ArrayList<Engineer> operators = new ArrayList<>();
 
-    public Siege(Kingdom kingdom, SiegeDetail detail) {
-        super(kingdom, detail.getHp());
+    public Siege(ArrayList<Cell> cells, Kingdom kingdom, SiegeDetail detail) {
+        super(cells, kingdom, detail.getHp());
         this.siegeDetail = detail;
     }
 
@@ -22,11 +22,6 @@ public class Siege extends Soldier {
         return operators.size() >= siegeDetail.getOperatorCount();
     }
 
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
-        //TODO
-    }
 
     public boolean canMove() {
         return isActive() && siegeDetail.getCanMove();

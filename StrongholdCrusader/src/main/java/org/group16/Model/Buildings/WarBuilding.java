@@ -11,8 +11,8 @@ public class WarBuilding extends Building {
     private final ArrayList<Human> soldiers = new ArrayList<>();
     private final WarBuildingDetail detail;
 
-    public WarBuilding(Kingdom kingdom, WarBuildingDetail detail) {
-        super(kingdom, detail.getHp());
+    public WarBuilding(ArrayList<Cell> cells, Kingdom kingdom, WarBuildingDetail detail) {
+        super(cells, kingdom, detail.getHp());
         this.detail = detail;
     }
 
@@ -24,13 +24,7 @@ public class WarBuilding extends Building {
     public void onTurnStart() {
         //TODO
     }
-
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
-        //TODO
-    }
-
+    
     @Override
     public void onTurnEnd() {
         super.onTurnEnd();

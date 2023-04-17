@@ -1,7 +1,10 @@
 package org.group16.Model.Buildings;
 
+import org.group16.Model.Cell;
 import org.group16.Model.GameObject;
 import org.group16.Model.Kingdom;
+
+import java.util.ArrayList;
 
 public abstract class Building extends GameObject {
 
@@ -9,7 +12,8 @@ public abstract class Building extends GameObject {
     private int hp;
     private boolean traversable;
 
-    public Building(Kingdom kingdom, int hp) {
+    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+        super(cells);
         this.kingdom = kingdom;
         this.hp = hp;
     }

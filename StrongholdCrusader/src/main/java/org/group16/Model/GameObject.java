@@ -8,6 +8,10 @@ public abstract class GameObject {
     private ArrayList<Cell> cells;
     private boolean isAlive = true;
 
+    public GameObject(ArrayList<Cell> cells) {
+        this.cells = new ArrayList<>(cells);
+    }
+
     public static boolean nullOrDead(GameObject gameObject) {
         return gameObject == null || !gameObject.isAlive;
     }
@@ -31,10 +35,6 @@ public abstract class GameObject {
 
     public UUID getUuid() {
         return uuid;
-    }
-
-    public void initialize(ArrayList<Cell> spawnCell) {
-        cells = new ArrayList<>(spawnCell);
     }
 
     public abstract void onTurnStart();

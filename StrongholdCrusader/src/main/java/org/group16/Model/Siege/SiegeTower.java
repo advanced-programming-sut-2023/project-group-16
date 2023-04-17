@@ -10,14 +10,8 @@ public class SiegeTower extends Siege {
     private final ArrayList<Soldier> soldiers = new ArrayList<>();
     private boolean isFixed;
 
-    public SiegeTower(Kingdom kingdom, SiegeDetail detail) {
-        super(kingdom, detail);
-    }
-
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
-        //TODO
+    public SiegeTower(ArrayList<Cell> cells, Kingdom kingdom, SiegeDetail detail) {
+        super(cells, kingdom, detail);
     }
 
     public void addSoldier(Soldier soldier) {

@@ -7,18 +7,12 @@ import java.util.ArrayList;
 
 public class Worker extends Human {
 
-    public Worker(Kingdom kingdom, int hp) {
-        super(kingdom, hp);
+    public Worker(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+        super(cells, kingdom, hp);
     }
 
     @Override
     public void onTurnStart() {
-        //TODO
-    }
-
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
         //TODO
     }
 

@@ -12,21 +12,16 @@ public class Soldier extends Human {
     private WarCommand warCommand;
     private Siege siege;
 
-    public Soldier(Kingdom kingdom, int hp) {
-        super(kingdom, hp);
+    public Soldier(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+        super(cells, kingdom, hp);
         soldierDetail = null;
     }
 
-    public Soldier(Kingdom kingdom, SoldierDetail detail) {
-        super(kingdom, detail.getHp());
+    public Soldier(ArrayList<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
+        super(cells, kingdom, detail.getHp());
         this.soldierDetail = detail;
     }
 
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
-        //TODO
-    }
 
     public SoldierDetail getSoldierDetail() {
         return soldierDetail;

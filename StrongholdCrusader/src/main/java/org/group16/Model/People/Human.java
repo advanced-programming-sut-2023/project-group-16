@@ -1,15 +1,19 @@
 package org.group16.Model.People;
 
 import org.group16.Model.Buildings.Building;
+import org.group16.Model.Cell;
 import org.group16.Model.GameObject;
 import org.group16.Model.Kingdom;
+
+import java.util.ArrayList;
 
 public abstract class Human extends GameObject {
     private final Kingdom kingdom;
     private int hp;
     private Building building;
 
-    public Human(Kingdom kingdom, int hp) {
+    public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+        super(cells);
         this.kingdom = kingdom;
         this.hp = hp;
     }

@@ -7,18 +7,12 @@ import java.util.ArrayList;
 
 public class Engineer extends Soldier {
 
-    public Engineer(Kingdom kingdom, SoldierDetail detail) {
-        super(kingdom, detail);
+    public Engineer(ArrayList<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
+        super(cells, kingdom, detail);
     }
 
     @Override
     public void onTurnStart() {
-        //TODO
-    }
-
-    @Override
-    public void initialize(ArrayList<Cell> spawnCell) {
-        super.initialize(spawnCell);
         //TODO
     }
 
