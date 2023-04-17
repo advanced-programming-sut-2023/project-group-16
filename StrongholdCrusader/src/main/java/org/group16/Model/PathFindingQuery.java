@@ -30,7 +30,7 @@ public class PathFindingQuery {
         return distance.get(cell) + getCellDistance(cell, start);
     }
 
-    public ArrayList<Cell> findShortestPath() {
+    public void findShortestPath() {
         distance.put(end, 0.0);
         astar.add(end);
         parent.put(end, null);
@@ -42,7 +42,9 @@ public class PathFindingQuery {
                 for (int dy = -1; dy <= 1; dy++)
                     updateEdge(cell, map.getCellAt(cell.getX() + dx, cell.getY() + dy));
         }
+    }
 
+    public ArrayList<Cell> getShortestPath() {
         ArrayList<Cell> result = new ArrayList<>();
         result.add(start);
         while (true) {
