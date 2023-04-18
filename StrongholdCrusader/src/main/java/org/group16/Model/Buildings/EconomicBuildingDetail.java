@@ -102,6 +102,10 @@ public enum EconomicBuildingDetail {
         return storageData;
     }
 
+    public BuildingType getBuildingType() {
+        return buildingType;
+    }
+
     public EconomyEffect getEconomyEffect() {
         return economyEffect;
     }

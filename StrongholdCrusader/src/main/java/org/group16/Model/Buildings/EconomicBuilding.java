@@ -17,20 +17,26 @@ public class EconomicBuilding extends Building {
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
 
     public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, EconomicBuildingDetail detail) {
-        super(cells, kingdom, detail.getHp());
+        super(cells, kingdom, detail.getHp() , detail.getBuildingType());
         this.detail = detail;
     }
 
+    //storage
     public void addResource(Resource resource, int count) {
         //TODO
     }
 
+    //storage
     public void useResource(Resource resource, int count) {
         //TODO
     }
 
+    public void makeResource(Resource resource, int count) {
+        //TODO
+    }
+
     public void addWorker(Human human) {
-        if (human instanceof Worker || human instanceof Engineer) {
+        if ((human instanceof Worker || human instanceof Engineer) && human.getBuilding() == null) {
             workers.add(human);
             human.setBuilding(this);
         }

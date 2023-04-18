@@ -11,11 +11,26 @@ public abstract class Building extends GameObject {
     private final Kingdom kingdom;
     private int hp;
     private boolean traversable;
+    private BuildingType buildingType;
 
-    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+    public Kingdom getKingdom() {
+        return kingdom;
+    }
+
+    public BuildingType getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(BuildingType buildingType) {
+        this.buildingType = buildingType;
+    }
+
+
+    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp , BuildingType buildingType) {
         super(cells);
         this.kingdom = kingdom;
         this.hp = hp;
+        this.buildingType = buildingType ;
     }
 
     public int getHp() {
