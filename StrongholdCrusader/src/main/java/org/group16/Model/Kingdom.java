@@ -8,6 +8,7 @@ import org.group16.Model.People.Human;
 import org.group16.Model.Resources.Resource;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class Kingdom {
     private final KingdomType kingdomType;
@@ -126,7 +127,13 @@ public class Kingdom {
     public void onTurnEnd() {
         //TODO
     }
-
+    public void useFood(Resource resource , int cnt){
+        for (EconomicBuilding granary : getFoodStores()){
+            int usage = Math.min(cnt , granary.getCntOfResource(resource)) ;
+            cnt = cnt - usage ;
+            granary.useResource(resource , usage) ;
+        }
+    }
     public void addFood(Resource resource, int cnt) {
         for (EconomicBuilding granary : getFoodStores()) {
             if (cnt != 0 && !granary.getObjetsInStorage().equals(250)) {
