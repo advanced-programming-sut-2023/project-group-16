@@ -12,14 +12,22 @@ public class Kingdom {
     private final User user;
     private final ArrayList<Human> humans = new ArrayList<>();
     private final ArrayList<Building> buildings = new ArrayList<>();
+    private Team team;
     private int population;
     private int popularity;
     private int tax;
     private int fearRate;
-
     public Kingdom(KingdomType kingdomType, User user) {
         this.kingdomType = kingdomType;
         this.user = user;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public User getUser() {

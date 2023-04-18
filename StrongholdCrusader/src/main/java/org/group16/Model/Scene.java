@@ -1,5 +1,7 @@
 package org.group16.Model;
 
+import org.group16.Model.Buildings.Building;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -38,6 +40,8 @@ public class Scene {
 
     public void update(double deltaTime) {
         for (var go : gameObjects) go.update(deltaTime);
+        gameObjects.removeIf(GameObject::nullOrDead);
+        map.updateDeadObjects();
     }
 
     public void onTurnEnd() {

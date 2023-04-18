@@ -3,7 +3,6 @@ package org.group16.Model.People;
 import org.group16.Lib.Pair;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.Weaponry;
-import org.group16.Model.TargetType;
 
 import java.util.ArrayList;
 
@@ -13,12 +12,16 @@ public enum SoldierDetail implements Resource {
     private final Weaponry armor;
     private final Weaponry weapon;
     private final int resultCount;
-    private final boolean hasHorse, canClimbLadder, canClimbWalls, canHide, canDigMoats;
-    private final int attackRange, damage, hp, speed;
+    private final boolean hasHorse, canClimbLadder, canClimbWalls, canHide, canDigMoats, canDamageHuman, canDamageBuilding;
+    private final int attackRange;
+    private final int sightRange;
+    private final int damage;
+    private final int hp;
+    private final int speed;
 
     SoldierDetail(Weaponry armor, Weaponry weapon, boolean hasHorse, int resultCount,
                   boolean canClimbLadder, boolean canClimbWalls, boolean canHide, boolean canDigMoats,
-                  int attackRange, int damage, int hp, int speed) {
+                  boolean canDamageHuman, boolean canDamageBuilding, int attackRange, int sightRange, int damage, int hp, int speed) {
         this.armor = armor;
         this.weapon = weapon;
         this.hasHorse = hasHorse;
@@ -27,10 +30,25 @@ public enum SoldierDetail implements Resource {
         this.canClimbWalls = canClimbWalls;
         this.canHide = canHide;
         this.canDigMoats = canDigMoats;
+        this.canDamageHuman = canDamageHuman;
+        this.canDamageBuilding = canDamageBuilding;
         this.attackRange = attackRange;
+        this.sightRange = sightRange;
         this.damage = damage;
         this.hp = hp;
         this.speed = speed;
+    }
+
+    public boolean isCanDamageHuman() {
+        return canDamageHuman;
+    }
+
+    public boolean isCanDamageBuilding() {
+        return canDamageBuilding;
+    }
+
+    public int getSightRange() {
+        return sightRange;
     }
 
     public Weaponry getArmor() {

@@ -25,4 +25,5 @@ public class Worker extends Human {
     public void onTurnEnd() {
         //TODO
     }
+
 }

@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public abstract class GameObject {
+    public final Kingdom kingdom;
     private final UUID uuid = UUID.randomUUID();
     private ArrayList<Cell> cells;
     private boolean isAlive = true;
-
-    public GameObject(ArrayList<Cell> cells) {
+    public GameObject(ArrayList<Cell> cells, Kingdom kingdom) {
         this.cells = new ArrayList<>(cells);
+        this.kingdom = kingdom;
     }
 
     public static boolean nullOrDead(GameObject gameObject) {
         return gameObject == null || !gameObject.isAlive;
+    }
+
+    public Kingdom getKingdom() {
+        return kingdom;
     }
 
     public ArrayList<Cell> getCells() {

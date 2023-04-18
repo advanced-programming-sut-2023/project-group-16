@@ -1,5 +1,8 @@
 package org.group16.Model;
 
+import org.group16.Model.Buildings.Building;
+import org.group16.Model.People.Soldier;
+
 import java.util.ArrayList;
 
 public class Cell implements Comparable<Cell> {
@@ -73,8 +76,17 @@ public class Cell implements Comparable<Cell> {
         return 1;
     }//TODO
 
+    public Building getBuilding() {
+        for (var obj : gameObjects) if (obj instanceof Building) return (Building) obj;
+        return null;
+    }
+
     @Override
     public String toString() {
         return String.format("[%d,%d]", x, y);
+    }
+
+    public void updateDeadObjects() {
+        gameObjects.removeIf(GameObject::nullOrDead);
     }
 }

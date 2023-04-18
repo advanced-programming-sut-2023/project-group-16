@@ -6,8 +6,7 @@ import org.group16.Model.Buildings.Building;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class Human extends GameObject {
-    private final Kingdom kingdom;
+public abstract class Human extends GameObject implements Alive {
     private int hp;
     private Building building;
     private double relativeX;
@@ -60,11 +59,7 @@ public abstract class Human extends GameObject {
         relativeX -= cellDx;
         relativeY -= cellDy;
         addCell(currentCell);
-    }
-
-    public Kingdom getKingdom() {
-        return kingdom;
-    }
+    }//TODO: move on buildings
 
     public int getHp() {
         return hp;
@@ -80,5 +75,10 @@ public abstract class Human extends GameObject {
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    @Override
+    public void dealDamage(int damage) {
+        setHp(getHp() - damage);
     }
 }

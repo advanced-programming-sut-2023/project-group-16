@@ -43,4 +43,10 @@ public class Map {
         if (j < 0 || j >= height) return null;
         return cells[i][j];
     }
+
+    public void updateDeadObjects() {
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                cells[i][j].updateDeadObjects();
+    }
 }

@@ -9,6 +9,12 @@ public class WarCommand {
     private final Building targetBuilding;
     private Status status;
 
+    public WarCommand() {
+        destination = null;
+        targetHuman = null;
+        targetBuilding = null;
+    }
+
     public WarCommand(Cell destination) {
         this.destination = destination;
         targetHuman = null;
@@ -37,7 +43,6 @@ public class WarCommand {
     }
 
     public Cell getDestination() {
-        //TODO
         return destination;
     }
 

@@ -3,18 +3,17 @@ package org.group16.Model.Buildings;
 import org.group16.Model.Cell;
 import org.group16.Model.GameObject;
 import org.group16.Model.Kingdom;
+import org.group16.Model.People.Alive;
 
 import java.util.ArrayList;
 
-public abstract class Building extends GameObject {
+public abstract class Building extends GameObject implements Alive {
 
-    private final Kingdom kingdom;
     private int hp;
     private boolean traversable;
 
     public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
-        super(cells);
-        this.kingdom = kingdom;
+        super(cells, kingdom);
         this.hp = hp;
     }
 
@@ -54,5 +53,10 @@ public abstract class Building extends GameObject {
             destroy();
             hp = 0;
         }
+    }
+
+    @Override
+    public void dealDamage(int damage) {
+        setHp(getHp() - damage);
     }
 }

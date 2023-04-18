@@ -1,9 +1,9 @@
 package org.group16.Model.People;
 
-import org.group16.Model.Cell;
-import org.group16.Model.Kingdom;
+import org.group16.Lib.Pair;
+import org.group16.Model.*;
+import org.group16.Model.Buildings.Building;
 import org.group16.Model.Siege.Siege;
-import org.group16.Model.WarCommand;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,15 @@ public class Soldier extends Human {
 
     @Override
     public void update(double deltaTime) {
-        //TODO
+        Cell moveDestination = warCommand.getDestination();
+        Human humanTarget = warCommand.getTargetHuman();
+        Building buildingTarget = warCommand.getTargetBuilding();
+        WarCommand.Status status = warCommand.getStatus();
+
+    }
+
+    public void attackTarget(Alive alive, int damage) {
+        alive.dealDamage(damage);
     }
 
     @Override
@@ -57,4 +65,5 @@ public class Soldier extends Human {
     public void setSiege(Siege siege) {
         this.siege = siege;
     }
+
 }
