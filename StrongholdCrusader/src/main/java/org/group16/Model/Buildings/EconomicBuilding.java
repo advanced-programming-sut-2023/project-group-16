@@ -17,7 +17,7 @@ public class EconomicBuilding extends Building {
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
 
     public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, EconomicBuildingDetail detail) {
-        super(cells, kingdom, detail.getHp() , detail.getBuildingType());
+        super(cells, kingdom, detail.getHp(), detail.getBuildingType());
         this.detail = detail;
     }
 
@@ -91,6 +91,14 @@ public class EconomicBuilding extends Building {
             else workerCount++;
         }
         return workerCount >= detail.getNeededWorkers() && engineerCount >= detail.getNeededEngineers();
+    }
+
+    public Integer getObjetsInStorage() {
+        int total = 0;
+        for (Pair<Resource, Integer> pair : storage) {
+            total+=pair.getB() ;
+        }
+        return total ;
     }
 
 }

@@ -1,7 +1,9 @@
 package org.group16.Model;
 
 import org.group16.Model.Buildings.Building;
+import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
+import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
 import org.group16.Model.Resources.Resource;
 
@@ -107,9 +109,10 @@ public class Kingdom {
     public void addResource(Resource resource, int count) {
         //TODO
     }
-    public Integer getPopulationCapacity(){
+
+    public Integer getPopulationCapacity() {
         //TODO
-        return null ;
+        return null;
     }
 
     public void onTurnStart() {
@@ -122,5 +125,25 @@ public class Kingdom {
 
     public void onTurnEnd() {
         //TODO
+    }
+
+    public void addFood(Resource resource, int cnt) {
+        for (EconomicBuilding granary : getFoodStores()) {
+            if (cnt != 0 && !granary.getObjetsInStorage().equals(250)) {
+                int added = Math.max(250 - granary.getObjetsInStorage(), cnt);
+                granary.addResource(resource, added);
+                cnt -= added;
+            }
+        }
+    }
+
+    public ArrayList<EconomicBuilding> getFoodStores() {
+        ArrayList<EconomicBuilding> foodStores = new ArrayList<>();
+        for (Building building : buildings) {
+            if (building.getBuildingType().equals(BuildingType.GRANARY)) {
+                foodStores.add((EconomicBuilding) building);
+            }
+        }
+        return foodStores;
     }
 }
