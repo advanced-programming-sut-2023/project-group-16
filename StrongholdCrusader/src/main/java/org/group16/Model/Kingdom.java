@@ -39,7 +39,7 @@ public class Kingdom {
     }
 
     public void addPopulation(int population) {
-        if (getPopulationCapacity() < this.population + population) {
+        if (getPopulationCapacity() < this.population + population || this.population < population) {
             //TODO
             return;
         }
@@ -50,8 +50,8 @@ public class Kingdom {
         return popularity;
     }
 
-    public void setPopularity(int popularity) {
-        this.popularity = popularity;
+    public void addPopularity(int popularity) {
+        this.popularity += popularity;
     }
 
     public int getTax() {
