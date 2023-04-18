@@ -38,8 +38,12 @@ public class Kingdom {
         return population;
     }
 
-    public void setPopulation(int population) {
-        this.population = population;
+    public void addPopulation(int population) {
+        if (getPopulationCapacity() < this.population + population) {
+            //TODO
+            return;
+        }
+        this.population += population;
     }
 
     public int getPopularity() {
@@ -102,6 +106,10 @@ public class Kingdom {
 
     public void addResource(Resource resource, int count) {
         //TODO
+    }
+    public Integer getPopulationCapacity(){
+        //TODO
+        return null ;
     }
 
     public void onTurnStart() {
