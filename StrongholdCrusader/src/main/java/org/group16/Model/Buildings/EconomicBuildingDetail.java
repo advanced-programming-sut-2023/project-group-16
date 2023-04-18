@@ -45,8 +45,23 @@ public enum EconomicBuildingDetail {
     BLACKSMITH(new ProductData[]{new ProductData(Weaponry.MACE, false, 1), new ProductData(Weaponry.SWORD, false, 1)}, null, null, 300, 1, 0),
     FLETCHER(new ProductData[]{new ProductData(Weaponry.BOW, false, 1), new ProductData(Weaponry.CROSSBOW, false, 1)}, null, null, 300, 1, 0),
     POLE_TURNER(new ProductData[]{new ProductData(Weaponry.PIKE, false, 1), new ProductData(Weaponry.SPEAR, false, 1)}, null, null, 300, 1, 0),
-
-
+    //TODO : ?
+    //OIL_SMELTER
+    STABLE(null , new StorageData[]{new StorageData(BasicResource.HORSE , 4 , 4)} , null , 300 , 0 , 0) ,
+    APPLE_ORCHARD(new ProductData[]{new ProductData(Food.APPLE , true , 10)} , null , null , 100 , 1 , 0) ,
+    //TODO : not sure about diary
+    DIARY_FARMER(new ProductData[]{new ProductData(Food.CHEESE , true , 10)} , new StorageData[]{new StorageData(BasicResource.COW , 4 , 4)} , null ,100 , 1 , 0) ,
+    HOPS_FARMER(new ProductData[]{new ProductData(BasicResource.HOPS , true , 10)} , null , null , 100 , 1 , 0) ,
+    HUNTER_POST(new ProductData[]{new ProductData(Food.MEAT , true , 10)} , null , null , 100 , 1 , 0) ,
+    WHEAT_FARMER(new ProductData[]{new ProductData(BasicResource.WHEAT , true , 10)} , null , null , 100 , 1 , 0) ,
+    BAKERY(new ProductData[]{new ProductData(Food.BREAD , true , 10)} , null , null , 100 , 1 , 0) ,
+    BREWER(new ProductData[]{new ProductData(Food.ALE , true , 10)} , null , null , 100 , 1 , 0) ,
+    GRANARY(null , new StorageData[]{
+            new StorageData(Food.MEAT , 100 , 0) ,
+            new StorageData(Food.BREAD , 100 , 0),
+            new StorageData(Food.APPLE, 100 , 0),
+            new StorageData(Food.CHEESE , 100 , 0)
+    } , null , 100 , 0 , 0) ,
     ;//TODO
 
     private final int hp;
