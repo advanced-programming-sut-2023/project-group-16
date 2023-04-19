@@ -21,7 +21,7 @@ public abstract class Human extends GameObject {
     @Override
     public void destroy() {
         super.destroy();
-        kingdom.removeHuman(this);
+        getKingdom().removeHuman(this);
     }
 
     public double getRelativeX() {
@@ -67,9 +67,6 @@ public abstract class Human extends GameObject {
         addCell(currentCell);
     }
 
-    public Kingdom getKingdom() {
-        return kingdom;
-    }
 
     public int getHp() {
         return hp;

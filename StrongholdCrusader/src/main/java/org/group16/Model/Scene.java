@@ -2,9 +2,7 @@ package org.group16.Model;
 
 import org.group16.Model.Buildings.Building;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class Scene {
 
@@ -12,6 +10,7 @@ public class Scene {
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final HashMap<UUID, GameObject> gameObjectIndex = new HashMap<>();
     private final Map map;
+    private final Random random = new Random();
 
     public Scene(Map map) {
         this.map = new Map(map);
@@ -19,6 +18,10 @@ public class Scene {
 
     public static Scene getCurrent() {
         return current;
+    }
+
+    public Random getRandom() {
+        return random;
     }
 
     public Map getMap() {
@@ -35,16 +38,17 @@ public class Scene {
 
 
     public void onTurnStart() {
+        Collections.shuffle(gameObjects, random);
         for (var go : gameObjects) go.onTurnStart();
     }
 
     public void update(double deltaTime) {
+        Collections.shuffle(gameObjects, random);
         for (var go : gameObjects) go.update(deltaTime);
-        gameObjects.removeIf(GameObject::nullOrDead);
-        map.updateDeadObjects();
     }
 
     public void onTurnEnd() {
+        Collections.shuffle(gameObjects, random);
         for (var go : gameObjects) go.onTurnEnd();
     }
 

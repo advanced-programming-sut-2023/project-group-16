@@ -17,6 +17,7 @@ public class Kingdom {
     private int popularity;
     private int tax;
     private int fearRate;
+
     public Kingdom(KingdomType kingdomType, User user) {
         this.kingdomType = kingdomType;
         this.user = user;
@@ -33,13 +34,6 @@ public class Kingdom {
         this.team.addKingdom(this);
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
 
     public User getUser() {
         return user;

@@ -86,7 +86,4 @@ public class Cell implements Comparable<Cell> {
         return String.format("[%d,%d]", x, y);
     }
 
-    public void updateDeadObjects() {
-        gameObjects.removeIf(GameObject::nullOrDead);
-    }
 }

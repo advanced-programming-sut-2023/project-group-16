@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public abstract class GameObject {
-    public final Kingdom kingdom;
+    private final Kingdom kingdom;
     private final UUID uuid = UUID.randomUUID();
     private ArrayList<Cell> cells;
     private boolean isAlive = true;

@@ -41,7 +41,7 @@ public abstract class Building extends GameObject implements Alive {
     @Override
     public void destroy() {
         super.destroy();
-        kingdom.removeBuilding(this);
+        getKingdom().removeBuilding(this);
     }
 
     public void delete() {
