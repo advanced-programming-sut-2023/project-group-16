@@ -6,16 +6,22 @@ import org.group16.Model.Buildings.Building;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class Human extends GameObject implements Alive {
+public abstract class Human extends GameObject {
     private int hp;
     private Building building;
     private double relativeX;
     private double relativeY;
 
     public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
-        super(cells);
-        this.kingdom = kingdom;
+        super(cells, kingdom);
+        kingdom.addHuman(this);
         this.hp = hp;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        kingdom.removeHuman(this);
     }
 
     public double getRelativeX() {
@@ -59,7 +65,11 @@ public abstract class Human extends GameObject implements Alive {
         relativeX -= cellDx;
         relativeY -= cellDy;
         addCell(currentCell);
-    }//TODO: move on buildings
+    }
+
+    public Kingdom getKingdom() {
+        return kingdom;
+    }
 
     public int getHp() {
         return hp;
@@ -75,10 +85,5 @@ public abstract class Human extends GameObject implements Alive {
 
     public void setBuilding(Building building) {
         this.building = building;
-    }
-
-    @Override
-    public void dealDamage(int damage) {
-        setHp(getHp() - damage);
     }
 }

@@ -8,8 +8,12 @@ public abstract class GameObject {
     private final UUID uuid = UUID.randomUUID();
     private ArrayList<Cell> cells;
     private boolean isAlive = true;
+
     public GameObject(ArrayList<Cell> cells, Kingdom kingdom) {
         this.cells = new ArrayList<>(cells);
+        Scene.getCurrent().addGameObject(this);
+        for (Cell cell : cells)
+            cell.addGameObject(this);
         this.kingdom = kingdom;
     }
 
@@ -35,6 +39,8 @@ public abstract class GameObject {
 
     public void destroy() {
         Scene.getCurrent().removeGameObject(this);
+        for (Cell cell : cells)
+            cell.removeGameObject(this);
         isAlive = false;
     }
 

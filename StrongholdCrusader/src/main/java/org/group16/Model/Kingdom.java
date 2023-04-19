@@ -20,6 +20,17 @@ public class Kingdom {
     public Kingdom(KingdomType kingdomType, User user) {
         this.kingdomType = kingdomType;
         this.user = user;
+        team = new Team(this);
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team.removeKingdom(this);
+        this.team = team;
+        this.team.addKingdom(this);
     }
 
     public Team getTeam() {

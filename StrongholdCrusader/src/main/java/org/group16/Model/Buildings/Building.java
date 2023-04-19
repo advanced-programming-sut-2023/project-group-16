@@ -15,6 +15,7 @@ public abstract class Building extends GameObject implements Alive {
     public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
         this.hp = hp;
+        kingdom.addBuilding(this);
     }
 
     public int getHp() {
@@ -40,6 +41,7 @@ public abstract class Building extends GameObject implements Alive {
     @Override
     public void destroy() {
         super.destroy();
+        kingdom.removeBuilding(this);
     }
 
     public void delete() {
