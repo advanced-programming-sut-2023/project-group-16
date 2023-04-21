@@ -1,5 +1,5 @@
 package org.group16.Model;
 
 public interface EconomyEffect {
-    public void applyEffect(Kingdom kingdom, int x);
+    public void applyEffect(Kingdom kingdom);
 }

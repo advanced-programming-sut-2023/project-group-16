@@ -11,11 +11,25 @@ public abstract class Building extends GameObject implements Alive {
 
     private int hp;
     private boolean traversable;
+    private BuildingType buildingType;
+    
+    public BuildingType getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(BuildingType buildingType) {
+        this.buildingType = buildingType;
+    }
 
     public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
         this.hp = hp;
         kingdom.addBuilding(this);
+    }
+
+    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp , BuildingType buildingType) {
+        this(cells ,kingdom , hp);
+        this.buildingType = buildingType ;
     }
 
     public int getHp() {

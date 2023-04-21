@@ -1,11 +1,14 @@
 package org.group16.Model;
 
 import org.group16.Model.Buildings.Building;
+import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
+import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
 import org.group16.Model.Resources.Resource;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class Kingdom {
     private final KingdomType kingdomType;
@@ -51,16 +54,20 @@ public class Kingdom {
         return population;
     }
 
-    public void setPopulation(int population) {
-        this.population = population;
+    public void addPopulation(int population) {
+        if (getPopulationCapacity() < this.population + population || this.population < population) {
+            //TODO
+            return;
+        }
+        this.population += population;
     }
 
     public int getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(int popularity) {
-        this.popularity = popularity;
+    public void addPopularity(int popularity) {
+        this.popularity += popularity;
     }
 
     public int getTax() {
@@ -117,6 +124,11 @@ public class Kingdom {
         //TODO
     }
 
+    public Integer getPopulationCapacity() {
+        //TODO
+        return null;
+    }
+
     public void onTurnStart() {
         //TODO
     }
@@ -127,5 +139,31 @@ public class Kingdom {
 
     public void onTurnEnd() {
         //TODO
+    }
+    public void useFood(Resource resource , int cnt){
+        for (EconomicBuilding granary : getFoodStores()){
+            int usage = Math.min(cnt , granary.getCntOfResource(resource)) ;
+            cnt = cnt - usage ;
+            granary.useResource(resource , usage) ;
+        }
+    }
+    public void addFood(Resource resource, int cnt) {
+        for (EconomicBuilding granary : getFoodStores()) {
+            if (cnt != 0 && !granary.getObjetsInStorage().equals(250)) {
+                int added = Math.max(250 - granary.getObjetsInStorage(), cnt);
+                granary.addResource(resource, added);
+                cnt -= added;
+            }
+        }
+    }
+
+    public ArrayList<EconomicBuilding> getFoodStores() {
+        ArrayList<EconomicBuilding> foodStores = new ArrayList<>();
+        for (Building building : buildings) {
+            if (building.getBuildingType().equals(BuildingType.GRANARY)) {
+                foodStores.add((EconomicBuilding) building);
+            }
+        }
+        return foodStores;
     }
 }
