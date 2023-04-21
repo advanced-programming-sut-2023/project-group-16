@@ -59,6 +59,7 @@ public abstract class Building extends GameObject implements Alive {
 
     @Override
     public void dealDamage(int damage) {
-        setHp(getHp() - damage);
+        hp -= damage;
+        if (hp <= 0) destroy();
     }
 }

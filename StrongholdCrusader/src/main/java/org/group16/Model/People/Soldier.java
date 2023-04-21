@@ -1,11 +1,11 @@
 package org.group16.Model.People;
 
-import org.group16.Lib.Pair;
 import org.group16.Model.*;
-import org.group16.Model.Buildings.Building;
 import org.group16.Model.Siege.Siege;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class Soldier extends Human {
     private final SoldierDetail soldierDetail;
@@ -37,15 +37,59 @@ public class Soldier extends Human {
 
     @Override
     public void onTurnStart() {
-        //TODO
     }
 
     @Override
     public void update(double deltaTime) {
         Cell moveDestination = warCommand.getDestination();
         Human humanTarget = warCommand.getTargetHuman();
-        Building buildingTarget = warCommand.getTargetBuilding();
         WarCommand.Status status = warCommand.getStatus();
+
+        ArrayList<Human> enemyPeopleInAttackRange = getEnemyPeopleInRange(soldierDetail.getAttackRange());
+        ArrayList<Human> enemyPeopleInDefensiveRange = getEnemyPeopleInRange(soldierDetail.getDefensiveRange());
+        ArrayList<Human> enemyPeopleInOffensiveRange = getEnemyPeopleInRange(soldierDetail.getOffensiveRange());
+
+        // Defensive State
+        if (status == WarCommand.Status.DEFENSIVE && enemyPeopleInDefensiveRange.size() > 0) {
+            return;
+        }
+        // Move Command
+        if (moveDestination != null) {
+            if (getCells().get(0) != moveDestination)
+                moveToward(moveDestination, deltaTime * soldierDetail.getSpeed(), 0, Scene.getCurrent().getRandom());
+            return;
+        }
+        // Attack Command
+        if (humanTarget != null) {
+            //TODO
+            return;
+        }
+        // Offensive State
+        if (status == WarCommand.Status.OFFENSIVE && enemyPeopleInOffensiveRange.size() > 0) {
+            return;
+        }
+
+    }
+
+    public ArrayList<Human> getEnemyPeopleInRange(int range) {
+        Cell currentCell = this.getCells().get(0);
+        ArrayList<Human> people = new ArrayList<>();
+        for (int dx = -range; dx <= range; dx++)
+            for (int dy = dx - range; dy <= range - dx; dy++) {
+                Cell cell = Scene.getCurrent().getCellAt(currentCell.getX() + dx, currentCell.getY() + dy);
+                if (cell == null) continue;
+
+                for (GameObject go : cell.getGameObjects())
+                    if (go instanceof Human human)
+                        if (human.getKingdom().getTeam() != getKingdom().getTeam())
+                            people.add(human);
+            }
+        return people;
+    }
+
+    public Human getTarget(ArrayList<Human> people) {
+        Random random = Scene.getCurrent().getRandom();
+
 
     }
 
@@ -55,7 +99,6 @@ public class Soldier extends Human {
 
     @Override
     public void onTurnEnd() {
-        //TODO
     }
 
     public Siege getSiege() {

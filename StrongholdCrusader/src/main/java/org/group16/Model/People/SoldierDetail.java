@@ -14,14 +14,14 @@ public enum SoldierDetail implements Resource {
     private final int resultCount;
     private final boolean hasHorse, canClimbLadder, canClimbWalls, canHide, canDigMoats, canDamageHuman, canDamageBuilding;
     private final int attackRange;
-    private final int sightRange;
+    private final int defensiveRange;
+    private final int offensiveRange;
     private final int damage;
     private final int hp;
-    private final int speed;
-
+    private final double speed;
     SoldierDetail(Weaponry armor, Weaponry weapon, boolean hasHorse, int resultCount,
                   boolean canClimbLadder, boolean canClimbWalls, boolean canHide, boolean canDigMoats,
-                  boolean canDamageHuman, boolean canDamageBuilding, int attackRange, int sightRange, int damage, int hp, int speed) {
+                  boolean canDamageHuman, boolean canDamageBuilding, int attackRange, int defensiveRange, int offensiveRange, int damage, int hp, int speed) {
         this.armor = armor;
         this.weapon = weapon;
         this.hasHorse = hasHorse;
@@ -33,10 +33,15 @@ public enum SoldierDetail implements Resource {
         this.canDamageHuman = canDamageHuman;
         this.canDamageBuilding = canDamageBuilding;
         this.attackRange = attackRange;
-        this.sightRange = sightRange;
+        this.defensiveRange = defensiveRange;
+        this.offensiveRange = offensiveRange;
         this.damage = damage;
         this.hp = hp;
         this.speed = speed;
+    }
+
+    public int getOffensiveRange() {
+        return offensiveRange;
     }
 
     public boolean isCanDamageHuman() {
@@ -47,8 +52,8 @@ public enum SoldierDetail implements Resource {
         return canDamageBuilding;
     }
 
-    public int getSightRange() {
-        return sightRange;
+    public int getDefensiveRange() {
+        return defensiveRange;
     }
 
     public Weaponry getArmor() {
@@ -91,7 +96,7 @@ public enum SoldierDetail implements Resource {
         return hp;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
