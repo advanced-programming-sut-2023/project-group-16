@@ -47,20 +47,20 @@ public enum EconomicBuildingDetail {
     POLE_TURNER(new ProductData[]{new ProductData(Weaponry.PIKE, false, 1), new ProductData(Weaponry.SPEAR, false, 1)}, null, null, 300, 1, 0 , BuildingType.POLE_TURNER),
     //TODO : ?
     //OIL_SMELTER
-    STABLE(null , new StorageData[]{new StorageData(BasicResource.HORSE , 4 , 4)} , null , 300 , 0 , 0 , BuildingType.STABLE) ,
+    STABLE(null , new StorageData[]{new StorageData(BasicResource.HORSE , 4)} , null , 300 , 0 , 0 , BuildingType.STABLE) ,
     APPLE_ORCHARD(new ProductData[]{new ProductData(Food.APPLE , true , 10)} , null , null , 100 , 1 , 0 , BuildingType.APPLE_ORCHARD) ,
     //TODO : not sure about diary
-    DIARY_FARMER(new ProductData[]{new ProductData(Food.CHEESE , true , 10)} , new StorageData[]{new StorageData(BasicResource.COW , 4 , 4)} , null ,100 , 1 , 0 , BuildingType.DIARY_FARMER) ,
+    DIARY_FARMER(new ProductData[]{new ProductData(Food.CHEESE , true , 10)} , new StorageData[]{new StorageData(BasicResource.COW  , 4)} , null ,100 , 1 , 0 , BuildingType.DIARY_FARMER) ,
     HOPS_FARMER(new ProductData[]{new ProductData(BasicResource.HOPS , true , 10)} , null , null , 100 , 1 , 0 , BuildingType.HOPS_FARMER) ,
     HUNTER_POST(new ProductData[]{new ProductData(Food.MEAT , true , 10)} , null , null , 100 , 1 , 0 , BuildingType.HUNTER_POST) ,
     WHEAT_FARMER(new ProductData[]{new ProductData(BasicResource.WHEAT , true , 10)} , null , null , 100 , 1 , 0 , BuildingType.WHEAT_FARMER) ,
     BAKERY(new ProductData[]{new ProductData(Food.BREAD , true , 10)} , null , null , 100 , 1 , 0 , BuildingType.BAKERY) ,
     BREWER(new ProductData[]{new ProductData(Food.ALE , true , 10)} , null , null , 100 , 1 , 0 , BuildingType.BREWER) ,
     GRANARY(null , new StorageData[]{
-            new StorageData(Food.MEAT , 100 , 0) ,
-            new StorageData(Food.BREAD , 100 , 0),
-            new StorageData(Food.APPLE, 100 , 0),
-            new StorageData(Food.CHEESE , 100 , 0)
+            new StorageData(Food.MEAT ,  0) ,
+            new StorageData(Food.BREAD ,  0),
+            new StorageData(Food.APPLE,  0),
+            new StorageData(Food.CHEESE ,  0)
     } , null , 100 , 0 , 0 , BuildingType.GRANARY) ,
     ;//TODO
 
