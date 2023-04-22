@@ -172,9 +172,6 @@ public class Kingdom {
         return false;
     }
 
-    public void addResource(Resource resource, int count) {
-        //TODO
-    }
 
     public Integer getPopulationCapacity() {
         //TODO

@@ -50,8 +50,19 @@ public class EconomicBuilding extends Building {
             if (pr.resource().equals(resource))
                 productData = pr;
         }
-
-        //TODO
+        boolean canBeBuilt = true;
+        for (Pair<Resource , Integer> needed : resource.getDependencies()){
+            if (getKingdom().getResourceCount(needed.getA()) < needed.getB() )
+                canBeBuilt = false ;
+        }
+        if (getKingdom().getResourceStorageCapacity(resource) < count)
+            canBeBuilt = false;
+        if (!canBeBuilt)
+            return;
+        for (Pair<Resource , Integer> needed : resource.getDependencies()){
+            getKingdom().useResource(needed.getA() , needed.getB()) ;
+        }
+        getKingdom().addRecourse(resource , count) ;
     }
 
     public void addWorker(Human human) {
