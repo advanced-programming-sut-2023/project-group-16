@@ -6,6 +6,7 @@ import org.group16.Model.Kingdom;
 import org.group16.Model.People.Engineer;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Worker;
+import org.group16.Model.Resources.ProductData;
 import org.group16.Model.Resources.Resource;
 
 import java.util.ArrayList;
@@ -15,9 +16,11 @@ public class EconomicBuilding extends Building {
     private final ArrayList<Human> workers = new ArrayList<>();
     private final EconomicBuildingDetail detail;
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
+    private int capacity;
 
     public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, EconomicBuildingDetail detail) {
         super(cells, kingdom, detail.getHp(), detail.getBuildingType());
+        this.capacity = detail.getCapacity();
         this.detail = detail;
     }
 
@@ -32,6 +35,12 @@ public class EconomicBuilding extends Building {
     }
 
     public void makeResource(Resource resource, int count) {
+        ProductData productData = null;
+        for (ProductData pr : detail.getProductsData()) {
+            if (pr.resource().equals(resource))
+                productData = pr;
+        }
+
         //TODO
     }
 
@@ -96,9 +105,18 @@ public class EconomicBuilding extends Building {
     public Integer getObjetsInStorage() {
         int total = 0;
         for (Pair<Resource, Integer> pair : storage) {
-            total+=pair.getB() ;
+            total += pair.getB();
         }
-        return total ;
+        return total;
+    }
+
+    public Integer getCntOfResource(Resource resource) {
+        int total = 0;
+        for (Pair<Resource, Integer> pair : storage) {
+            if (pair.getA().equals(resource))
+                total += pair.getB();
+        }
+        return total;
     }
 
 }
