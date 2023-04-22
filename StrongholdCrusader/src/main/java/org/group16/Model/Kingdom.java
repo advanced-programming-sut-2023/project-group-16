@@ -1,5 +1,6 @@
 package org.group16.Model;
 
+import org.group16.Lib.Pair;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
@@ -112,12 +113,35 @@ public class Kingdom {
     }
 
     public int getResourceCount(Resource resource) {
-        //TODO
-        return 0;
+        int count = 0 ;
+        for (Building building : buildings){
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            for (Pair<Resource , Integer> pair: ((EconomicBuilding) building).getStorage()){
+                if (pair.getA().equals(resource))
+                    count+=pair.getB() ;
+            }
+        }
+        return count ;
     }
 
-    public void useResource(Resource resource, int count) {
-        //TODO
+    public boolean useResource(Resource resource, int count) {
+        if (getResourceCount(resource) < count)
+            return false ;
+        for (Building building : buildings){
+            if (count==0)
+                break;
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            for (Pair<Resource , Integer> pair: ((EconomicBuilding) building).getStorage()){
+                if (pair.getA().equals(resource)) {
+                    int usage = Math.min(count , pair.getB()) ;
+                    ((EconomicBuilding) building).useResource(resource , usage);
+                    count-=usage ;
+                }
+            }
+        }
+        return true ;
     }
 
     public void addResource(Resource resource, int count) {
@@ -140,30 +164,31 @@ public class Kingdom {
     public void onTurnEnd() {
         //TODO
     }
-    public void useFood(Resource resource , int cnt){
-        for (EconomicBuilding granary : getFoodStores()){
-            int usage = Math.min(cnt , granary.getCntOfResource(resource)) ;
-            cnt = cnt - usage ;
-            granary.useResource(resource , usage) ;
-        }
-    }
-    public void addFood(Resource resource, int cnt) {
-        for (EconomicBuilding granary : getFoodStores()) {
-            if (cnt != 0 && !granary.getObjetsInStorage().equals(250)) {
-                int added = Math.max(250 - granary.getObjetsInStorage(), cnt);
-                granary.addResource(resource, added);
-                cnt -= added;
-            }
-        }
-    }
 
-    public ArrayList<EconomicBuilding> getFoodStores() {
-        ArrayList<EconomicBuilding> foodStores = new ArrayList<>();
+//    public void useFood(Resource resource, int cnt) {
+//        for (EconomicBuilding granary : getEconomicBuildingsByType(BuildingType.GRANARY)) {
+//            int usage = Math.min(cnt, granary.getCntOfResource(resource));
+//            cnt = cnt - usage;
+//            granary.useResource(resource, usage);
+//        }
+//    }
+//
+//    public void addFood(Resource resource, int cnt) {
+//        for (EconomicBuilding granary : getEconomicBuildingsByType(BuildingType.GRANARY)) {
+//            if (cnt != 0 && !granary.getObjetsInStorage().equals(250)) {
+//                int added = Math.max(250 - granary.getObjetsInStorage(), cnt);
+//                granary.addResource(resource, added);
+//                cnt -= added;
+//            }
+//        }
+//    }
+    public ArrayList<EconomicBuilding> getEconomicBuildingsByType(BuildingType buildingType) {
+        ArrayList<EconomicBuilding> buildingsArray = new ArrayList<>();
         for (Building building : buildings) {
-            if (building.getBuildingType().equals(BuildingType.GRANARY)) {
-                foodStores.add((EconomicBuilding) building);
+            if (building.getBuildingType().equals(buildingType)) {
+                buildingsArray.add((EconomicBuilding) building);
             }
         }
-        return foodStores;
+        return buildingsArray;
     }
 }
