@@ -16,11 +16,10 @@ public class EconomicBuilding extends Building {
     private final ArrayList<Human> workers = new ArrayList<>();
     private final EconomicBuildingDetail detail;
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
-    private int capacity;
+    private int usedCapacity = 0;
 
     public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, EconomicBuildingDetail detail) {
         super(cells, kingdom, detail.getHp(), detail.getBuildingType());
-        this.capacity = detail.getCapacity();
         this.detail = detail;
     }
 
