@@ -105,6 +105,14 @@ public class EconomicBuilding extends Building {
     @Override
     public void update(double deltaTime) {
         //TODO
+        //checking deltaTime
+        if (!isActive())
+            return;
+        for (ProductData productData : detail.getProductsData()){
+            if (!productData.isManual())
+                continue;
+            makeResource(productData.resource(), productData.maxRate());
+        }
     }
 
     @Override
