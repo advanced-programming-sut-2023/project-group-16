@@ -25,12 +25,23 @@ public class EconomicBuilding extends Building {
 
     //storage
     public void addResource(Resource resource, int count) {
-        //TODO
+        storage.add(new Pair<>(resource , count)) ;
     }
 
     //storage
     public void useResource(Resource resource, int count) {
-        //TODO
+        for (Pair<Resource , Integer> pair : storage){
+            if (count==0)
+                break;
+            if (pair.getA().equals(resource)){
+                storage.remove(pair);
+                int usage = Math.min(count , pair.getB()) ;
+                if (pair.getB() > usage){
+                    storage.add(new Pair<>(resource , pair.getB()-usage)) ;
+                }
+                count = count - usage ;
+            }
+        }
     }
 
     public void makeResource(Resource resource, int count) {
@@ -101,21 +112,14 @@ public class EconomicBuilding extends Building {
         return workerCount >= detail.getNeededWorkers() && engineerCount >= detail.getNeededEngineers();
     }
 
-    public Integer getObjetsInStorage() {
-        int total = 0;
-        for (Pair<Resource, Integer> pair : storage) {
-            total += pair.getB();
-        }
-        return total;
+    public ArrayList<Pair<Resource, Integer>> getStorage() {
+        return storage;
     }
 
-    public Integer getCntOfResource(Resource resource) {
-        int total = 0;
-        for (Pair<Resource, Integer> pair : storage) {
-            if (pair.getA().equals(resource))
-                total += pair.getB();
-        }
-        return total;
+    public int getUsedCapacity() {
+        return usedCapacity;
     }
-
+    public int getAvailableCapacity(){
+        return detail.getCapacity()-usedCapacity;
+    }
 }
