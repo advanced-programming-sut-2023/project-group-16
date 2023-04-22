@@ -109,48 +109,67 @@ public class Kingdom {
     }
 
     public int getResourceStorageCapacity(Resource resource) {
-        int count = 0 ;
-        for (Building building : buildings){
+        int count = 0;
+        for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding))
-                continue ;
-            for (StorageData storageData: ((EconomicBuilding) building).getDetail().getStorageData()){
+                continue;
+            for (StorageData storageData : ((EconomicBuilding) building).getDetail().getStorageData()) {
                 if (storageData.resource().equals(resource))
-                    count+=((EconomicBuilding) building).getAvailableCapacity() ;
+                    count += ((EconomicBuilding) building).getAvailableCapacity();
             }
         }
         return count;
     }
 
     public int getResourceCount(Resource resource) {
-        int count = 0 ;
-        for (Building building : buildings){
+        int count = 0;
+        for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding))
                 continue;
-            for (Pair<Resource , Integer> pair: ((EconomicBuilding) building).getStorage()){
+            for (Pair<Resource, Integer> pair : ((EconomicBuilding) building).getStorage()) {
                 if (pair.getA().equals(resource))
-                    count+=pair.getB() ;
+                    count += pair.getB();
             }
         }
-        return count ;
+        return count;
     }
 
     public boolean useResource(Resource resource, int count) {
         if (getResourceCount(resource) < count)
-            return false ;
-        for (Building building : buildings){
-            if (count==0)
+            return false;
+        for (Building building : buildings) {
+            if (count == 0)
                 break;
             if (!(building instanceof EconomicBuilding))
                 continue;
-            for (Pair<Resource , Integer> pair: ((EconomicBuilding) building).getStorage()){
+            for (Pair<Resource, Integer> pair : ((EconomicBuilding) building).getStorage()) {
                 if (pair.getA().equals(resource)) {
-                    int usage = Math.min(count , pair.getB()) ;
-                    ((EconomicBuilding) building).useResource(resource , usage);
-                    count-=usage ;
+                    int usage = Math.min(count, pair.getB());
+                    ((EconomicBuilding) building).useResource(resource, usage);
+                    count -= usage;
                 }
             }
         }
-        return true ;
+        return true;
+    }
+
+    public boolean addRecourse(Resource resource, int count) {
+        if (getResourceStorageCapacity(resource) < count)
+            return false;
+        for (Building building : buildings) {
+            if (count == 0)
+                break;
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            for (StorageData storageData : ((EconomicBuilding) building).getDetail().getStorageData()) {
+                if (storageData.resource().equals(resource)){
+                    int added = Math.max(count , ((EconomicBuilding) building).getAvailableCapacity()) ;
+                    ((EconomicBuilding) building).addResource(resource , added);
+                    count-=added;
+                }
+            }
+        }
+        return false;
     }
 
     public void addResource(Resource resource, int count) {
