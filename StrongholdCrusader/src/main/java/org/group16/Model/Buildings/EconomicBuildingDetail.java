@@ -7,6 +7,7 @@ import org.group16.Model.Resources.*;
 public enum EconomicBuildingDetail {
     SMALL_STONE_GATEHOUSE(null, null, 0, null, 1000, 0, 0, BuildingType.SMALL_STONE_GATEHOUSE),
     LARGE_STONE_GATEHOUSE(null, null, 0, null, 2000, 0, 0, BuildingType.LARGE_STONE_GATEHOUSE),
+    //will be added to a new class
     //ARMOURY(null,new StorageData[]{new StorageData()},null , 500 , , ) ,
     //BARRACKS(new ProductData[]{new ProductData()} , null , 500 , , ) ,
     //MERCENARY_POST
@@ -26,7 +27,23 @@ public enum EconomicBuildingDetail {
     //OX_TETHER
     PITCH_RIG(new ProductData[]{new ProductData(BasicResource.OIL, true, 10)}, null, 0, null, 300, 1, 0, BuildingType.PITCH_RIG),
     QUARRY(new ProductData[]{new ProductData(BasicResource.STONE, true, 10)}, null, 0, null, 300, 3, 0, BuildingType.QUARRY),
-    //STOCKPILE(null , ? , null , 300 , 0 , 0)
+    STOCKPILE(null ,new StorageData[]{
+            new StorageData(BasicResource.WHEAT , 0) ,
+            new StorageData(BasicResource.HOPS , 0) ,
+            new StorageData(BasicResource.IRON , 0) ,
+            new StorageData(BasicResource.WOOD , 0) ,
+            new StorageData(BasicResource.STONE , 0) ,
+            new StorageData(BasicResource.OIL , 0) ,
+            new StorageData(BasicResource.GOLD , 0) ,
+            new StorageData(Weaponry.SPEAR , 0) ,
+            new StorageData(Weaponry.PIKE , 0) ,
+            new StorageData(Weaponry.BOW , 0) ,
+            new StorageData(Weaponry.CROSSBOW , 0) ,
+            new StorageData(Weaponry.MACE , 0) ,
+            new StorageData(Weaponry.SWORD , 0) ,
+            new StorageData(Weaponry.METAL_ARMOR , 0) ,
+            new StorageData(Weaponry.LEATHER_ARMOR , 0) ,
+    },0 ,  null , 300 , 0 , 0 , BuildingType.STOCKPILE) ,
     WOOD_CUTTER(new ProductData[]{new ProductData(BasicResource.WOOD, true, 10)}, null, 0, null, 300, 1, 0, BuildingType.WOOD_CUTTER),
     HOVEL(null, null, 0, null, 100, 0, 0, BuildingType.HOVEL),
     CHURCH(null, null, 0, new EconomyEffect() {
