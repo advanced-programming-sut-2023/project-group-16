@@ -13,7 +13,8 @@ public enum Weaponry implements Resource {
     MACE(new Pair<>(BasicResource.IRON, 1), 1),
     SWORD(new Pair<>(BasicResource.IRON, 1), 1),
     LEATHER_ARMOR(new Pair<>(BasicResource.COW, 1), 3),
-    METAL_ARMOR(new Pair<>(BasicResource.IRON, 1), 1);
+    METAL_ARMOR(new Pair<>(BasicResource.IRON, 1), 1),
+    HOT_OIL_POT(new Pair<>(BasicResource.OIL, 1), 1);
 
     private final Pair<Resource, Integer> dependency;
     private final int resultCount;
