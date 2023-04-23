@@ -1,7 +1,9 @@
 package org.group16.Model;
 
+import com.sun.source.tree.BreakTree;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.People.Soldier;
+import org.group16.Vector2;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,10 @@ public class Cell implements Comparable<Cell> {
 
     public int getY() {
         return y;
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(x, y);
     }
 
     public CellType getCellType() {
