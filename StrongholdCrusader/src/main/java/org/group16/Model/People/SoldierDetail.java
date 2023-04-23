@@ -1,6 +1,7 @@
 package org.group16.Model.People;
 
 import org.group16.Lib.Pair;
+import org.group16.Model.KingdomType;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.Weaponry;
 
@@ -19,9 +20,14 @@ public enum SoldierDetail implements Resource {
     private final int damage;
     private final int hp;
     private final double speed;
-    SoldierDetail(Weaponry armor, Weaponry weapon, boolean hasHorse, int resultCount,
+    private final int goldNeeded;
+    private final KingdomType kingdomType;
+
+    SoldierDetail(KingdomType kingdomType, int goldNeeded, Weaponry armor, Weaponry weapon, boolean hasHorse, int resultCount,
                   boolean canClimbLadder, boolean canClimbWalls, boolean canHide, boolean canDigMoats,
                   boolean canDamageHuman, boolean canDamageBuilding, int attackRange, int defensiveRange, int offensiveRange, int damage, int hp, int speed) {
+        this.kingdomType = kingdomType;
+        this.goldNeeded = goldNeeded;
         this.armor = armor;
         this.weapon = weapon;
         this.hasHorse = hasHorse;
@@ -114,5 +120,13 @@ public enum SoldierDetail implements Resource {
     @Override
     public int getPrice() {
         return Integer.MAX_VALUE;
+    }
+
+    public int getGoldNeeded() {
+        return goldNeeded;
+    }
+
+    public KingdomType getKingdomType() {
+        return kingdomType;
     }
 }
