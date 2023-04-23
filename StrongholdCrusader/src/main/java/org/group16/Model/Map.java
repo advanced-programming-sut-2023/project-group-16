@@ -3,6 +3,7 @@ package org.group16.Model;
 import jdk.dynalink.beans.StaticClass;
 import org.group16.Lib.OrderedPair;
 import org.group16.Model.People.Human;
+import org.group16.Vector2;
 
 import java.util.*;
 
@@ -28,9 +29,7 @@ public class Map {
     }
 
     public static double getCellDistance(Cell a, Cell b) {
-        int dx = b.getX() - a.getX();
-        int dy = b.getY() - a.getY();
-        return Math.sqrt(dx * dx + dy * dy);
+        return Vector2.sub(a.getPosition(), b.getPosition()).length();
     }
 
     public int getWidth() {
@@ -62,6 +61,17 @@ public class Map {
             }
         }
         return result;
+    }
+
+    public double getDistanceFromLine(Cell a, Cell b, Cell x) {
+        Vector2 ab = Vector2.sub(b.getPosition(), a.getPosition());
+        Vector2 abNorm = ab.normal().normalize();
+        double len = ab.length();
+        Vector2 ax = Vector2.sub(x.getPosition(), a.getPosition());
+        double dot = Vector2.dot(ab, ax);
+        if (dot < 0) return getCellDistance(x, a);
+        if (dot > len * len) return getCellDistance(x, b);
+        return Math.abs(Vector2.dot(abNorm, ax));
     }
 
 }
