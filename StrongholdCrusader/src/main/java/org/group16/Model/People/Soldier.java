@@ -90,7 +90,7 @@ public class Soldier extends Human {
     public Human getTarget(ArrayList<Human> people) {
         Random random = Scene.getCurrent().getRandom();
 
-
+        return null ;
     }
 
     public void attackTarget(Alive alive, int damage) {

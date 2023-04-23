@@ -1,11 +1,13 @@
 package org.group16.Model;
 
+import org.group16.Lib.Pair;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
 import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
 import org.group16.Model.Resources.Resource;
+import org.group16.Model.Resources.StorageData;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -106,27 +108,92 @@ public class Kingdom {
         buildings.remove(building);
     }
 
-    public ArrayList<EconomicBuilding> getResourceStorage(Resource resource) {
-        //TODO
-        return null;
+    public int getResourceStorageCapacity(Resource resource) {
+        int count = 0;
+        for (Building building : buildings) {
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            if (!((EconomicBuilding) building).isActive())
+                continue;
+            for (StorageData storageData : ((EconomicBuilding) building).getDetail().getStorageData()) {
+                if (storageData.resource().equals(resource))
+                    count += ((EconomicBuilding) building).getAvailableCapacity();
+            }
+        }
+        return count;
     }
 
     public int getResourceCount(Resource resource) {
-        //TODO
-        return 0;
+        int count = 0;
+        for (Building building : buildings) {
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            if (!((EconomicBuilding) building).isActive())
+                continue;
+            for (Pair<Resource, Integer> pair : ((EconomicBuilding) building).getStorage()) {
+                if (pair.getA().equals(resource))
+                    count += pair.getB();
+            }
+        }
+        return count;
     }
 
-    public void useResource(Resource resource, int count) {
-        //TODO
+    public boolean useResource(Resource resource, int count) {
+        if (getResourceCount(resource) < count)
+            return false;
+        for (Building building : buildings) {
+            if (count == 0)
+                break;
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            if (!((EconomicBuilding) building).isActive())
+                continue;
+            for (Pair<Resource, Integer> pair : ((EconomicBuilding) building).getStorage()) {
+                if (pair.getA().equals(resource)) {
+                    int usage = Math.min(count, pair.getB());
+                    ((EconomicBuilding) building).useResource(resource, usage);
+                    count -= usage;
+                }
+            }
+        }
+        return true;
     }
 
-    public void addResource(Resource resource, int count) {
-        //TODO
+    public boolean addRecourse(Resource resource, int count) {
+        if (getResourceStorageCapacity(resource) < count)
+            return false;
+        for (Building building : buildings) {
+            if (count == 0)
+                break;
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            if (!((EconomicBuilding) building).isActive())
+                continue;
+            for (StorageData storageData : ((EconomicBuilding) building).getDetail().getStorageData()) {
+                if (storageData.resource().equals(resource)) {
+                    int added = Math.max(count, ((EconomicBuilding) building).getAvailableCapacity());
+                    ((EconomicBuilding) building).addResource(resource, added);
+                    count -= added;
+                }
+            }
+        }
+        return false;
     }
+
 
     public Integer getPopulationCapacity() {
-        //TODO
-        return null;
+        int pop = 0;
+        for (Building building : buildings) {
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            if (building.getBuildingType().equals(BuildingType.HOVEL) ||
+                    building.getBuildingType().equals(BuildingType.SMALL_STONE_GATEHOUSE)
+            )
+                pop += 8;
+            else if (building.getBuildingType().equals(BuildingType.LARGE_STONE_GATEHOUSE))
+                pop += 10;
+        }
+        return pop;
     }
 
     public void onTurnStart() {
@@ -140,30 +207,14 @@ public class Kingdom {
     public void onTurnEnd() {
         //TODO
     }
-    public void useFood(Resource resource , int cnt){
-        for (EconomicBuilding granary : getFoodStores()){
-            int usage = Math.min(cnt , granary.getCntOfResource(resource)) ;
-            cnt = cnt - usage ;
-            granary.useResource(resource , usage) ;
-        }
-    }
-    public void addFood(Resource resource, int cnt) {
-        for (EconomicBuilding granary : getFoodStores()) {
-            if (cnt != 0 && !granary.getObjetsInStorage().equals(250)) {
-                int added = Math.max(250 - granary.getObjetsInStorage(), cnt);
-                granary.addResource(resource, added);
-                cnt -= added;
-            }
-        }
-    }
 
-    public ArrayList<EconomicBuilding> getFoodStores() {
-        ArrayList<EconomicBuilding> foodStores = new ArrayList<>();
+    public ArrayList<EconomicBuilding> getEconomicBuildingsByType(BuildingType buildingType) {
+        ArrayList<EconomicBuilding> buildingsArray = new ArrayList<>();
         for (Building building : buildings) {
-            if (building.getBuildingType().equals(BuildingType.GRANARY)) {
-                foodStores.add((EconomicBuilding) building);
+            if (building.getBuildingType().equals(buildingType)) {
+                buildingsArray.add((EconomicBuilding) building);
             }
         }
-        return foodStores;
+        return buildingsArray;
     }
 }
