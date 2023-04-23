@@ -71,19 +71,18 @@ public class Soldier extends Human {
 
     }
 
-    public ArrayList<Human> getEnemyPeopleInRange(int range) {
+    public ArrayList<Human> getEnemyPeopleInRange(double range) {
         Cell currentCell = this.getCells().get(0);
         ArrayList<Human> people = new ArrayList<>();
-        for (int dx = -range; dx <= range; dx++)
-            for (int dy = dx - range; dy <= range - dx; dy++) {
-                Cell cell = Scene.getCurrent().getCellAt(currentCell.getX() + dx, currentCell.getY() + dy);
-                if (cell == null) continue;
+        ArrayList<Cell> cells = Scene.getCurrent().getMap().getCellsInRange(currentCell, range);
+        for (Cell cell : cells) {
+            if (cell == null) continue;
 
-                for (GameObject go : cell.getGameObjects())
-                    if (go instanceof Human human)
-                        if (human.getKingdom().getTeam() != getKingdom().getTeam())
-                            people.add(human);
-            }
+            for (GameObject go : cell.getGameObjects())
+                if (go instanceof Human human)
+                    if (human.getKingdom().getTeam() != getKingdom().getTeam())
+                        people.add(human);
+        }
         return people;
     }
 
