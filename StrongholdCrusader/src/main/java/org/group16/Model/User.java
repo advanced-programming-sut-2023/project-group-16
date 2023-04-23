@@ -1,23 +1,38 @@
 package org.group16.Model;
 
+import com.google.gson.Gson;
+
+import java.io.*;
 import java.util.ArrayList;
 
 public class User {
-    private static final ArrayList<User> allUsers = new ArrayList<>();
     private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
     private int score;
 
-    private User(String username, String password, String email, String passwordRecoveryQuestion, String passwordRecoveryAnswer) {
+    private User(String username, String password, String email,
+                 String passwordRecoveryQuestion, String passwordRecoveryAnswer) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.passwordRecoveryQuestion = passwordRecoveryQuestion;
         this.passwordRecoveryAnswer = passwordRecoveryAnswer;
-        allUsers.add(this);
+        this.score = 0;
     }
 
-    public static ArrayList<User> getAllUsers() {
-        return allUsers;
+    public static void addUser(String username, String password, String email, String passwordRecoveryQuestion,
+                               String passwordRecoveryAnswer) throws IOException {
+        User user = new User(username, password, email, passwordRecoveryQuestion, passwordRecoveryQuestion);
+        Gson gson = new Gson();
+        String filePath = "Data/users.json"; //new File("").getAbsolutePath().concat("/Data/users.json");
+        ArrayList<User> allUsers = gson.fromJson(new FileReader(filePath), ArrayList.class);
+        allUsers.add(user);
+        gson.toJson(allUsers, new FileWriter(filePath));
+    }
+
+    public static ArrayList<User> getAllUsers() throws FileNotFoundException {
+        Gson gson = new Gson();
+        String filePath = "Data/users.json";
+        return gson.fromJson(new FileReader(filePath), ArrayList.class);
     }
 
     public int getScore() {
