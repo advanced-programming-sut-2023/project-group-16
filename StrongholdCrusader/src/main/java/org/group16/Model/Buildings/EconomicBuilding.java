@@ -42,6 +42,7 @@ public class EconomicBuilding extends Building {
                     storage.add(new Pair<>(resource , pair.getB()-usage)) ;
                 }
                 count = count - usage ;
+                usedCapacity-=usage;
             }
         }
     }
@@ -54,7 +55,7 @@ public class EconomicBuilding extends Building {
         }
         boolean canBeBuilt = true;
         for (Pair<Resource , Integer> needed : resource.getDependencies()){
-            if (getKingdom().getResourceCount(needed.getA()) < needed.getB() )
+            if (getKingdom().getResourceCount(needed.getA()) < needed.getB()*count )
                 canBeBuilt = false ;
         }
         if (getKingdom().getResourceStorageCapacity(resource) < count)
@@ -62,7 +63,7 @@ public class EconomicBuilding extends Building {
         if (!canBeBuilt)
             return;
         for (Pair<Resource , Integer> needed : resource.getDependencies()){
-            getKingdom().useResource(needed.getA() , needed.getB()) ;
+            getKingdom().useResource(needed.getA() , needed.getB()*count) ;
         }
         getKingdom().addRecourse(resource , count) ;
     }
@@ -115,6 +116,7 @@ public class EconomicBuilding extends Building {
                 continue;
             makeResource(productData.resource(), productData.maxRate());
         }
+        detail.getEconomyEffect().applyEffect(getKingdom());
     }
 
     @Override

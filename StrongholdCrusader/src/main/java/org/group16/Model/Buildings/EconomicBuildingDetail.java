@@ -7,7 +7,7 @@ import org.group16.Model.Resources.*;
 public enum EconomicBuildingDetail {
     SMALL_STONE_GATEHOUSE(null, null, 0, null, 1000, 0, 0, BuildingType.SMALL_STONE_GATEHOUSE),
     LARGE_STONE_GATEHOUSE(null, null, 0, null, 2000, 0, 0, BuildingType.LARGE_STONE_GATEHOUSE),
-    ARMOURY(null,new StorageData[]{
+    ARMOURY(null, new StorageData[]{
             new StorageData(Weaponry.SPEAR, 0),
             new StorageData(Weaponry.PIKE, 0),
             new StorageData(Weaponry.BOW, 0),
@@ -16,11 +16,11 @@ public enum EconomicBuildingDetail {
             new StorageData(Weaponry.SWORD, 0),
             new StorageData(Weaponry.METAL_ARMOR, 0),
             new StorageData(Weaponry.LEATHER_ARMOR, 0),
-    },100 , null , 300 , 0 , 0 , BuildingType.ARMOURY) ,
-    //will be added to a new class
-    //BARRACKS(new ProductData[]{new ProductData()} , null , 500 , , ) ,
-    //MERCENARY_POST
-    //ENGINEER_GUILD
+    }, 100, null, 300, 0, 0, BuildingType.ARMOURY),
+    //TODO : soldiers should be  added
+    BARRACKS(new ProductData[]{}, null, 0, null, 300, 0, 0, BuildingType.BARRACKS),
+    MERCENARY_POST(new ProductData[]{}, null, 0, null, 300, 0, 0, BuildingType.MERCENARY_POST),
+    ENGINEER_GUILD(new ProductData[]{}, null, 0, null, 300, 0, 0, BuildingType.ENGINEER_GUILD),
 
     INN(null, null, 0, new EconomyEffect() {
         @Override
@@ -53,12 +53,13 @@ public enum EconomicBuildingDetail {
             kingdom.addPopularity(2);
         }
     }, 800, 0, 0, BuildingType.CHURCH),
-    //    CATHEDRAL(, , new EconomyEffect() {
-//        @Override
-//        public void applyEffect(Kingdom kingdom) {
-//            kingdom.addPopularity(2);
-//        }
-//    }, 1200, 0, 0)
+    //TODO:soldiers should be  added
+    CATHEDRAL(new ProductData[]{}, null ,0 ,  new EconomyEffect() {
+        @Override
+        public void applyEffect(Kingdom kingdom) {
+            kingdom.addPopularity(2);
+        }
+    }, 1200, 0, 0 , BuildingType.CATHEDRAL) ,
     ARMOURER(new ProductData[]{new ProductData(Weaponry.METAL_ARMOR, false, 1)}, null, 0, null, 300, 1, 0, BuildingType.ARMOURER),
     BLACKSMITH(new ProductData[]{new ProductData(Weaponry.MACE, false, 1), new ProductData(Weaponry.SWORD, false, 1)}, null, 0, null, 300, 1, 0, BuildingType.BLACKSMITH),
     FLETCHER(new ProductData[]{new ProductData(Weaponry.BOW, false, 1), new ProductData(Weaponry.CROSSBOW, false, 1)}, null, 0, null, 300, 1, 0, BuildingType.FLETCHER),
@@ -80,7 +81,7 @@ public enum EconomicBuildingDetail {
             new StorageData(Food.APPLE, 0),
             new StorageData(Food.CHEESE, 0)
     }, 1000, null, 100, 0, 0, BuildingType.GRANARY),
-    ;//TODO
+    ;
 
     private final int hp;
     private final int neededWorkers;

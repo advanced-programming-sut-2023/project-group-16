@@ -6,6 +6,8 @@ import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
 import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
+import org.group16.Model.People.Soldier;
+import org.group16.Model.People.Worker;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.StorageData;
 
@@ -16,6 +18,7 @@ public class Kingdom {
     private final KingdomType kingdomType;
     private final User user;
     private final ArrayList<Human> humans = new ArrayList<>();
+    private final ArrayList<Soldier> soldiers = new ArrayList<>();
     private final ArrayList<Building> buildings = new ArrayList<>();
     private Team team;
     private int population;
@@ -98,6 +101,33 @@ public class Kingdom {
 
     public void removeHuman(Human human) {
         humans.remove(human);
+    }
+
+    public int availableHumans() {
+        int cnt = 0 ;
+        for (Human human : humans) {
+            if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0) {
+                cnt++ ;
+            }
+        }
+        return cnt;
+    }
+    public void useHuman(int cnt){
+        for (Human human : humans) {
+            if (cnt==0)
+                break ;
+            if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0) {
+                removeHuman(human);
+                cnt--;
+            }
+        }
+    }
+    public void addSoldier(Soldier soldier) {
+        soldiers.add(soldier);
+    }
+
+    public void removeSoldier(Soldier soldier) {
+        soldiers.remove(soldier);
     }
 
     public void addBuilding(Building building) {
