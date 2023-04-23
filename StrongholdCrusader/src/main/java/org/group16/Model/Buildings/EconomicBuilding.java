@@ -96,9 +96,13 @@ public class EconomicBuilding extends Building {
     public Integer getObjetsInStorage() {
         int total = 0;
         for (Pair<Resource, Integer> pair : storage) {
-            total+=pair.getB() ;
+            total += pair.getB();
         }
-        return total ;
+        return total;
+    }
+
+    public int getCntOfResource(Resource resource) {
+        return 0; //TODO
     }
 
 }
