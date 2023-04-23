@@ -24,9 +24,9 @@ public enum EconomicBuildingDetail {
     MILL(new ProductData[]{new ProductData(Food.FLOUR, true, 10)}, null, 0, null, 300, 3, 0, BuildingType.MILL),
     IRON_MINE(new ProductData[]{new ProductData(BasicResource.IRON, true, 1)}, null, 0, null, 300, 2, 0, BuildingType.IRON_MINE),
     MARKET(null, null, 0, null, 300, 1, 0, BuildingType.MARKET),
-    //OX_TETHER
+    OX_TETHER(new ProductData[]{new ProductData(BasicResource.STONE , true , 10)} , null , 0 , null , 300 , 1 , 0 , BuildingType.OX_TETHER) ,
     PITCH_RIG(new ProductData[]{new ProductData(BasicResource.OIL, true, 10)}, null, 0, null, 300, 1, 0, BuildingType.PITCH_RIG),
-    QUARRY(new ProductData[]{new ProductData(BasicResource.STONE, true, 10)}, null, 0, null, 300, 3, 0, BuildingType.QUARRY),
+    QUARRY(new ProductData[]{new ProductData(BasicResource.PRIME_STONE, true, 10)}, new StorageData[]{new StorageData(BasicResource.PRIME_STONE , 0)}, 100, null, 300, 3, 0, BuildingType.QUARRY),
     STOCKPILE(null ,new StorageData[]{
             new StorageData(BasicResource.WHEAT , 0) ,
             new StorageData(BasicResource.HOPS , 0) ,
@@ -43,7 +43,7 @@ public enum EconomicBuildingDetail {
             new StorageData(Weaponry.SWORD , 0) ,
             new StorageData(Weaponry.METAL_ARMOR , 0) ,
             new StorageData(Weaponry.LEATHER_ARMOR , 0) ,
-    },0 ,  null , 300 , 0 , 0 , BuildingType.STOCKPILE) ,
+    },1000 ,  null , 300 , 0 , 0 , BuildingType.STOCKPILE) ,
     WOOD_CUTTER(new ProductData[]{new ProductData(BasicResource.WOOD, true, 10)}, null, 0, null, 300, 1, 0, BuildingType.WOOD_CUTTER),
     HOVEL(null, null, 0, null, 100, 0, 0, BuildingType.HOVEL),
     CHURCH(null, null, 0, new EconomyEffect() {
