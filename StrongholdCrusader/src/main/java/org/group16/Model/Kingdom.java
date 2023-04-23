@@ -113,6 +113,8 @@ public class Kingdom {
         for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding))
                 continue;
+            if (!((EconomicBuilding) building).isActive())
+                continue;
             for (StorageData storageData : ((EconomicBuilding) building).getDetail().getStorageData()) {
                 if (storageData.resource().equals(resource))
                     count += ((EconomicBuilding) building).getAvailableCapacity();
@@ -125,6 +127,8 @@ public class Kingdom {
         int count = 0;
         for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding))
+                continue;
+            if (!((EconomicBuilding) building).isActive())
                 continue;
             for (Pair<Resource, Integer> pair : ((EconomicBuilding) building).getStorage()) {
                 if (pair.getA().equals(resource))
@@ -141,6 +145,8 @@ public class Kingdom {
             if (count == 0)
                 break;
             if (!(building instanceof EconomicBuilding))
+                continue;
+            if (!((EconomicBuilding) building).isActive())
                 continue;
             for (Pair<Resource, Integer> pair : ((EconomicBuilding) building).getStorage()) {
                 if (pair.getA().equals(resource)) {
@@ -161,11 +167,13 @@ public class Kingdom {
                 break;
             if (!(building instanceof EconomicBuilding))
                 continue;
+            if (!((EconomicBuilding) building).isActive())
+                continue;
             for (StorageData storageData : ((EconomicBuilding) building).getDetail().getStorageData()) {
-                if (storageData.resource().equals(resource)){
-                    int added = Math.max(count , ((EconomicBuilding) building).getAvailableCapacity()) ;
-                    ((EconomicBuilding) building).addResource(resource , added);
-                    count-=added;
+                if (storageData.resource().equals(resource)) {
+                    int added = Math.max(count, ((EconomicBuilding) building).getAvailableCapacity());
+                    ((EconomicBuilding) building).addResource(resource, added);
+                    count -= added;
                 }
             }
         }
@@ -174,8 +182,18 @@ public class Kingdom {
 
 
     public Integer getPopulationCapacity() {
-        //TODO
-        return null;
+        int pop = 0;
+        for (Building building : buildings) {
+            if (!(building instanceof EconomicBuilding))
+                continue;
+            if (building.getBuildingType().equals(BuildingType.HOVEL) ||
+                    building.getBuildingType().equals(BuildingType.SMALL_STONE_GATEHOUSE)
+            )
+                pop += 8;
+            else if (building.getBuildingType().equals(BuildingType.LARGE_STONE_GATEHOUSE))
+                pop += 10;
+        }
+        return pop;
     }
 
     public void onTurnStart() {

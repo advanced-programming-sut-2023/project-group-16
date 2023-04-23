@@ -26,10 +26,12 @@ public class EconomicBuilding extends Building {
     //storage
     public void addResource(Resource resource, int count) {
         storage.add(new Pair<>(resource , count)) ;
+        usedCapacity+=count ;
     }
 
     //storage
     public void useResource(Resource resource, int count) {
+        usedCapacity+=count ;
         for (Pair<Resource , Integer> pair : storage){
             if (count==0)
                 break;
