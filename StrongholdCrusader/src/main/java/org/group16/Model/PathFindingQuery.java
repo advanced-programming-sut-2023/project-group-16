@@ -1,5 +1,7 @@
 package org.group16.Model;
 
+import org.group16.Vector2;
+
 import java.util.*;
 
 public class PathFindingQuery {
@@ -21,9 +23,7 @@ public class PathFindingQuery {
     }
 
     public double getCellDistance(Cell a, Cell b) {
-        int dx = b.getX() - a.getX();
-        int dy = b.getY() - a.getY();
-        return Math.sqrt(dx * dx + dy * dy);
+        return Vector2.sub(a.getPosition(), b.getPosition()).length();
     }
 
     public double getHeuristicPath(Cell cell) {
