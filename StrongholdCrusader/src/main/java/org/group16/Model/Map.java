@@ -2,6 +2,7 @@ package org.group16.Model;
 
 import jdk.dynalink.beans.StaticClass;
 import org.group16.Lib.OrderedPair;
+import org.group16.Model.People.Human;
 
 import java.util.*;
 
@@ -42,6 +43,19 @@ public class Map {
         if (i < 0 || i >= width) return null;
         if (j < 0 || j >= height) return null;
         return cells[i][j];
+    }
+
+    public ArrayList<Cell> getCellsInRange(Cell origin, double range) {
+        ArrayList<Cell> result = new ArrayList<>();
+        int dxBound = (int) range;
+        for (int dx = -dxBound; dx <= dxBound; dx++) {
+            int dyBound = (int) Math.sqrt(range * range - dx * dx);
+            for (int dy = -dyBound; dy <= dyBound; dy++) {
+                Cell cell = Scene.getCurrent().getCellAt(origin.getX() + dx, origin.getY() + dy);
+                result.add(cell);
+            }
+        }
+        return result;
     }
 
 }
