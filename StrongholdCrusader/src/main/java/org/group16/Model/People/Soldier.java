@@ -88,8 +88,18 @@ public class Soldier extends Human {
 
     public Human getTarget(ArrayList<Human> people) {
         Random random = Scene.getCurrent().getRandom();
-
-
+        double minDist = 1e10;
+        Human nearest = null;
+        Cell currentCell = getCells().get(0);
+        for (Human human : people) {
+            Cell humanCell = human.getCells().get(0);
+            double distance = Map.getCellDistance(currentCell, humanCell);
+            if (distance < minDist) {
+                minDist = distance;
+                nearest = human;
+            }
+        }
+        return nearest;
     }
 
     public void attackTarget(Alive alive, int damage) {
