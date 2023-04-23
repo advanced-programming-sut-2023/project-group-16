@@ -27,6 +27,12 @@ public class Map {
                 cells[i][j] = new Cell(i, j, map.cells[i][j]);
     }
 
+    public static double getCellDistance(Cell a, Cell b) {
+        int dx = b.getX() - a.getX();
+        int dy = b.getY() - a.getY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     public int getWidth() {
         return width;
     }
