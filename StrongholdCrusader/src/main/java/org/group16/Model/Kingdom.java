@@ -4,13 +4,11 @@ import org.group16.Lib.Pair;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
-import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.StorageData;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 public class Kingdom {
     private final KingdomType kingdomType;
@@ -18,7 +16,6 @@ public class Kingdom {
     private final ArrayList<Human> humans = new ArrayList<>();
     private final ArrayList<Building> buildings = new ArrayList<>();
     private Team team;
-    private int population;
     private int popularity;
     private int tax;
     private int fearRate;
@@ -50,18 +47,6 @@ public class Kingdom {
 
     public ArrayList<Building> getBuildings() {
         return buildings;
-    }
-
-    public int getPopulation() {
-        return population;
-    }
-
-    public void addPopulation(int population) {
-        if (getPopulationCapacity() < this.population + population || this.population < population) {
-            //TODO
-            return;
-        }
-        this.population += population;
     }
 
     public int getPopularity() {
