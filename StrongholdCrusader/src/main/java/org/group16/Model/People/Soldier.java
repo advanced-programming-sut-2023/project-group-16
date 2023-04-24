@@ -47,7 +47,9 @@ public class Soldier extends Human {
     @Override
     public void update(double deltaTime) {
         Cell moveDestination = warCommand.getDestination();
+        boolean attackCell = warCommand.isAttackCell();
         Human humanTarget = warCommand.getTargetHuman();
+        Building buildingTarget = warCommand.getTargetBuilding();
         WarCommand.Status status = warCommand.getStatus();
         double maxFollowRange = 0;
         switch (status) {
@@ -55,6 +57,11 @@ public class Soldier extends Human {
             case DEFENSIVE -> maxFollowRange = soldierDetail.getDefensiveRange();
             case OFFENSIVE -> maxFollowRange = soldierDetail.getOffensiveRange();
         }
+
+        ArrayList<Human> possibleEnemyTargets = getEnemyPeopleInRange(getCell(), maxFollowRange);
+
+        if (currentTarget == null && possibleEnemyTargets.size() > 0)
+            currentTarget = getTarget(possibleEnemyTargets, TARGET_SELECTION_RANDOMNESS);
 
         if (currentTarget != null) {
             double distance = Map.getCellDistance(currentTarget.getCell(), getCell());
@@ -64,35 +71,26 @@ public class Soldier extends Human {
             }
         }
 
-        ArrayList<Human> enemyPeopleInAttackRange = getEnemyPeopleInRange(getCell(), soldierDetail.getAttackRange());
-        ArrayList<Human> enemyPeopleInDefensiveRange = getEnemyPeopleInRange(getCell(), soldierDetail.getDefensiveRange());
-        ArrayList<Human> enemyPeopleInOffensiveRange = getEnemyPeopleInRange(getCell(), soldierDetail.getOffensiveRange());
-
-
-        // Attack State
-
-        // Defensive State
-        if (status == WarCommand.Status.DEFENSIVE && enemyPeopleInDefensiveRange.size() > 0) {
-            return;
-        }
-
-        // Offensive State
-        if (status == WarCommand.Status.OFFENSIVE && enemyPeopleInOffensiveRange.size() > 0) {
-            return;
-        }
 
         // Move Command
         if (moveDestination != null) {
-            if (getCell() != moveDestination)
+            if (attackCell) {
+                possibleEnemyTargets = getEnemyPeopleInRange(moveDestination, 0);
+                currentTarget = getTarget(possibleEnemyTargets, TARGET_SELECTION_RANDOMNESS);
+                followAndFight(currentTarget, deltaTime);
+            } else if (getCell() != moveDestination)
                 moveToward(moveDestination, deltaTime * soldierDetail.getSpeed(), 0, Scene.getCurrent().getRandom());
             return;
         }
         // Attack Command
         if (humanTarget != null) {
-            //TODO
+            followAndFight(humanTarget, deltaTime);
             return;
         }
-
+        if (buildingTarget != null) {
+            followAndFight(buildingTarget, deltaTime);
+            return;
+        }
     }
 
     private <T extends GameObject & Alive> void followAndFight(T target, double deltaTime) {
