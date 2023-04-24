@@ -91,20 +91,32 @@ public class Soldier extends Human {
         return people;
     }
 
-    public Human getTarget(ArrayList<Human> people) {
+    public Human getTarget(ArrayList<Human> people, double selectionTolerance) {
         Random random = Scene.getCurrent().getRandom();
         double minDist = 1e10;
-        Human nearest = null;
         Cell currentCell = getCell();
         for (Human human : people) {
             Cell humanCell = human.getCell();
             double distance = Map.getCellDistance(currentCell, humanCell);
-            if (distance < minDist) {
-                minDist = distance;
-                nearest = human;
-            }
+            minDist = Double.min(minDist, distance);
         }
-        return nearest;
+        minDist *= selectionTolerance;
+        int acceptCnt = 0;
+        for (Human human : people) {
+            Cell humanCell = human.getCell();
+            double distance = Map.getCellDistance(currentCell, humanCell);
+            if (distance <= minDist)
+                acceptCnt++;
+        }
+        acceptCnt = Scene.getCurrent().getRandom().nextInt(acceptCnt) + 1;
+        for (Human human : people) {
+            Cell humanCell = human.getCell();
+            double distance = Map.getCellDistance(currentCell, humanCell);
+            if (distance <= minDist)
+                acceptCnt--;
+            if (acceptCnt == 0) return human;
+        }
+        return people.get(0);
     }
 
     public void attackTarget(Alive alive, int damage) {
