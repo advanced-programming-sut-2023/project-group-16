@@ -32,6 +32,17 @@ public class Map {
         return Vector2.sub(a.getPosition(), b.getPosition()).length();
     }
 
+    public static double getDistanceFromLine(Cell a, Cell b, Cell x) {
+        Vector2 ab = Vector2.sub(b.getPosition(), a.getPosition());
+        Vector2 abNorm = ab.normal().normalize();
+        double len = ab.length();
+        Vector2 ax = Vector2.sub(x.getPosition(), a.getPosition());
+        double dot = Vector2.dot(ab, ax);
+        if (dot < 0) return getCellDistance(x, a);
+        if (dot > len * len) return getCellDistance(x, b);
+        return Math.abs(Vector2.dot(abNorm, ax));
+    }
+
     public int getWidth() {
         return width;
     }
@@ -61,17 +72,6 @@ public class Map {
             }
         }
         return result;
-    }
-
-    public double getDistanceFromLine(Cell a, Cell b, Cell x) {
-        Vector2 ab = Vector2.sub(b.getPosition(), a.getPosition());
-        Vector2 abNorm = ab.normal().normalize();
-        double len = ab.length();
-        Vector2 ax = Vector2.sub(x.getPosition(), a.getPosition());
-        double dot = Vector2.dot(ab, ax);
-        if (dot < 0) return getCellDistance(x, a);
-        if (dot > len * len) return getCellDistance(x, b);
-        return Math.abs(Vector2.dot(abNorm, ax));
     }
 
 }

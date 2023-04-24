@@ -47,6 +47,7 @@ public class Soldier extends Human {
     @Override
     public void update(double deltaTime) {
         Cell moveDestination = warCommand.getDestination();
+        Cell patrolDestination = warCommand.getPatrolDestination();
         boolean attackCell = warCommand.isAttackCell();
         Human humanTarget = warCommand.getTargetHuman();
         Building buildingTarget = warCommand.getTargetBuilding();
@@ -65,6 +66,11 @@ public class Soldier extends Human {
 
         if (currentTarget != null) {
             double distance = Map.getCellDistance(currentTarget.getCell(), getCell());
+            if (moveDestination != null)
+                distance = Map.getCellDistance(moveDestination, currentTarget.getCell());
+            if (patrolDestination != null)
+                distance = Map.getDistanceFromLine(moveDestination, patrolDestination, currentTarget.getCell());
+
             if (distance <= maxFollowRange) {
                 followAndFight(currentTarget, deltaTime);
                 return;
