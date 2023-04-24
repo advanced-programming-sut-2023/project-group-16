@@ -1,6 +1,7 @@
 package org.group16.Model.Buildings;
 
 import org.group16.Model.Cell;
+import org.group16.Model.GameObject;
 import org.group16.Model.Kingdom;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
@@ -49,6 +50,17 @@ public class WarBuilding extends Building {
 
     @Override
     public void update(double deltaTime) {
-        //TODO
+        //TODO : checking deltaTime
+        if (this.getHp() <= 0)
+            return;
+        for (Cell cell : getCells()){
+            for (GameObject soldier : cell.getGameObjects()){
+                if (!(soldier instanceof Soldier))
+                    continue;
+                if (getKingdom().getTeam().getKingdoms().contains(soldier.getKingdom()))
+                    continue;
+                ((Soldier) soldier).dealDamage(detail.getCurrentDamage());
+            }
+        }
     }
 }

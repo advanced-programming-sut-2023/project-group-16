@@ -14,4 +14,8 @@ public class Team {
     public void removeKingdom(Kingdom kingdom){
         kingdoms.remove(kingdom);
     }
+
+    public ArrayList<Kingdom> getKingdoms() {
+        return kingdoms;
+    }
 }
