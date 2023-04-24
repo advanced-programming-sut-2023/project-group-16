@@ -1,13 +1,17 @@
 package org.group16.Model.People;
 
 import org.group16.Model.*;
+import org.group16.Model.Buildings.Building;
 import org.group16.Model.Siege.Siege;
+import org.group16.Vector2;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 public class Soldier extends Human {
+    private static final double PATH_FINDING_RANDOMNESS = 2;
+    private static final double TARGET_SELECTION_RANDOMNESS = 1.1;
     private final SoldierDetail soldierDetail;
     private WarCommand warCommand;
     private Siege siege;
@@ -45,6 +49,20 @@ public class Soldier extends Human {
         Cell moveDestination = warCommand.getDestination();
         Human humanTarget = warCommand.getTargetHuman();
         WarCommand.Status status = warCommand.getStatus();
+        double maxFollowRange = 0;
+        switch (status) {
+            case STAND_STILL -> maxFollowRange = soldierDetail.getAttackRange();
+            case DEFENSIVE -> maxFollowRange = soldierDetail.getDefensiveRange();
+            case OFFENSIVE -> maxFollowRange = soldierDetail.getOffensiveRange();
+        }
+
+        if (currentTarget != null) {
+            double distance = Map.getCellDistance(currentTarget.getCell(), getCell());
+            if (distance <= maxFollowRange) {
+                followAndFight(currentTarget, deltaTime);
+                return;
+            }
+        }
 
         ArrayList<Human> enemyPeopleInAttackRange = getEnemyPeopleInRange(getCell(), soldierDetail.getAttackRange());
         ArrayList<Human> enemyPeopleInDefensiveRange = getEnemyPeopleInRange(getCell(), soldierDetail.getDefensiveRange());
@@ -76,6 +94,15 @@ public class Soldier extends Human {
         }
 
     }
+
+    private <T extends GameObject & Alive> void followAndFight(T target, double deltaTime) {
+        double distance = Map.getCellDistance(target.getCell(), getCell());
+        if (distance <= soldierDetail.getAttackRange())
+            attackTarget(target, soldierDetail.getDamage());
+        else
+            moveToward(target.getCell(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+    }
+
 
     public ArrayList<Human> getEnemyPeopleInRange(Cell origin, double range) {
         ArrayList<Human> people = new ArrayList<>();
@@ -119,8 +146,8 @@ public class Soldier extends Human {
         return people.get(0);
     }
 
-    public void attackTarget(Alive alive, int damage) {
-        alive.dealDamage(damage);
+    public void attackTarget(Alive target, int damage) {
+        target.dealDamage(damage);
     }
 
     @Override
