@@ -41,7 +41,7 @@ public abstract class Human extends GameObject implements Alive {
     }
 
     public void moveToward(Cell destination, double distance, double randomness, Random random) {
-        Cell currentCell = getCells().get(0);
+        Cell currentCell = getCell();
         PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, randomness, random);
         pathFindingQuery.findShortestPath();
         Cell nextCell = pathFindingQuery.getNextCell(currentCell);
@@ -60,11 +60,10 @@ public abstract class Human extends GameObject implements Alive {
         else if (relativeX <= -1) cellDx = -1;
         if (relativeY >= 1) cellDy = 1;
         else if (relativeY <= -1) cellDy = -1;
-        removeCell(currentCell);
         currentCell = Scene.getCurrent().getCellAt(currentCell.getX() + cellDx, currentCell.getY() + cellDy);
         relativeX -= cellDx;
         relativeY -= cellDy;
-        addCell(currentCell);
+        setCell(currentCell);
     }
 
 

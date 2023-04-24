@@ -11,6 +11,7 @@ public class Soldier extends Human {
     private final SoldierDetail soldierDetail;
     private WarCommand warCommand;
     private Siege siege;
+    private Human currentTarget;
 
     public Soldier(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom, hp);
@@ -45,17 +46,26 @@ public class Soldier extends Human {
         Human humanTarget = warCommand.getTargetHuman();
         WarCommand.Status status = warCommand.getStatus();
 
-        ArrayList<Human> enemyPeopleInAttackRange = getEnemyPeopleInRange(soldierDetail.getAttackRange());
-        ArrayList<Human> enemyPeopleInDefensiveRange = getEnemyPeopleInRange(soldierDetail.getDefensiveRange());
-        ArrayList<Human> enemyPeopleInOffensiveRange = getEnemyPeopleInRange(soldierDetail.getOffensiveRange());
+        ArrayList<Human> enemyPeopleInAttackRange = getEnemyPeopleInRange(getCell(), soldierDetail.getAttackRange());
+        ArrayList<Human> enemyPeopleInDefensiveRange = getEnemyPeopleInRange(getCell(), soldierDetail.getDefensiveRange());
+        ArrayList<Human> enemyPeopleInOffensiveRange = getEnemyPeopleInRange(getCell(), soldierDetail.getOffensiveRange());
+
+
+        // Attack State
 
         // Defensive State
         if (status == WarCommand.Status.DEFENSIVE && enemyPeopleInDefensiveRange.size() > 0) {
             return;
         }
+
+        // Offensive State
+        if (status == WarCommand.Status.OFFENSIVE && enemyPeopleInOffensiveRange.size() > 0) {
+            return;
+        }
+
         // Move Command
         if (moveDestination != null) {
-            if (getCells().get(0) != moveDestination)
+            if (getCell() != moveDestination)
                 moveToward(moveDestination, deltaTime * soldierDetail.getSpeed(), 0, Scene.getCurrent().getRandom());
             return;
         }
@@ -64,17 +74,12 @@ public class Soldier extends Human {
             //TODO
             return;
         }
-        // Offensive State
-        if (status == WarCommand.Status.OFFENSIVE && enemyPeopleInOffensiveRange.size() > 0) {
-            return;
-        }
 
     }
 
-    public ArrayList<Human> getEnemyPeopleInRange(double range) {
-        Cell currentCell = this.getCells().get(0);
+    public ArrayList<Human> getEnemyPeopleInRange(Cell origin, double range) {
         ArrayList<Human> people = new ArrayList<>();
-        ArrayList<Cell> cells = Scene.getCurrent().getMap().getCellsInRange(currentCell, range);
+        ArrayList<Cell> cells = Scene.getCurrent().getMap().getCellsInRange(origin, range);
         for (Cell cell : cells) {
             if (cell == null) continue;
 
@@ -90,9 +95,9 @@ public class Soldier extends Human {
         Random random = Scene.getCurrent().getRandom();
         double minDist = 1e10;
         Human nearest = null;
-        Cell currentCell = getCells().get(0);
+        Cell currentCell = getCell();
         for (Human human : people) {
-            Cell humanCell = human.getCells().get(0);
+            Cell humanCell = human.getCell();
             double distance = Map.getCellDistance(currentCell, humanCell);
             if (distance < minDist) {
                 minDist = distance;
