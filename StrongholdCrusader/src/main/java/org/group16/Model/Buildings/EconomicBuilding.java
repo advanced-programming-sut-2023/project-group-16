@@ -60,7 +60,7 @@ public class EconomicBuilding extends Building {
         }
         if (getKingdom().getResourceStorageCapacity(resource) < count)
             canBeBuilt = false;
-        if (!canBeBuilt)
+        if (!canBeBuilt||productData==null)
             return;
         for (Pair<Resource , Integer> needed : resource.getDependencies()){
             getKingdom().useResource(needed.getA() , needed.getB()*count) ;

@@ -104,24 +104,26 @@ public class Kingdom {
     }
 
     public int availableHumans() {
-        int cnt = 0 ;
+        int cnt = 0;
         for (Human human : humans) {
             if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0) {
-                cnt++ ;
+                cnt++;
             }
         }
         return cnt;
     }
-    public void useHuman(int cnt){
+
+    public void useHuman(int cnt) {
         for (Human human : humans) {
-            if (cnt==0)
-                break ;
+            if (cnt == 0)
+                break;
             if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0) {
                 removeHuman(human);
                 cnt--;
             }
         }
     }
+
     public void addSoldier(Soldier soldier) {
         soldiers.add(soldier);
     }
