@@ -128,6 +128,7 @@ public class Soldier extends Human {
 
     public Human getTarget(ArrayList<Human> people, double selectionTolerance) {
         Random random = Scene.getCurrent().getRandom();
+
         double minDist = 1e10;
         Cell currentCell = getCell();
         for (Human human : people) {
