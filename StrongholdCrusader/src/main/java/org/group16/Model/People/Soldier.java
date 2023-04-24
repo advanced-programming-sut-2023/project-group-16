@@ -84,8 +84,12 @@ public class Soldier extends Human {
                 possibleEnemyTargets = getEnemyPeopleInRange(moveDestination, 0);
                 currentTarget = getTarget(possibleEnemyTargets, TARGET_SELECTION_RANDOMNESS);
                 followAndFight(currentTarget, deltaTime);
-            } else if (getCell() != moveDestination)
-                moveToward(moveDestination, deltaTime * soldierDetail.getSpeed(), 0, Scene.getCurrent().getRandom());
+            } else {
+                if (getCell() != moveDestination)
+                    moveToward(warCommand.getCurrentDestination(), deltaTime * soldierDetail.getSpeed(), 0, Scene.getCurrent().getRandom());
+                else
+                    warCommand.onReachDestination();
+            }
             return;
         }
         // Attack Command
