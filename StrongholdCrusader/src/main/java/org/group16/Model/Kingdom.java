@@ -4,6 +4,7 @@ import org.group16.Lib.Pair;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
+import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.Worker;
@@ -11,6 +12,7 @@ import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.StorageData;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class Kingdom {
     private final KingdomType kingdomType;
@@ -19,6 +21,7 @@ public class Kingdom {
     private final ArrayList<Soldier> soldiers = new ArrayList<>();
     private final ArrayList<Building> buildings = new ArrayList<>();
     private Team team;
+    //private int population;
     private int popularity;
     private int tax;
     private int fearRate;
@@ -50,6 +53,24 @@ public class Kingdom {
 
     public ArrayList<Building> getBuildings() {
         return buildings;
+    }
+
+    public int getPopulation() {
+        int pop = 0 ;
+        for (Human human : humans){
+            if (human.getHp() > 0)
+                pop += 1 ;
+        }
+        return pop ;
+    }
+
+    public void addPopulation(int population) {
+        if (getPopulationCapacity().equals(getPopulation())|| availableHumans() == 24) {
+            return;
+        }
+        int added = Math.min (population , getPopulationCapacity() - getPopulation()) ;
+        //TODO : cells should be replaced
+        addHuman(new Human(null , this , 100));
     }
 
     public int getPopularity() {

@@ -54,12 +54,12 @@ public enum EconomicBuildingDetail {
         }
     }, 800, 0, 0, BuildingType.CHURCH),
     //TODO:soldiers should be  added
-    CATHEDRAL(new ProductData[]{}, null ,0 ,  new EconomyEffect() {
+    CATHEDRAL(new ProductData[]{}, null, 0, new EconomyEffect() {
         @Override
         public void applyEffect(Kingdom kingdom) {
             kingdom.addPopularity(2);
         }
-    }, 1200, 0, 0 , BuildingType.CATHEDRAL) ,
+    }, 1200, 0, 0, BuildingType.CATHEDRAL),
     ARMOURER(new ProductData[]{new ProductData(Weaponry.METAL_ARMOR, false, 1)}, null, 0, null, 300, 1, 0, BuildingType.ARMOURER),
     BLACKSMITH(new ProductData[]{new ProductData(Weaponry.MACE, false, 1), new ProductData(Weaponry.SWORD, false, 1)}, null, 0, null, 300, 1, 0, BuildingType.BLACKSMITH),
     FLETCHER(new ProductData[]{new ProductData(Weaponry.BOW, false, 1), new ProductData(Weaponry.CROSSBOW, false, 1)}, null, 0, null, 300, 1, 0, BuildingType.FLETCHER),

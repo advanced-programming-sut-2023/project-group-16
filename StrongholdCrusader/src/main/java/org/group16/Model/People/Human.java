@@ -6,7 +6,7 @@ import org.group16.Model.Buildings.Building;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class Human extends GameObject implements Alive {
+public class Human extends GameObject implements Alive {
     private int hp;
     private Building building;
     private double relativeX;
@@ -87,5 +87,16 @@ public abstract class Human extends GameObject implements Alive {
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    public void onTurnStart(){
+        //TODO
+    }
+    public void update(double deltaTime){
+        //TODO
+    }
+
+    public void onTurnEnd(){
+        //TODO
     }
 }

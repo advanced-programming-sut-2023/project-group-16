@@ -25,24 +25,24 @@ public class EconomicBuilding extends Building {
 
     //storage
     public void addResource(Resource resource, int count) {
-        storage.add(new Pair<>(resource , count)) ;
-        usedCapacity+=count ;
+        storage.add(new Pair<>(resource, count));
+        usedCapacity += count;
     }
 
     //storage
     public void useResource(Resource resource, int count) {
-        usedCapacity+=count ;
-        for (Pair<Resource , Integer> pair : storage){
-            if (count==0)
+        usedCapacity += count;
+        for (Pair<Resource, Integer> pair : storage) {
+            if (count == 0)
                 break;
-            if (pair.getA().equals(resource)){
+            if (pair.getA().equals(resource)) {
                 storage.remove(pair);
-                int usage = Math.min(count , pair.getB()) ;
-                if (pair.getB() > usage){
-                    storage.add(new Pair<>(resource , pair.getB()-usage)) ;
+                int usage = Math.min(count, pair.getB());
+                if (pair.getB() > usage) {
+                    storage.add(new Pair<>(resource, pair.getB() - usage));
                 }
-                count = count - usage ;
-                usedCapacity-=usage;
+                count = count - usage;
+                usedCapacity -= usage;
             }
         }
     }
@@ -54,18 +54,18 @@ public class EconomicBuilding extends Building {
                 productData = pr;
         }
         boolean canBeBuilt = true;
-        for (Pair<Resource , Integer> needed : resource.getDependencies()){
-            if (getKingdom().getResourceCount(needed.getA()) < needed.getB()*count )
-                canBeBuilt = false ;
+        for (Pair<Resource, Integer> needed : resource.getDependencies()) {
+            if (getKingdom().getResourceCount(needed.getA()) < needed.getB() * count)
+                canBeBuilt = false;
         }
         if (getKingdom().getResourceStorageCapacity(resource) < count)
             canBeBuilt = false;
-        if (!canBeBuilt||productData==null)
+        if (!canBeBuilt || productData == null)
             return;
-        for (Pair<Resource , Integer> needed : resource.getDependencies()){
-            getKingdom().useResource(needed.getA() , needed.getB()*count) ;
+        for (Pair<Resource, Integer> needed : resource.getDependencies()) {
+            getKingdom().useResource(needed.getA(), needed.getB() * count);
         }
-        getKingdom().addRecourse(resource , count) ;
+        getKingdom().addRecourse(resource, count);
     }
 
     public void addWorker(Human human) {
@@ -111,7 +111,7 @@ public class EconomicBuilding extends Building {
         //checking deltaTime
         if (!isActive())
             return;
-        for (ProductData productData : detail.getProductsData()){
+        for (ProductData productData : detail.getProductsData()) {
             if (!productData.isManual())
                 continue;
             makeResource(productData.resource(), productData.maxRate());
@@ -142,7 +142,8 @@ public class EconomicBuilding extends Building {
     public int getUsedCapacity() {
         return usedCapacity;
     }
-    public int getAvailableCapacity(){
-        return detail.getCapacity()-usedCapacity;
+
+    public int getAvailableCapacity() {
+        return detail.getCapacity() - usedCapacity;
     }
 }

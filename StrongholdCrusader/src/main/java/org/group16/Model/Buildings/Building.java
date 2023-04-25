@@ -8,11 +8,10 @@ import org.group16.Model.People.Alive;
 import java.util.ArrayList;
 
 public abstract class Building extends GameObject implements Alive {
-
     private int hp;
     private boolean traversable;
     private BuildingType buildingType;
-    
+
     public BuildingType getBuildingType() {
         return buildingType;
     }
@@ -23,9 +22,9 @@ public abstract class Building extends GameObject implements Alive {
         kingdom.addBuilding(this);
     }
 
-    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp , BuildingType buildingType) {
-        this(cells ,kingdom , hp);
-        this.buildingType = buildingType ;
+    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp, BuildingType buildingType) {
+        this(cells, kingdom, hp);
+        this.buildingType = buildingType;
     }
 
     public int getHp() {
