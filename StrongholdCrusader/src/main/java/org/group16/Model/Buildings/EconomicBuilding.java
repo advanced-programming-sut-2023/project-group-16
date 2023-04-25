@@ -105,4 +105,11 @@ public class EconomicBuilding extends Building {
         return 0; //TODO
     }
 
+    public int getAvailableCapacity() {
+        return 0;
+    }//TODO
+
+    public Pair<Resource, Integer>[] getStorage() {
+        return null;
+    }//TODO
 }
