@@ -2,13 +2,11 @@ package org.group16.Model;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
     @Test
-    public void testAddUser() throws IOException {
+    public void testAddUser() {
         User.addUser("ali", "xyz789#$", "ali@gmail.com",
                 "???", "!!!", "aaaa", "slogan");
         User user = User.getUserByName("ali");
@@ -16,7 +14,7 @@ public class UserTest {
     }
 
     @Test
-    public void testGetUserByName() throws IOException {
+    public void testGetUserByName() {
         User.addUser("hasan", "abc123!@", "hasan@gmail.com",
                 "...", "---", "bbbb", "slogan");
         User user = User.getUserByName("hasan");
@@ -28,7 +26,7 @@ public class UserTest {
     }
 
     @Test
-    public void testGettersAndSetters() throws IOException {
+    public void testGettersAndSetters() {
         User.addUser("ali", "xyz789#$", "ali@gmail.com",
                 "???", "!!!", "aaaa", "slogan");
         User user = User.getUserByName("ali");

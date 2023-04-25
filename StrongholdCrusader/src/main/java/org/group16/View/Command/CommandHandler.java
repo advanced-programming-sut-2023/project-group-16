@@ -34,7 +34,8 @@ public class CommandHandler {
             ArrayList<String> inputs = new ArrayList<>();
             for (int i = 0; i < option.getInputsCount(); i++) {
                 inputsMatcher.find();
-                inputs.add(inputsMatcher.group("input").trim());
+                String string = inputsMatcher.group("input").trim();
+                inputs.add(string.charAt(0) == '"' ? string.substring(1, string.length() - 1) : string);
             }
             map.put(option.getName(), inputs);
             if (matcher.find()) return null;

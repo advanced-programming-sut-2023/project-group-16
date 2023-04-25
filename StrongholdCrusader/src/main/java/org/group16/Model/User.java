@@ -24,43 +24,74 @@ public class User {
     }
 
     public static void addUser(String username, String password, String email, String passwordRecoveryQuestion,
-                               String passwordRecoveryAnswer, String nickname, String slogan) throws IOException {
+                               String passwordRecoveryAnswer, String nickname, String slogan) {
         User user = new User(username, password, email, passwordRecoveryQuestion,
                 passwordRecoveryAnswer, nickname, slogan);
         Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/src/main/java/org/group16/Model" +
-                "/Data/users.json");
-        FileReader fileReader = new FileReader(filePath);
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/users.json");
+        // "/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
+        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(filePath);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         ArrayList<User> allUsers = gson.fromJson(fileReader, new TypeToken<ArrayList<User>>() {
         }.getType());
         if (allUsers == null) allUsers = new ArrayList<>();
         allUsers.add(user);
-        fileReader.close();
-        FileWriter fileWriter = new FileWriter(filePath);
+        try {
+            fileReader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         gson.toJson(allUsers, fileWriter);
-        fileWriter.close();
+        try {
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static ArrayList<User> getAllUsers() throws IOException {
+    public static ArrayList<User> getAllUsers() {
         Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/src/main/java/org/group16/Model" +
-                "/Data/users.json");
-        FileReader fileReader = new FileReader(filePath);
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/users.json");
+        //"/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
+        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(filePath);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         ArrayList<User> allUsers = gson.fromJson(fileReader, new TypeToken<ArrayList<User>>() {
         }.getType());
-        fileReader.close();
+        try {
+            fileReader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (allUsers == null) allUsers = new ArrayList<>();
         return allUsers;
     }
 
-    public static User getUserByName(String name) throws IOException {
+    public static User getUserByName(String name) {
         ArrayList<User> allUsers = getAllUsers();
         for (User user : allUsers)
             if (user.username.equals(name)) return user;
         return null;
     }
 
-    private static void saveChanges(User user) throws IOException {
+    private static void saveChanges(User user) {
         ArrayList<User> allUsers = getAllUsers();
         for (int i = 0; i < allUsers.size(); i++) {
             if (allUsers.get(i).username.equals(user.username)) {
@@ -69,18 +100,29 @@ public class User {
             }
         }
         Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/src/main/java/org/group16/Model" +
-                "/Data/users.json");
-        FileWriter fileWriter = new FileWriter(filePath);
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/users.json");
+        //"/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
+        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         gson.toJson(allUsers, fileWriter);
-        fileWriter.close();
+        try {
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public int getScore() {
         return score;
     }
 
-    public void setScore(int score) throws IOException {
+    public void setScore(int score) {
         this.score = score;
         saveChanges(this);
     }
@@ -93,7 +135,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) throws IOException {
+    public void setPassword(String password) {
         this.password = password;
         saveChanges(this);
     }
@@ -102,7 +144,7 @@ public class User {
         return nickname;
     }
 
-    public void setNickname(String nickname) throws IOException {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
         saveChanges(this);
     }
@@ -111,7 +153,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) throws IOException {
+    public void setEmail(String email) {
         this.email = email;
         saveChanges(this);
     }
@@ -120,7 +162,7 @@ public class User {
         return passwordRecoveryQuestion;
     }
 
-    public void setPasswordRecoveryQuestion(String passwordRecoveryQuestion) throws IOException {
+    public void setPasswordRecoveryQuestion(String passwordRecoveryQuestion) {
         this.passwordRecoveryQuestion = passwordRecoveryQuestion;
         saveChanges(this);
     }
@@ -129,7 +171,7 @@ public class User {
         return passwordRecoveryAnswer;
     }
 
-    public void setPasswordRecoveryAnswer(String passwordRecoveryAnswer) throws IOException {
+    public void setPasswordRecoveryAnswer(String passwordRecoveryAnswer) {
         this.passwordRecoveryAnswer = passwordRecoveryAnswer;
         saveChanges(this);
     }
@@ -138,7 +180,7 @@ public class User {
         return slogan;
     }
 
-    public void setSlogan(String slogan) throws IOException {
+    public void setSlogan(String slogan) {
         this.slogan = slogan;
         saveChanges(this);
     }
