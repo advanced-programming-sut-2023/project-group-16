@@ -55,8 +55,6 @@ public class Scene {
     public void addGameObject(GameObject gameObject) {
         gameObjects.add(gameObject);
         gameObjectIndex.put(gameObject.getUuid(), gameObject);
-        for (Cell cell : gameObject.getCells())
-            cell.addGameObject(gameObject);
     }
 
     public GameObject getGameObjectByUuid(UUID uuid) {

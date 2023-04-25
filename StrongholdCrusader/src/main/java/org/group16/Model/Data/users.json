@@ -1,0 +1,52 @@
+[
+  {
+    "username": "hasan",
+    "password": "abc123!@",
+    "nickname": "bbbb",
+    "email": "hasan@gmail.com",
+    "passwordRecoveryQuestion": "...",
+    "passwordRecoveryAnswer": "---",
+    "slogan": "slogan",
+    "score": 0
+  },
+  {
+    "username": "ali",
+    "password": "qwe192\u0026%",
+    "nickname": "ALI",
+    "email": "ali123@gmail.com",
+    "passwordRecoveryQuestion": "what?",
+    "passwordRecoveryAnswer": "1",
+    "slogan": "idk",
+    "score": 1000
+  },
+  {
+    "username": "mahdi",
+    "password": "47a0cbef2b047ae7788e1b1f5fb040774c32f63d9216007f9fb4ecb0c0b363c6",
+    "nickname": "MAHDI",
+    "email": "mahdi@gmail.com",
+    "passwordRecoveryQuestion": "",
+    "passwordRecoveryAnswer": "",
+    "slogan": "",
+    "score": 0
+  },
+  {
+    "username": "Mahdi_Shokoufi",
+    "password": "dcea4e15fca275e2b746b3e7e5f9f323b9d0b7dffff9d13cda52e2d70b0dbba5",
+    "nickname": "dragon killer!",
+    "email": "mahdishokoufi@gmail.com",
+    "passwordRecoveryQuestion": "",
+    "passwordRecoveryAnswer": "",
+    "slogan": "",
+    "score": 0
+  },
+  {
+    "username": "Mahdi",
+    "password": "47a0cbef2b047ae7788e1b1f5fb040774c32f63d9216007f9fb4ecb0c0b363c6",
+    "nickname": "MAHDI",
+    "email": "mahdiii@gmail.com",
+    "passwordRecoveryQuestion": "1. What is my father\u0027s name?",
+    "passwordRecoveryAnswer": "amir",
+    "slogan": "",
+    "score": 0
+  }
+]

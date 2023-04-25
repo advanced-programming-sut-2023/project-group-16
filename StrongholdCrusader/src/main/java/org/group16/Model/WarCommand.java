@@ -14,6 +14,7 @@ public class WarCommand {
     private final boolean attackCell;
     private final Human targetHuman;
     private final Building targetBuilding;
+    private PatrollingStatus patrollingStatus;
     private Status status;
 
     public WarCommand(ArrayList<Soldier> unit) {
@@ -40,6 +41,7 @@ public class WarCommand {
         this.unit = new ArrayList<>(unit);
         this.destination = destination;
         this.patrolDestination = patrolDestination;
+        patrollingStatus = PatrollingStatus.TO_END;
         attackCell = false;
         targetHuman = null;
         targetBuilding = null;
@@ -98,9 +100,28 @@ public class WarCommand {
         return targetBuilding;
     }
 
+    public Cell getCurrentDestination() {
+        if (patrolDestination == null) return destination;
+
+        if (patrollingStatus == PatrollingStatus.TO_END)
+            return patrolDestination;
+        else
+            return destination;
+    }
+
+    public void onReachDestination() {
+        if (patrollingStatus == PatrollingStatus.TO_START) patrollingStatus = PatrollingStatus.TO_END;
+        else patrollingStatus = PatrollingStatus.TO_START;
+    }
+
     public enum Status {
         DEFENSIVE,
         STAND_STILL,
         OFFENSIVE
+    }
+
+    public enum PatrollingStatus {
+        TO_START,
+        TO_END
     }
 }

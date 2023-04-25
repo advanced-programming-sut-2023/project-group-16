@@ -30,11 +30,22 @@ public abstract class GameObject {
     }
 
     public void addCell(Cell cell) {
+        cell.addGameObject(this);
         this.cells.add(cell);
     }
 
     public void removeCell(Cell cell) {
+        cell.removeGameObject(this);
         this.cells.remove(cell);
+    }
+
+    public Cell getCell() {
+        return cells.get(0);
+    }
+
+    public void setCell(Cell cell) {
+        removeCell(cells.get(0));
+        addCell(cell);
     }
 
     public void destroy() {
