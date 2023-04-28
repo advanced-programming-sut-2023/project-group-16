@@ -23,9 +23,11 @@ public class Kingdom {
     private final ArrayList<Building> buildings = new ArrayList<>();
     private Team team;
     //private int population;
-    private int popularity;
-    private int tax;
-    private int fearRate;
+    private int popularity = 0;
+    private int tax = 0;
+    private int fearRate = 0;
+    private int gold = 0;
+    private int foodRate = 0;
 
     public Kingdom(KingdomType kingdomType, User user) {
         this.kingdomType = kingdomType;
@@ -65,13 +67,12 @@ public class Kingdom {
     }
 
     public void addPopulation(int population) {
-        if (getPopulationCapacity().equals(getPopulation()) || availableHumans() == 24) {
+        if (getPopulationCapacity().equals(getPopulation()) || availableHumans() >= 24) {
             return;
         }
         int added = Math.min(population, getPopulationCapacity() - getPopulation());
-        //TODO : cells should be replaced
         while (added > 0) {
-            addHuman(new Human(null, this, 100));
+            addHuman(new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100));
             added--;
         }
     }
@@ -82,6 +83,8 @@ public class Kingdom {
 
     public void addPopularity(int popularity) {
         this.popularity += popularity;
+        this.popularity = Math.min(100 , this.popularity) ;
+        this.popularity = Math.max(0 , this.popularity) ;
     }
 
     public int getTax() {
@@ -150,7 +153,74 @@ public class Kingdom {
                 return -24;
             }
             default -> {
-                return 0 ;
+                return 0;
+            }
+        }
+    }
+
+    public double getTaxGold() {
+        switch (tax) {
+            case -3 -> {
+                return -1.0;
+            }
+            case -2 -> {
+                return -0.8;
+            }
+            case -1 -> {
+                return -0.6;
+            }
+            case 0 -> {
+                return 0.0;
+            }
+            case 1 -> {
+                return 0.6;
+            }
+            case 2 -> {
+                return 0.8;
+            }
+            case 3 -> {
+                return 1.0;
+            }
+            case 4 -> {
+                return 1.2;
+            }
+            case 5 -> {
+                return 1.4;
+            }
+            case 6 -> {
+                return 1.6;
+            }
+            case 7 -> {
+                return 1.8;
+            }
+            case 8 -> {
+                return 2;
+            }
+            default -> {
+                return 0;
+            }
+        }
+    }
+
+    public double getFoodForEachPerson() {
+        switch (foodRate) {
+            case -2 -> {
+                return 0.0;
+            }
+            case -1 -> {
+                return 0.5;
+            }
+            case 0 -> {
+                return 1.0;
+            }
+            case 1 -> {
+                return 1.5;
+            }
+            case 2 -> {
+                return 2.0;
+            }
+            default -> {
+                return -2.0;
             }
         }
     }
@@ -262,7 +332,6 @@ public class Kingdom {
         return false;
     }
 
-
     public Integer getPopulationCapacity() {
         int pop = 0;
         for (Building building : buildings) {
@@ -274,12 +343,59 @@ public class Kingdom {
         return pop;
     }
 
+    public int getGold() {
+        return gold;
+    }
+
+    public void addGold(int gold) {
+        this.gold += gold;
+    }
+
+    public int getFoodRate() {
+        return foodRate;
+    }
+
+    public void setFoodRate(int foodRate) {
+        this.foodRate = foodRate;
+    }
+
     public void onTurnStart() {
         //TODO
     }
 
     public void update(double deltaTime) {
-        //TODO
+        if (Time.isItTurned(deltaTime, Time.day)) {
+            //tax
+            addPopularity(getTaxEffectOnPopularity());
+            addGold((int) Math.floor(getTaxGold() * getPopulation()));
+            //food
+            int availableFood = 0;
+            for (Food food : getFoodList())
+                availableFood += getResourceCount(food);
+            int foodNeeded;
+            while (true) {
+                foodNeeded = (int) getFoodForEachPerson() * getPopulation();
+                if (availableFood < foodNeeded)
+                    setFearRate(getFoodRate() - 1);
+                else
+                    break;
+            }
+            addPopularity(getFoodList().size() - 1);
+            addPopularity(getFoodRate() * 4);
+            for (Food food : getFoodList()) {
+                if (foodNeeded == 0)
+                    break;
+                int eatenFood = Math.min(foodNeeded , getResourceCount(food)) ;
+                useResource(food , eatenFood) ;
+            }
+            //fearRate
+            addPopularity(-getFearRate());
+            //TODO : fearRate changes morality !?
+
+            //TODO : religion ?
+
+            //population added by popularity
+        }
     }
 
     public void onTurnEnd() {

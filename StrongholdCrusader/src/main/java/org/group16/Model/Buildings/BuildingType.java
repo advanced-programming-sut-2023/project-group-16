@@ -61,7 +61,8 @@ public enum BuildingType {
     POLE_TURNER,
     //economy
     OIL_SMELTER,
-    //war?
+    //TODO : ????
+    //war ?
     PITCH_DITCH,
     //TODO : ????
     //war?
