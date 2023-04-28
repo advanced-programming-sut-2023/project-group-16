@@ -86,6 +86,12 @@ public class Kingdom {
         this.popularity = Math.min(100 , this.popularity) ;
         this.popularity = Math.max(0 , this.popularity) ;
     }
+    //TODO : function used is completely bullshit and may change
+    public void populationGrowth(){
+        int A = getPopularity() - 50 ;
+        int added = A/10 ;
+        addPopulation(added);
+    }
 
     public int getTax() {
         return tax;
@@ -395,6 +401,7 @@ public class Kingdom {
             //TODO : religion ?
 
             //population added by popularity
+            populationGrowth();
         }
     }
 
