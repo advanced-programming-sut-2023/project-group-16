@@ -8,6 +8,7 @@ import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.Worker;
+import org.group16.Model.Resources.BasicResource;
 import org.group16.Model.Resources.Food;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.StorageData;
@@ -26,7 +27,6 @@ public class Kingdom {
     private int popularity = 0;
     private int tax = 0;
     private int fearRate = 0;
-    private int gold = 0;
     private int foodRate = 0;
 
     public Kingdom(KingdomType kingdomType, User user) {
@@ -350,11 +350,11 @@ public class Kingdom {
     }
 
     public int getGold() {
-        return gold;
+        return getResourceCount(BasicResource.GOLD) ;
     }
 
-    public void addGold(int gold) {
-        this.gold += gold;
+    public void addGold(int count) {
+        addRecourse(BasicResource.GOLD , count) ;
     }
 
     public int getFoodRate() {
