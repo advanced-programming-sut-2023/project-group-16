@@ -108,9 +108,8 @@ public class EconomicBuilding extends Building {
 
     @Override
     public void update(double deltaTime) {
-        //TODO
-        //checking deltaTime
-        if (!isActive())
+        //TODO : Time needed may change
+        if (!isActive()||!Time.isItTurned(deltaTime - getBuildTime() , Time.day))
             return;
         for (ProductData productData : detail.getProductsData()) {
             if (!productData.isManual())

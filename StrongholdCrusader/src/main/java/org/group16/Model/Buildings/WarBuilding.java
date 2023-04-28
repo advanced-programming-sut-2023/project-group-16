@@ -1,11 +1,14 @@
 package org.group16.Model.Buildings;
 
 import org.group16.Model.Cell;
+import org.group16.Model.GameObject;
 import org.group16.Model.Kingdom;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
+import org.group16.Model.Time;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class WarBuilding extends Building {
     private final ArrayList<Human> soldiers = new ArrayList<>();
@@ -49,6 +52,15 @@ public class WarBuilding extends Building {
 
     @Override
     public void update(double deltaTime) {
-        //TODO
+        //TODO : Time needed may change
+        if (Time.isItTurned(deltaTime , Time.deltaTime)){
+            for (Cell cell : getCells()){
+                for (GameObject human : cell.getGameObjects()){
+                    if (human instanceof Human && !getKingdom().getTeam().getKingdoms().contains(human.getKingdom())){
+                        ((Human) human).dealDamage(detail.getCurrentDamage());
+                    }
+                }
+            }
+        }
     }
 }

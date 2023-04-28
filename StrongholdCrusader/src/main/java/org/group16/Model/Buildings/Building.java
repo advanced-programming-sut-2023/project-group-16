@@ -38,6 +38,14 @@ public abstract class Building extends GameObject implements Alive {
         this.hp = hp;
     }
 
+    public double getBuildTime() {
+        return buildTime;
+    }
+
+    public void setBuildTime(double buildTime) {
+        this.buildTime = buildTime;
+    }
+
     public boolean isTraversable() {
         return traversable;
     }
