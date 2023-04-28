@@ -7,8 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class User {
-    private final String username;
-    private String password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
+    private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
     private int score;
 
     private User(String username, String password, String email, String passwordRecoveryQuestion,
@@ -129,6 +128,10 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
