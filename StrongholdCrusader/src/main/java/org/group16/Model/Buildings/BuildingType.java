@@ -87,5 +87,7 @@ public enum BuildingType {
     BREWER,
     //economy
     GRANARY,
+    TOWN_BUILDING ,
+    UNEMPLOYED_PLACE
     ;
 }

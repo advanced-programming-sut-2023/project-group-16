@@ -81,6 +81,9 @@ public enum EconomicBuildingDetail {
             new StorageData(Food.APPLE, 0),
             new StorageData(Food.CHEESE, 0)
     }, 1000, null, 100, 0, 0, BuildingType.GRANARY),
+    //main building where king lives and ...
+    TOWN_BUILDING(null , null , 0 , null , 4000 , 0 , 0 , BuildingType.TOWN_BUILDING) ,
+    UNEMPLOYED_PLACE(null , null , 0 , null , Integer.MAX_VALUE , 0 , 0 , BuildingType.UNEMPLOYED_PLACE)
     ;
 
     private final int hp;
