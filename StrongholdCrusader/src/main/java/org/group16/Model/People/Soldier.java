@@ -106,7 +106,7 @@ public class Soldier extends Human {
     private <T extends GameObject & Alive> void followAndFight(T target, double deltaTime) {
         double distance = Map.getCellDistance(target.getCell(), getCell());
         if (distance <= soldierDetail.getAttackRange())
-            attackTarget(target, soldierDetail.getDamage());
+            attackTarget(target, (int) (soldierDetail.getDamage() * deltaTime));
         else
             moveToward(target.getCell(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
     }
