@@ -1,12 +1,13 @@
 package org.group16.Model.Siege;
 
-import org.group16.Model.Cell;
-import org.group16.Model.Direction;
-import org.group16.Model.Kingdom;
+import org.group16.Model.*;
+import org.group16.Model.Buildings.Building;
 import org.group16.Model.People.Engineer;
+import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Siege extends Soldier {
     private final SiegeDetail siegeDetail;
@@ -54,18 +55,43 @@ public class Siege extends Soldier {
         super.destroy();
     }
 
-    @Override
-    public void onTurnStart() {
-        super.onTurnStart();
-    }//TODO
 
     @Override
     public void update(double deltaTime) {
-        super.update(deltaTime);
-    }//TODO
+        Cell moveDestination = warCommand.getDestination();
+        Human humanTarget = warCommand.getTargetHuman();
+        Building buildingTarget = warCommand.getTargetBuilding();
+
+        // Fight if possible
+        if (humanTarget != null && Map.getCellDistance(humanTarget.getCell(), getCell()) <= siegeDetail.getAttackRange()) {
+            attackTarget(humanTarget, (int) (siegeDetail.getDamage() * deltaTime));
+            return;
+        }
+        if (buildingTarget != null && Map.getCellDistance(buildingTarget.getCell(), getCell()) <= siegeDetail.getAttackRange()) {
+            attackTarget(buildingTarget, (int) (siegeDetail.getDamage() * deltaTime));
+            return;
+        }
+
+        // Move Command
+        if (moveDestination != null) {
+            if (getCell() != moveDestination)
+                moveToward(moveDestination, deltaTime * siegeDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+            return;
+        }
+    }
 
     @Override
-    public void onTurnEnd() {
-        super.onTurnEnd();
-    }//TODO
+    protected void moveToward(Cell destination, double distance, double randomness, Random random) {
+        Cell from = getCell();
+        super.moveToward(destination, distance, randomness, random);
+        Cell to = getCell();
+        if (from != to) {
+            int dx = to.getX() - from.getX();
+            int dy = to.getY() - from.getY();
+            if (dx < 0) direction = Direction.LEFT;
+            if (dy < 0) direction = Direction.DOWN;
+            if (dx > 0) direction = Direction.RIGHT;
+            if (dy > 0) direction = Direction.UP;
+        }
+    }
 }

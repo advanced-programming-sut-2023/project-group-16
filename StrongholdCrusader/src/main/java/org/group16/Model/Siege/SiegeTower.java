@@ -42,22 +42,4 @@ public class SiegeTower extends Siege {
         for (var soldier : soldiers) soldier.destroy();
         super.destroy();
     }
-
-    @Override
-    public void onTurnStart() {
-        super.onTurnStart();
-        //TODO
-    }
-
-    @Override
-    public void update(double deltaTime) {
-        super.update(deltaTime);
-        //TODO
-    }
-
-    @Override
-    public void onTurnEnd() {
-        super.onTurnEnd();
-        //TODO
-    }
 }
