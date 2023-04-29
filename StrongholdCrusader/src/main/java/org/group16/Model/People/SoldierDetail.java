@@ -53,6 +53,9 @@ public enum SoldierDetail implements Resource {
     FIRE_THROWER(KingdomType.ARAB, 100, null, null, false, 1,
             false, false, false, false, true,
             true, 10, 10, 10, 4, 2, 5),
+    BLACK_MONK(KingdomType.EUROPEAN, 10, null, null, false, 1,
+            false, false, false, false, true,
+            true, 1, 1, 1, 3, 3, 2),
 
 
     ;//TODO
