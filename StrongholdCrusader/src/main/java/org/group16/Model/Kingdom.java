@@ -72,7 +72,7 @@ public class Kingdom {
         }
         int added = Math.min(population, getPopulationCapacity() - getPopulation());
         while (added > 0) {
-            addHuman(new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100));
+            new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100) ;
             added--;
         }
     }
@@ -257,7 +257,7 @@ public class Kingdom {
         for (Human human : humans) {
             if (cnt == 0) break;
             if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0) {
-                removeHuman(human);
+                human.destroy();
                 cnt--;
             }
         }

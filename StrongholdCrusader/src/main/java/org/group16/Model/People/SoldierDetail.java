@@ -8,7 +8,62 @@ import org.group16.Model.Resources.Weaponry;
 import java.util.ArrayList;
 
 public enum SoldierDetail implements Resource {
-    ;//TODO
+    //TODO : in speed , hp and damage the numbers are 1 to 5 that means very low to very high
+    //TODO : also attackRange , ... should change (in this version attackRange 1 means only can heat the objects in his cell)
+
+    ARCHER(KingdomType.EUROPEAN, 12, null, Weaponry.BOW, false, 1,
+            true, false, false, true, true,
+            true, 10, 10, 10, 2, 2, 4),
+    CROSSBOW_MAN(KingdomType.EUROPEAN, 20, Weaponry.LEATHER_ARMOR, Weaponry.CROSSBOW, false, 1,
+            false, false, false, false, true,
+            true, 8, 8, 8, 2, 3, 2),
+    SPEAR_MAN(KingdomType.EUROPEAN, 8, null, Weaponry.SPEAR, false, 1,
+            true, false, false, true, true,
+            true, 1, 1, 1, 3, 1, 3),
+    PIKE_MAN(KingdomType.EUROPEAN, 20, Weaponry.METAL_ARMOR, Weaponry.PIKE, false, 1,
+            false, false, false, true, true,
+            true, 1, 1, 1, 3, 4, 2),
+    MACE_MAN(KingdomType.EUROPEAN, 20, Weaponry.LEATHER_ARMOR, Weaponry.MACE, false, 1,
+            true, false, false, true, true,
+            true, 1, 1, 1, 4, 3, 3),
+    SWORDS_MAN(KingdomType.EUROPEAN, 40, Weaponry.METAL_ARMOR, Weaponry.SWORD, false, 1,
+            false, false, false, false, true,
+            true, 1, 1, 1, 5, 1, 1),
+    KNIGHT(KingdomType.EUROPEAN, 40, Weaponry.METAL_ARMOR, Weaponry.SWORD, true, 1,
+            false, false, false, false, true,
+            true, 1, 1, 1, 5, 4, 5),
+    ARCHER_BOW(KingdomType.ARAB, 75, null, Weaponry.BOW, false, 1,
+            false, false, false, true, true,
+            true, 10, 10, 10, 2, 2, 4),
+    SLAVE(KingdomType.ARAB, 5, null, null, false, 1,
+            false, false, false, true, true,
+            true, 1, 1, 1, 1, 1, 4),
+    SLINGER(KingdomType.ARAB, 12, null, null, false, 1,
+            false, false, false, false, true,
+            true, 10, 10, 10, 2, 1, 4),
+    ASSASSIN(KingdomType.ARAB, 60, null, null, false, 1,
+            false, true, true, true, false,
+            true, 1, 1, 1, 3, 3, 3),
+    HORSE_ARCHER(KingdomType.ARAB, 80, null, Weaponry.BOW, true, 1,
+            false, false, false, false, true,
+            true, 10, 10, 10, 2, 3, 5),
+    ARABIAN_SWORDS_MAN(KingdomType.ARAB, 80, null, null, false, 1,
+            false, false, false, false, true,
+            true, 1, 1, 1, 4, 4, 5),
+    FIRE_THROWER(KingdomType.ARAB, 100, null, null, false, 1,
+            false, false, false, false, true,
+            true, 10, 10, 10, 4, 2, 5),
+    BLACK_MONK(KingdomType.EUROPEAN, 10, null, null, false, 1,
+            false, false, false, false, true,
+            true, 1, 1, 1, 3, 3, 2),
+    LADDER_MAN(KingdomType.EUROPEAN, 30, null, null, false, 1,
+            false, false, false, false, true,
+            true, 0, 0, 0, 0, 1, 4),
+    ENGINEER(KingdomType.EUROPEAN, 30, null, null, false, 1,
+            false, false, false, false, true,
+            true, 0, 0, 0, 0, 1, 3),
+
+    ;
 
     private final Weaponry armor;
     private final Weaponry weapon;

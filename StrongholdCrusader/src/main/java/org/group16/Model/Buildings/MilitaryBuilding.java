@@ -3,6 +3,7 @@ package org.group16.Model.Buildings;
 import org.group16.Lib.Pair;
 import org.group16.Model.Cell;
 import org.group16.Model.Kingdom;
+import org.group16.Model.KingdomType;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.Resources.BasicResource;
@@ -26,21 +27,24 @@ public class MilitaryBuilding extends EconomicBuilding {
         }
         boolean canBeBuilt = true;
         SoldierDetail soldierDetail = ((Soldier) productData.resource()).getSoldierDetail();
-        if (getKingdom().getResourceCount(soldierDetail.getArmor()) < cnt)
+        if (soldierDetail.getKingdomType().equals(KingdomType.EUROPEAN) &&
+                getKingdom().getResourceCount(soldierDetail.getArmor()) < cnt)
             canBeBuilt = false;
-        if (getKingdom().getResourceCount(soldierDetail.getWeapon()) < cnt)
+        if (soldierDetail.getKingdomType().equals(KingdomType.EUROPEAN) &&
+                getKingdom().getResourceCount(soldierDetail.getWeapon()) < cnt)
             canBeBuilt = false;
         if (getKingdom().getResourceCount(BasicResource.GOLD) < cnt * soldierDetail.getGoldNeeded())
             canBeBuilt = false;
         if (!canBeBuilt || getKingdom().availableHumans() < cnt)
             return;
-        getKingdom().useResource(soldierDetail.getArmor(), cnt);
-        getKingdom().useResource(soldierDetail.getWeapon(), cnt);
+        if (soldierDetail.getKingdomType().equals(KingdomType.EUROPEAN)) {
+            getKingdom().useResource(soldierDetail.getArmor(), cnt);
+            getKingdom().useResource(soldierDetail.getWeapon(), cnt);
+        }
         getKingdom().useResource(BasicResource.GOLD, cnt * soldierDetail.getGoldNeeded());
         getKingdom().useHuman(cnt);
         while (cnt > 0) {
-            //TODO : soldier class isnt completed to implement this
-            //getKingdom().addSoldier(new Soldier(getCells() , getKingdom() ,productData.resource()));
+            new Soldier(this.getCells(), this.getKingdom(), soldierDetail);
             cnt--;
         }
     }
