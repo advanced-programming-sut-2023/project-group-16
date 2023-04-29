@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class MilitaryBuilding extends EconomicBuilding {
 
-    public MilitaryBuilding(ArrayList<Cell> cells, Kingdom kingdom, EconomicBuildingDetail detail) {
-        super(cells, kingdom, detail);
+    public MilitaryBuilding(ArrayList<Cell> cells, Kingdom kingdom, double buildTime, EconomicBuildingDetail detail) {
+        super(cells, kingdom, buildTime, detail);
     }
 
     @Override
@@ -34,9 +34,9 @@ public class MilitaryBuilding extends EconomicBuilding {
             canBeBuilt = false;
         if (!canBeBuilt || getKingdom().availableHumans() < cnt)
             return;
-        getKingdom().useResource(soldierDetail.getArmor() , cnt) ;
-        getKingdom().useResource(soldierDetail.getWeapon() , cnt) ;
-        getKingdom().useResource(BasicResource.GOLD , cnt*soldierDetail.getGoldNeeded()) ;
+        getKingdom().useResource(soldierDetail.getArmor(), cnt);
+        getKingdom().useResource(soldierDetail.getWeapon(), cnt);
+        getKingdom().useResource(BasicResource.GOLD, cnt * soldierDetail.getGoldNeeded());
         getKingdom().useHuman(cnt);
         while (cnt > 0) {
             //TODO : soldier class isnt completed to implement this

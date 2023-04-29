@@ -8,6 +8,7 @@ import org.group16.Model.People.Human;
 import org.group16.Model.People.Worker;
 import org.group16.Model.Resources.ProductData;
 import org.group16.Model.Resources.Resource;
+import org.group16.Model.Time;
 
 import java.util.ArrayList;
 
@@ -18,8 +19,8 @@ public class EconomicBuilding extends Building {
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
     private int usedCapacity = 0;
 
-    public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, EconomicBuildingDetail detail) {
-        super(cells, kingdom, detail.getHp(), detail.getBuildingType());
+    public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, double buildTime, EconomicBuildingDetail detail) {
+        super(cells, kingdom, detail.getHp(), buildTime, detail.getBuildingType());
         this.detail = detail;
     }
 
@@ -107,9 +108,8 @@ public class EconomicBuilding extends Building {
 
     @Override
     public void update(double deltaTime) {
-        //TODO
-        //checking deltaTime
-        if (!isActive())
+        //TODO : Time needed may change
+        if (!isActive()||!Time.isItTurned(deltaTime - getBuildTime() , Time.day))
             return;
         for (ProductData productData : detail.getProductsData()) {
             if (!productData.isManual())

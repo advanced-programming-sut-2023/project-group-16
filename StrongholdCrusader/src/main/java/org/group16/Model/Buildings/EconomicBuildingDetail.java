@@ -43,7 +43,6 @@ public enum EconomicBuildingDetail {
             new StorageData(BasicResource.WOOD, 0),
             new StorageData(BasicResource.STONE, 0),
             new StorageData(BasicResource.OIL, 0),
-            new StorageData(BasicResource.GOLD, 0),
     }, 1000, null, 300, 0, 0, BuildingType.STOCKPILE),
     WOOD_CUTTER(new ProductData[]{new ProductData(BasicResource.WOOD, true, 10)}, null, 0, null, 300, 1, 0, BuildingType.WOOD_CUTTER),
     HOVEL(null, null, 0, null, 100, 0, 0, BuildingType.HOVEL),
@@ -81,6 +80,9 @@ public enum EconomicBuildingDetail {
             new StorageData(Food.APPLE, 0),
             new StorageData(Food.CHEESE, 0)
     }, 1000, null, 100, 0, 0, BuildingType.GRANARY),
+    //main building where king lives and ...
+    TOWN_BUILDING(null , new StorageData[]{new StorageData(BasicResource.GOLD , 0)}, Integer.MAX_VALUE , null , 4000 , 0 , 0 , BuildingType.TOWN_BUILDING) ,
+    UNEMPLOYED_PLACE(null , null , 0 , null , Integer.MAX_VALUE , 0 , 0 , BuildingType.UNEMPLOYED_PLACE)
     ;
 
     private final int hp;
