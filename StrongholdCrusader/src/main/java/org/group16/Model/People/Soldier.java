@@ -96,7 +96,7 @@ public class Soldier extends Human {
                 currentTarget = getTarget(possibleEnemyTargets, TARGET_SELECTION_RANDOMNESS);
                 followAndFight(currentTarget, deltaTime);
             } else {
-                if (getCell() != moveDestination)
+                if (getCell() != warCommand.getCurrentDestination())
                     moveToward(warCommand.getCurrentDestination(), deltaTime * soldierDetail.getSpeed(), 0, Scene.getCurrent().getRandom());
                 else
                     warCommand.onReachDestination();
