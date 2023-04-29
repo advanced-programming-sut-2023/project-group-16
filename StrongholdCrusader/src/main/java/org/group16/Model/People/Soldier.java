@@ -52,11 +52,22 @@ public class Soldier extends Human {
         Human humanTarget = warCommand.getTargetHuman();
         Building buildingTarget = warCommand.getTargetBuilding();
         WarCommand.Status status = warCommand.getStatus();
-        double maxFollowRange = 0;
+        double maxFollowRange;
         switch (status) {
             case STAND_STILL -> maxFollowRange = soldierDetail.getAttackRange();
             case DEFENSIVE -> maxFollowRange = soldierDetail.getDefensiveRange();
             case OFFENSIVE -> maxFollowRange = soldierDetail.getOffensiveRange();
+            default -> maxFollowRange = 0;
+        }
+
+        // Fight if possible
+        if (humanTarget != null && Map.getCellDistance(humanTarget.getCell(), getCell()) <= soldierDetail.getAttackRange()) {
+            followAndFight(humanTarget, deltaTime);
+            return;
+        }
+        if (buildingTarget != null && Map.getCellDistance(buildingTarget.getCell(), getCell()) <= soldierDetail.getAttackRange()) {
+            followAndFight(buildingTarget, deltaTime);
+            return;
         }
 
         ArrayList<Human> possibleEnemyTargets = getEnemyPeopleInRange(getCell(), maxFollowRange);
