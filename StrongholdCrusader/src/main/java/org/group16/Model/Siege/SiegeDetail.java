@@ -7,19 +7,25 @@ public enum SiegeDetail {
     private final int hp;
     private final boolean canMove;
     private final boolean canRotate;
+    private final int attackRange;
     private final int damage;
     private final int speed;
     private final int operatorCount;
     private final TargetType targetType;
 
-    SiegeDetail(int hp, boolean canMove, boolean canRotate, int damage, int speed, int operatorCount, TargetType targetType) {
+    SiegeDetail(int hp, boolean canMove, boolean canRotate, int attackRange, int damage, int speed, int operatorCount, TargetType targetType) {
         this.hp = hp;
         this.canMove = canMove;
         this.canRotate = canRotate;
+        this.attackRange = attackRange;
         this.damage = damage;
         this.speed = speed;
         this.operatorCount = operatorCount;
         this.targetType = targetType;
+    }
+
+    public int getAttackRange() {
+        return attackRange;
     }
 
     public TargetType getTargetType() {

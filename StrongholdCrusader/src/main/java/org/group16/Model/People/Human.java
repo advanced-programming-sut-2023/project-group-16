@@ -40,7 +40,7 @@ public abstract class Human extends GameObject implements Alive {
         this.relativeY = relativeY;
     }
 
-    public void moveToward(Cell destination, double distance, double randomness, Random random) {
+    protected void moveToward(Cell destination, double distance, double randomness, Random random) {
         Cell currentCell = getCell();
         PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, randomness, random);
         pathFindingQuery.findShortestPath();

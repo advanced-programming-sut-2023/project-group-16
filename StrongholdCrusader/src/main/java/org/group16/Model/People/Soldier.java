@@ -10,10 +10,10 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Soldier extends Human {
-    private static final double PATH_FINDING_RANDOMNESS = 2;
-    private static final double TARGET_SELECTION_RANDOMNESS = 1.1;
+    public static final double PATH_FINDING_RANDOMNESS = 2;
+    public static final double TARGET_SELECTION_RANDOMNESS = 1.1;
     private final SoldierDetail soldierDetail;
-    private WarCommand warCommand;
+    protected WarCommand warCommand;
     private Siege siege;
     private Human currentTarget;
 
@@ -97,7 +97,7 @@ public class Soldier extends Human {
                 followAndFight(currentTarget, deltaTime);
             } else {
                 if (getCell() != warCommand.getCurrentDestination())
-                    moveToward(warCommand.getCurrentDestination(), deltaTime * soldierDetail.getSpeed(), 0, Scene.getCurrent().getRandom());
+                    moveToward(warCommand.getCurrentDestination(), deltaTime * soldierDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
                 else
                     warCommand.onReachDestination();
             }
