@@ -56,9 +56,14 @@ public enum SoldierDetail implements Resource {
     BLACK_MONK(KingdomType.EUROPEAN, 10, null, null, false, 1,
             false, false, false, false, true,
             true, 1, 1, 1, 3, 3, 2),
+    LADDER_MAN(KingdomType.EUROPEAN, 30, null, null, false, 1,
+            false, false, false, false, true,
+            true, 0, 0, 0, 0, 1, 4),
+    ENGINEER(KingdomType.EUROPEAN, 30, null, null, false, 1,
+            false, false, false, false, true,
+            true, 0, 0, 0, 0, 1, 3),
 
-
-    ;//TODO
+    ;
 
     private final Weaponry armor;
     private final Weaponry weapon;

@@ -18,26 +18,28 @@ public enum EconomicBuildingDetail {
             new StorageData(Weaponry.METAL_ARMOR, 0),
             new StorageData(Weaponry.LEATHER_ARMOR, 0),
     }, 100, null, 300, 0, 0, BuildingType.ARMOURY),
-    //TODO : soldiers should be  added
     BARRACKS(new ProductData[]{
-            new ProductData(SoldierDetail.ARCHER , false , 1) ,
-            new ProductData(SoldierDetail.CROSSBOW_MAN , false , 1) ,
-            new ProductData(SoldierDetail.SPEAR_MAN , false , 1) ,
-            new ProductData(SoldierDetail.PIKE_MAN , false , 1) ,
-            new ProductData(SoldierDetail.MACE_MAN , false , 1) ,
-            new ProductData(SoldierDetail.SWORDS_MAN , false , 1) ,
-            new ProductData(SoldierDetail.KNIGHT , false , 1) ,
+            new ProductData(SoldierDetail.ARCHER, false, 1),
+            new ProductData(SoldierDetail.CROSSBOW_MAN, false, 1),
+            new ProductData(SoldierDetail.SPEAR_MAN, false, 1),
+            new ProductData(SoldierDetail.PIKE_MAN, false, 1),
+            new ProductData(SoldierDetail.MACE_MAN, false, 1),
+            new ProductData(SoldierDetail.SWORDS_MAN, false, 1),
+            new ProductData(SoldierDetail.KNIGHT, false, 1),
     }, null, 0, null, 300, 0, 0, BuildingType.BARRACKS),
     MERCENARY_POST(new ProductData[]{
-            new ProductData(SoldierDetail.ARCHER_BOW , false , 1) ,
-            new ProductData(SoldierDetail.SLAVE , false , 1) ,
-            new ProductData(SoldierDetail.SLINGER , false , 1) ,
-            new ProductData(SoldierDetail.ASSASSIN , false , 1) ,
-            new ProductData(SoldierDetail.HORSE_ARCHER , false , 1) ,
-            new ProductData(SoldierDetail.ARABIAN_SWORDS_MAN , false , 1) ,
-            new ProductData(SoldierDetail.FIRE_THROWER , false , 1) ,
+            new ProductData(SoldierDetail.ARCHER_BOW, false, 1),
+            new ProductData(SoldierDetail.SLAVE, false, 1),
+            new ProductData(SoldierDetail.SLINGER, false, 1),
+            new ProductData(SoldierDetail.ASSASSIN, false, 1),
+            new ProductData(SoldierDetail.HORSE_ARCHER, false, 1),
+            new ProductData(SoldierDetail.ARABIAN_SWORDS_MAN, false, 1),
+            new ProductData(SoldierDetail.FIRE_THROWER, false, 1),
     }, null, 0, null, 300, 0, 0, BuildingType.MERCENARY_POST),
-    ENGINEER_GUILD(new ProductData[]{}, null, 0, null, 300, 0, 0, BuildingType.ENGINEER_GUILD),
+    ENGINEER_GUILD(new ProductData[]{
+            new ProductData(SoldierDetail.ENGINEER, false, 1),
+            new ProductData(SoldierDetail.LADDER_MAN, false, 1),
+    }, null, 0, null, 300, 0, 0, BuildingType.ENGINEER_GUILD),
 
     INN(null, null, 0, new EconomyEffect() {
         @Override
@@ -68,8 +70,7 @@ public enum EconomicBuildingDetail {
             kingdom.addPopularity(2);
         }
     }, 800, 0, 0, BuildingType.CHURCH),
-    //TODO:soldiers should be  added
-    CATHEDRAL(new ProductData[]{new ProductData(SoldierDetail.BLACK_MONK , false , 1)}, null, 0, new EconomyEffect() {
+    CATHEDRAL(new ProductData[]{new ProductData(SoldierDetail.BLACK_MONK, false, 1)}, null, 0, new EconomyEffect() {
         @Override
         public void applyEffect(Kingdom kingdom) {
             kingdom.addPopularity(2);
@@ -97,9 +98,8 @@ public enum EconomicBuildingDetail {
             new StorageData(Food.CHEESE, 0)
     }, 1000, null, 100, 0, 0, BuildingType.GRANARY),
     //main building where king lives and ...
-    TOWN_BUILDING(null , new StorageData[]{new StorageData(BasicResource.GOLD , 0)}, Integer.MAX_VALUE , null , 4000 , 0 , 0 , BuildingType.TOWN_BUILDING) ,
-    UNEMPLOYED_PLACE(null , null , 0 , null , Integer.MAX_VALUE , 0 , 0 , BuildingType.UNEMPLOYED_PLACE)
-    ;
+    TOWN_BUILDING(null, new StorageData[]{new StorageData(BasicResource.GOLD, 0)}, Integer.MAX_VALUE, null, 4000, 0, 0, BuildingType.TOWN_BUILDING),
+    UNEMPLOYED_PLACE(null, null, 0, null, Integer.MAX_VALUE, 0, 0, BuildingType.UNEMPLOYED_PLACE);
 
     private final int hp;
     private final int neededWorkers;
