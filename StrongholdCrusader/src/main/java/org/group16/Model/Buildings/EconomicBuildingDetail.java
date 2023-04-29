@@ -28,8 +28,7 @@ public enum EconomicBuildingDetail {
             kingdom.addPopularity(1);
         }
     }, 300, 1, 0, BuildingType.INN),
-    //TODO :
-    //not sure about rates
+    //TODO : not sure about rates
     MILL(new ProductData[]{new ProductData(Food.FLOUR, true, 10)}, null, 0, null, 300, 3, 0, BuildingType.MILL),
     IRON_MINE(new ProductData[]{new ProductData(BasicResource.IRON, true, 1)}, null, 0, null, 300, 2, 0, BuildingType.IRON_MINE),
     MARKET(null, null, 0, null, 300, 1, 0, BuildingType.MARKET),

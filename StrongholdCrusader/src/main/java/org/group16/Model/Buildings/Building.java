@@ -55,7 +55,7 @@ public abstract class Building extends GameObject implements Alive {
     }
 
     public void repair() {
-        //TODO
+        //TODO : ?
     }
 
     @Override

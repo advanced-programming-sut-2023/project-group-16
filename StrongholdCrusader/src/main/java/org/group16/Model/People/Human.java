@@ -14,14 +14,20 @@ public class Human extends GameObject implements Alive {
 
     public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
-        kingdom.addHuman(this);
+        if (this instanceof Soldier)
+            kingdom.addSoldier((Soldier)this) ;
+        else
+            kingdom.addHuman(this);
         this.hp = hp;
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        getKingdom().removeHuman(this);
+        if (this instanceof Soldier)
+            getKingdom().removeSoldier((Soldier)this);
+        else
+            getKingdom().removeHuman(this);
     }
 
     public double getRelativeX() {
