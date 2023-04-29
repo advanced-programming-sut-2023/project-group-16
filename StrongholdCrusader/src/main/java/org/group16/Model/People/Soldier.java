@@ -91,8 +91,8 @@ public class Soldier extends Human {
 
         // Move Command
         if (moveDestination != null) {
-            if (attackCell) {
-                possibleEnemyTargets = getEnemyPeopleInRange(moveDestination, 0);
+            possibleEnemyTargets = getEnemyPeopleInRange(moveDestination, 0);
+            if (attackCell && possibleEnemyTargets.size() > 0) {
                 currentTarget = getTarget(possibleEnemyTargets, TARGET_SELECTION_RANDOMNESS);
                 followAndFight(currentTarget, deltaTime);
             } else {
