@@ -4,10 +4,7 @@ import com.google.common.hash.Hashing;
 import org.group16.Model.User;
 import org.group16.View.LoginMenu;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -138,10 +135,23 @@ public class LoginMenuController {
     public static String checkRecoveryQuestionAnswer(String username, String answer) {
         if (User.getUserByName(username).getPasswordRecoveryAnswer().equals(answer))
             return "please enter your new password:";
-        return "wrong answer";
+        return "incorrect answer";
     }
 
     public static void setPassword(String username, String password) {
         User.getUserByName(username).setPassword(password);
+    }
+
+    public static User getStayLoggedInUser() {
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/stayLoggedInUser.txt");
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            String username = reader.readLine();
+            reader.close();
+            return User.getUserByName(username);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

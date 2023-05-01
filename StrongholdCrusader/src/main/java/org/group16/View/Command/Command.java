@@ -39,7 +39,8 @@ public enum Command {
     DISPLAY_HIGHSCORE("profile\\s+display\\s+highscore", new ArrayList<>()),
     DISPLAY_RANK("profile\\s+display\\s+rank", new ArrayList<>()),
     DISPLAY_SLOGAN("profile\\s+display\\s+slogan", new ArrayList<>()),
-    DISPLAY_ALL("profile\\s+display", new ArrayList<>()),
+    DISPLAY_PROFILE("profile\\s+display", new ArrayList<>()),
+    BACK("back", new ArrayList<>()),
     SHOW_MAP("show\\s+map", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
     SHOW_DETAILS("show\\s+details", new ArrayList<>(List.of(

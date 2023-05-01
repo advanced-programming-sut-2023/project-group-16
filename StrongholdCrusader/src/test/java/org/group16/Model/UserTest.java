@@ -22,7 +22,7 @@ public class UserTest {
         assertEquals("hasan@gmail.com", user.getEmail());
         assertEquals("...", user.getPasswordRecoveryQuestion());
         assertEquals("---", user.getPasswordRecoveryAnswer());
-        assertEquals(0, user.getScore());
+        assertEquals(0, user.getHighScore());
     }
 
     @Test
@@ -38,8 +38,8 @@ public class UserTest {
         assertEquals("qwe192&%", user.getPassword());
         user.setNickname("ALI");
         assertEquals("ALI", user.getNickname());
-        user.setScore(1000);
-        assertEquals(1000, user.getScore());
+        user.setHighScore(1000);
+        assertEquals(1000, user.getHighScore());
         user.setSlogan("idk");
         assertEquals("idk", user.getSlogan());
         user.setPasswordRecoveryQuestion("what?");

@@ -1,9 +1,16 @@
 package org.group16.View;
 
+import org.group16.Model.Game;
+import org.group16.Model.Map;
 import org.group16.Model.User;
+import org.group16.View.Command.Command;
+import org.group16.View.Command.CommandHandler;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
 
 public class MainMenu {
     private final Scanner scanner;
@@ -15,18 +22,47 @@ public class MainMenu {
     }
 
     public void run() {
+        while (true) {
+            String input = scanner.nextLine();
+            if (CommandHandler.matches(Command.ENTER_GAME_MENU, input) != null) enterGameMenu();
+            else if (CommandHandler.matches(Command.ENTER_PROFILE_MENU, input) != null) enterProfileMenu();
+            else if (CommandHandler.matches(Command.ENTER_EDITOR_MENU, input) != null) enterEditorMenu();
+            else if (CommandHandler.matches(Command.LOGOUT, input) != null) {
+                logout();
+                break;
+            } else System.out.println("invalid command");
+        }
+    }
 
-    }//TODO
+    private void enterGameMenu() {
+        System.out.println("entered game menu successfully");
+        GameMenu gameMenu = new GameMenu(scanner, new Game());
+        gameMenu.run();
+    }
 
-    private void enterGameMenu(Matcher matcher) {
+    private void enterProfileMenu() {
+        System.out.println("entered profile menu successfully");
+        ProfileMenu profileMenu = new ProfileMenu(scanner, currentUser);
+        profileMenu.run();
 
-    }//TODO
+    }
 
-    private void enterProfileMenu(Matcher matcher) {
+    private void enterEditorMenu() {
+        System.out.println("entered editor menu successfully");
+        EditorMenu editorMenu = new EditorMenu(scanner, new Map(), currentUser);
+        editorMenu.run();
+    }
 
-    }//TODO
-
-    private void enterEditorMenu(Matcher matcher) {
-
-    }//TODO
+    private void logout() {
+        System.out.println("logged out successfully");
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
+                "org/group16/Model/Data/stayLoggedInUser.txt");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            writer.write("");
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
