@@ -29,9 +29,7 @@ public class User {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
                 "group16/Model/Data/users.json");
-        // "/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
-        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
-        FileReader fileReader = null;
+        FileReader fileReader;
         try {
             fileReader = new FileReader(filePath);
         } catch (FileNotFoundException e) {
@@ -46,7 +44,7 @@ public class User {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(filePath);
         } catch (IOException e) {
@@ -64,9 +62,7 @@ public class User {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
                 "group16/Model/Data/users.json");
-        //"/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
-        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
-        FileReader fileReader = null;
+        FileReader fileReader;
         try {
             fileReader = new FileReader(filePath);
         } catch (FileNotFoundException e) {
@@ -101,9 +97,7 @@ public class User {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
                 "group16/Model/Data/users.json");
-        //"/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
-        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(filePath);
         } catch (IOException e) {
