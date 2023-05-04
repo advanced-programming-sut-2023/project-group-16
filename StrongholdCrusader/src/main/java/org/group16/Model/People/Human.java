@@ -6,7 +6,7 @@ import org.group16.Model.Buildings.Building;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class Human extends GameObject implements Alive {
+public class Human extends GameObject implements Alive {
     private int hp;
     private Building building;
     private double relativeX;
@@ -14,14 +14,20 @@ public abstract class Human extends GameObject implements Alive {
 
     public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
-        kingdom.addHuman(this);
+        if (this instanceof Soldier)
+            kingdom.addSoldier((Soldier)this) ;
+        else
+            kingdom.addHuman(this);
         this.hp = hp;
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        getKingdom().removeHuman(this);
+        if (this instanceof Soldier)
+            getKingdom().removeSoldier((Soldier)this);
+        else
+            getKingdom().removeHuman(this);
     }
 
     public double getRelativeX() {
@@ -40,7 +46,7 @@ public abstract class Human extends GameObject implements Alive {
         this.relativeY = relativeY;
     }
 
-    public void moveToward(Cell destination, double distance, double randomness, Random random) {
+    protected void moveToward(Cell destination, double distance, double randomness, Random random) {
         Cell currentCell = getCell();
         PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, randomness, random);
         pathFindingQuery.findShortestPath();
@@ -87,5 +93,16 @@ public abstract class Human extends GameObject implements Alive {
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    public void onTurnStart(){
+        //TODO
+    }
+    public void update(double deltaTime){
+        //TODO
+    }
+
+    public void onTurnEnd(){
+        //TODO
     }
 }

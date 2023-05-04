@@ -61,10 +61,13 @@ public enum BuildingType {
     POLE_TURNER,
     //economy
     OIL_SMELTER,
-    //war?
+    //TODO : ????
+    //war ?
     PITCH_DITCH,
+    //TODO : ????
     //war?
     CAGED_WAR_DOGS,
+    //TODO : ????
     //war?
     SIEGE_TENT,
     //economy
@@ -85,5 +88,7 @@ public enum BuildingType {
     BREWER,
     //economy
     GRANARY,
+    TOWN_BUILDING ,
+    UNEMPLOYED_PLACE
     ;
 }
