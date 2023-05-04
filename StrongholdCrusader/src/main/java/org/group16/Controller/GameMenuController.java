@@ -6,6 +6,7 @@ import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Game;
 import org.group16.Model.Kingdom;
 import org.group16.Model.People.SoldierType;
+import org.group16.Model.Resources.Food;
 import org.group16.Model.User;
 
 import java.util.ArrayList;
@@ -35,20 +36,30 @@ public class GameMenuController {
     }
 
     public static String showPopularity(Game game, User currentUser) {
-        return null;
-    }//TODO
+        Kingdom kingdom = game.getKingdom(currentUser) ;
+        return "Popularity : " + kingdom.getPopularity() ;
+    }
 
-    public static String showFoodList(Game game, User currentUser) {
-        return null;
-    }//TODO
+    public static ArrayList<String> showFoodList(Game game, User currentUser) {
+        Kingdom kingdom = game.getKingdom(currentUser) ;
+        ArrayList<String> foods = new ArrayList<>() ;
+        for (Food food : kingdom.getFoodList())
+            foods.add(food.name()) ;
+        return foods ;
+    }
 
     public static String setFoodRate(Game game, User currentUser, int rate) {
-        return null;
-    }//TODO
+        Kingdom kingdom = game.getKingdom(currentUser) ;
+        if (rate < -2 || rate > 2)
+            return "food rate should be between -2 and 2 !" ;
+        kingdom.setFoodRate(rate);
+        return "OK" ;
+    }
 
     public static String showFoodRate(Game game, User currentUser) {
-        return null;
-    }//TODO
+        Kingdom kingdom = game.getKingdom(currentUser) ;
+        return "Food rate : " + kingdom.getFoodRate() ;
+    }
 
     public static String setTaxRate(Game game, User currentUser, int rate) {
         return null;

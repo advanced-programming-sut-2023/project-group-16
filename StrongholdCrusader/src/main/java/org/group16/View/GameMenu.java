@@ -1,9 +1,13 @@
 package org.group16.View;
 
+import org.group16.Controller.GameMenuController;
+import org.group16.Lib.Pair;
 import org.group16.Model.Game;
 import org.group16.Model.User;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 
 public class GameMenu {
@@ -29,34 +33,41 @@ public class GameMenu {
     }
 
 
-    private void showMap(Matcher matcher) {
+    private void showMap(TreeMap<String, ArrayList<String>> map) {
 
     }//TODO
 
-    private void moveMap(Matcher matcher) {
+    private void moveMap(TreeMap<String, ArrayList<String>> map) {
     }//TODO
 
-    private void showMapDetails(Matcher matcher) {
+    private void showMapDetails(TreeMap<String, ArrayList<String>> map) {
     }//TODO
 
-    private void showPopularityFactors(Matcher matcher) {
+    private void showPopularityFactors(TreeMap<String, ArrayList<String>> map) {
+        for (Pair <String , Integer> pair : GameMenuController.showPopularityFactors(game , getCurrentUser()))
+            System.out.println(pair.getA() + " : " + pair.getB());
+    }
 
-    }//TODO
+    private void showPopularity(TreeMap<String, ArrayList<String>> map) {
+        System.out.println(GameMenuController.showPopularity(game , getCurrentUser()));
+    }
 
-    private void showPopularity(Matcher matcher) {
+    private void showFoodList(TreeMap<String, ArrayList<String>> map) {
+        for (String foodName : GameMenuController.showFoodList(game , getCurrentUser()))
+            System.out.println(foodName);
+    }
 
-    }//TODO
+    private void setFoodRate(TreeMap<String, ArrayList<String>> map) {
+        int rate = Integer.parseInt(map.get("r").get(0)) ;
+        String output = GameMenuController.setFoodRate(game , getCurrentUser() , rate) ;
+        if (output.equals("OK"))
+            return;
+        System.out.println(output);
+    }
 
-    private void showFoodList(Matcher matcher) {
-
-    }//TODO
-
-    private void setFoodRate(Matcher matcher) {
-
-    }//TODO
-
-    private void showFoodRate(Matcher matcher) {
-
+    private void showFoodRate(TreeMap<String, ArrayList<String>> map) {
+        String output = GameMenuController.showFoodRate(game , getCurrentUser()) ;
+        System.out.println(output);
     }//TODO
 
     private void setTaxRate(Matcher matcher) {
