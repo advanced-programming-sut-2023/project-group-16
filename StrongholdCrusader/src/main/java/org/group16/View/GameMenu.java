@@ -2,8 +2,10 @@ package org.group16.View;
 
 import org.group16.Controller.GameMenuController;
 import org.group16.Lib.Pair;
+import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Game;
+import org.group16.Model.GameObject;
 import org.group16.Model.User;
 
 import java.util.ArrayList;
@@ -108,8 +110,19 @@ public class GameMenu {
     }
 
     private void selectBuilding(TreeMap<String, ArrayList<String>> map) {
-
-    }//TODO
+        int x = Integer.parseInt(map.get("x").get(0)) ;
+        int y = Integer.parseInt(map.get("y").get(0)) ;
+        Building building = null;
+        for (GameObject gameObject : game.getScene().getMap().getCellAt(x , y).getGameObjects()){
+            if (gameObject instanceof Building)
+                building = (Building) gameObject ;
+        }
+        if (building==null){
+            System.out.println("no Building here");
+            return;
+        }
+        //TODO : going to Building menu
+    }
 
     private void selectUnit(TreeMap<String, ArrayList<String>> map) {
 

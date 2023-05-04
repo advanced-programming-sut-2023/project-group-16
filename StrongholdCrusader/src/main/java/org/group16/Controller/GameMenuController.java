@@ -124,10 +124,6 @@ public class GameMenuController {
         return "OK";
     }
 
-    public static String selectBuilding(Game game, User currentUser, int x, int y) {
-        return null;
-    }//TODO
-
     public static String selectUnit(Game game, User currentUser, int x, int y) {
         return null;
     }//TODO
