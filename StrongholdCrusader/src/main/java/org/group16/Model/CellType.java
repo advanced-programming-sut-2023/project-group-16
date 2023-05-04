@@ -30,4 +30,8 @@ public enum CellType {
     public double getTraverseCost() {
         return traverseCost;
     }
+
+    public boolean isOkToBuildIn() {
+        return okToBuildIn;
+    }
 }

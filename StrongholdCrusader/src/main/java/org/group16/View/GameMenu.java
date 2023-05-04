@@ -2,6 +2,7 @@ package org.group16.View;
 
 import org.group16.Controller.GameMenuController;
 import org.group16.Lib.Pair;
+import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Game;
 import org.group16.Model.User;
 
@@ -44,53 +45,73 @@ public class GameMenu {
     }//TODO
 
     private void showPopularityFactors(TreeMap<String, ArrayList<String>> map) {
-        for (Pair <String , Integer> pair : GameMenuController.showPopularityFactors(game , getCurrentUser()))
+        for (Pair<String, Integer> pair : GameMenuController.showPopularityFactors(game, getCurrentUser()))
             System.out.println(pair.getA() + " : " + pair.getB());
     }
 
     private void showPopularity(TreeMap<String, ArrayList<String>> map) {
-        System.out.println(GameMenuController.showPopularity(game , getCurrentUser()));
+        System.out.println(GameMenuController.showPopularity(game, getCurrentUser()));
     }
 
     private void showFoodList(TreeMap<String, ArrayList<String>> map) {
-        for (String foodName : GameMenuController.showFoodList(game , getCurrentUser()))
+        for (String foodName : GameMenuController.showFoodList(game, getCurrentUser()))
             System.out.println(foodName);
     }
 
     private void setFoodRate(TreeMap<String, ArrayList<String>> map) {
-        int rate = Integer.parseInt(map.get("r").get(0)) ;
-        String output = GameMenuController.setFoodRate(game , getCurrentUser() , rate) ;
+        int rate = Integer.parseInt(map.get("r").get(0));
+        String output = GameMenuController.setFoodRate(game, getCurrentUser(), rate);
         if (output.equals("OK"))
             return;
         System.out.println(output);
     }
 
     private void showFoodRate(TreeMap<String, ArrayList<String>> map) {
-        String output = GameMenuController.showFoodRate(game , getCurrentUser()) ;
+        String output = GameMenuController.showFoodRate(game, getCurrentUser());
         System.out.println(output);
+    }
+
+    private void setTaxRate(TreeMap<String, ArrayList<String>> map) {
+        int rate = Integer.parseInt(map.get("r").get(0)) ;
+        String output = GameMenuController.setTaxRate(game , getCurrentUser() , rate) ;
+        if (output.equals("OK"))
+            return;
+        System.out.println(output);
+    }
+
+    private void showTaxRate(TreeMap<String, ArrayList<String>> map) {
+        String output = GameMenuController.showTaxRate(game , getCurrentUser()) ;
+        System.out.println(output);
+    }
+
+    private void setFearRate(TreeMap<String, ArrayList<String>> map) {
+        int rate = Integer.parseInt(map.get("r").get(0)) ;
+        String output = GameMenuController.setFearRate(game , getCurrentUser() , rate) ;
+        if (output.equals("OK"))
+            return;
+        System.out.println(output);
+    }
+
+    private void dropBuilding(TreeMap<String, ArrayList<String>> map) {
+        int x = Integer.parseInt(map.get("x").get(0)) ;
+        int y = Integer.parseInt(map.get("y").get(0)) ;
+        String type = map.get("t").get(0) ;
+        BuildingType buildingType = BuildingType.getBuildingTypeByName(type) ;
+        if (buildingType==null){
+            System.out.println("no building called " + type + "!");
+            return;
+        }
+        String output = GameMenuController.dropBuilding(game , getCurrentUser() , x , y , buildingType) ;
+        if (output.equals("OK"))
+            return;
+        System.out.println(output);
+    }
+
+    private void selectBuilding(TreeMap<String, ArrayList<String>> map) {
+
     }//TODO
 
-    private void setTaxRate(Matcher matcher) {
-
-    }//TODO
-
-    private void showTaxRate(Matcher matcher) {
-
-    }//TODO
-
-    private void setFearRate(Matcher matcher) {
-
-    }//TODO
-
-    private void dropBuilding(Matcher matcher) {
-
-    }//TODO
-
-    private void selectBuilding(Matcher matcher) {
-
-    }//TODO
-
-    private void selectUnit(Matcher matcher) {
+    private void selectUnit(TreeMap<String, ArrayList<String>> map) {
 
     }//TODO
 }

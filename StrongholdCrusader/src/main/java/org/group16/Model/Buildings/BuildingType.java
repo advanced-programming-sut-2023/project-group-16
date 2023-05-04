@@ -1,6 +1,13 @@
 package org.group16.Model.Buildings;
 
-public enum BuildingType {
+import org.group16.Lib.Pair;
+import org.group16.Model.Cell;
+import org.group16.Model.CellType;
+import org.group16.Model.Resources.Resource;
+
+import java.util.ArrayList;
+
+public enum BuildingType implements Resource {
     //economy
     SMALL_STONE_GATEHOUSE("small stone gatehouse"),
     //economy
@@ -88,11 +95,47 @@ public enum BuildingType {
     BREWER("brewer"),
     //economy
     GRANARY("granary"),
-    TOWN_BUILDING("town building") ,
-    UNEMPLOYED_PLACE("unemployed place")
-    ;
-    private final String strName ;
-    private BuildingType(String strName){
-        this.strName = strName ;
+    TOWN_BUILDING("town building"),
+    UNEMPLOYED_PLACE("unemployed place");
+    private final String strName;
+    private final int cellSize = 1;
+    //TODO : should be added
+    private final ArrayList<Pair<Resource, Integer>> dependencies = new ArrayList<>() ;
+    //TODO : should change
+    private final CellType cellTypeNeeded = CellType.NORMAL ;
+
+    private BuildingType(String strName) {
+        this.strName = strName;
     }
+
+    public String getStrName() {
+        return strName;
+    }
+
+    public int getCellSize() {
+        return cellSize;
+    }
+
+    public CellType getCellTypeNeeded() {
+        return cellTypeNeeded;
+    }
+
+    public static BuildingType getBuildingTypeByName(String name) {
+        for (BuildingType buildingType : BuildingType.values()) {
+            if (buildingType.getStrName().equals(name))
+                return buildingType;
+        }
+        return null;
+    }
+    public ArrayList<Pair<Resource, Integer>> getDependencies(){
+        return dependencies;
+    }
+    public int getResultCount(){
+        return 1 ;
+    }
+    public int getPrice(){
+        //just should be something
+        return 0 ;
+    }
+
 }
