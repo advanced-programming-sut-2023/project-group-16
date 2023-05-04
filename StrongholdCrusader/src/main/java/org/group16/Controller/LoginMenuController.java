@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 import org.group16.Model.User;
 import org.group16.View.LoginMenu;
 
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +22,7 @@ public class LoginMenuController {
             return "this username is already exist, suggested username: " + suggestUsername(username);
         if (isPasswordWeak(password) != null) return "password is weak: " + isPasswordWeak(password);
         if (!password.equals(passwordConfirmation)) return "password and password confirmation are not same";
-        if (findUserByEmail(email)) return "this email is already exist";
+        if (isUserExistByEmail(email)) return "this email is already exist";
         if (!isEmailValid(email)) return "invalid email format";
         if (slogan.equals("random")) {
             slogan = generateSlogan();
@@ -37,9 +38,9 @@ public class LoginMenuController {
         TreeMap<String, ArrayList<String>> map = LoginMenu.questionPick();
         if (map == null) return "invalid command";
         String passwordRecoveryQuestion = null;
-        if (map.get("q").get(0).equals("1")) passwordRecoveryQuestion = "1. What is my father's name?";
-        if (map.get("q").get(0).equals("2")) passwordRecoveryQuestion = "2. What was my first pet's name?";
-        if (map.get("q").get(0).equals("3")) passwordRecoveryQuestion = "3. What is my mother's last name?";
+        if (map.get("q").get(0).equals("1")) passwordRecoveryQuestion = "What is my father's name?";
+        if (map.get("q").get(0).equals("2")) passwordRecoveryQuestion = "What was my first pet's name?";
+        if (map.get("q").get(0).equals("3")) passwordRecoveryQuestion = "What is my mother's last name?";
         if (passwordRecoveryQuestion == null) return "invalid command";
         if (!map.get("a").get(0).equals(map.get("c").get(0)))
             return "password recovery answer and it's confirmation are not same";
@@ -57,7 +58,7 @@ public class LoginMenuController {
         return username + number;
     }
 
-    private static String isPasswordWeak(String password) {
+    public static String isPasswordWeak(String password) {
         if (password.equals("random")) return null;
         if (password.length() < 6) return "length is less than 6 character";
         if (Pattern.compile("[^a-z]").matcher(password).matches()) return "doesn't contain small letter";
@@ -68,12 +69,17 @@ public class LoginMenuController {
         return null;
     }
 
-    private static boolean findUserByEmail(String email) {
+    private static boolean isUserExistByEmail(String email) {
         email = email.toLowerCase();
         ArrayList<User> allUsers = User.getAllUsers();
         for (User user : allUsers)
             if (user.getEmail().toLowerCase().equals(email)) return true;
         return false;
+    }
+
+    public static String getUserPasswordRecoveryQuestion(String username) {
+        User user = User.getUserByName(username);
+        return user == null ? null : user.getPasswordRecoveryQuestion();
     }
 
     private static boolean isEmailValid(String email) {
@@ -105,17 +111,47 @@ public class LoginMenuController {
         chars.add(getChar(50 + random.nextInt(26)));
         chars.add(getChar(50 + random.nextInt(26)));
         Collections.shuffle(chars);
-        String password = chars.stream()
-                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                .toString();
-        return password;
+        return chars.stream().collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
     }
 
     public static String loginUser(String username, String password, boolean stayLoggedIn) {
-        return null;
-    }//TODO
+        User user = User.getUserByName(username);
+        password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+        if (user == null || !user.getPassword().equals(password)) return "username and password didn't match";
+        if (stayLoggedIn) {
+            String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
+                    "org/group16/Model/Data/stayLoggedInUser.txt");
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+                writer.write(username);
+                writer.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return "user " + username + " logged in successfully";
+    }
 
-    public static String forgotPassword(String username) {
-        return null;
-    }//TODO
+    public static String checkRecoveryQuestionAnswer(String username, String answer) {
+        if (User.getUserByName(username).getPasswordRecoveryAnswer().equals(answer))
+            return "please enter your new password:";
+        return "incorrect answer";
+    }
+
+    public static void setPassword(String username, String password) {
+        User.getUserByName(username).setPassword(password);
+    }
+
+    public static User getStayLoggedInUser() {
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/stayLoggedInUser.txt");
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            String username = reader.readLine();
+            reader.close();
+            return User.getUserByName(username);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

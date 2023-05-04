@@ -14,6 +14,10 @@ public class Game {
         //TODO
     }
 
+    public Game() {
+        this.scene = new Scene(new Map());
+    }
+
     public void execute() {
         for (var kingdom : kingdoms)
             kingdom.onTurnStart();

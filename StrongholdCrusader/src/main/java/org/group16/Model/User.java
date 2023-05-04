@@ -7,9 +7,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class User {
-    private final String username;
-    private String password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
-    private int score;
+    private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
+    private int highScore;
 
     private User(String username, String password, String email, String passwordRecoveryQuestion,
                  String passwordRecoveryAnswer, String nickname, String slogan) {
@@ -20,7 +19,7 @@ public class User {
         this.passwordRecoveryAnswer = passwordRecoveryAnswer;
         this.nickname = nickname;
         this.slogan = slogan;
-        this.score = 0;
+        this.highScore = 0;
     }
 
     public static void addUser(String username, String password, String email, String passwordRecoveryQuestion,
@@ -30,9 +29,7 @@ public class User {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
                 "group16/Model/Data/users.json");
-        // "/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
-        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
-        FileReader fileReader = null;
+        FileReader fileReader;
         try {
             fileReader = new FileReader(filePath);
         } catch (FileNotFoundException e) {
@@ -47,7 +44,7 @@ public class User {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(filePath);
         } catch (IOException e) {
@@ -65,9 +62,7 @@ public class User {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
                 "group16/Model/Data/users.json");
-        //"/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
-        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
-        FileReader fileReader = null;
+        FileReader fileReader;
         try {
             fileReader = new FileReader(filePath);
         } catch (FileNotFoundException e) {
@@ -102,9 +97,7 @@ public class User {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
                 "group16/Model/Data/users.json");
-        //"/home/mahdishokoufi/Desktop/uni/HW-ANS/Advanced Programming/project-group-16/" +
-        //        "StrongholdCrusader/src/main/java/org/group16/Model/Data/users.json";
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(filePath);
         } catch (IOException e) {
@@ -118,17 +111,21 @@ public class User {
         }
     }
 
-    public int getScore() {
-        return score;
+    public int getHighScore() {
+        return highScore;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
         saveChanges(this);
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
