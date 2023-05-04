@@ -360,6 +360,9 @@ public class Kingdom {
     public int getFoodRate() {
         return foodRate;
     }
+    public int getFoodEffectOnPopularity(){
+        return getFoodRate() - 1;
+    }
 
     public void setFoodRate(int foodRate) {
         this.foodRate = foodRate;
@@ -368,7 +371,6 @@ public class Kingdom {
     public void onTurnStart() {
         //TODO
     }
-
     public void update(double deltaTime) {
         if (Time.isItTurned(deltaTime, Time.day)) {
             //tax
@@ -382,7 +384,7 @@ public class Kingdom {
             while (true) {
                 foodNeeded = (int) getFoodForEachPerson() * getPopulation();
                 if (availableFood < foodNeeded)
-                    setFearRate(getFoodRate() - 1);
+                    setFearRate(getFoodEffectOnPopularity());
                 else
                     break;
             }
