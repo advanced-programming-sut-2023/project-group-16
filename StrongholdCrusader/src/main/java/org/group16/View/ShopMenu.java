@@ -19,7 +19,9 @@ public class ShopMenu {
     }
 
     public void run() {
-
+        while (true) {
+            String input = scanner.nextLine();
+        }
     }//TODO
 
 

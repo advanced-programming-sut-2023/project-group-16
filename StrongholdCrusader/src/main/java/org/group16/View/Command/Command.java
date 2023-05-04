@@ -106,7 +106,7 @@ public enum Command {
             new Option("t", 1, true), new Option("a", 1, true),
             new Option("p", 1, true), new Option("m", 1, true)))),
     SHOW_TRADE_LIST("trade\\s+list", new ArrayList<>()),
-    ACCEPT_TRADE("trade\\s+accept", new ArrayList<>(List.of(
+    TRADE_ACCEPT("trade\\s+accept", new ArrayList<>(List.of(
             new Option("i", 1, true), new Option("m", 1, true)))),
     SHOW_TRADE_HISTORY("trade\\s+history", new ArrayList<>()),
     SHOW_PRICE_LIST("show\\s+price\\s+list", new ArrayList<>()),

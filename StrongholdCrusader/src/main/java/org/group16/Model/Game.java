@@ -52,18 +52,29 @@ public class Game {
         tradeOffers.add(trade);
     }
 
-    public void completeTrade(Trade trade) {
+    public void completeTrade(Trade trade, String buyerMessage) {
         tradeHistory.add(trade);
         tradeOffers.remove(trade);
-    }
+    } //TODO
 
     public ArrayList<Trade> getUserTrades(User user) {
-        //TODO
+        ArrayList<Trade> trades = new ArrayList<>();
+        for (Trade trade : getTradeHistory())
+            if (trade.getSeller().equals(user) || trade.getBuyer().equals(user)) trades.add(trade);
+        for (Trade trade : getTradeOffers())
+            if (trade.getSeller().equals(user)) trades.add(trade);
+        return trades;
+    }
+
+    public Trade getTradeById(int id) {
+        for (Trade trade : tradeOffers)
+            if (trade.getId() == id) return trade;
         return null;
     }
 
     public Kingdom getKingdom(User user) {
-        //TODO
+        for (Kingdom kingdom : kingdoms)
+            if (kingdom.getUser().getUsername().equals(user.getUsername())) return kingdom;
         return null;
     }
 }

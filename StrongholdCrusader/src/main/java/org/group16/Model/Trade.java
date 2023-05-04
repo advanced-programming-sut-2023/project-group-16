@@ -3,13 +3,21 @@ package org.group16.Model;
 import org.group16.Model.Resources.Resource;
 
 public class Trade {
+    private static int totalTrades = 0;
     private final Resource resource;
     private final Kingdom seller;
+    private final int price, amount, id;
+    private final String sellerMessage;
     private Kingdom buyer;
-    private final int price, amount;
+    private String buyerMessage;
 
-    public void setBuyer(Kingdom buyer) {
-        this.buyer = buyer;
+    public Trade(Resource resource, Kingdom seller, int price, int amount, String sellerMessage) {
+        this.resource = resource;
+        this.seller = seller;
+        this.price = price;
+        this.amount = amount;
+        this.sellerMessage = sellerMessage;
+        this.id = totalTrades++;
     }
 
     public Resource getResource() {
@@ -24,6 +32,10 @@ public class Trade {
         return buyer;
     }
 
+    public void setBuyer(Kingdom buyer) {
+        this.buyer = buyer;
+    }
+
     public int getPrice() {
         return price;
     }
@@ -32,10 +44,23 @@ public class Trade {
         return amount;
     }
 
-    public Trade(Resource resource, Kingdom seller, int price, int amount) {
-        this.resource = resource;
-        this.seller = seller;
-        this.price = price;
-        this.amount = amount;
+    public int getId() {
+        return id;
+    }
+
+    public String getSellerMessage() {
+        return sellerMessage;
+    }
+
+    public String getBuyerMessage() {
+        return buyerMessage;
+    }
+
+    @Override
+    public String toString() {
+        if (buyer == null) return id + ") " + seller.getUser().getUsername() + ": " + resource.getName() +
+                " [amount=" + amount + " | price=" + price + "]\n";
+        return id + ") " + " from " + seller.getUser().getUsername() + " to " + buyer.getUser().getUsername() + ": " +
+                resource.getName() + " [amount=" + amount + " | price=" + price + "]\n";
     }
 }
