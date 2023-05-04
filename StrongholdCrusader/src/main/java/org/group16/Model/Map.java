@@ -1,8 +1,5 @@
 package org.group16.Model;
 
-import jdk.dynalink.beans.StaticClass;
-import org.group16.Lib.OrderedPair;
-import org.group16.Model.People.Human;
 import org.group16.Vector2;
 
 import java.util.*;
@@ -26,6 +23,11 @@ public class Map {
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 cells[i][j] = new Cell(i, j, map.cells[i][j]);
+    }
+
+    public Map() {
+        this.width = 0;
+        this.height = 0;
     }
 
     public static double getCellDistance(Cell a, Cell b) {
