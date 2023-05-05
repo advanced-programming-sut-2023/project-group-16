@@ -5,7 +5,7 @@ import org.checkerframework.checker.units.qual.K;
 import org.group16.Lib.Pair;
 import org.group16.Model.*;
 import org.group16.Model.Buildings.*;
-import org.group16.Model.People.SoldierType;
+import org.group16.Model.People.*;
 import org.group16.Model.Resources.Food;
 import org.group16.Model.Resources.Resource;
 
@@ -81,6 +81,7 @@ public class GameMenuController {
         kingdom.setFearRate(rate);
         return "OK";
     }
+
     public static String dropBuilding(Game game, User currentUser, int x, int y, BuildingType buildingType) {
         Kingdom kingdom = game.getKingdom(currentUser);
         int cellSize = buildingType.getCellSize() - 1;
@@ -106,18 +107,28 @@ public class GameMenuController {
             if (kingdom.getResourceCount(pair.getA()) < pair.getB())
                 return "can not build now : not enough " + pair.getA();
         }
-        for (Pair<Resource, Integer> pair : buildingType.getDependencies())
-            kingdom.useResource(pair.getA(), pair.getB());
-        for (EconomicBuildingDetail economicBuildingDetail : EconomicBuildingDetail.values()){
+
+        for (EconomicBuildingDetail economicBuildingDetail : EconomicBuildingDetail.values()) {
             if (economicBuildingDetail.getBuildingType().equals(buildingType)) {
+                if (kingdom.availableHumans() < economicBuildingDetail.getNeededWorkers() + economicBuildingDetail.getNeededEngineers())
+                    return "can not build now : not enough Human";
+                kingdom.useHuman(economicBuildingDetail.getNeededEngineers() + economicBuildingDetail.getNeededWorkers());
                 //TODO : time should be added correctly
-                new EconomicBuilding(cells, kingdom, 0.0 ,economicBuildingDetail) ;
+                for (Pair<Resource, Integer> pair : buildingType.getDependencies())
+                    kingdom.useResource(pair.getA(), pair.getB());
+                EconomicBuilding economicBuilding = new EconomicBuilding(cells, kingdom, 0.0, economicBuildingDetail);
+                for (int i = 0; i < economicBuildingDetail.getNeededWorkers(); i++)
+                    economicBuilding.addWorker(new Worker(cells, kingdom, 100));
+                for (int i = 0; i < economicBuildingDetail.getNeededEngineers(); i++)
+                    economicBuilding.addWorker(new Soldier(cells, kingdom, SoldierDetail.ENGINEER));
             }
         }
-        for (WarBuildingDetail warBuildingDetail : WarBuildingDetail.values()){
-            if (warBuildingDetail.getBuildingType().equals(buildingType)){
+        for (WarBuildingDetail warBuildingDetail : WarBuildingDetail.values()) {
+            if (warBuildingDetail.getBuildingType().equals(buildingType)) {
                 //TODO : time should be added correctly
-                new WarBuilding(cells , kingdom , 0.0 , warBuildingDetail) ;
+                for (Pair<Resource, Integer> pair : buildingType.getDependencies())
+                    kingdom.useResource(pair.getA(), pair.getB());
+                new WarBuilding(cells, kingdom, 0.0, warBuildingDetail);
             }
         }
         return "OK";
