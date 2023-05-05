@@ -5,20 +5,18 @@ import org.group16.Lib.Pair;
 import java.util.ArrayList;
 
 public enum Food implements Resource {
-    MEAT("MEAT", null, 1),
-    APPLE("APPLE", null, 1),
-    CHEESE("CHEESE", null, 1),
-    FLOUR("FLOUR", new Pair<>(BasicResource.WHEAT, 1), 1),
-    BREAD("BREAD", new Pair<>(Food.FLOUR, 1), 1),
-    ALE("ALE", new Pair<>(BasicResource.HOPS, 1), 1),
+    MEAT(null, 1),
+    APPLE(null, 1),
+    CHEESE(null, 1),
+    FLOUR(new Pair<>(BasicResource.WHEAT, 1), 1),
+    BREAD(new Pair<>(Food.FLOUR, 1), 1),
+    ALE(new Pair<>(BasicResource.HOPS, 1), 1),
     ;
 
     private final Pair<Resource, Integer> dependency;
     private final int resultCount;
-    private final String name;
 
-    private Food(String name, Pair<Resource, Integer> dependency, int resultCount) {
-        this.name = name;
+    private Food(Pair<Resource, Integer> dependency, int resultCount) {
         this.dependency = dependency;
         this.resultCount = resultCount;
     }
@@ -38,10 +36,5 @@ public enum Food implements Resource {
     @Override
     public int getPrice() {
         return Integer.MAX_VALUE;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 }

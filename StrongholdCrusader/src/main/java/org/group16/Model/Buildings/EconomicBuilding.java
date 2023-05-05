@@ -66,7 +66,7 @@ public class EconomicBuilding extends Building {
         for (Pair<Resource, Integer> needed : resource.getDependencies()) {
             getKingdom().useResource(needed.getA(), needed.getB() * count);
         }
-        getKingdom().addRecourse(resource, count);
+        getKingdom().addResource(resource, count);
     }
 
     public void addWorker(Human human) {
@@ -109,7 +109,7 @@ public class EconomicBuilding extends Building {
     @Override
     public void update(double deltaTime) {
         //TODO : Time needed may change
-        if (!isActive()||!Time.isItTurned(deltaTime - getBuildTime() , Time.day))
+        if (!isActive() || !Time.isItTurned(deltaTime - getBuildTime(), Time.day))
             return;
         for (ProductData productData : detail.getProductsData()) {
             if (!productData.isManual())

@@ -4,7 +4,6 @@ import org.group16.Lib.Pair;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuilding;
-import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.Worker;
@@ -14,7 +13,6 @@ import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.StorageData;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 public class Kingdom {
     private final KingdomType kingdomType;
@@ -72,7 +70,7 @@ public class Kingdom {
         }
         int added = Math.min(population, getPopulationCapacity() - getPopulation());
         while (added > 0) {
-            new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100) ;
+            new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100);
             added--;
         }
     }
@@ -83,13 +81,14 @@ public class Kingdom {
 
     public void addPopularity(int popularity) {
         this.popularity += popularity;
-        this.popularity = Math.min(100 , this.popularity) ;
-        this.popularity = Math.max(0 , this.popularity) ;
+        this.popularity = Math.min(100, this.popularity);
+        this.popularity = Math.max(0, this.popularity);
     }
+
     //TODO : function used is completely bullshit and may change
-    public void populationGrowth(){
-        int A = getPopularity() - 50 ;
-        int added = A/10 ;
+    public void populationGrowth() {
+        int A = getPopularity() - 50;
+        int added = A / 10;
         addPopulation(added);
     }
 
@@ -321,7 +320,7 @@ public class Kingdom {
         return true;
     }
 
-    public boolean addRecourse(Resource resource, int count) {
+    public boolean addResource(Resource resource, int count) {
         if (getResourceStorageCapacity(resource) < count) return false;
         for (Building building : buildings) {
             if (count == 0) break;
@@ -335,7 +334,7 @@ public class Kingdom {
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public Integer getPopulationCapacity() {
@@ -350,11 +349,11 @@ public class Kingdom {
     }
 
     public int getGold() {
-        return getResourceCount(BasicResource.GOLD) ;
+        return getResourceCount(BasicResource.GOLD);
     }
 
     public void addGold(int count) {
-        addRecourse(BasicResource.GOLD , count) ;
+        addResource(BasicResource.GOLD, count);
     }
 
     public int getFoodRate() {
@@ -391,8 +390,8 @@ public class Kingdom {
             for (Food food : getFoodList()) {
                 if (foodNeeded == 0)
                     break;
-                int eatenFood = Math.min(foodNeeded , getResourceCount(food)) ;
-                useResource(food , eatenFood) ;
+                int eatenFood = Math.min(foodNeeded, getResourceCount(food));
+                useResource(food, eatenFood);
             }
             //fearRate
             addPopularity(-getFearRate());

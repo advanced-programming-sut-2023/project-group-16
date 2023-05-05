@@ -14,7 +14,7 @@ public class TradeMenuController {
         if (amount < 0) return "amount should be positive";
         if (resource == null) return "invalid resource type";
         Kingdom kingdom = game.getKingdom(currentUser);
-        if (kingdom.getResourceCount(resource) < amount) return "insufficient amount";
+        if (kingdom.getResourceCount(resource) < amount) return "insufficient amount in storage";
         Trade trade = new Trade(resource, kingdom, price, amount, massage);
         game.addTrade(trade);
         return "trade request made successfully";
@@ -32,8 +32,7 @@ public class TradeMenuController {
     public static String tradeAccept(Game game, User currentUser, int id, String massage) {
         Trade trade = game.getTradeById(id);
         if (trade == null) return "no trade with this id exist";
-        game.completeTrade(trade, massage);
-        return "trade accept successfully"; //maybe add insufficient storage error later2
+        return game.completeTrade(trade, massage);
     }//TODO
 
     public static String tradeHistory(Game game, User currentUser) {

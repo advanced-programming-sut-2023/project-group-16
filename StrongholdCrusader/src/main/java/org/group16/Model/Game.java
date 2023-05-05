@@ -52,10 +52,15 @@ public class Game {
         tradeOffers.add(trade);
     }
 
-    public void completeTrade(Trade trade, String buyerMessage) {
+    public String completeTrade(Trade trade, String buyerMessage) {
+        if (!trade.getBuyer().addResource(trade.getResource(), trade.getAmount()))
+            return "insufficient storage capacity";
+        trade.getSeller().useResource(trade.getResource(), trade.getAmount());
+        trade.setBuyerMessage(buyerMessage);
         tradeHistory.add(trade);
         tradeOffers.remove(trade);
-    } //TODO
+        return "trade made successfully";
+    }
 
     public ArrayList<Trade> getUserTrades(User user) {
         ArrayList<Trade> trades = new ArrayList<>();

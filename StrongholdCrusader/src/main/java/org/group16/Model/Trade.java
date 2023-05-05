@@ -56,11 +56,16 @@ public class Trade {
         return buyerMessage;
     }
 
+    public void setBuyerMessage(String buyerMessage) {
+        this.buyerMessage = buyerMessage;
+    }
+
     @Override
     public String toString() {
-        if (buyer == null) return id + ") " + seller.getUser().getUsername() + ": " + resource.getName() +
-                " [amount=" + amount + " | price=" + price + "]\n";
-        return id + ") " + " from " + seller.getUser().getUsername() + " to " + buyer.getUser().getUsername() + ": " +
-                resource.getName() + " [amount=" + amount + " | price=" + price + "]\n";
+        if (buyer == null) return id + ") " + seller.getUser().getUsername() + ": " + sellerMessage + "\n" +
+                "[" + ((Enum) resource).name() + " | amount=" + amount + " | price=" + price + "]\n";
+        return id + ") " + " from " + seller.getUser().getUsername() + ": " + sellerMessage + "\nto " +
+                buyer.getUser().getUsername() + ": " + buyerMessage + "\n[" +
+                ((Enum) resource).name() + " | amount=" + amount + " | price=" + price + "]\n";
     }
 }

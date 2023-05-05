@@ -95,7 +95,7 @@ public class TradeMenu {
         }
         String message = map.get("m").get(0);
         System.out.println(TradeMenuController.tradeAccept(game, currentUser, id, message));
-    }//TODO
+    }
 
     private void tradeHistory() {
         System.out.print(TradeMenuController.tradeHistory(game, currentUser));

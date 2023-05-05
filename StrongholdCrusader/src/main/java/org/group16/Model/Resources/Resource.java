@@ -10,6 +10,4 @@ public interface Resource {
     public int getResultCount();
 
     public int getPrice();
-
-    public String getName();
 }
