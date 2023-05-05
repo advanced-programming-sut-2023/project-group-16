@@ -11,19 +11,4 @@ public class Engineer extends Soldier {
         super(cells, kingdom, detail);
     }
 
-    @Override
-    public void onTurnStart() {
-        //TODO
-    }
-
-    @Override
-    public void update(double deltaTime) {
-        //TODO
-    }
-
-    @Override
-    public void onTurnEnd() {
-        //TODO
-    }
-
 }
