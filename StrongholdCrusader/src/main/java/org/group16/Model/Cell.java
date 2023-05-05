@@ -1,8 +1,6 @@
 package org.group16.Model;
 
-import com.sun.source.tree.BreakTree;
 import org.group16.Model.Buildings.Building;
-import org.group16.Model.People.Soldier;
 import org.group16.Vector2;
 
 import java.util.ArrayList;
@@ -74,13 +72,16 @@ public class Cell implements Comparable<Cell> {
         return Integer.compare(x, other.x);
     }
 
-    public boolean traversable() {
-        return true;
-    }//TODO
+    public boolean isTraversable() {
+        Building building = getBuilding();
+        if (building == null)
+            return getTraverseCost() < 100;
+        return building.isTraversable();
+    }
 
     public double getTraverseCost() {
-        return 1;
-    }//TODO
+        return getCellType().getTraverseCost();
+    }
 
     public Building getBuilding() {
         for (var obj : gameObjects) if (obj instanceof Building) return (Building) obj;
