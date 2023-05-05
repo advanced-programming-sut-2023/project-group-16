@@ -183,4 +183,10 @@ public enum SoldierDetail implements Resource {
     public KingdomType getKingdomType() {
         return kingdomType;
     }
+    public static SoldierDetail getSoldierDetailByName(String name){
+        for (SoldierDetail soldierDetail : SoldierDetail.values())
+            if (soldierDetail.toString().equals(name))
+                return soldierDetail ;
+        return null ;
+    }
 }

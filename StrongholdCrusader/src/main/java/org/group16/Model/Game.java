@@ -79,7 +79,7 @@ public class Game {
 
     public Kingdom getKingdom(User user) {
         for (Kingdom kingdom : kingdoms)
-            if (kingdom.getUser().getUsername().equals(user.getUsername())) return kingdom;
+            if (kingdom.getUser().equals(user)) return kingdom;
         return null;
     }
 }

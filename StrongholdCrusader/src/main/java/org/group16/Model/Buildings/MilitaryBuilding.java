@@ -19,7 +19,7 @@ public class MilitaryBuilding extends EconomicBuilding {
     }
 
     @Override
-    public void makeResource(Resource resource, int cnt) {
+    public boolean makeResource(Resource resource, int cnt) {
         ProductData productData = null;
         for (ProductData pr : getDetail().getProductsData()) {
             if (pr.resource().equals(resource))
@@ -36,7 +36,7 @@ public class MilitaryBuilding extends EconomicBuilding {
         if (getKingdom().getResourceCount(BasicResource.GOLD) < cnt * soldierDetail.getGoldNeeded())
             canBeBuilt = false;
         if (!canBeBuilt || getKingdom().availableHumans() < cnt)
-            return;
+            return false;
         if (soldierDetail.getKingdomType().equals(KingdomType.EUROPEAN)) {
             getKingdom().useResource(soldierDetail.getArmor(), cnt);
             getKingdom().useResource(soldierDetail.getWeapon(), cnt);
@@ -47,5 +47,6 @@ public class MilitaryBuilding extends EconomicBuilding {
             new Soldier(this.getCells(), this.getKingdom(), soldierDetail);
             cnt--;
         }
+        return true  ;
     }
 }

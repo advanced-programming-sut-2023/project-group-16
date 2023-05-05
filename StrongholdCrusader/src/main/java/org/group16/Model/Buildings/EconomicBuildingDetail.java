@@ -5,6 +5,8 @@ import org.group16.Model.Kingdom;
 import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.Resources.*;
 
+import java.util.ArrayList;
+
 public enum EconomicBuildingDetail {
     SMALL_STONE_GATEHOUSE(null, null, 0, null, 1000, 0, 0, BuildingType.SMALL_STONE_GATEHOUSE),
     LARGE_STONE_GATEHOUSE(null, null, 0, null, 2000, 0, 0, BuildingType.LARGE_STONE_GATEHOUSE),
@@ -109,7 +111,6 @@ public enum EconomicBuildingDetail {
     private final StorageData[] storageData;
     private final EconomyEffect economyEffect;
     private final BuildingType buildingType;
-
     private EconomicBuildingDetail(ProductData[] productsData, StorageData[] storageData, int capacity, EconomyEffect economyEffect, int hp, int neededWorkers, int neededEngineers, BuildingType buildingType) {
         this.productsData = productsData;
         this.storageData = storageData;
@@ -119,6 +120,7 @@ public enum EconomicBuildingDetail {
         this.neededWorkers = neededWorkers;
         this.hp = hp;
         this.buildingType = buildingType;
+
     }
 
     public int getNeededWorkers() {

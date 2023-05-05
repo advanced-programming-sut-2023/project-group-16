@@ -55,7 +55,12 @@ public abstract class Building extends GameObject implements Alive {
     }
 
     public void repair() {
-        //TODO : ?
+        int basicHp ;
+        if (this instanceof  EconomicBuilding)
+            basicHp = ((EconomicBuilding) this).getDetail().getHp() ;
+        else
+            basicHp = ((WarBuilding)this).getDetail().getHp() ;
+        setHp(basicHp);
     }
 
     @Override

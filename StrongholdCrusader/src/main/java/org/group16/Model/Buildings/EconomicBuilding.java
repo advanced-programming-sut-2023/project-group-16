@@ -48,7 +48,7 @@ public class EconomicBuilding extends Building {
         }
     }
 
-    public void makeResource(Resource resource, int count) {
+    public boolean makeResource(Resource resource, int count) {
         ProductData productData = null;
         for (ProductData pr : detail.getProductsData()) {
             if (pr.resource().equals(resource))
@@ -62,11 +62,12 @@ public class EconomicBuilding extends Building {
         if (getKingdom().getResourceStorageCapacity(resource) < count)
             canBeBuilt = false;
         if (!canBeBuilt || productData == null)
-            return;
+            return false;
         for (Pair<Resource, Integer> needed : resource.getDependencies()) {
             getKingdom().useResource(needed.getA(), needed.getB() * count);
         }
         getKingdom().addResource(resource, count);
+        return true;
     }
 
     public void addWorker(Human human) {
