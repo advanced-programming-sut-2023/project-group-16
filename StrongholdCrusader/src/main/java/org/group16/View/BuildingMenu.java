@@ -9,6 +9,8 @@ import org.group16.Model.Game;
 import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.People.SoldierType;
 import org.group16.Model.User;
+import org.group16.View.Command.Command;
+import org.group16.View.Command.CommandHandler;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -30,8 +32,15 @@ public class BuildingMenu {
     }
 
     public void run() {
-
-    }//TODO
+        while (scanner.hasNextLine()) {
+            String input = scanner.nextLine();
+            TreeMap<String, ArrayList<String>> map;
+            if ((map = CommandHandler.matches(Command.CREATE_UNIT, input)) != null) createUnit(map);
+            else if ((map = CommandHandler.matches(Command.REPAIR, input)) != null) repair(map);
+            else
+                System.out.println("invalid command");
+        }
+    }
 
     private void createUnit(TreeMap<String, ArrayList<String>> map) {
         String type = map.get("t").get(0) ;

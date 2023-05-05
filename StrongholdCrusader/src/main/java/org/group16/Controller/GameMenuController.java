@@ -81,7 +81,6 @@ public class GameMenuController {
         kingdom.setFearRate(rate);
         return "OK";
     }
-
     public static String dropBuilding(Game game, User currentUser, int x, int y, BuildingType buildingType) {
         Kingdom kingdom = game.getKingdom(currentUser);
         int cellSize = buildingType.getCellSize() - 1;
