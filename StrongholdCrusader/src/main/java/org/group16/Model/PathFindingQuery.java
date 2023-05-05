@@ -58,7 +58,7 @@ public class PathFindingQuery {
 
     private void updateEdge(Cell from, Cell to) {
         if (to == null) return;
-        if (!to.traversable()) return;
+        if (!to.isTraversable()) return;
 
         double cost = (from.getTraverseCost() + to.getTraverseCost()) / 2 + random.nextDouble() * randomness;
         if (from.getX() != to.getX() && from.getY() != to.getY()) cost *= DIAGONAL_COST_MULTIPLIER;
