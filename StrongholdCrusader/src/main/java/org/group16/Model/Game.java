@@ -9,10 +9,10 @@ public class Game {
     private final ArrayList<Kingdom> kingdoms = new ArrayList<>();
     private final ArrayList<Trade> tradeOffers = new ArrayList<>();
     private final ArrayList<Trade> tradeHistory = new ArrayList<>();
-
+    private ArrayList<User> users = new ArrayList<>() ;
     public Game(Scene scene, ArrayList<User> users) {
         this.scene = scene;
-        //TODO : adding users
+        this.users.addAll(users);
     }
 
     public Game() {
@@ -83,5 +83,20 @@ public class Game {
         for (Kingdom kingdom : kingdoms)
             if (kingdom.getUser().equals(user)) return kingdom;
         return null;
+    }
+    public double getCurrentTime() {
+        return currentTime;
+    }
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+    public int getUserIndex(User user){
+        int ind = 0 ;
+        for (User cUser : users){
+            if (cUser.equals(user))
+                return ind ;
+            ind++ ;
+        }
+        return ind ;
     }
 }

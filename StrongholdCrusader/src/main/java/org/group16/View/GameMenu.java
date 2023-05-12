@@ -43,6 +43,7 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.SET_FEAR_RATE, input)) != null) setFearRate(map);
             else if ((map = CommandHandler.matches(Command.DROP_BUILDING, input)) != null) dropBuilding(map);
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
+            else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else
                 System.out.println("invalid command");
@@ -50,7 +51,18 @@ public class GameMenu {
     }
 
     private void nextTurn() {
-    }//TODO : next turn
+        //TODO : game end ?
+        if (currentPlayer!=game.getKingdoms().size()-1){
+            currentPlayer++ ;
+            System.out.println("now user " + getCurrentUser().getNickname() +  "is playing");
+        }
+        else{
+            game.execute();
+            System.out.println("game updated");
+            currentPlayer = 0 ;
+            System.out.println("now user " + getCurrentUser().getNickname() +  "is playing");
+        }
+    }
 
     private User getCurrentUser() {
         return game.getKingdoms().get(currentPlayer).getUser();

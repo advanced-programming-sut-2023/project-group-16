@@ -25,6 +25,8 @@ public class MilitaryBuilding extends EconomicBuilding {
             if (pr.resource().equals(resource))
                 productData = pr;
         }
+        if (productData==null)
+            return false ;
         boolean canBeBuilt = true;
         SoldierDetail soldierDetail = ((Soldier) productData.resource()).getSoldierDetail();
         if (soldierDetail.getKingdomType().equals(KingdomType.EUROPEAN) &&

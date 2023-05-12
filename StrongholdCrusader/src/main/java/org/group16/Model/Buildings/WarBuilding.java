@@ -52,7 +52,7 @@ public class WarBuilding extends Building {
 
     @Override
     public void update(double deltaTime) {
-        //TODO : Time needed may change
+        //TODO : Time needed may change -
         if (Time.isItTurned(deltaTime , Time.deltaTime)){
             for (Cell cell : getCells()){
                 for (GameObject human : cell.getGameObjects()){
