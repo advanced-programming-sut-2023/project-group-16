@@ -1,6 +1,5 @@
 package org.group16.Model;
 
-import org.checkerframework.checker.units.qual.A;
 import org.group16.Lib.Pair;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
@@ -274,6 +273,7 @@ public class Kingdom {
     public void removeSoldier(Soldier soldier) {
         soldiers.remove(soldier);
     }
+
     public void addBuilding(Building building) {
         buildings.add(building);
     }
@@ -364,24 +364,26 @@ public class Kingdom {
         return getResourceCount(BasicResource.GOLD);
     }
 
-    public void addGold(int count) {
-        addResource(BasicResource.GOLD, count);
+    public boolean addGold(int count) {
+        return addResource(BasicResource.GOLD, count);
     }
 
     public int getFoodRate() {
         return foodRate;
-    }
-    public int getFoodEffectOnPopularity(){
-        return getFoodRate() - 1;
     }
 
     public void setFoodRate(int foodRate) {
         this.foodRate = foodRate;
     }
 
+    public int getFoodEffectOnPopularity() {
+        return getFoodRate() - 1;
+    }
+
     public void onTurnStart() {
         //TODO : on turn start
     }
+
     public void update(double deltaTime) {
         if (getKing().getHp() <= 0){
             return;
