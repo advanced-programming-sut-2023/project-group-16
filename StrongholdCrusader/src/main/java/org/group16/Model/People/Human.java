@@ -15,7 +15,7 @@ public class Human extends GameObject implements Alive {
     public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
         if (this instanceof Soldier)
-            kingdom.addSoldier((Soldier)this) ;
+            kingdom.addSoldier((Soldier) this);
         else
             kingdom.addHuman(this);
         this.hp = hp;
@@ -25,7 +25,7 @@ public class Human extends GameObject implements Alive {
     public void destroy() {
         super.destroy();
         if (this instanceof Soldier)
-            getKingdom().removeSoldier((Soldier)this);
+            getKingdom().removeSoldier((Soldier) this);
         else
             getKingdom().removeHuman(this);
     }
@@ -95,14 +95,15 @@ public class Human extends GameObject implements Alive {
         this.building = building;
     }
 
-    public void onTurnStart(){
+    public void onTurnStart() {
         //TODO : on turn start
     }
-    public void update(double deltaTime){
+
+    public void update(double currentTime) {
         //TODO : update
     }
 
-    public void onTurnEnd(){
+    public void onTurnEnd() {
         //TODO : on turn end
     }
 }

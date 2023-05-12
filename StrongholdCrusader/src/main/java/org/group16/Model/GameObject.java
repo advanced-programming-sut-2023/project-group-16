@@ -61,7 +61,7 @@ public abstract class GameObject {
 
     public abstract void onTurnStart();
 
-    public abstract void update(double deltaTime);
+    public abstract void update(double currentTime);
 
     public abstract void onTurnEnd();
 }
