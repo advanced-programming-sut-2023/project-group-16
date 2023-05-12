@@ -31,7 +31,7 @@ class PathFindingQueryTest {
 
     @Test
     void getCellDistance() {
-        PathFindingQuery pathFindingQuery = new PathFindingQuery(map, null, null, null, true, 0, random);
+        PathFindingQuery pathFindingQuery = new PathFindingQuery(map, null, null, null, true, false, 0, random);
         int ax = random.nextInt(10), ay = random.nextInt(20);
         int bx = random.nextInt(10), by = random.nextInt(20);
         Cell cell1 = map.getCellAt(ax, ay);
@@ -50,7 +50,7 @@ class PathFindingQueryTest {
         assertNotNull(from);
         assertNotNull(to);
 
-        PathFindingQuery pathFindingQuery = new PathFindingQuery(map, from, to, null, true, 0, random);
+        PathFindingQuery pathFindingQuery = new PathFindingQuery(map, from, to, null, true, false, 0, random);
         pathFindingQuery.findShortestPath();
         assertNotNull(pathFindingQuery.getNextCell(from));
         ArrayList<Cell> cells = pathFindingQuery.getShortestPath();

@@ -46,9 +46,9 @@ public class Human extends GameObject implements Alive {
         this.relativeY = relativeY;
     }
 
-    protected void moveToward(Cell destination, boolean canUseLadder, double distance, double randomness, Random random) {
+    protected void moveToward(Cell destination, boolean canUseLadder, boolean canClimbWalls, double distance, double randomness, Random random) {
         Cell currentCell = getCell();
-        PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, getKingdom().getTeam(), canUseLadder, randomness, random);
+        PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, getKingdom().getTeam(), canUseLadder, canClimbWalls, randomness, random);
         pathFindingQuery.findShortestPath();
         Cell nextCell = pathFindingQuery.getNextCell(currentCell);
         double dx = nextCell.getX() - currentCell.getX();

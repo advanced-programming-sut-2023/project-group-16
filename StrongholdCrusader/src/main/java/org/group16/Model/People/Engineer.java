@@ -24,7 +24,7 @@ public class Engineer extends Soldier {
         }
 
         Cell destination = warCommand.getDestination();
-        moveToward(destination, false, deltaTime * getSoldierDetail().getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+        moveToward(destination, false, false, deltaTime * getSoldierDetail().getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
         if (creationCommand != null)
             if (getCell() == destination)
                 tryCreate();

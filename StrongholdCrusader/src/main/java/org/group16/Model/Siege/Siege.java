@@ -76,15 +76,15 @@ public class Siege extends Soldier {
         // Move Command
         if (moveDestination != null) {
             if (getCell() != moveDestination)
-                moveToward(moveDestination, false, deltaTime * siegeDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+                moveToward(moveDestination, false, false, deltaTime * siegeDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
             return;
         }
     }
 
     @Override
-    protected void moveToward(Cell destination, boolean canUseLadder, double distance, double randomness, Random random) {
+    protected void moveToward(Cell destination, boolean canUseLadder, boolean canClimbWalls, double distance, double randomness, Random random) {
         Cell from = getCell();
-        super.moveToward(destination, canUseLadder, distance, randomness, random);
+        super.moveToward(destination, canUseLadder, canClimbWalls, distance, randomness, random);
         Cell to = getCell();
         if (from != to) {
             int dx = to.getX() - from.getX();
