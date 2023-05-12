@@ -35,7 +35,7 @@ public class Soldier extends Human {
     }
 
     public void setWarCommand(WarCommand warCommand) {
-        this.warCommand = warCommand;
+        this.warCommand = new WarCommand(warCommand);
     }
 
     @Override

@@ -51,4 +51,8 @@ public class Engineer extends Soldier {
         }
         return result;
     }
+
+    public void setCreationCommand(SiegeDetail creationCommand) {
+        this.creationCommand = creationCommand;
+    }
 }
