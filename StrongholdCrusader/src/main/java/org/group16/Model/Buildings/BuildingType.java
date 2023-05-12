@@ -100,12 +100,21 @@ public enum BuildingType implements Resource {
     private final String strName;
     private final int cellSize = 1;
     //TODO : should be added
-    private final ArrayList<Pair<Resource, Integer>> dependencies = new ArrayList<>() ;
+    private final ArrayList<Pair<Resource, Integer>> dependencies = new ArrayList<>();
     //TODO : should change
-    private final CellType cellTypeNeeded = CellType.NORMAL ;
+    private final CellType cellTypeNeeded = CellType.NORMAL;
 
     private BuildingType(String strName) {
         this.strName = strName;
+    }
+
+    public static BuildingType getBuildingTypeByName(String name) {
+        name = name.toLowerCase();
+        for (BuildingType buildingType : BuildingType.values()) {
+            if (buildingType.getStrName().equals(name))
+                return buildingType;
+        }
+        return null;
     }
 
     public String getStrName() {
@@ -120,22 +129,16 @@ public enum BuildingType implements Resource {
         return cellTypeNeeded;
     }
 
-    public static BuildingType getBuildingTypeByName(String name) {
-        for (BuildingType buildingType : BuildingType.values()) {
-            if (buildingType.getStrName().equals(name))
-                return buildingType;
-        }
-        return null;
-    }
-    public ArrayList<Pair<Resource, Integer>> getDependencies(){
+    public ArrayList<Pair<Resource, Integer>> getDependencies() {
         return dependencies;
     }
-    public int getResultCount(){
-        return 1 ;
-    }
-    public int getPrice(){
-        //just should be something
-        return 0 ;
+
+    public int getResultCount() {
+        return 1;
     }
 
+    public int getPrice() {
+        //just should be something
+        return 0;
+    }
 }

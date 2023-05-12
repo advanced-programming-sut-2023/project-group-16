@@ -1,7 +1,6 @@
 package org.group16.View;
 
 import org.group16.Model.Game;
-import org.group16.Model.Map;
 import org.group16.Model.User;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
@@ -49,7 +48,7 @@ public class MainMenu {
 
     private void enterEditorMenu() {
         System.out.println("entered editor menu successfully");
-        EditorMenu editorMenu = new EditorMenu(scanner, new Map(), currentUser);
+        EditorMenu editorMenu = new EditorMenu(scanner, null, currentUser);
         editorMenu.run();
     }
 

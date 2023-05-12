@@ -33,7 +33,7 @@ public class TradeMenuController {
         Trade trade = game.getTradeById(id);
         if (trade == null) return "no trade with this id exist";
         return game.completeTrade(trade, massage);
-    }//TODO
+    }
 
     public static String tradeHistory(Game game, User currentUser) {
         ArrayList<Trade> trades = game.getUserTrades(currentUser);

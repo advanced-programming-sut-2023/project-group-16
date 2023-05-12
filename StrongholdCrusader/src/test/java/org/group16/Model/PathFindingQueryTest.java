@@ -15,7 +15,7 @@ class PathFindingQueryTest {
 
     @BeforeEach
     void setUp() {
-        map = new Map(10, 20);
+        map = new Map("test", 10, 20);
         random = new Random(100);
     }
 

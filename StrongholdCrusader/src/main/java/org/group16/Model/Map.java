@@ -1,15 +1,19 @@
 package org.group16.Model;
 
+import com.google.gson.Gson;
 import org.group16.Vector2;
 
+import java.io.*;
 import java.util.*;
 
 public class Map {
 
     private final int width, height;
+    private String name;
     private Cell[][] cells;
 
-    public Map(int mapWidth, int mapHeight) {
+    public Map(String name, int mapWidth, int mapHeight) {
+        this.name = name;
         this.width = mapWidth;
         this.height = mapHeight;
         cells = new Cell[mapWidth][mapHeight];
@@ -19,7 +23,7 @@ public class Map {
     }
 
     public Map(Map map) {
-        this(map.width, map.height);
+        this(map.name, map.width, map.height);
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 cells[i][j] = new Cell(i, j, map.cells[i][j]);
@@ -43,6 +47,50 @@ public class Map {
         if (dot < 0) return getCellDistance(x, a);
         if (dot > len * len) return getCellDistance(x, b);
         return Math.abs(Vector2.dot(abNorm, ax));
+    }
+
+    public static Map getMapByName(String name) {
+        Gson gson = new Gson();
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/Maps/").concat(name).concat(".json");
+        FileReader fileReader;
+        try {
+            fileReader = new FileReader(filePath);
+        } catch (FileNotFoundException e) {
+            return null;
+        }
+        Map map = gson.fromJson(fileReader, Map.class);
+        try {
+            fileReader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return map;
+    }
+
+    public static void saveMap(Map map) {
+        Gson gson = new Gson();
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/Maps/").concat(map.name).concat(".json");
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        gson.toJson(map, fileWriter);
+        try {
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void deleteMap(String name) {
+        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
+                "group16/Model/Data/Maps/").concat(name).concat(".json");
+        File file = new File(filePath);
+        file.delete();
     }
 
     public int getWidth() {
@@ -75,5 +123,4 @@ public class Map {
         }
         return result;
     }
-
 }

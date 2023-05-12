@@ -56,12 +56,12 @@ public enum Command {
     SHOW_TAX_RATE("tax\\s+rate\\s+show", new ArrayList<>()),
     SET_FEAR_RATE("fear\\s+rate", new ArrayList<>(List.of(
             new Option("r", 1, true)))),
-    DROP_BUILDING("dropbuilding", new ArrayList<>(List.of(
+    DROP_BUILDING("drop\\s+building", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true),
             new Option("t", 1, true)))),
     SELECT_BUILDING("select\\s+building", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
-    CREATE_UNIT("createunit", new ArrayList<>(List.of(
+    CREATE_UNIT("create\\s+unit", new ArrayList<>(List.of(
             new Option("t", 1, true), new Option("c", 1, true)))),
     REPAIR("repair", new ArrayList<>()),
     SELECT_UNIT("select\\s+unit", new ArrayList<>(List.of(
@@ -84,24 +84,32 @@ public enum Command {
             new Option("x", 1, true), new Option("y", 1, true)))),
     BUILD("build", new ArrayList<>(List.of(new Option("q", 1, true)))),
     DISBAND_UNIT("disband\\s+unit", new ArrayList<>()),
-    SET_TEXTURE("settexture", new ArrayList<>(List.of(
+    SET_TEXTURE("set\\s+texture", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true),
             new Option("t", 1, true)))),
-    SET_RECTANGLE_TEXTURE("settexture", new ArrayList<>(List.of(
+    SET_RECTANGULAR_TEXTURE("set\\s+texture", new ArrayList<>(List.of(
             new Option("x1", 1, true), new Option("y1", 1, true),
             new Option("x2", 1, true), new Option("y2", 1, true),
             new Option("t", 1, true)))),
     CLEAR("clear", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
-    DROP_ROCK("droprock", new ArrayList<>(List.of(
+    DROP_ROCK("drop\\s+rock", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true),
             new Option("d", 1, true)))),
-    DROP_TREE("droptree", new ArrayList<>(List.of(
+    DROP_TREE("drop\\s+tree", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true),
             new Option("t", 1, true)))),
-    DROP_UNIT("dropunit", new ArrayList<>(List.of(
+    DROP_UNIT("drop\\s+unit", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true),
             new Option("t", 1, true), new Option("c", 1, true)))),
+    CREATE_MAP("create\\s+map", new ArrayList<>(List.of(
+            new Option("n", 1, true), new Option("h", 1, true),
+            new Option("w", 1, true)))),
+    SELECT_MAP("select\\s+map", new ArrayList<>(List.of(
+            new Option("n", 1, true)))),
+    SAVE_MAP("save\\s+map", new ArrayList<>()),
+    DELETE_MAP("delete\\s+map", new ArrayList<>(List.of(
+            new Option("n", 1, true)))),
     TRADE_REQUEST("trade", new ArrayList<>(List.of(
             new Option("t", 1, true), new Option("a", 1, true),
             new Option("p", 1, true), new Option("m", 1, true)))),
