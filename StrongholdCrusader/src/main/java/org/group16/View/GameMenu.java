@@ -47,7 +47,7 @@ public class GameMenu {
     }
 
     private void nextTurn() {
-    }//TODO
+    }//TODO : next turn
 
     private User getCurrentUser() {
         return game.getKingdoms().get(currentPlayer).getUser();
@@ -56,13 +56,13 @@ public class GameMenu {
 
     private void showMap(TreeMap<String, ArrayList<String>> map) {
 
-    }//TODO
+    }//TODO : show map
 
     private void moveMap(TreeMap<String, ArrayList<String>> map) {
-    }//TODO
+    }//TODO : move map
 
     private void showMapDetails(TreeMap<String, ArrayList<String>> map) {
-    }//TODO
+    }//TODO : show map details
 
     private void showPopularityFactors(TreeMap<String, ArrayList<String>> map) {
         for (Pair<String, Integer> pair : GameMenuController.showPopularityFactors(game, getCurrentUser()))
@@ -144,5 +144,5 @@ public class GameMenu {
 
     private void selectUnit(TreeMap<String, ArrayList<String>> map) {
 
-    }//TODO
+    }//TODO : select unit
 }

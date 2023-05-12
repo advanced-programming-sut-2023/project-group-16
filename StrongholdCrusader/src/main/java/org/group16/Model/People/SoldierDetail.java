@@ -162,7 +162,6 @@ public enum SoldierDetail implements Resource {
 
     @Override
     public ArrayList<Pair<Resource, Integer>> getDependencies() {
-        //TODO
         return null;
     }
 

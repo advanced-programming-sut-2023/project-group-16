@@ -368,7 +368,7 @@ public class Kingdom {
     }
 
     public void onTurnStart() {
-        //TODO
+        //TODO : on turn start
     }
     public void update(double deltaTime) {
         if (Time.isItTurned(deltaTime, Time.day)) {
@@ -407,7 +407,7 @@ public class Kingdom {
     }
 
     public void onTurnEnd() {
-        //TODO
+        //TODO : on turn end
     }
 
     public ArrayList<EconomicBuilding> getEconomicBuildingsByType(BuildingType buildingType) {

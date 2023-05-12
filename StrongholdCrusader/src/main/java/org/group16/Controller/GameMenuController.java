@@ -14,15 +14,15 @@ import java.util.ArrayList;
 public class GameMenuController {
     public static String showMap(Game game, User currentUser, int x, int y) {
         return null;
-    }//TODO
+    }//TODO : show map
 
     public static String moveMap(Game game, User currentUser, int deltaX, int deltaY) {
         return null;
-    }//TODO
+    }//TODO : move map
 
     public static String showMapDetails(Game game, User currentUser, int x, int y) {
         return null;
-    }//TODO
+    }//TODO : show map Details
 
     public static ArrayList<Pair<String, Integer>> showPopularityFactors(Game game, User currentUser) {
         Kingdom kingdom = game.getKingdom(currentUser);
@@ -136,5 +136,5 @@ public class GameMenuController {
 
     public static String selectUnit(Game game, User currentUser, int x, int y) {
         return null;
-    }//TODO
+    }//TODO : select unit
 }

@@ -99,12 +99,12 @@ public class EconomicBuilding extends Building {
     @Override
     public void onTurnEnd() {
         super.onTurnEnd();
-        //TODO
+        //TODO : on turn end
     }
 
     @Override
     public void onTurnStart() {
-        //TODO
+        //TODO : on turn start
     }
 
     @Override

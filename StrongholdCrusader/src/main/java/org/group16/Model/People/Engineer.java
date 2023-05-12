@@ -13,17 +13,17 @@ public class Engineer extends Soldier {
 
     @Override
     public void onTurnStart() {
-        //TODO
+        //TODO : on turn start
     }
 
     @Override
     public void update(double deltaTime) {
-        //TODO
+        //TODO : update
     }
 
     @Override
     public void onTurnEnd() {
-        //TODO
+        //TODO : on turn end
     }
 
 }
