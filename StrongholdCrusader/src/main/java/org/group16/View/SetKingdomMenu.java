@@ -18,8 +18,8 @@ import java.util.TreeMap;
 public class SetKingdomMenu {
     private final Scanner scanner;
     private final Game game;
-    private int currentPlayer = 0;
     boolean back = false;
+    private int currentPlayer = 0;
 
     public SetKingdomMenu(Scanner scanner, Game game) {
         this.game = game;
@@ -37,8 +37,8 @@ public class SetKingdomMenu {
             String input = scanner.nextLine();
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.SET_KINGDOM, input)) != null) selectKingdom(map);
-            if ((map = CommandHandler.matches(Command.SET_UNEMPLOYED, input)) != null) selectUnemployedPlace(map);
-            if ((map = CommandHandler.matches(Command.NEXT_TURN, input)) != null) nextTurn(map);
+            else if ((map = CommandHandler.matches(Command.SET_UNEMPLOYED, input)) != null) selectUnemployedPlace(map);
+            else if ((map = CommandHandler.matches(Command.NEXT_TURN, input)) != null) nextTurn(map);
             else if (CommandHandler.matches(Command.BACK, input) != null) {
                 System.out.println("back to CreateGameMenu");
                 return;
@@ -54,6 +54,7 @@ public class SetKingdomMenu {
         if (output.equals("OK")) {
             Building townBuilding = game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0);
             new Soldier(townBuilding.getCells(), game.getKingdoms().get(currentPlayer), SoldierDetail.KING);
+            game.getKingdoms().get(currentPlayer).addGold(10000);
         }
     }
 
@@ -75,7 +76,7 @@ public class SetKingdomMenu {
         }
         if (currentPlayer != game.getKingdoms().size() - 1) {
             currentPlayer++;
-            System.out.println("now user " + getCurrentUser().getNickname() + "is setting kingdom");
+            System.out.println("now user " + getCurrentUser().getNickname() + " is setting kingdom");
         } else {
             System.out.println("lets Play!!!");
             GameMenu gameMenu = new GameMenu(scanner, game);

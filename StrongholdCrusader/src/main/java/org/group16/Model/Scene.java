@@ -14,6 +14,7 @@ public class Scene {
 
     public Scene(Map map) {
         this.map = new Map(map);
+        current = this;
     }
 
     public static Scene getCurrent() {

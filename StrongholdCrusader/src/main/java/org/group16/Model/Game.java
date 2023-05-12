@@ -12,7 +12,6 @@ public class Game {
 
     public Game(KingdomType kingdomType, User user) {
         kingdoms.add(new Kingdom(kingdomType, user));
-        this.scene = new Scene(null);
     }
 
     public void execute() {

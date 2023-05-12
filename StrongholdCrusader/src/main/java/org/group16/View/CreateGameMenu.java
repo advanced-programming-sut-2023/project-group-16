@@ -80,7 +80,7 @@ public class CreateGameMenu {
             System.out.println("insufficient user to start game");
             return;
         }
-        if (game.getScene().getMap() == null) {
+        if (game.getScene() == null) {
             System.out.println("no map is selected");
             return;
         }

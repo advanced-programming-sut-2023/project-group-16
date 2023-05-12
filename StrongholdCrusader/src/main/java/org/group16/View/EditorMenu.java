@@ -34,11 +34,21 @@ public class EditorMenu {
             else if ((map = CommandHandler.matches(Command.SELECT_MAP, input)) != null) selectMap(map);
             else if (CommandHandler.matches(Command.SAVE_MAP, input) != null) saveMap();
             else if ((map = CommandHandler.matches(Command.DELETE_MAP, input)) != null) deleteMap(map);
+            else if (CommandHandler.matches(Command.BACK, input) != null) back();
             else if (CommandHandler.matches(Command.EXIT, input) != null) {
                 System.out.println("exit editor menu successfully");
                 break;
             } else System.out.println("invalid command");
         }
+    }
+
+    private void back() {
+        if (map == null) {
+            System.out.println("no map is selected");
+            return;
+        }
+        map = null;
+        System.out.println("exit map successfully");
     }
 
     private void setTexture(TreeMap<String, ArrayList<String>> map) {
