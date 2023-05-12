@@ -115,8 +115,8 @@ public class User {
         return highScore;
     }
 
-    public void setHighScore(int highScore) {
-        this.highScore = highScore;
+    public void addHighScore(int highScore) {
+        this.highScore += highScore;
         saveChanges(this);
     }
 

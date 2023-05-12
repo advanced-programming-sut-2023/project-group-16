@@ -215,9 +215,32 @@ public class GameMenuController {
         return output.toString();
     }
 
+    public static boolean checkEndGame(Game game) {
+        Team team = null;
+        for (int i = 0; i < game.getKingdoms().size(); i++) {
+            if (game.getKingdoms().get(i).getKing().getHp() > 0) {
+                team = game.getKingdoms().get(0).getTeam();
+                break;
+            }
+        }
+        for (int i = 0; i < game.getKingdoms().size(); i++) {
+            if (game.getKingdoms().get(i).getKing().getHp() > 0 && !game.getKingdoms().get(i).getTeam().equals(team))
+                return false;
+        }
+        return true;
+    }
+
+    public static Team getWinnerTeam(Game game) {
+        for (int i = 0; i < game.getKingdoms().size(); i++) {
+            if (game.getKingdoms().get(i).getKing().getHp() > 0)
+                return game.getKingdoms().get(i).getTeam();
+        }
+        return null;
+    }
     public static String leaveTeam(Game game, User currenUser) {
         Kingdom kingdom = game.getKingdom(currenUser);
         kingdom.setTeam(new Team(kingdom));
         return "leaved team successfully";
+
     }
 }

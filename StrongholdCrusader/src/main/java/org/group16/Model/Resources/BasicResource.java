@@ -8,7 +8,7 @@ public enum BasicResource implements Resource {
     GOLD(Integer.MAX_VALUE),
     WOOD(1),
     OIL(1),
-    //prime stine is the stone that stores directly in Quarry and waits for OX_TETHER
+    //prime stone is the stone that stores directly in Quarry and waits for OX_TETHER
     PRIME_STONE(Integer.MAX_VALUE),
     //stone that stores in StockPile
     STONE(1),
