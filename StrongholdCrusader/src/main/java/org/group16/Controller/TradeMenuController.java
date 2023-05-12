@@ -22,11 +22,11 @@ public class TradeMenuController {
 
     public static String showTradeList(Game game, User currentUser) {
         ArrayList<Trade> trades = game.getTradeOffers();
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (Trade trade : trades)
-            output += trade;
-        if (output.isEmpty()) return "no trades available\n";
-        return output;
+            output.append(trade);
+        if (output.length() == 0) return "no trades available\n";
+        return output.toString();
     }
 
     public static String tradeAccept(Game game, User currentUser, int id, String massage) {

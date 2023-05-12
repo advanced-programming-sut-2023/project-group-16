@@ -62,10 +62,14 @@ public class Trade {
 
     @Override
     public String toString() {
-        if (buyer == null) return id + ") " + seller.getUser().getUsername() + ": " + sellerMessage + "\n" +
-                "[" + ((Enum) resource).name() + " | amount=" + amount + " | price=" + price + "]\n";
-        return id + ") " + " from " + seller.getUser().getUsername() + ": " + sellerMessage + "\nto " +
-                buyer.getUser().getUsername() + ": " + buyerMessage + "\n[" +
-                ((Enum) resource).name() + " | amount=" + amount + " | price=" + price + "]\n";
+        if (buyer == null)
+            return String.format("%d) %s: %s\n[%s | amount=%d | price=%d]\n",
+                    id, seller.getUser().getUsername(), sellerMessage,
+                    ((Enum) resource).name(), amount, price);
+
+        return String.format("%d) from %s: %s\nto %s: %s\n[%s | amount=%d | price=%d]\n",
+                id, seller.getUser().getUsername(), sellerMessage,
+                buyer.getUser().getUsername(), buyerMessage,
+                ((Enum) resource).name(), amount, price);
     }
 }

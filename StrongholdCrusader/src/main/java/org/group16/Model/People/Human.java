@@ -48,7 +48,7 @@ public class Human extends GameObject implements Alive {
 
     protected void moveToward(Cell destination, boolean canUseLadder, double distance, double randomness, Random random) {
         Cell currentCell = getCell();
-        PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, canUseLadder, randomness, random);
+        PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, getKingdom().getTeam(), canUseLadder, randomness, random);
         pathFindingQuery.findShortestPath();
         Cell nextCell = pathFindingQuery.getNextCell(currentCell);
         double dx = nextCell.getX() - currentCell.getX();
@@ -102,7 +102,7 @@ public class Human extends GameObject implements Alive {
     @Override
     public void update(double currentTime) {
         double deltaTime = Time.deltaTime;
-        if (getCell().getBuilding() != null) setBuilding(getCell().getBuilding());
+        setBuilding(getCell().getBuilding());
         // TODO?
     }
 

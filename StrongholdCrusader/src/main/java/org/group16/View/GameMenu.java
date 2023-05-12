@@ -15,7 +15,6 @@ import org.group16.View.Command.CommandHandler;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 
 public class GameMenu {
     private final Scanner scanner;
@@ -46,6 +45,7 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.DROP_BUILDING, input)) != null) dropBuilding(map);
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
             else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
+            else if ((map = CommandHandler.matches(Command.NEXT_TURN, input)) != null) nextTurn();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
         }
@@ -207,5 +207,21 @@ public class GameMenu {
         UnitMenu unitMenu = new UnitMenu(scanner, game, unit, getCurrentUser());
         System.out.println("entered UnitMenu");
         unitMenu.run();
+    }
+
+    private void teamUpRequest(TreeMap<String, ArrayList<String>> map) {
+
+    }
+
+    private void teamUpAccept(TreeMap<String, ArrayList<String>> map) {
+
+    }
+
+    private void showTeamUpList(TreeMap<String, ArrayList<String>> map) {
+        System.out.print(GameMenuController.showTeamUpList(game, getCurrentUser()));
+    }
+
+    private void leaveTeam(TreeMap<String, ArrayList<String>> map) {
+        System.out.println(GameMenuController.leaveTeam(game, getCurrentUser()));
     }
 }

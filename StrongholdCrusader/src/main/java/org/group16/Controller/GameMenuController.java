@@ -185,4 +185,39 @@ public class GameMenuController {
         }
         return "OK";
     }
+
+    public static String teamUpRequest(Game game, User currentUser, User to) {
+        Kingdom kingdom1 = game.getKingdom(currentUser);
+
+        if (to == null) return "invalid user";
+        Kingdom kingdom2 = game.getKingdom(to);
+        if (kingdom2 == null) return "user is not playing";
+
+        if (kingdom1.getTeam() == kingdom2.getTeam()) return "already team members";
+
+        game.addTeamUp(new TeamUp(kingdom1, kingdom2));
+        return "team up sent successfully";
+    }
+
+    public static String teamUpAccept(Game game, User currentUser, int id) {
+        TeamUp teamUp = game.getTeamUpById(id);
+        if (teamUp == null || currentUser != teamUp.getTo().getUser()) return "invalid team up id";
+        game.completeTeamUp(teamUp);
+        return "team up successful";
+    }
+
+    public static String showTeamUpList(Game game, User currentUser) {
+        ArrayList<TeamUp> teamUps = game.getUserTeamUpOffers(currentUser);
+        StringBuilder output = new StringBuilder();
+        for (TeamUp teamUp : teamUps)
+            output.append(teamUp);
+        if (output.length() == 0) return "no team up available\n";
+        return output.toString();
+    }
+
+    public static String leaveTeam(Game game, User currenUser) {
+        Kingdom kingdom = game.getKingdom(currenUser);
+        kingdom.setTeam(new Team(kingdom));
+        return "leaved team successfully";
+    }
 }
