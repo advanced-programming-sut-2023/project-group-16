@@ -88,8 +88,12 @@ public enum Command {
     POUR_OIL("pour\\s+oil", new ArrayList<>(List.of(new Option("d", 1, true)))),
     DIG_TUNNEL("dig\\s+tunnel", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
-    BUILD("build", new ArrayList<>(List.of(new Option("q", 1, true)))),
+    BUILD("build", new ArrayList<>(List.of(new Option("q", 1, true),
+            new Option("x", 1 , true) , new Option("y" , 1 , true)
+    ))),
     DISBAND_UNIT("disband\\s+unit", new ArrayList<>()),
+    FILTER_UNIT("filter\\s+unit" , new ArrayList<>(List.of(new Option("t", 1, true)))),
+    FILTER_SUBTRACTIVE_UNIT("filter\\s+subtractive\\s+unit" , new ArrayList<>(List.of(new Option("t", 1, true)))),
     SET_TEXTURE("set\\s+texture", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true),
             new Option("t", 1, true)))),
