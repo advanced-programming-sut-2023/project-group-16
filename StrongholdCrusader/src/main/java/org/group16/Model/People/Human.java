@@ -15,7 +15,7 @@ public class Human extends GameObject implements Alive {
     public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
         if (this instanceof Soldier)
-            kingdom.addSoldier((Soldier)this) ;
+            kingdom.addSoldier((Soldier) this);
         else
             kingdom.addHuman(this);
         this.hp = hp;
@@ -25,7 +25,7 @@ public class Human extends GameObject implements Alive {
     public void destroy() {
         super.destroy();
         if (this instanceof Soldier)
-            getKingdom().removeSoldier((Soldier)this);
+            getKingdom().removeSoldier((Soldier) this);
         else
             getKingdom().removeHuman(this);
     }
@@ -46,9 +46,9 @@ public class Human extends GameObject implements Alive {
         this.relativeY = relativeY;
     }
 
-    protected void moveToward(Cell destination, double distance, double randomness, Random random) {
+    protected void moveToward(Cell destination, boolean canUseLadder, double distance, double randomness, Random random) {
         Cell currentCell = getCell();
-        PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, randomness, random);
+        PathFindingQuery pathFindingQuery = new PathFindingQuery(Scene.getCurrent().getMap(), currentCell, destination, canUseLadder, randomness, random);
         pathFindingQuery.findShortestPath();
         Cell nextCell = pathFindingQuery.getNextCell(currentCell);
         double dx = nextCell.getX() - currentCell.getX();
@@ -95,14 +95,18 @@ public class Human extends GameObject implements Alive {
         this.building = building;
     }
 
-    public void onTurnStart(){
-        //TODO
-    }
-    public void update(double deltaTime){
+    public void onTurnStart() {
         //TODO
     }
 
-    public void onTurnEnd(){
+    @Override
+    public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
+        if (getCell().getBuilding() != null) setBuilding(getCell().getBuilding());
+        // TODO?
+    }
+
+    public void onTurnEnd() {
         //TODO
     }
 }

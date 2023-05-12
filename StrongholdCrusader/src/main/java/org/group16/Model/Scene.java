@@ -42,9 +42,9 @@ public class Scene {
         for (var go : gameObjects) go.onTurnStart();
     }
 
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
         Collections.shuffle(gameObjects, random);
-        for (var go : gameObjects) go.update(deltaTime);
+        for (var go : gameObjects) go.update(currentTime);
     }
 
     public void onTurnEnd() {

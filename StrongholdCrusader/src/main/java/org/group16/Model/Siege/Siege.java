@@ -57,7 +57,8 @@ public class Siege extends Soldier {
 
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
         Cell moveDestination = warCommand.getDestination();
         Human humanTarget = warCommand.getTargetHuman();
         Building buildingTarget = warCommand.getTargetBuilding();
@@ -75,15 +76,15 @@ public class Siege extends Soldier {
         // Move Command
         if (moveDestination != null) {
             if (getCell() != moveDestination)
-                moveToward(moveDestination, deltaTime * siegeDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+                moveToward(moveDestination, false, deltaTime * siegeDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
             return;
         }
     }
 
     @Override
-    protected void moveToward(Cell destination, double distance, double randomness, Random random) {
+    protected void moveToward(Cell destination, boolean canUseLadder, double distance, double randomness, Random random) {
         Cell from = getCell();
-        super.moveToward(destination, distance, randomness, random);
+        super.moveToward(destination, canUseLadder, distance, randomness, random);
         Cell to = getCell();
         if (from != to) {
             int dx = to.getX() - from.getX();

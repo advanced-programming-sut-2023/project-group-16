@@ -1,8 +1,6 @@
 package org.group16.Model;
 
-import com.sun.source.tree.BreakTree;
 import org.group16.Model.Buildings.Building;
-import org.group16.Model.People.Soldier;
 import org.group16.Vector2;
 
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ public class Cell implements Comparable<Cell> {
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private CellType cellType;
     private TreeType treeType;
+    private boolean hasLadder;
 
     public Cell(int x, int y, CellType cellType, TreeType treeType) {
         this.x = x;
@@ -26,6 +25,14 @@ public class Cell implements Comparable<Cell> {
 
     public Cell(int x, int y, Cell cell) {
         this(x, y, cell.cellType, cell.treeType);
+    }
+
+    public boolean getHasLadder() {
+        return hasLadder;
+    }
+
+    public void setHasLadder(boolean hasLadder) {
+        this.hasLadder = hasLadder;
     }
 
     public TreeType getTreeType() {
@@ -74,13 +81,16 @@ public class Cell implements Comparable<Cell> {
         return Integer.compare(x, other.x);
     }
 
-    public boolean traversable() {
-        return true;
-    }//TODO
+    public boolean isTraversable() {
+        Building building = getBuilding();
+        if (building == null)
+            return getTraverseCost() < 100;
+        return building.isTraversable();
+    }
 
     public double getTraverseCost() {
-        return 1;
-    }//TODO
+        return getCellType().getTraverseCost();
+    }
 
     public Building getBuilding() {
         for (var obj : gameObjects) if (obj instanceof Building) return (Building) obj;

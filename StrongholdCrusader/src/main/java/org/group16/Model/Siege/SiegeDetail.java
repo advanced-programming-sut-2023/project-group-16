@@ -2,8 +2,15 @@ package org.group16.Model.Siege;
 
 import org.group16.Model.TargetType;
 
+import javax.swing.plaf.TreeUI;
+
 public enum SiegeDetail {
-    ;//TODO
+    PORTABLE_SHIELD(1, true, true, 1, 1, 1, 1, TargetType.NONE),
+    SIEGE_TOWER(1, true, true, 1, 1, 1, 1, TargetType.NONE),
+    CATAPULT(1, true, true, 1, 1, 1, 1, TargetType.BUILDING),
+    TRABUCHET(1, true, true, 1, 1, 1, 1, TargetType.BUILDING),
+    FIRE_BALLISTA(1, true, true, 1, 1, 1, 1, TargetType.UNIT);
+    //TODO : values
     private final int hp;
     private final boolean canMove;
     private final boolean canRotate;

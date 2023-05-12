@@ -3,10 +3,8 @@ package org.group16.Model.People;
 import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Siege.Siege;
-import org.group16.Vector2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 public class Soldier extends Human {
@@ -45,7 +43,9 @@ public class Soldier extends Human {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
+        super.update(currentTime);
+        double deltaTime = Time.deltaTime;
         Cell moveDestination = warCommand.getDestination();
         Cell patrolDestination = warCommand.getPatrolDestination();
         boolean attackCell = warCommand.isAttackCell();
@@ -97,7 +97,7 @@ public class Soldier extends Human {
                 followAndFight(currentTarget, deltaTime);
             } else {
                 if (getCell() != warCommand.getCurrentDestination())
-                    moveToward(warCommand.getCurrentDestination(), deltaTime * soldierDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+                    moveToward(warCommand.getCurrentDestination(), soldierDetail.isCanClimbLadder(), deltaTime * soldierDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
                 else
                     warCommand.onReachDestination();
             }
@@ -119,7 +119,7 @@ public class Soldier extends Human {
         if (distance <= soldierDetail.getAttackRange())
             attackTarget(target, (int) (soldierDetail.getDamage() * deltaTime));
         else
-            moveToward(target.getCell(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+            moveToward(target.getCell(), soldierDetail.isCanClimbLadder(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
     }
 
 

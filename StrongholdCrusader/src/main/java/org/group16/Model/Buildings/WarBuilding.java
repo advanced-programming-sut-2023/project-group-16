@@ -25,13 +25,13 @@ public class WarBuilding extends Building {
 
     @Override
     public void onTurnStart() {
-        //TODO
+        //TODO : on turn start
     }
 
     @Override
     public void onTurnEnd() {
         super.onTurnEnd();
-        //TODO
+        //TODO : on turn end
     }
 
     public ArrayList<Human> getSoldiers() {
@@ -51,12 +51,12 @@ public class WarBuilding extends Building {
     }
 
     @Override
-    public void update(double deltaTime) {
-        //TODO : Time needed may change
-        if (Time.isItTurned(deltaTime , Time.deltaTime)){
-            for (Cell cell : getCells()){
-                for (GameObject human : cell.getGameObjects()){
-                    if (human instanceof Human && !getKingdom().getTeam().getKingdoms().contains(human.getKingdom())){
+    public void update(double currentTime) {
+        //TODO : Time needed may change -
+        if (Time.isItTurned(currentTime, Time.deltaTime)) {
+            for (Cell cell : getCells()) {
+                for (GameObject human : cell.getGameObjects()) {
+                    if (human instanceof Human && !getKingdom().getTeam().getKingdoms().contains(human.getKingdom())) {
                         ((Human) human).dealDamage(detail.getCurrentDamage());
                     }
                 }
