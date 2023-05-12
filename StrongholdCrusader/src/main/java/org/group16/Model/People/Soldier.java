@@ -97,7 +97,7 @@ public class Soldier extends Human {
                 followAndFight(currentTarget, deltaTime);
             } else {
                 if (getCell() != warCommand.getCurrentDestination())
-                    moveToward(warCommand.getCurrentDestination(), soldierDetail.isCanClimbLadder(), deltaTime * soldierDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+                    moveToward(warCommand.getCurrentDestination(), soldierDetail.isCanClimbLadder(), soldierDetail.isCanClimbWalls(), deltaTime * soldierDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
                 else
                     warCommand.onReachDestination();
             }
@@ -120,7 +120,7 @@ public class Soldier extends Human {
         if (distance <= soldierDetail.getAttackRange())
             attackTarget(target, (int) (damage * deltaTime));
         else
-            moveToward(target.getCell(), soldierDetail.isCanClimbLadder(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+            moveToward(target.getCell(), soldierDetail.isCanClimbLadder(), soldierDetail.isCanClimbWalls(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
     }
 
 

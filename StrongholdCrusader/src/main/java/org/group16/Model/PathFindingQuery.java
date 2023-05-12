@@ -10,18 +10,20 @@ public class PathFindingQuery {
     private final Cell start, end;
     private final Team pathfinderTeam;
     private final boolean canUseLadder;
+    private final boolean canClimbWalls;
     private final double randomness;
     private final Random random;
     private final HashMap<Cell, Double> distance = new HashMap<>();
     private final HashMap<Cell, Cell> parent = new HashMap<>();
     private final PriorityQueue<Cell> astar = new PriorityQueue<>(Comparator.comparingDouble(this::getHeuristicPath));
 
-    public PathFindingQuery(Map map, Cell start, Cell end, Team pathfinderTeam, boolean canUseLadder, double randomness, Random random) {
+    public PathFindingQuery(Map map, Cell start, Cell end, Team pathfinderTeam, boolean canUseLadder, boolean canClimbWalls, double randomness, Random random) {
         this.map = map;
         this.start = start;
         this.end = end;
         this.pathfinderTeam = pathfinderTeam;
         this.canUseLadder = canUseLadder;
+        this.canClimbWalls = canClimbWalls;
         this.randomness = randomness;
         this.random = random;
     }
@@ -64,8 +66,10 @@ public class PathFindingQuery {
         if (to == null) return;
         boolean canEnterCell = to.isTraversable();
         canEnterCell |= to.getHasLadder() && canUseLadder;
-        if (to.getBuilding() != null)
+        if (to.getBuilding() != null) {
             canEnterCell |= to.getBuilding().getKingdom().getTeam() == pathfinderTeam;
+            canEnterCell |= canClimbWalls;
+        }
         if (!canEnterCell) return;
 
         double cost = (from.getTraverseCost() + to.getTraverseCost()) / 2 + random.nextDouble() * randomness;
