@@ -26,6 +26,7 @@ public class Kingdom {
     private int tax = 0;
     private int fearRate = 0;
     private int foodRate = 0;
+    private Soldier King ;
 
     public Kingdom(KingdomType kingdomType, User user) {
         this.kingdomType = kingdomType;
@@ -384,6 +385,9 @@ public class Kingdom {
     }
 
     public void update(double deltaTime) {
+        if (getKing().getHp() <= 0){
+            return;
+        }
         if (Time.isItTurned(deltaTime, Time.day)) {
             //tax
             addPopularity(getTaxEffectOnPopularity());
@@ -429,5 +433,9 @@ public class Kingdom {
             }
         }
         return buildingsArray;
+    }
+
+    public Soldier getKing() {
+        return King;
     }
 }

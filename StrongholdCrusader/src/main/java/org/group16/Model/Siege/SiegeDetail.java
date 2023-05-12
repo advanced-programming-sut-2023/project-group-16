@@ -1,5 +1,6 @@
 package org.group16.Model.Siege;
 
+import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.TargetType;
 
 import javax.swing.plaf.TreeUI;
@@ -63,4 +64,11 @@ public enum SiegeDetail {
         return speed;
     }
 
+    public static SiegeDetail getSiegeDetailByName(String name){
+        for (SiegeDetail siegeDetail : SiegeDetail.values()){
+            if (siegeDetail.toString().equals(name))
+                return siegeDetail ;
+        }
+        return null ;
+    }
 }
