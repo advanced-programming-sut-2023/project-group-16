@@ -17,7 +17,6 @@ public enum CellType {
     POND(Integer.MAX_VALUE , false),
     SEA(Integer.MAX_VALUE , false),
     ;
-    //TODO: Fill this enum
 
     private final double traverseCost;
     private final boolean okToBuildIn ;

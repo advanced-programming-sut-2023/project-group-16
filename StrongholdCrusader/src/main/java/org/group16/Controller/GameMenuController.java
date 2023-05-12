@@ -133,8 +133,4 @@ public class GameMenuController {
         }
         return "OK";
     }
-
-    public static String selectUnit(Game game, User currentUser, int x, int y) {
-        return null;
-    }//TODO : select unit
 }

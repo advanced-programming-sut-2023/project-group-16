@@ -37,6 +37,7 @@ public class BuildingMenu {
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.CREATE_UNIT, input)) != null) createUnit(map);
             else if ((map = CommandHandler.matches(Command.REPAIR, input)) != null) repair(map);
+            else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else
                 System.out.println("invalid command");
         }
