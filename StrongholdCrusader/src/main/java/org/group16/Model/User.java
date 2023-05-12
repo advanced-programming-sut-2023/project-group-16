@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class User {
     private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
-    private int highScore;
+    private int score;
 
     private User(String username, String password, String email, String passwordRecoveryQuestion,
                  String passwordRecoveryAnswer, String nickname, String slogan) {
@@ -19,7 +19,7 @@ public class User {
         this.passwordRecoveryAnswer = passwordRecoveryAnswer;
         this.nickname = nickname;
         this.slogan = slogan;
-        this.highScore = 0;
+        this.score = 0;
     }
 
     public static void addUser(String username, String password, String email, String passwordRecoveryQuestion,
@@ -111,12 +111,12 @@ public class User {
         }
     }
 
-    public int getHighScore() {
-        return highScore;
+    public int getScore() {
+        return score;
     }
 
     public void addHighScore(int highScore) {
-        this.highScore += highScore;
+        this.score += highScore;
         saveChanges(this);
     }
 

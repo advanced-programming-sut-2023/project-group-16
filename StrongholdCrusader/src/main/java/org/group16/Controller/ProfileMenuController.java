@@ -87,13 +87,13 @@ public class ProfileMenuController {
     }
 
     public static String displayHighScore(User user) {
-        return "high score: " + user.getHighScore();
+        return "high score: " + user.getScore();
     }
 
     public static String displayRank(User user) {
         ArrayList<User> allUsers = User.getAllUsers();
         allUsers.sort((o1, o2) -> {
-            if (o1.getHighScore() != o2.getHighScore()) return o2.getHighScore() - o1.getHighScore();
+            if (o1.getScore() != o2.getScore()) return o2.getScore() - o1.getScore();
             return o1.getUsername().compareTo(o2.getUsername());
         });
         for (int i = 0; i < allUsers.size(); i++)
@@ -110,7 +110,7 @@ public class ProfileMenuController {
         output += "nickname: " + user.getNickname() + "\n";
         output += "email: " + user.getEmail() + "\n";
         output += "slogan: " + user.getSlogan() + "\n";
-        output += "highscore: " + user.getHighScore() + "\n";
+        output += "highscore: " + user.getScore() + "\n";
         output += displayRank(user);
         return output;
     }
