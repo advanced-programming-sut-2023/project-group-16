@@ -81,8 +81,8 @@ public class CreateGameMenu {
             System.out.println("no map is selected");
             return;
         }
-        GameMenu gameMenu = new GameMenu(scanner, game);
-        System.out.println("game started successfully");
-        gameMenu.run();
+        SetKingdomMenu setKingdomMenu = new SetKingdomMenu(scanner , game) ;
+        System.out.println("now please select places of primary buildings");
+        setKingdomMenu.run();
     }
 }
