@@ -7,4 +7,15 @@ public enum TreeType {
     OLIVE_TREE,
     COCONUT_PALM,
     DATE_PALM;
+
+    public static TreeType getTreeTypeByName(String name) {
+        name = name.toUpperCase();
+        TreeType treeType;
+        try {
+            treeType = TreeType.valueOf(name);
+        } catch (IllegalArgumentException exception) {
+            treeType = null;
+        }
+        return treeType;
+    }
 }
