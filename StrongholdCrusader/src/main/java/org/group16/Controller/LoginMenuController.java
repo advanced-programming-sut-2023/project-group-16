@@ -45,6 +45,7 @@ public class LoginMenuController {
         if (!map.get("a").get(0).equals(map.get("c").get(0)))
             return "password recovery answer and it's confirmation are not same";
         String passwordRecoveryAnswer = map.get("a").get(0);
+        if (!LoginMenu.handleCaptcha()) return "incorrect captcha";
         User.addUser(username, password, email, passwordRecoveryQuestion, passwordRecoveryAnswer, nickname, slogan);
         return "user created successfully";
     }
@@ -118,6 +119,7 @@ public class LoginMenuController {
         User user = User.getUserByName(username);
         password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         if (user == null || !user.getPassword().equals(password)) return "username and password didn't match";
+        if (!LoginMenu.handleCaptcha()) return "incorrect captcha";
         if (stayLoggedIn) {
             String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
                     "org/group16/Model/Data/stayLoggedInUser.txt");

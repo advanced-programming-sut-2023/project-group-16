@@ -6,11 +6,123 @@ import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 public class LoginMenu {
     private static Scanner scanner;
+
+    private static void printCaptcha(int number) {
+        String[][] asciiArt = {
+                {
+                        "   ###   ",
+                        "  #   #  ",
+                        " #     # ",
+                        " #     # ",
+                        " #     # ",
+                        "  #   #  ",
+                        "   ###   "
+                },
+                {
+                        "   #   ",
+                        "  ##   ",
+                        " # #   ",
+                        "   #   ",
+                        "   #   ",
+                        "   #   ",
+                        " ##### "
+                },
+                {
+                        "  #####  ",
+                        " #     # ",
+                        "       # ",
+                        "  #####  ",
+                        " #       ",
+                        " #       ",
+                        " ####### "
+                },
+                {
+                        "  #####  ",
+                        " #     # ",
+                        "       # ",
+                        "  #####  ",
+                        "       # ",
+                        " #     # ",
+                        "  #####  "
+                },
+                {
+                        " #       ",
+                        " #    #  ",
+                        " #    #  ",
+                        " #    #  ",
+                        " ####### ",
+                        "      #  ",
+                        "      #  "
+                },
+                {
+                        " ####### ",
+                        " #       ",
+                        " #       ",
+                        " ######  ",
+                        "       # ",
+                        " #     # ",
+                        "  #####  "
+                },
+                {
+                        "  #####  ",
+                        " #     # ",
+                        " #       ",
+                        " ######  ",
+                        " #     # ",
+                        " #     # ",
+                        "  #####  "
+                },
+                {
+                        " ####### ",
+                        " #    #  ",
+                        "     #   ",
+                        "    #    ",
+                        "   #     ",
+                        "   #     ",
+                        "   #     "
+                },
+                {
+                        "  #####  ",
+                        " #     # ",
+                        " #     # ",
+                        "  #####  ",
+                        " #     # ",
+                        " #     # ",
+                        "  #####  "
+                },
+                {
+                        "  #####  ",
+                        " #     # ",
+                        " #     # ",
+                        "  ###### ",
+                        "       # ",
+                        " #     # ",
+                        "  #####  "
+                }
+        };
+        int d3 = number / 1000, d2 = number / 100 % 10, d1 = number / 10 % 10, d0 = number % 10;
+        for (int i = 0; i < 7; i++) {
+            System.out.print(noise(asciiArt[d3][i]));
+            System.out.print(noise(asciiArt[d2][i]));
+            System.out.print(noise(asciiArt[d1][i]));
+            System.out.println(noise(asciiArt[d0][i]));
+        }
+    }
+
+    private static String noise(String string) {
+        StringBuilder stringBuilder = new StringBuilder(string);
+        Random random = new Random();
+        int count = random.nextInt(4);
+        for (int i = 0; i < count; i++)
+            stringBuilder.setCharAt(random.nextInt(string.length()), '.');
+        return stringBuilder.toString();
+    }
 
     public static String getPasswordConfirmation() {
         System.out.println("please re-enter your password here:");
@@ -28,6 +140,28 @@ public class LoginMenu {
         System.out.println("3. What is my mother's last name?");
         String input = scanner.nextLine();
         return CommandHandler.matches(Command.PICK_QUESTION, input);
+    }
+
+    private static int generateCaptcha() {
+        Random random = new Random();
+        int number = 1000 + random.nextInt(9000);
+        printCaptcha(number);
+        return number;
+    }
+
+    public static boolean handleCaptcha() {
+        int captcha;
+        String input;
+        do {
+            System.out.println("fill blow captcha: (enter \"new captcha\" to generate new captcha)");
+            captcha = generateCaptcha();
+            input = scanner.nextLine();
+        } while (input.matches("\\s*new\\s+captcha\\s*"));
+        try {
+            return Integer.parseInt(input) == captcha;
+        } catch (NumberFormatException exception) {
+            return false;
+        }
     }
 
     public void run() {
