@@ -33,6 +33,8 @@ public class GameMenu {
             String input = scanner.nextLine();
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.SHOW_MAP, input)) != null) showMap(map);
+            else if ((map = CommandHandler.matches(Command.SHOW_DETAILS, input)) != null) showMapDetails(map);
+            else if ((map = CommandHandler.matches(Command.SHOW_DETAILS, input)) != null) showMapDetails(map);
             else if ((map = CommandHandler.matches(Command.SHOW_POPULARITY, input)) != null) showPopularity(map);
             else if ((map = CommandHandler.matches(Command.SHOW_FACTORS, input)) != null) showPopularityFactors(map);
             else if ((map = CommandHandler.matches(Command.FOOD_LIST, input)) != null) showFoodList(map);
@@ -44,6 +46,7 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.DROP_BUILDING, input)) != null) dropBuilding(map);
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
             else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
+            else if ((map = CommandHandler.matches(Command.NEXT_TURN, input)) != null) nextTurn();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
         }

@@ -47,6 +47,11 @@ public enum Command {
     DISPLAY_SLOGAN("profile\\s+display\\s+slogan", new ArrayList<>()),
     DISPLAY_PROFILE("profile\\s+display", new ArrayList<>()),
     BACK("back", new ArrayList<>()),
+    SET_KINGDOM("set\\s+kingdom\\s+place" ,new ArrayList<>(List.of(
+            new Option("x", 1, true), new Option("y", 1, true)))),
+    SET_UNEMPLOYED("set\\s+unemployed\\s+place" ,new ArrayList<>(List.of(
+            new Option("x", 1, true), new Option("y", 1, true)))),
+    NEXT_TURN("next\\s+turn" ,new ArrayList<>()),
     SHOW_MAP("show\\s+map", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
     SHOW_DETAILS("show\\s+details", new ArrayList<>(List.of(
