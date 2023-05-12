@@ -1,6 +1,7 @@
 package org.group16.Model;
 
 import org.group16.Model.Buildings.Building;
+import org.group16.Model.People.Soldier;
 import org.group16.Vector2;
 
 import java.util.ArrayList;
@@ -95,6 +96,11 @@ public class Cell implements Comparable<Cell> {
     public Building getBuilding() {
         for (var obj : gameObjects) if (obj instanceof Building) return (Building) obj;
         return null;
+    }
+
+    public boolean hasSoldier() {
+        for (var obj : gameObjects) if (obj instanceof Soldier) return true;
+        return false;
     }
 
     @Override

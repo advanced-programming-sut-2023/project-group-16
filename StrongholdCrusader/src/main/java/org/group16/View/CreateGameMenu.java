@@ -12,6 +12,7 @@ public class CreateGameMenu {
 
     private final Scanner scanner;
     private final Game game;
+    private boolean back = false;
 
     public CreateGameMenu(Scanner scanner, User firstPlayer, KingdomType kingdomType) {
         this.scanner = scanner;
@@ -20,6 +21,8 @@ public class CreateGameMenu {
 
     public void run() {
         while (true) {
+            if (back)
+                return;
             String input = scanner.nextLine();
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.SELECT_MAP, input)) != null) selectMap(map);
@@ -28,7 +31,7 @@ public class CreateGameMenu {
             else if (CommandHandler.matches(Command.START_GAME, input) != null) startGame();
             else if (CommandHandler.matches(Command.BACK, input) != null) {
                 System.out.println("exit create game menu successfully");
-                break;
+                return;
             } else System.out.println("invalid command");
         }
     }
@@ -81,8 +84,9 @@ public class CreateGameMenu {
             System.out.println("no map is selected");
             return;
         }
-        SetKingdomMenu setKingdomMenu = new SetKingdomMenu(scanner , game) ;
+        SetKingdomMenu setKingdomMenu = new SetKingdomMenu(scanner, game);
         System.out.println("now please select places of primary buildings");
         setKingdomMenu.run();
+        back = true;
     }
 }

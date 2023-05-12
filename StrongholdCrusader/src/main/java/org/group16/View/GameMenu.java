@@ -2,20 +2,17 @@ package org.group16.View;
 
 import org.group16.Controller.GameMenuController;
 import org.group16.Lib.Pair;
+import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
-import org.group16.Model.Game;
-import org.group16.Model.GameObject;
-import org.group16.Model.Kingdom;
 import org.group16.Model.People.Soldier;
-import org.group16.Model.User;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
+import org.ietf.jgss.GSSManager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 
 public class GameMenu {
     private final Scanner scanner;
@@ -33,7 +30,7 @@ public class GameMenu {
             String input = scanner.nextLine();
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.SHOW_MAP, input)) != null) showMap(map);
-            else if ((map = CommandHandler.matches(Command.SHOW_DETAILS, input)) != null) showMapDetails(map);
+            else if ((map = CommandHandler.matches(Command.MOVE_MAP, input)) != null) moveMap(map);
             else if ((map = CommandHandler.matches(Command.SHOW_DETAILS, input)) != null) showMapDetails(map);
             else if ((map = CommandHandler.matches(Command.SHOW_POPULARITY, input)) != null) showPopularity(map);
             else if ((map = CommandHandler.matches(Command.SHOW_FACTORS, input)) != null) showPopularityFactors(map);
@@ -46,7 +43,12 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.DROP_BUILDING, input)) != null) dropBuilding(map);
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
             else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
-            else if ((map = CommandHandler.matches(Command.NEXT_TURN, input)) != null) nextTurn();
+            else if ((map = CommandHandler.matches(Command.TEAM_UP_REQUEST, input)) != null) teamUpRequest(map);
+            else if ((map = CommandHandler.matches(Command.TEAM_UP_ACCEPT, input)) != null) teamUpAccept(map);
+            else if ((map = CommandHandler.matches(Command.TEAM_UP_ACCEPT, input)) != null) teamUpAccept(map);
+            else if ((map = CommandHandler.matches(Command.SHOW_TEAM_UP_LIST, input)) != null) showTeamUpList(map);
+            else if ((map = CommandHandler.matches(Command.LEAVE_TEAM, input)) != null) leaveTeam(map);
+            else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
         }
@@ -56,9 +58,29 @@ public class GameMenu {
         //TODO : game end ?
         if (currentPlayer != game.getKingdoms().size() - 1) {
             currentPlayer++;
+            if (game.getKingdoms().get(currentPlayer).getKing().getHp() <= 0)
+                nextTurn();
             System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
         } else {
             game.execute();
+            if (GameMenuController.checkEndGame(game)){
+                System.out.println("Game ended!!!");
+                System.out.println("Winners : ");
+                Team winnerTeam = GameMenuController.getWinnerTeam(game)  ;
+                for (int i = 0 ; i < game.getKingdoms().size() ; i++){
+                    if (game.getKingdoms().get(i).getTeam().equals(winnerTeam)) {
+                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() +" : " + game.getKingdoms().get(i).getUser().getSlogan());
+                        game.getKingdoms().get(i).getUser().addHighScore(1);
+                    }
+                }
+                System.out.println("Losers : ");
+                for (int i = 0 ; i < game.getKingdoms().size() ; i++){
+                    if (!game.getKingdoms().get(i).getTeam().equals(winnerTeam)) {
+                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() +" : " + game.getKingdoms().get(i).getUser().getSlogan());
+                        game.getKingdoms().get(i).getUser().addHighScore(-1);
+                    }
+                }
+            }
             System.out.println("game updated");
             currentPlayer = 0;
             System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
@@ -71,14 +93,46 @@ public class GameMenu {
 
 
     private void showMap(TreeMap<String, ArrayList<String>> map) {
-
-    }//TODO : show map
+        int x, y;
+        try {
+            x = Integer.parseInt(map.get("x").get(0));
+            y = Integer.parseInt(map.get("y").get(0));
+        } catch (NumberFormatException exception) {
+            System.out.println("invalid position format");
+            return;
+        }
+        System.out.print(GameMenuController.showMap(game, x, y));
+    }
 
     private void moveMap(TreeMap<String, ArrayList<String>> map) {
-    }//TODO : move map
+        if (map.isEmpty()) {
+            System.out.println("invalid command");
+            return;
+        }
+        int l, r, u, d;
+        try {
+            l = map.containsKey("l") ? Integer.parseInt(map.get("l").get(0)) : 0;
+            r = map.containsKey("r") ? Integer.parseInt(map.get("r").get(0)) : 0;
+            u = map.containsKey("u") ? Integer.parseInt(map.get("u").get(0)) : 0;
+            d = map.containsKey("d") ? Integer.parseInt(map.get("d").get(0)) : 0;
+        } catch (NumberFormatException exception) {
+            System.out.println("invalid movement format");
+            return;
+        }
+        System.out.print(GameMenuController.moveMap(game, d - u, r - l));
+    }
 
     private void showMapDetails(TreeMap<String, ArrayList<String>> map) {
-    }//TODO : show map details
+        int x, y;
+        try {
+            x = Integer.parseInt(map.get("x").get(0));
+            y = Integer.parseInt(map.get("y").get(0));
+        } catch (NumberFormatException exception) {
+            System.out.println("invalid position format");
+            return;
+        }
+        System.out.print(GameMenuController.showMapDetails(game, x, y));
+    }
 
     private void showPopularityFactors(TreeMap<String, ArrayList<String>> map) {
         for (Pair<String, Integer> pair : GameMenuController.showPopularityFactors(game, getCurrentUser()))
@@ -178,12 +232,15 @@ public class GameMenu {
         unitMenu.run();
     }
 
-    private void teamUpRequest(TreeMap<String, ArrayList<String>> map) {
-        
+    private void teamUpRequest(TreeMap<String, ArrayList<String>> map){
+        User user = User.getUserByName(map.get("i").get(0));
+        String output = GameMenuController.teamUpRequest(game , getCurrentUser() , user) ;
+        System.out.println(output);
     }
-
-    private void teamUpAccept(TreeMap<String, ArrayList<String>> map) {
-
+    private void teamUpAccept(TreeMap<String, ArrayList<String>> map){
+        int id = Integer.parseInt(map.get("i").get(0)) ;
+        String output = GameMenuController.teamUpAccept(game , getCurrentUser() , id) ;
+        System.out.println(output);
     }
 
     private void showTeamUpList(TreeMap<String, ArrayList<String>> map) {

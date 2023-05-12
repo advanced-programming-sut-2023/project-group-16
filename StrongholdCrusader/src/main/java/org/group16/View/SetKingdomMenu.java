@@ -19,6 +19,7 @@ public class SetKingdomMenu {
     private final Scanner scanner;
     private final Game game;
     private int currentPlayer = 0;
+    boolean back = false;
 
     public SetKingdomMenu(Scanner scanner, Game game) {
         this.game = game;
@@ -31,6 +32,8 @@ public class SetKingdomMenu {
 
     public void run() {
         while (true) {
+            if (back)
+                return;
             String input = scanner.nextLine();
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.SET_KINGDOM, input)) != null) selectKingdom(map);
@@ -78,6 +81,7 @@ public class SetKingdomMenu {
             GameMenu gameMenu = new GameMenu(scanner, game);
             System.out.println("game started successfully");
             gameMenu.run();
+            back = true;
         }
     }
 }

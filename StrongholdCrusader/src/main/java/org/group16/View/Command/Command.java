@@ -52,8 +52,15 @@ public enum Command {
     SET_UNEMPLOYED("set\\s+unemployed\\s+place" ,new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
     NEXT_TURN("next\\s+turn" ,new ArrayList<>()),
+    TEAM_UP_REQUEST("team\\s+up\\s+request", new ArrayList<>(List.of(new Option("i", 1, true)))),
+    TEAM_UP_ACCEPT("team\\s+up\\s+accept", new ArrayList<>(List.of(new Option("i", 1, true)))),
+    SHOW_TEAM_UP_LIST("show\\s+team\\s+up\\s+list", new ArrayList<>()),
+    LEAVE_TEAM("leave\\s+team", new ArrayList<>()),
     SHOW_MAP("show\\s+map", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
+    MOVE_MAP("move\\s+map", new ArrayList<>(List.of(
+            new Option("l", 1, false), new Option("r", 1, false),
+            new Option("u", 1, false), new Option("d", 1, false)))),
     SHOW_DETAILS("show\\s+details", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
     SHOW_FACTORS("show\\s+popularity\\s+factors", new ArrayList<>()),
@@ -94,11 +101,11 @@ public enum Command {
     DIG_TUNNEL("dig\\s+tunnel", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
     BUILD("build", new ArrayList<>(List.of(new Option("q", 1, true),
-            new Option("x", 1 , true) , new Option("y" , 1 , true)
+            new Option("x", 1, true), new Option("y", 1, true)
     ))),
     DISBAND_UNIT("disband\\s+unit", new ArrayList<>()),
-    FILTER_UNIT("filter\\s+unit" , new ArrayList<>(List.of(new Option("t", 1, true)))),
-    FILTER_SUBTRACTIVE_UNIT("filter\\s+subtractive\\s+unit" , new ArrayList<>(List.of(new Option("t", 1, true)))),
+    FILTER_UNIT("filter\\s+unit", new ArrayList<>(List.of(new Option("t", 1, true)))),
+    FILTER_SUBTRACTIVE_UNIT("filter\\s+subtractive\\s+unit", new ArrayList<>(List.of(new Option("t", 1, true)))),
     SET_TEXTURE("set\\s+texture", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true),
             new Option("t", 1, true)))),
