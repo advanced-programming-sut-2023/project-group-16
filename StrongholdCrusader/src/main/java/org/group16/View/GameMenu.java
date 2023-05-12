@@ -2,13 +2,10 @@ package org.group16.View;
 
 import org.group16.Controller.GameMenuController;
 import org.group16.Lib.Pair;
+import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
-import org.group16.Model.Game;
-import org.group16.Model.GameObject;
-import org.group16.Model.Kingdom;
 import org.group16.Model.People.Soldier;
-import org.group16.Model.User;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
 
@@ -46,7 +43,7 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.DROP_BUILDING, input)) != null) dropBuilding(map);
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
             else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
-            else if ((map = CommandHandler.matches(Command.NEXT_TURN, input)) != null) nextTurn();
+            else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
         }
@@ -56,9 +53,29 @@ public class GameMenu {
         //TODO : game end ?
         if (currentPlayer != game.getKingdoms().size() - 1) {
             currentPlayer++;
+            if (game.getKingdoms().get(currentPlayer).getKing().getHp() <= 0)
+                nextTurn();
             System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
         } else {
             game.execute();
+            if (GameMenuController.checkEndGame(game)){
+                System.out.println("Game ended!!!");
+                System.out.println("Winners : ");
+                Team winnerTeam = GameMenuController.getWinnerTeam(game)  ;
+                for (int i = 0 ; i < game.getKingdoms().size() ; i++){
+                    if (game.getKingdoms().get(i).getTeam().equals(winnerTeam)) {
+                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() +" : " + game.getKingdoms().get(i).getUser().getSlogan());
+                        game.getKingdoms().get(i).getUser().addHighScore(1);
+                    }
+                }
+                System.out.println("Losers : ");
+                for (int i = 0 ; i < game.getKingdoms().size() ; i++){
+                    if (!game.getKingdoms().get(i).getTeam().equals(winnerTeam)) {
+                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() +" : " + game.getKingdoms().get(i).getUser().getSlogan());
+                        game.getKingdoms().get(i).getUser().addHighScore(-1);
+                    }
+                }
+            }
             System.out.println("game updated");
             currentPlayer = 0;
             System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
