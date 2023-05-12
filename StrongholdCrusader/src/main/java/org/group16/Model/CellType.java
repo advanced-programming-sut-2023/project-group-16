@@ -1,29 +1,31 @@
 package org.group16.Model;
 
 public enum CellType {
-    NORMAL(1, true),
-    SMALL_STONE(1, true),
-    ROCK(2, false),
-    STONE(Integer.MAX_VALUE, false),
-    IRON(1, true),
-    GRASS(1, true),
-    LOW_DENSITY_GRASSLAND(1, true),
-    HIGH_DENSITY_GRASSLAND(1, true),
-    OIL(1, true),
-    WET_PLAIN(Integer.MAX_VALUE, false),
-    SHALLOW_WATER(2, false),
-    BEACH(1, true),
-    RIVER(Integer.MAX_VALUE, false),
-    POND(Integer.MAX_VALUE, false),
-    SEA(Integer.MAX_VALUE, false),
+    NORMAL(1, true, "\u001B[43m"),
+    SMALL_STONE(1, true, "\u001B[40m"),
+    ROCK(2, false, "\u001B[40m"),
+    STONE(Integer.MAX_VALUE, false, "\u001B[40m"),
+    IRON(1, true, "\u001B[41m"),
+    GRASS(1, true, "\u001B[42m"),
+    LOW_DENSITY_GRASSLAND(1, true, "\u001B[42m"),
+    HIGH_DENSITY_GRASSLAND(1, true, "\u001B[42m"),
+    OIL(1, true, "\u001B[45m"),
+    WET_PLAIN(Integer.MAX_VALUE, false, "\u001B[46m"),
+    SHALLOW_WATER(2, false, "\u001B[46m"),
+    BEACH(1, true, "\u001B[43m"),
+    RIVER(Integer.MAX_VALUE, false, "\u001B[44m"),
+    POND(Integer.MAX_VALUE, false, "\u001B[44m"),
+    SEA(Integer.MAX_VALUE, false, "\u001B[44m"),
     ;
 
     private final double traverseCost;
     private final boolean okToBuildIn;
+    private final String colorCode;
 
-    private CellType(double traverseCost, boolean okToBuildIn) {
+    private CellType(double traverseCost, boolean okToBuildIn, String colorCode) {
         this.traverseCost = traverseCost;
         this.okToBuildIn = okToBuildIn;
+        this.colorCode = colorCode;
     }
 
     public static CellType getCellTypeByName(String name) {
@@ -43,5 +45,9 @@ public enum CellType {
 
     public boolean isOkToBuildIn() {
         return okToBuildIn;
+    }
+
+    public String getColorCode() {
+        return colorCode;
     }
 }
