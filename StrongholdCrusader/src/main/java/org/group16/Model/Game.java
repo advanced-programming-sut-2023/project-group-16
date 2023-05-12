@@ -3,12 +3,12 @@ package org.group16.Model;
 import java.util.ArrayList;
 
 public class Game {
-    private final Scene scene;
     private final ArrayList<Kingdom> kingdoms = new ArrayList<>();
     private final ArrayList<Trade> tradeOffers = new ArrayList<>();
     private final ArrayList<Trade> tradeHistory = new ArrayList<>();
+    private final ArrayList<User> users = new ArrayList<>();
+    private Scene scene;
     private double currentTime = 0.0;
-    private ArrayList<User> users = new ArrayList<>();
 
     public Game(Scene scene, ArrayList<User> users) {
         this.scene = scene;
@@ -36,6 +36,10 @@ public class Game {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
     }
 
     public ArrayList<Kingdom> getKingdoms() {
@@ -101,5 +105,10 @@ public class Game {
             ind++;
         }
         return ind;
+    }
+
+    public void addUser(User user, KingdomType kingdomType) {
+        users.add(user);
+        kingdoms.add(new Kingdom(kingdomType, user));
     }
 }
