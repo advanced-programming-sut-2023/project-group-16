@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 public class Game {
     private static final int UPDATE_ITERATION_COUNT = 10;
+    private double currentTime = 0.0 ;
     private final Scene scene;
     private final ArrayList<Kingdom> kingdoms = new ArrayList<>();
     private final ArrayList<Trade> tradeOffers = new ArrayList<>();
     private final ArrayList<Trade> tradeHistory = new ArrayList<>();
-
+    private ArrayList<User> users = new ArrayList<>() ;
     public Game(Scene scene, ArrayList<User> users) {
         this.scene = scene;
-        //TODO : adding users
+        this.users.addAll(users);
     }
 
     public Game() {
@@ -24,8 +25,9 @@ public class Game {
         scene.onTurnStart();
         for (int iteration = 0; iteration < UPDATE_ITERATION_COUNT; iteration++) {
             for (var kingdom : kingdoms)
-                kingdom.update(1.0 / UPDATE_ITERATION_COUNT);
-            scene.update(1.0 / UPDATE_ITERATION_COUNT);
+                kingdom.update(currentTime);
+            scene.update(currentTime);
+            currentTime+=Time.deltaTime ;
         }
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
@@ -81,5 +83,20 @@ public class Game {
         for (Kingdom kingdom : kingdoms)
             if (kingdom.getUser().equals(user)) return kingdom;
         return null;
+    }
+    public double getCurrentTime() {
+        return currentTime;
+    }
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+    public int getUserIndex(User user){
+        int ind = 0 ;
+        for (User cUser : users){
+            if (cUser.equals(user))
+                return ind ;
+            ind++ ;
+        }
+        return ind ;
     }
 }

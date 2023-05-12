@@ -17,7 +17,7 @@ public class Worker extends Human {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
         //TODO : update
     }
 

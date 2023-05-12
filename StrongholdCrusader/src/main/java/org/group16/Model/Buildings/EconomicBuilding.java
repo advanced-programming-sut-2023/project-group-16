@@ -108,16 +108,17 @@ public class EconomicBuilding extends Building {
     }
 
     @Override
-    public void update(double deltaTime) {
-        //TODO : Time needed may change
-        if (!isActive() || !Time.isItTurned(deltaTime - getBuildTime(), Time.day))
+    public void update(double currentTime) {
+        //TODO : Time needed may change -
+        if (!isActive() || !Time.isItTurned(currentTime - getBuildTime(), Time.day))
             return;
         for (ProductData productData : detail.getProductsData()) {
             if (!productData.isManual())
                 continue;
             makeResource(productData.resource(), productData.maxRate());
         }
-        detail.getEconomyEffect().applyEffect(getKingdom());
+        if (detail.getEconomyEffect() != null)
+            detail.getEconomyEffect().applyEffect(getKingdom());
     }
 
     @Override

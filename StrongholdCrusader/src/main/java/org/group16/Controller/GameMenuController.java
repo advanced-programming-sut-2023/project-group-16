@@ -113,10 +113,9 @@ public class GameMenuController {
                 if (kingdom.availableHumans() < economicBuildingDetail.getNeededWorkers() + economicBuildingDetail.getNeededEngineers())
                     return "can not build now : not enough Human";
                 kingdom.useHuman(economicBuildingDetail.getNeededEngineers() + economicBuildingDetail.getNeededWorkers());
-                //TODO : time should be added correctly
                 for (Pair<Resource, Integer> pair : buildingType.getDependencies())
                     kingdom.useResource(pair.getA(), pair.getB());
-                EconomicBuilding economicBuilding = new EconomicBuilding(cells, kingdom, 0.0, economicBuildingDetail);
+                EconomicBuilding economicBuilding = new EconomicBuilding(cells, kingdom, game.getCurrentTime(), economicBuildingDetail);
                 for (int i = 0; i < economicBuildingDetail.getNeededWorkers(); i++)
                     economicBuilding.addWorker(new Worker(cells, kingdom, 100));
                 for (int i = 0; i < economicBuildingDetail.getNeededEngineers(); i++)
@@ -125,16 +124,11 @@ public class GameMenuController {
         }
         for (WarBuildingDetail warBuildingDetail : WarBuildingDetail.values()) {
             if (warBuildingDetail.getBuildingType().equals(buildingType)) {
-                //TODO : time should be added correctly
                 for (Pair<Resource, Integer> pair : buildingType.getDependencies())
                     kingdom.useResource(pair.getA(), pair.getB());
-                new WarBuilding(cells, kingdom, 0.0, warBuildingDetail);
+                new WarBuilding(cells, kingdom, game.getCurrentTime(), warBuildingDetail);
             }
         }
         return "OK";
     }
-
-    public static String selectUnit(Game game, User currentUser, int x, int y) {
-        return null;
-    }//TODO : select unit
 }

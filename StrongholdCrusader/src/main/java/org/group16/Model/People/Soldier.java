@@ -45,7 +45,7 @@ public class Soldier extends Human {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
         Cell moveDestination = warCommand.getDestination();
         Cell patrolDestination = warCommand.getPatrolDestination();
         boolean attackCell = warCommand.isAttackCell();
@@ -62,11 +62,11 @@ public class Soldier extends Human {
 
         // Fight if possible
         if (humanTarget != null && Map.getCellDistance(humanTarget.getCell(), getCell()) <= soldierDetail.getAttackRange()) {
-            followAndFight(humanTarget, deltaTime);
+            followAndFight(humanTarget, currentTime);
             return;
         }
         if (buildingTarget != null && Map.getCellDistance(buildingTarget.getCell(), getCell()) <= soldierDetail.getAttackRange()) {
-            followAndFight(buildingTarget, deltaTime);
+            followAndFight(buildingTarget, currentTime);
             return;
         }
 
@@ -83,7 +83,7 @@ public class Soldier extends Human {
                 distance = Map.getDistanceFromLine(moveDestination, patrolDestination, currentTarget.getCell());
 
             if (distance <= maxFollowRange) {
-                followAndFight(currentTarget, deltaTime);
+                followAndFight(currentTarget, currentTime);
                 return;
             }
         }
@@ -94,10 +94,10 @@ public class Soldier extends Human {
             possibleEnemyTargets = getEnemyPeopleInRange(moveDestination, 0);
             if (attackCell && possibleEnemyTargets.size() > 0) {
                 currentTarget = getTarget(possibleEnemyTargets, TARGET_SELECTION_RANDOMNESS);
-                followAndFight(currentTarget, deltaTime);
+                followAndFight(currentTarget, currentTime);
             } else {
                 if (getCell() != warCommand.getCurrentDestination())
-                    moveToward(warCommand.getCurrentDestination(), deltaTime * soldierDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+                    moveToward(warCommand.getCurrentDestination(), currentTime * soldierDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
                 else
                     warCommand.onReachDestination();
             }
@@ -105,11 +105,11 @@ public class Soldier extends Human {
         }
         // Attack Command
         if (humanTarget != null) {
-            followAndFight(humanTarget, deltaTime);
+            followAndFight(humanTarget, currentTime);
             return;
         }
         if (buildingTarget != null) {
-            followAndFight(buildingTarget, deltaTime);
+            followAndFight(buildingTarget, currentTime);
             return;
         }
     }

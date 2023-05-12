@@ -71,13 +71,13 @@ public enum BuildingType implements Resource {
     POLE_TURNER("pole turner" , 100 , BasicResource.WOOD , 10),
     //economy
     OIL_SMELTER("oil smelter" , 100 , BasicResource.IRON , 10),
-    //TODO : pitch ditch ?
+    //TODO : pitch ditch ?-
     //war ?
     PITCH_DITCH("pitch dig" , 0 , null , 0),
     //TODO : caged war dogs ?
     //war?
     CAGED_WAR_DOGS("caged war dogs" , 0 , null , 0),
-    //TODO : siege tent ?
+    //TODO : siege tent ?-
     //war?
     SIEGE_TENT("siege tent" , 0 , null , 0),
     //economy

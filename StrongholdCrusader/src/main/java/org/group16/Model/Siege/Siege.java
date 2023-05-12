@@ -57,25 +57,25 @@ public class Siege extends Soldier {
 
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
         Cell moveDestination = warCommand.getDestination();
         Human humanTarget = warCommand.getTargetHuman();
         Building buildingTarget = warCommand.getTargetBuilding();
 
         // Fight if possible
         if (humanTarget != null && Map.getCellDistance(humanTarget.getCell(), getCell()) <= siegeDetail.getAttackRange()) {
-            attackTarget(humanTarget, (int) (siegeDetail.getDamage() * deltaTime));
+            attackTarget(humanTarget, (int) (siegeDetail.getDamage() * currentTime));
             return;
         }
         if (buildingTarget != null && Map.getCellDistance(buildingTarget.getCell(), getCell()) <= siegeDetail.getAttackRange()) {
-            attackTarget(buildingTarget, (int) (siegeDetail.getDamage() * deltaTime));
+            attackTarget(buildingTarget, (int) (siegeDetail.getDamage() * currentTime));
             return;
         }
 
         // Move Command
         if (moveDestination != null) {
             if (getCell() != moveDestination)
-                moveToward(moveDestination, deltaTime * siegeDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+                moveToward(moveDestination, currentTime * siegeDetail.getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
             return;
         }
     }
