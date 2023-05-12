@@ -102,6 +102,7 @@ public class Human extends GameObject implements Alive {
     @Override
     public void update(double currentTime) {
         double deltaTime = Time.deltaTime;
+        if (getCell().getBuilding() != null) setBuilding(getCell().getBuilding());
         // TODO?
     }
 

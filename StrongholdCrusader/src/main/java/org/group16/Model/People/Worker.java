@@ -19,6 +19,7 @@ public class Worker extends Human {
 
     @Override
     public void update(double currentTime) {
+        super.update(currentTime);
         double deltaTime = Time.deltaTime;
         //TODO : update
     }
