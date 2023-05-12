@@ -44,7 +44,10 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
             else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
             else if ((map = CommandHandler.matches(Command.TEAM_UP_REQUEST, input)) != null) teamUpRequest(map);
-            else if ((map = CommandHandler.matches(Command.TRADE_ACCEPT, input)) != null) teamUpAccept(map);
+            else if ((map = CommandHandler.matches(Command.TEAM_UP_ACCEPT, input)) != null) teamUpAccept(map);
+            else if ((map = CommandHandler.matches(Command.TEAM_UP_ACCEPT, input)) != null) teamUpAccept(map);
+            else if ((map = CommandHandler.matches(Command.SHOW_TEAM_UP_LIST, input)) != null) showTeamUpList(map);
+            else if ((map = CommandHandler.matches(Command.LEAVE_TEAM, input)) != null) leaveTeam(map);
             else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
@@ -238,13 +241,6 @@ public class GameMenu {
         int id = Integer.parseInt(map.get("i").get(0)) ;
         String output = GameMenuController.teamUpAccept(game , getCurrentUser() , id) ;
         System.out.println(output);
-    }
-    private void teamUpRequest(TreeMap<String, ArrayList<String>> map) {
-
-    }
-
-    private void teamUpAccept(TreeMap<String, ArrayList<String>> map) {
-
     }
 
     private void showTeamUpList(TreeMap<String, ArrayList<String>> map) {
