@@ -62,6 +62,9 @@ public enum SoldierDetail implements Resource {
     ENGINEER(KingdomType.EUROPEAN, 30, null, null, false, 1,
             false, false, false, false, true,
             true, 0, 0, 0, 0, 1, 3),
+    KING(KingdomType.EUROPEAN , 0 , null , null , false ,1 ,
+            false , false , false , false ,true ,
+            true , 1 , 1 , 1 , 5 , 5 , 5)
     ;
 
     private final Weaponry armor;
