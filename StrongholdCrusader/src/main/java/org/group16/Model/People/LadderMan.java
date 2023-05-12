@@ -19,8 +19,8 @@ public class LadderMan extends Soldier {
         Building target = warCommand.getTargetBuilding();
         if (target != null)
             destination = target.getCell();
-        moveToward(destination, deltaTime * getSoldierDetail().getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
-        
+        moveToward(destination, false, deltaTime * getSoldierDetail().getSpeed(), PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
+
         if (target != null)
             if (Map.getCellDistance(getCell(), destination) <= 1.9)
                 deployLadder(destination);
