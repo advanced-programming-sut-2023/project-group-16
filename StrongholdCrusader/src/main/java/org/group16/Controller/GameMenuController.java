@@ -132,6 +132,37 @@ public class GameMenuController {
         return "OK";
     }
 
+    public static String teamUpRequest(Game game, User currentUser, User to) {
+        if (currentUser == null) return "invalid first user";
+        Kingdom kingdom1 = game.getKingdom(currentUser);
+        if (kingdom1 == null) return "first user not playing";
+
+        if (to == null) return "invalid second user";
+        Kingdom kingdom2 = game.getKingdom(to);
+        if (kingdom2 == null) return "first user not playing";
+
+        if (kingdom1.getTeam() == kingdom2.getTeam()) return "already team members";
+
+        game.addTeamUp(new TeamUp(kingdom1, kingdom2));
+        return "team up sent successfully";
+    }
+
+    public static String teamUpAccept(Game game, User currentUser, int id) {
+        TeamUp teamUp = game.getTeamUpById(id);
+        if (teamUp == null || currentUser != teamUp.getTo().getUser()) return "invalid team up id";
+        game.completeTeamUp(teamUp);
+        return "team up successful";
+    }
+
+    public static String showTeamUpList(Game game, User currentUser) {
+        ArrayList<TeamUp> teamUps = game.getUserTeamUpOffers(currentUser);
+        StringBuilder output = new StringBuilder();
+        for (TeamUp teamUp : teamUps)
+            output.append(teamUp);
+        if (output.length() == 0) return "no team up available\n";
+        return output.toString();
+    }
+
     public static boolean checkEndGame(Game game) {
         Team team = null;
         for (int i = 0; i < game.getKingdoms().size(); i++) {

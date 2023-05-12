@@ -6,6 +6,7 @@ public class Game {
     private final ArrayList<Kingdom> kingdoms = new ArrayList<>();
     private final ArrayList<Trade> tradeOffers = new ArrayList<>();
     private final ArrayList<Trade> tradeHistory = new ArrayList<>();
+    private final ArrayList<TeamUp> teamUpOffers = new ArrayList<>();
     private Scene scene;
     private double currentTime = 0.0;
 
@@ -53,6 +54,10 @@ public class Game {
         tradeOffers.add(trade);
     }
 
+    public void addTeamUp(TeamUp teamUp) {
+        teamUpOffers.add(teamUp);
+    }
+
     public String completeTrade(Trade trade, String buyerMessage) {
         if (!trade.getBuyer().addResource(trade.getResource(), trade.getAmount()))
             return "insufficient storage capacity";
@@ -61,6 +66,23 @@ public class Game {
         tradeHistory.add(trade);
         tradeOffers.remove(trade);
         return "trade made successfully";
+    }
+
+    public TeamUp getTeamUpById(int id) {
+        for (TeamUp teamUp : teamUpOffers)
+            if (teamUp.getId() == id) return teamUp;
+        return null;
+    }
+
+    public void completeTeamUp(TeamUp teamUp) {
+        teamUp.getTo().setTeam(teamUp.getFrom().getTeam());
+        teamUpOffers.remove(teamUp);
+    }
+
+    public ArrayList<TeamUp> getUserTeamUpOffers(User user) {
+        ArrayList<TeamUp> teamUps = new ArrayList<>();
+        for (TeamUp teamUp : teamUpOffers) if (teamUp.getTo().getUser() == user) teamUps.add(teamUp);
+        return teamUps;
     }
 
     public ArrayList<Trade> getUserTrades(User user) {
