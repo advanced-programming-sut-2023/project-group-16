@@ -1,10 +1,7 @@
 package org.group16.Model.People;
 
+import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
-import org.group16.Model.Cell;
-import org.group16.Model.Kingdom;
-import org.group16.Model.Map;
-import org.group16.Model.Scene;
 
 import java.util.ArrayList;
 
@@ -14,7 +11,8 @@ public class LadderMan extends Soldier {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
         Cell destination = warCommand.getDestination();
         Building target = warCommand.getTargetBuilding();
         if (target != null)

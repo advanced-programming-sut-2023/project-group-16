@@ -1,9 +1,6 @@
 package org.group16.Model.People;
 
-import org.group16.Model.Cell;
-import org.group16.Model.GameObject;
-import org.group16.Model.Kingdom;
-import org.group16.Model.Scene;
+import org.group16.Model.*;
 import org.group16.Model.Siege.PortableShield;
 import org.group16.Model.Siege.Siege;
 import org.group16.Model.Siege.SiegeDetail;
@@ -19,7 +16,8 @@ public class Engineer extends Soldier {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
         if (getSiege() != null) {
             setCell(getSiege().getCell());
             return;

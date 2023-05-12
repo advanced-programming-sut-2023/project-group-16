@@ -99,8 +99,10 @@ public class Human extends GameObject implements Alive {
         //TODO
     }
 
-    public void update(double deltaTime) {
-        //TODO
+    @Override
+    public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
+        // TODO?
     }
 
     public void onTurnEnd() {

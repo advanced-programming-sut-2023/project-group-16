@@ -2,6 +2,7 @@ package org.group16.Model.People;
 
 import org.group16.Model.Cell;
 import org.group16.Model.Kingdom;
+import org.group16.Model.Time;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class Worker extends Human {
 
     @Override
     public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
         //TODO : update
     }
 

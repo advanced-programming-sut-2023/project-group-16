@@ -43,7 +43,8 @@ public class Soldier extends Human {
     }
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
         Cell moveDestination = warCommand.getDestination();
         Cell patrolDestination = warCommand.getPatrolDestination();
         boolean attackCell = warCommand.isAttackCell();

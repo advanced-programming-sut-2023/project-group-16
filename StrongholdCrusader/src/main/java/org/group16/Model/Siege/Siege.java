@@ -57,7 +57,8 @@ public class Siege extends Soldier {
 
 
     @Override
-    public void update(double deltaTime) {
+    public void update(double currentTime) {
+        double deltaTime = Time.deltaTime;
         Cell moveDestination = warCommand.getDestination();
         Human humanTarget = warCommand.getTargetHuman();
         Building buildingTarget = warCommand.getTargetBuilding();
