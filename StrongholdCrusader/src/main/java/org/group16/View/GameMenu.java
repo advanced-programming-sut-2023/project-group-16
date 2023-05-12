@@ -8,6 +8,7 @@ import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
+import org.ietf.jgss.GSSManager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -43,6 +44,8 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.DROP_BUILDING, input)) != null) dropBuilding(map);
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
             else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
+            else if ((map = CommandHandler.matches(Command.TEAM_UP_REQUEST, input)) != null) teamUpRequest(map);
+            else if ((map = CommandHandler.matches(Command.TRADE_ACCEPT, input)) != null) teamUpAccept(map);
             else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
@@ -193,5 +196,16 @@ public class GameMenu {
         UnitMenu unitMenu = new UnitMenu(scanner, game, unit, getCurrentUser());
         System.out.println("entered UnitMenu");
         unitMenu.run();
+    }
+
+    private void teamUpRequest(TreeMap<String, ArrayList<String>> map){
+        User user = User.getUserByName(map.get("i").get(0));
+        String output = GameMenuController.teamUpRequest(game , getCurrentUser() , user) ;
+        System.out.println(output);
+    }
+    private void teamUpAccept(TreeMap<String, ArrayList<String>> map){
+        int id = Integer.parseInt(map.get("i").get(0)) ;
+        String output = GameMenuController.teamUpAccept(game , getCurrentUser() , id) ;
+        System.out.println(output);
     }
 }

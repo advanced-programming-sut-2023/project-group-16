@@ -31,7 +31,7 @@ public class CreateGameMenu {
             else if (CommandHandler.matches(Command.START_GAME, input) != null) startGame();
             else if (CommandHandler.matches(Command.BACK, input) != null) {
                 System.out.println("exit create game menu successfully");
-                break;
+                return;
             } else System.out.println("invalid command");
         }
     }
