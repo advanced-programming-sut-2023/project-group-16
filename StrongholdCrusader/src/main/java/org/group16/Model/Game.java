@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Game {
     private static final int UPDATE_ITERATION_COUNT = 10;
+    private double currentTime = 0.0 ;
     private final Scene scene;
     private final ArrayList<Kingdom> kingdoms = new ArrayList<>();
     private final ArrayList<Trade> tradeOffers = new ArrayList<>();
@@ -24,8 +25,9 @@ public class Game {
         scene.onTurnStart();
         for (int iteration = 0; iteration < UPDATE_ITERATION_COUNT; iteration++) {
             for (var kingdom : kingdoms)
-                kingdom.update(1.0 / UPDATE_ITERATION_COUNT);
-            scene.update(1.0 / UPDATE_ITERATION_COUNT);
+                kingdom.update(currentTime);
+            scene.update(currentTime);
+            currentTime+=Time.deltaTime ;
         }
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
