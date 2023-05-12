@@ -11,7 +11,7 @@ public class Game {
 
     public Game(Scene scene, ArrayList<User> users) {
         this.scene = scene;
-        //TODO
+        //TODO : adding users
     }
 
     public Game() {

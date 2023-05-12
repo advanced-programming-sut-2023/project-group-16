@@ -96,13 +96,13 @@ public class Human extends GameObject implements Alive {
     }
 
     public void onTurnStart(){
-        //TODO
+        //TODO : on turn start
     }
     public void update(double deltaTime){
-        //TODO
+        //TODO : update
     }
 
     public void onTurnEnd(){
-        //TODO
+        //TODO : on turn end
     }
 }
