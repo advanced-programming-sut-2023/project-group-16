@@ -10,6 +10,7 @@ public class Cell implements Comparable<Cell> {
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private CellType cellType;
     private TreeType treeType;
+    private boolean hasLadder;
 
     public Cell(int x, int y, CellType cellType, TreeType treeType) {
         this.x = x;
@@ -24,6 +25,14 @@ public class Cell implements Comparable<Cell> {
 
     public Cell(int x, int y, Cell cell) {
         this(x, y, cell.cellType, cell.treeType);
+    }
+
+    public boolean getHasLadder() {
+        return hasLadder;
+    }
+
+    public void setHasLadder(boolean hasLadder) {
+        this.hasLadder = hasLadder;
     }
 
     public TreeType getTreeType() {
