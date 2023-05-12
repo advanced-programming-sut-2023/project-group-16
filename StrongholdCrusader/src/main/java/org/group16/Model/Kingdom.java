@@ -163,6 +163,9 @@ public class Kingdom {
             }
         }
     }
+    public double getFearRateEffectOnMorality(){
+        return (double)(fearRate)*0.05 ;
+    }
 
     public double getTaxGold() {
         switch (tax) {
@@ -279,6 +282,8 @@ public class Kingdom {
     }
 
     public int getResourceStorageCapacity(Resource resource) {
+        if(resource == null)
+            return 100000 ;
         int count = 0;
         for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding)) continue;
@@ -292,6 +297,8 @@ public class Kingdom {
     }
 
     public int getResourceCount(Resource resource) {
+        if (resource==null)
+            return 100000 ;
         int count = 0;
         for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding)) continue;
@@ -304,6 +311,8 @@ public class Kingdom {
     }
 
     public boolean useResource(Resource resource, int count) {
+        if (resource==null)
+            return true ;
         if (getResourceCount(resource) < count) return false;
         for (Building building : buildings) {
             if (count == 0) break;
@@ -321,6 +330,8 @@ public class Kingdom {
     }
 
     public boolean addResource(Resource resource, int count) {
+        if (resource==null)
+            return true ;
         if (getResourceStorageCapacity(resource) < count) return false;
         for (Building building : buildings) {
             if (count == 0) break;
@@ -368,7 +379,7 @@ public class Kingdom {
     }
 
     public void onTurnStart() {
-        //TODO
+        //TODO : on turn start
     }
     public void update(double deltaTime) {
         if (Time.isItTurned(deltaTime, Time.day)) {
@@ -397,8 +408,6 @@ public class Kingdom {
             }
             //fearRate
             addPopularity(-getFearRate());
-            //TODO : fearRate changes morality !?
-
             //TODO : religion ?
 
             //population added by popularity
@@ -407,7 +416,7 @@ public class Kingdom {
     }
 
     public void onTurnEnd() {
-        //TODO
+        //TODO : on turn end
     }
 
     public ArrayList<EconomicBuilding> getEconomicBuildingsByType(BuildingType buildingType) {

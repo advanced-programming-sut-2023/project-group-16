@@ -13,17 +13,17 @@ public class Worker extends Human {
 
     @Override
     public void onTurnStart() {
-        //TODO
+        //TODO : on turn start
     }
 
     @Override
-    public void update(double deltaTime) {
-        //TODO
+    public void update(double currentTime) {
+        //TODO : update
     }
 
     @Override
     public void onTurnEnd() {
-        //TODO
+        //TODO : on turn end
     }
 
 }
