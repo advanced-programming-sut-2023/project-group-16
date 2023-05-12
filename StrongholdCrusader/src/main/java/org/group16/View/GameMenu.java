@@ -33,6 +33,8 @@ public class GameMenu {
             String input = scanner.nextLine();
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.SHOW_MAP, input)) != null) showMap(map);
+            else if ((map = CommandHandler.matches(Command.MOVE_MAP, input)) != null) moveMap(map);
+            else if ((map = CommandHandler.matches(Command.SHOW_DETAILS, input)) != null) showMapDetails(map);
             else if ((map = CommandHandler.matches(Command.SHOW_POPULARITY, input)) != null) showPopularity(map);
             else if ((map = CommandHandler.matches(Command.SHOW_FACTORS, input)) != null) showPopularityFactors(map);
             else if ((map = CommandHandler.matches(Command.FOOD_LIST, input)) != null) showFoodList(map);
@@ -68,14 +70,46 @@ public class GameMenu {
 
 
     private void showMap(TreeMap<String, ArrayList<String>> map) {
-
-    }//TODO : show map
+        int x, y;
+        try {
+            x = Integer.parseInt(map.get("x").get(0));
+            y = Integer.parseInt(map.get("y").get(0));
+        } catch (NumberFormatException exception) {
+            System.out.println("invalid position format");
+            return;
+        }
+        System.out.print(GameMenuController.showMap(game, x, y));
+    }
 
     private void moveMap(TreeMap<String, ArrayList<String>> map) {
-    }//TODO : move map
+        if (map.isEmpty()) {
+            System.out.println("invalid command");
+            return;
+        }
+        int l, r, u, d;
+        try {
+            l = map.containsKey("l") ? Integer.parseInt(map.get("l").get(0)) : 0;
+            r = map.containsKey("r") ? Integer.parseInt(map.get("r").get(0)) : 0;
+            u = map.containsKey("u") ? Integer.parseInt(map.get("u").get(0)) : 0;
+            d = map.containsKey("d") ? Integer.parseInt(map.get("d").get(0)) : 0;
+        } catch (NumberFormatException exception) {
+            System.out.println("invalid movement format");
+            return;
+        }
+        System.out.print(GameMenuController.moveMap(game, d - u, r - l));
+    }
 
     private void showMapDetails(TreeMap<String, ArrayList<String>> map) {
-    }//TODO : show map details
+        int x, y;
+        try {
+            x = Integer.parseInt(map.get("x").get(0));
+            y = Integer.parseInt(map.get("y").get(0));
+        } catch (NumberFormatException exception) {
+            System.out.println("invalid position format");
+            return;
+        }
+        System.out.print(GameMenuController.showMapDetails(game, x, y));
+    }
 
     private void showPopularityFactors(TreeMap<String, ArrayList<String>> map) {
         for (Pair<String, Integer> pair : GameMenuController.showPopularityFactors(game, getCurrentUser()))

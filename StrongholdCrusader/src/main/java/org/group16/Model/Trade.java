@@ -17,7 +17,7 @@ public class Trade {
         this.price = price;
         this.amount = amount;
         this.sellerMessage = sellerMessage;
-        this.id = totalTrades++;
+        this.id = ++totalTrades;
     }
 
     public Resource getResource() {

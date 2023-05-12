@@ -11,6 +11,7 @@ public class Map {
     private final int width, height;
     private String name;
     private Cell[][] cells;
+    private int currentX, currentY;
 
     public Map(String name, int mapWidth, int mapHeight) {
         this.name = name;
@@ -20,6 +21,8 @@ public class Map {
         for (int i = 0; i < mapWidth; i++)
             for (int j = 0; j < mapHeight; j++)
                 cells[i][j] = new Cell(i, j, CellType.NORMAL);
+        this.currentX = mapWidth / 2;
+        this.currentY = mapHeight / 2;
     }
 
     public Map(Map map) {
@@ -122,5 +125,21 @@ public class Map {
             }
         }
         return result;
+    }
+
+    public int getCurrentX() {
+        return currentX;
+    }
+
+    public void setCurrentX(int currentX) {
+        this.currentX = currentX;
+    }
+
+    public int getCurrentY() {
+        return currentY;
+    }
+
+    public void setCurrentY(int currentY) {
+        this.currentY = currentY;
     }
 }
