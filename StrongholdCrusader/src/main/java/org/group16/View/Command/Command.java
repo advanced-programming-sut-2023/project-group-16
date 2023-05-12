@@ -22,7 +22,13 @@ public enum Command {
             new Option("u", 1, true)))),
     EXIT("exit", new ArrayList<>()),
     LOGOUT("user\\s+logout", new ArrayList<>()),
-    ENTER_GAME_MENU("enter\\s+game\\s+menu", new ArrayList<>()),
+    CREATE_GAME("create\\s+game", new ArrayList<>(List.of(
+            new Option("t", 1, true)))),
+    ADD_USER("add\\s+user", new ArrayList<>(List.of(
+            new Option("u", 1, true), new Option("t", 1, true)))),
+    REMOVE_USER("remove\\s+user", new ArrayList<>(List.of(
+            new Option("u", 1, true)))),
+    START_GAME("start\\s+game", new ArrayList<>()),
     ENTER_PROFILE_MENU("enter\\s+profile\\s+menu", new ArrayList<>()),
     ENTER_EDITOR_MENU("enter\\s+editor\\s+menu", new ArrayList<>()),
     CHANGE_USERNAME("profile\\s+change", new ArrayList<>(List.of(

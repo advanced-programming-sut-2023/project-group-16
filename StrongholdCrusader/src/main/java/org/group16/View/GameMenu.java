@@ -19,8 +19,8 @@ import java.util.regex.Matcher;
 
 public class GameMenu {
     private final Scanner scanner;
-    private final Game game;
-    private int currentPlayer;
+    private Game game;
+    private int currentPlayer = 0;
     private int x, y;
 
     public GameMenu(Scanner scanner, Game game) {
@@ -45,22 +45,20 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.SELECT_UNIT, input)) != null) selectUnit(map);
             else if ((map = CommandHandler.matches(Command.SELECT_BUILDING, input)) != null) selectBuilding(map);
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
-            else
-                System.out.println("invalid command");
+            else System.out.println("invalid command");
         }
     }
 
     private void nextTurn() {
         //TODO : game end ?
-        if (currentPlayer!=game.getKingdoms().size()-1){
-            currentPlayer++ ;
-            System.out.println("now user " + getCurrentUser().getNickname() +  "is playing");
-        }
-        else{
+        if (currentPlayer != game.getKingdoms().size() - 1) {
+            currentPlayer++;
+            System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
+        } else {
             game.execute();
             System.out.println("game updated");
-            currentPlayer = 0 ;
-            System.out.println("now user " + getCurrentUser().getNickname() +  "is playing");
+            currentPlayer = 0;
+            System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
         }
     }
 
@@ -154,7 +152,7 @@ public class GameMenu {
             System.out.println("no Building here");
             return;
         }
-        BuildingMenu buildingMenu = new BuildingMenu(scanner ,game , building , getCurrentUser()) ;
+        BuildingMenu buildingMenu = new BuildingMenu(scanner, game, building, getCurrentUser());
         System.out.println("entered BuildingMenu");
         buildingMenu.run();
     }
@@ -163,16 +161,16 @@ public class GameMenu {
         int x = Integer.parseInt(map.get("x").get(0));
         int y = Integer.parseInt(map.get("y").get(0));
         if (x > game.getScene().getMap().getHeight() || x < 0 || y > game.getScene().getMap().getWidth() || y < 0)
-            System.out.println("not valid cell!") ;
-        ArrayList < Soldier > unit = new ArrayList<>() ;
-        Kingdom kingdom = game.getKingdom(getCurrentUser()) ;
-        for (GameObject gameObject : game.getScene().getCellAt(x , y).getGameObjects()){
+            System.out.println("not valid cell!");
+        ArrayList<Soldier> unit = new ArrayList<>();
+        Kingdom kingdom = game.getKingdom(getCurrentUser());
+        for (GameObject gameObject : game.getScene().getCellAt(x, y).getGameObjects()) {
             if (gameObject instanceof Soldier && gameObject.getKingdom().equals(kingdom))
-                unit.add((Soldier)gameObject) ;
+                unit.add((Soldier) gameObject);
         }
-        if (unit.size()==0)
+        if (unit.size() == 0)
             System.out.println("no Soldier here!");
-        UnitMenu unitMenu = new UnitMenu(scanner ,game , unit  ,getCurrentUser()) ;
+        UnitMenu unitMenu = new UnitMenu(scanner, game, unit, getCurrentUser());
         System.out.println("entered UnitMenu");
         unitMenu.run();
     }

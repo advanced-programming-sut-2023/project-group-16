@@ -6,17 +6,12 @@ public class Game {
     private final ArrayList<Kingdom> kingdoms = new ArrayList<>();
     private final ArrayList<Trade> tradeOffers = new ArrayList<>();
     private final ArrayList<Trade> tradeHistory = new ArrayList<>();
-    private final ArrayList<User> users = new ArrayList<>();
     private Scene scene;
     private double currentTime = 0.0;
 
-    public Game(Scene scene, ArrayList<User> users) {
-        this.scene = scene;
-        this.users.addAll(users);
-    }
-
-    public Game() {
-        this.scene = new Scene(new Map());
+    public Game(KingdomType kingdomType, User user) {
+        kingdoms.add(new Kingdom(kingdomType, user));
+        this.scene = new Scene(null);
     }
 
     public void execute() {
@@ -93,22 +88,11 @@ public class Game {
         return currentTime;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-    public int getUserIndex(User user) {
-        int ind = 0;
-        for (User cUser : users) {
-            if (cUser.equals(user))
-                return ind;
-            ind++;
-        }
-        return ind;
-    }
-
     public void addUser(User user, KingdomType kingdomType) {
-        users.add(user);
         kingdoms.add(new Kingdom(kingdomType, user));
+    }
+
+    public void removeUser(User user) {
+        kingdoms.remove(getKingdom(user));
     }
 }

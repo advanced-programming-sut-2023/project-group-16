@@ -1,6 +1,6 @@
 package org.group16.View;
 
-import org.group16.Model.Game;
+import org.group16.Model.KingdomType;
 import org.group16.Model.User;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
@@ -9,7 +9,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class MainMenu {
     private final Scanner scanner;
@@ -23,7 +25,8 @@ public class MainMenu {
     public void run() {
         while (true) {
             String input = scanner.nextLine();
-            if (CommandHandler.matches(Command.ENTER_GAME_MENU, input) != null) enterGameMenu();
+            TreeMap<String, ArrayList<String>> map;
+            if ((map = CommandHandler.matches(Command.CREATE_GAME, input)) != null) createGame(map);
             else if (CommandHandler.matches(Command.ENTER_PROFILE_MENU, input) != null) enterProfileMenu();
             else if (CommandHandler.matches(Command.ENTER_EDITOR_MENU, input) != null) enterEditorMenu();
             else if (CommandHandler.matches(Command.LOGOUT, input) != null) {
@@ -33,17 +36,21 @@ public class MainMenu {
         }
     }
 
-    private void enterGameMenu() {
-        System.out.println("entered game menu successfully");
-        GameMenu gameMenu = new GameMenu(scanner, new Game());
-        gameMenu.run();
+    private void createGame(TreeMap<String, ArrayList<String>> map) {
+        KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
+        if (kingdomType == null) {
+            System.out.println("invalid kingdom type");
+            return;
+        }
+        System.out.println("entered to create map menu successfully");
+        CreateGameMenu createGameMenu = new CreateGameMenu(scanner, currentUser, kingdomType);
+        createGameMenu.run();
     }
 
     private void enterProfileMenu() {
         System.out.println("entered profile menu successfully");
         ProfileMenu profileMenu = new ProfileMenu(scanner, currentUser);
         profileMenu.run();
-
     }
 
     private void enterEditorMenu() {
