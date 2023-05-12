@@ -8,6 +8,7 @@ public class PathFindingQuery {
     public static final double DIAGONAL_COST_MULTIPLIER = 1.4;
     private final Map map;
     private final Cell start, end;
+    private final Team pathfinderTeam;
     private final boolean canUseLadder;
     private final double randomness;
     private final Random random;
@@ -15,10 +16,11 @@ public class PathFindingQuery {
     private final HashMap<Cell, Cell> parent = new HashMap<>();
     private final PriorityQueue<Cell> astar = new PriorityQueue<>(Comparator.comparingDouble(this::getHeuristicPath));
 
-    public PathFindingQuery(Map map, Cell start, Cell end, boolean canUseLadder, double randomness, Random random) {
+    public PathFindingQuery(Map map, Cell start, Cell end, Team pathfinderTeam, boolean canUseLadder, double randomness, Random random) {
         this.map = map;
         this.start = start;
         this.end = end;
+        this.pathfinderTeam = pathfinderTeam;
         this.canUseLadder = canUseLadder;
         this.randomness = randomness;
         this.random = random;
@@ -60,7 +62,11 @@ public class PathFindingQuery {
 
     private void updateEdge(Cell from, Cell to) {
         if (to == null) return;
-        if (!(to.getHasLadder() && canUseLadder) && !to.isTraversable()) return;
+        boolean canEnterCell = to.isTraversable();
+        canEnterCell |= to.getHasLadder() && canUseLadder;
+        if (to.getBuilding() != null)
+            canEnterCell |= to.getBuilding().getKingdom().getTeam() == pathfinderTeam;
+        if (!canEnterCell) return;
 
         double cost = (from.getTraverseCost() + to.getTraverseCost()) / 2 + random.nextDouble() * randomness;
         if (from.getX() != to.getX() && from.getY() != to.getY()) cost *= DIAGONAL_COST_MULTIPLIER;
