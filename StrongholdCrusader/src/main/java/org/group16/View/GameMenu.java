@@ -177,4 +177,20 @@ public class GameMenu {
         System.out.println("entered UnitMenu");
         unitMenu.run();
     }
+
+    private void teamUpRequest(TreeMap<String, ArrayList<String>> map) {
+        
+    }
+
+    private void teamUpAccept(TreeMap<String, ArrayList<String>> map) {
+
+    }
+
+    private void showTeamUpList(TreeMap<String, ArrayList<String>> map) {
+        System.out.print(GameMenuController.showTeamUpList(game, getCurrentUser()));
+    }
+
+    private void leaveTeam(TreeMap<String, ArrayList<String>> map) {
+        System.out.println(GameMenuController.leaveTeam(game, getCurrentUser()));
+    }
 }

@@ -133,13 +133,11 @@ public class GameMenuController {
     }
 
     public static String teamUpRequest(Game game, User currentUser, User to) {
-        if (currentUser == null) return "invalid first user";
         Kingdom kingdom1 = game.getKingdom(currentUser);
-        if (kingdom1 == null) return "first user not playing";
 
-        if (to == null) return "invalid second user";
+        if (to == null) return "invalid user";
         Kingdom kingdom2 = game.getKingdom(to);
-        if (kingdom2 == null) return "first user not playing";
+        if (kingdom2 == null) return "user is not playing";
 
         if (kingdom1.getTeam() == kingdom2.getTeam()) return "already team members";
 
@@ -161,5 +159,11 @@ public class GameMenuController {
             output.append(teamUp);
         if (output.length() == 0) return "no team up available\n";
         return output.toString();
+    }
+
+    public static String leaveTeam(Game game, User currenUser) {
+        Kingdom kingdom = game.getKingdom(currenUser);
+        kingdom.setTeam(new Team(kingdom));
+        return "leaved team successfully";
     }
 }
