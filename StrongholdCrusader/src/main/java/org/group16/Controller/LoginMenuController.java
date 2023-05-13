@@ -122,7 +122,7 @@ public class LoginMenuController {
         if (!LoginMenu.handleCaptcha()) return "incorrect captcha";
         if (stayLoggedIn) {
             String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
-                    "org/group16/Model/Data/stayLoggedInUser.txt");
+                    "Data/stayLoggedInUser.txt");
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
                 writer.write(username);
@@ -145,10 +145,10 @@ public class LoginMenuController {
     }
 
     public static User getStayLoggedInUser() {
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/stayLoggedInUser.txt");
+        String folderPath = new File("").getAbsolutePath().concat("/Data");
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            new File(folderPath).mkdirs();
+            BufferedReader reader = new BufferedReader(new FileReader(folderPath + "/stayLoggedInUser.txt"));
             String username = reader.readLine();
             reader.close();
             return User.getUserByName(username);

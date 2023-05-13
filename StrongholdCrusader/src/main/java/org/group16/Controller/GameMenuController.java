@@ -13,7 +13,7 @@ import java.util.TreeMap;
 
 public class GameMenuController {
 
-    public static String showMap(Game game, int x, int y) {
+    public static String showMap(Game game, int x, int y) { //TODO : bug :((
         String output = "";
         String ANSI_RESET = "\u001B[0m";
         Map map = game.getScene().getMap();
@@ -143,9 +143,9 @@ public class GameMenuController {
         ArrayList<Cell> cells = new ArrayList<>();
         for (int xx = x - cellSize; xx <= x + cellSize; xx++) {
             for (int yy = y - cellSize; yy <= y + cellSize; yy++) {
-                if (xx > game.getScene().getMap().getHeight() || xx < 0 || yy > game.getScene().getMap().getWidth() || yy < 0)
-                    return "can not build here : not in map";
                 Cell cell = game.getScene().getCellAt(xx, yy);
+                if (cell == null)
+                    return "can not build here : not in map";
                 if (!cell.getCellType().isOkToBuildIn())
                     return "can not build here : inappropriate land";
                 if (cell.getCellType().equals(buildingType.getCellTypeNeeded()))
@@ -169,11 +169,12 @@ public class GameMenuController {
                 kingdom.useHuman(economicBuildingDetail.getNeededEngineers() + economicBuildingDetail.getNeededWorkers());
                 for (Pair<Resource, Integer> pair : buildingType.getDependencies())
                     kingdom.useResource(pair.getA(), pair.getB());
-                EconomicBuilding economicBuilding ;
-                if (economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.MERCENARY_POST.getBuildingType())||
-                        economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.BARRACKS.getBuildingType())||
+                EconomicBuilding economicBuilding;
+                if (economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.MERCENARY_POST.getBuildingType()) ||
+                        economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.BARRACKS.getBuildingType()) ||
                         economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.ENGINEER_GUILD.getBuildingType())
-                ) economicBuilding = new MilitaryBuilding(cells , kingdom , game.getCurrentTime(), economicBuildingDetail) ;
+                )
+                    economicBuilding = new MilitaryBuilding(cells, kingdom, game.getCurrentTime(), economicBuildingDetail);
                 else
                     economicBuilding = new EconomicBuilding(cells, kingdom, game.getCurrentTime(), economicBuildingDetail);
                 for (int i = 0; i < economicBuildingDetail.getNeededWorkers(); i++)
