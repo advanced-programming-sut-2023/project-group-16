@@ -13,7 +13,7 @@ import java.util.TreeMap;
 
 public class GameMenuController {
 
-    public static String showMap(Game game, int x, int y) {
+    public static String showMap(Game game, int x, int y) { //TODO : bug :((
         String output = "";
         String ANSI_RESET = "\u001B[0m";
         Map map = game.getScene().getMap();

@@ -92,8 +92,8 @@ public class SetKingdomMenu {
             System.out.println("please set places first");
             return;
         }
+        game.getKingdoms().get(currentPlayer).addPopularity(100);
         if (currentPlayer != game.getKingdoms().size() - 1) {
-            game.getKingdoms().get(currentPlayer).addPopularity(100);
             currentPlayer++;
             System.out.println("now user " + getCurrentUser().getNickname() + " is setting kingdom");
         } else {
