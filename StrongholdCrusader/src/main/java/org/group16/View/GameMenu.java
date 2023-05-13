@@ -49,6 +49,7 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.SHOW_TEAM_UP_LIST, input)) != null) showTeamUpList(map);
             else if ((map = CommandHandler.matches(Command.LEAVE_TEAM, input)) != null) leaveTeam(map);
             else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
+            else if (CommandHandler.matches(Command.SHOW_GOLD, input) != null) showMoney();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
         }
@@ -251,5 +252,8 @@ public class GameMenu {
 
     private void leaveTeam(TreeMap<String, ArrayList<String>> map) {
         System.out.println(GameMenuController.leaveTeam(game, getCurrentUser()));
+    }
+    private void showMoney(){
+        System.out.println("GOLD : " + game.getKingdoms().get(currentPlayer).getGold());
     }
 }

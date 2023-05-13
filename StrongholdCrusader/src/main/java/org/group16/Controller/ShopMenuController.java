@@ -25,6 +25,7 @@ public class ShopMenuController {
         Resource resource = getResourceByName(itemName);
         if (resource == null) return "invalid item name";
         if (amount <= 0) return "amount should be positive";
+        if (resource.getPrice()==Integer.MAX_VALUE) return "can not buy this item" ;
         if (kingdom.getResourceStorageCapacity(resource) < amount) return "insufficient storage capacity";
         if (kingdom.getGold() < resource.getPrice() * amount) return "insufficient gold";
         kingdom.addResource(resource, amount);

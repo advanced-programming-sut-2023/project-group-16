@@ -369,7 +369,10 @@ public class Kingdom {
     }
 
     public boolean addGold(int count) {
-        return addResource(BasicResource.GOLD, count);
+        if (count < 0)
+            return useResource(BasicResource.GOLD , -count) ;
+        else
+            return addResource(BasicResource.GOLD, count);
     }
 
     public int getFoodRate() {

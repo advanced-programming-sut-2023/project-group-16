@@ -35,6 +35,6 @@ public enum Food implements Resource {
 
     @Override
     public int getPrice() {
-        return Integer.MAX_VALUE;
+        return 3;
     }
 }
