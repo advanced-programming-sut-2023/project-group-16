@@ -93,13 +93,13 @@ public class WarCommand {
     }
 
     public Human getTargetHuman() {
-        if (targetHuman.isAlive())
+        if (targetHuman != null && targetHuman.isAlive())
             return targetHuman;
         return null;
     }
 
     public Building getTargetBuilding() {
-        if (targetBuilding.isAlive())
+        if (targetBuilding != null && targetBuilding.isAlive())
             return targetBuilding;
         return null;
     }
