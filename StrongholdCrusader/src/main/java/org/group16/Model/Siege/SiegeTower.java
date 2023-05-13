@@ -39,7 +39,8 @@ public class SiegeTower extends Siege {
 
     @Override
     public void destroy() {
-        for (var soldier : soldiers) soldier.destroy();
+        while (soldiers.size() > 0)
+            soldiers.get(0).destroy();
         super.destroy();
     }
 }

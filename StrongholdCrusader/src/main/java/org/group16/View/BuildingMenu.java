@@ -4,6 +4,7 @@ import org.group16.Controller.BuildingMenuController;
 import org.group16.Controller.GameMenuController;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.EconomicBuilding;
+import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.Buildings.MilitaryBuilding;
 import org.group16.Model.Game;
 import org.group16.Model.People.SoldierDetail;
@@ -37,7 +38,11 @@ public class BuildingMenu {
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.CREATE_UNIT, input)) != null) createUnit(map);
             else if ((map = CommandHandler.matches(Command.REPAIR, input)) != null) repair(map);
-            else if (CommandHandler.matches(Command.EXIT, input) != null) break;
+            else if ((map = CommandHandler.matches(Command.ENTER_SHOP_MENU, input)) != null) enterShopMenu(map);
+            else if (CommandHandler.matches(Command.EXIT, input) != null) {
+                System.out.println("exit building menu successfully");
+                break;
+            }
             else
                 System.out.println("invalid command");
         }
@@ -67,5 +72,11 @@ public class BuildingMenu {
         if (output.equals("OK"))
             return;
         System.out.println(output);
+    }
+    private void enterShopMenu(TreeMap<String, ArrayList<String>> map){
+        if (building instanceof EconomicBuilding && ((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.MARKET)){
+            ShopMenu shopMenu = new ShopMenu(scanner , game , currentUser) ;
+            shopMenu.run();
+        }
     }
 }

@@ -7,6 +7,7 @@ import org.group16.Model.Game;
 import org.group16.Model.KingdomType;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
+import org.group16.Model.Resources.BasicResource;
 import org.group16.Model.User;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
@@ -38,6 +39,7 @@ public class SetKingdomMenu {
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.SET_KINGDOM, input)) != null) selectKingdom(map);
             else if ((map = CommandHandler.matches(Command.SET_UNEMPLOYED, input)) != null) selectUnemployedPlace(map);
+            else if ((map = CommandHandler.matches(Command.SET_STOCK_PILE, input)) != null) selectStockPile(map);
             else if ((map = CommandHandler.matches(Command.NEXT_TURN, input)) != null) nextTurn(map);
             else if (CommandHandler.matches(Command.BACK, input) != null) {
                 System.out.println("back to CreateGameMenu");
@@ -57,6 +59,16 @@ public class SetKingdomMenu {
             game.getKingdoms().get(currentPlayer).addGold(10000);
         }
     }
+    private void selectStockPile(TreeMap<String, ArrayList<String>> map){
+        int x = Integer.parseInt(map.get("x").get(0));
+        int y = Integer.parseInt(map.get("y").get(0));
+        String output = GameMenuController.dropBuilding(game, getCurrentUser(), x, y, BuildingType.STOCKPILE);
+        System.out.println(output);
+        if (output.equals("OK")){
+            game.getKingdoms().get(currentPlayer).addResource(BasicResource.STONE , 50) ;
+            game.getKingdoms().get(currentPlayer).addResource(BasicResource.WOOD , 200) ;
+        }
+    }
 
     private void selectUnemployedPlace(TreeMap<String, ArrayList<String>> map) {
         int x = Integer.parseInt(map.get("x").get(0));
@@ -70,7 +82,9 @@ public class SetKingdomMenu {
 
     private void nextTurn(TreeMap<String, ArrayList<String>> map) {
         if (game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING) == null ||
-                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE) == null) {
+                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE) == null||
+                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.STOCKPILE) == null
+        ) {
             System.out.println("please set places first");
             return;
         }

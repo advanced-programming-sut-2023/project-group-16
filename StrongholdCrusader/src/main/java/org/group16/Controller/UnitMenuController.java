@@ -84,8 +84,8 @@ public class UnitMenuController {
     public static String disbandUnit(Game game, ArrayList<Soldier> unit) {
         Kingdom kingdom = unit.get(0).getKingdom();
         EconomicBuilding building = kingdom.getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0);
-        for (Soldier soldier : unit) {
-            soldier.destroy();
+        while(unit.size() > 0){
+            unit.get(0).destroy();
             new Human(building.getCells(), kingdom, 100).setBuilding(building);
         }
         unit.clear();
