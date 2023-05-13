@@ -55,19 +55,22 @@ public class SetKingdomMenu {
         if (output.equals("OK")) {
             System.out.println("town place dropped successfully");
             Building townBuilding = game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0);
-            game.getKingdoms().get(currentPlayer).setKing(new Soldier(townBuilding.getCells(), game.getKingdoms().get(currentPlayer), SoldierDetail.KING)) ;
+            game.getKingdoms().get(currentPlayer).setKing(new Soldier(townBuilding.getCells(), game.getKingdoms().get(currentPlayer), SoldierDetail.KING));
             game.getKingdoms().get(currentPlayer).addGold(10000);
-        }
+        } else
+            System.out.println(output);
     }
-    private void selectStockPile(TreeMap<String, ArrayList<String>> map){
+
+    private void selectStockPile(TreeMap<String, ArrayList<String>> map) {
         int x = Integer.parseInt(map.get("x").get(0));
         int y = Integer.parseInt(map.get("y").get(0));
         String output = GameMenuController.dropBuilding(game, getCurrentUser(), x, y, BuildingType.STOCKPILE);
-        if (output.equals("OK")){
+        if (output.equals("OK")) {
             System.out.println("stock pile dropped successfully");
-            game.getKingdoms().get(currentPlayer).addResource(BasicResource.STONE , 50) ;
-            game.getKingdoms().get(currentPlayer).addResource(BasicResource.WOOD , 200) ;
-        }
+            game.getKingdoms().get(currentPlayer).addResource(BasicResource.STONE, 50);
+            game.getKingdoms().get(currentPlayer).addResource(BasicResource.WOOD, 200);
+        } else
+            System.out.println(output);
     }
 
     private void selectUnemployedPlace(TreeMap<String, ArrayList<String>> map) {
@@ -77,14 +80,13 @@ public class SetKingdomMenu {
         if (output.equals("OK")) {
             System.out.println("unemployed place dropped successfully");
             game.getKingdoms().get(currentPlayer).addPopulation(10);
-            return;
-        }
-        System.out.println(output);
+        } else
+            System.out.println(output);
     }
 
     private void nextTurn(TreeMap<String, ArrayList<String>> map) {
-        if (game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).size()==0 ||
-                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).size() == 0||
+        if (game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).size() == 0 ||
+                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).size() == 0 ||
                 game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.STOCKPILE).size() == 0
         ) {
             System.out.println("please set places first");
