@@ -408,7 +408,7 @@ public class Kingdom {
             while (true) {
                 foodNeeded = (int) getFoodForEachPerson() * getPopulation();
                 if (availableFood < foodNeeded)
-                    setFearRate(getFoodEffectOnPopularity());
+                    setFoodRate(getFearRate()-1) ;
                 else
                     break;
             }
@@ -436,7 +436,7 @@ public class Kingdom {
     public ArrayList<EconomicBuilding> getEconomicBuildingsByType(BuildingType buildingType) {
         ArrayList<EconomicBuilding> buildingsArray = new ArrayList<>();
         for (Building building : buildings) {
-            if (building.getBuildingType().equals(buildingType)) {
+            if (building.getBuildingType().equals(buildingType)&&building instanceof EconomicBuilding) {
                 buildingsArray.add((EconomicBuilding) building);
             }
         }
