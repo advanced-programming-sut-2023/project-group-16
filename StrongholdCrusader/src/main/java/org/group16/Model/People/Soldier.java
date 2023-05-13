@@ -5,6 +5,7 @@ import org.group16.Model.Buildings.Building;
 import org.group16.Model.Siege.Siege;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Soldier extends Human {
@@ -18,11 +19,13 @@ public class Soldier extends Human {
     public Soldier(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom, hp);
         soldierDetail = null;
+        new WarCommand(new ArrayList<>(List.of(this)));
     }
 
     public Soldier(ArrayList<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
         super(cells, kingdom, detail.getHp());
         this.soldierDetail = detail;
+        new WarCommand(new ArrayList<>(List.of(this)));
     }
 
 
@@ -46,6 +49,9 @@ public class Soldier extends Human {
     public void update(double currentTime) {
         super.update(currentTime);
         double deltaTime = Time.deltaTime;
+
+        if (currentTarget != null && !currentTarget.isAlive()) currentTarget = null;
+
         Cell moveDestination = warCommand.getDestination();
         Cell patrolDestination = warCommand.getPatrolDestination();
         boolean attackCell = warCommand.isAttackCell();
@@ -118,7 +124,7 @@ public class Soldier extends Human {
         double distance = Map.getCellDistance(target.getCell(), getCell());
         double damage = soldierDetail.getDamage() * (1 + getKingdom().getFearRateEffectOnMorality());
         if (distance <= soldierDetail.getAttackRange())
-            attackTarget(target, (int) (damage * deltaTime));
+            attackTarget(target, (int) (100 * damage * deltaTime)); // TEMP * 100
         else
             moveToward(target.getCell(), soldierDetail.isCanClimbLadder(), soldierDetail.isCanClimbWalls(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
     }

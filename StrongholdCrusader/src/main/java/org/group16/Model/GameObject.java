@@ -48,6 +48,10 @@ public abstract class GameObject {
         addCell(cell);
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
+
     public void destroy() {
         Scene.getCurrent().removeGameObject(this);
         for (Cell cell : cells)

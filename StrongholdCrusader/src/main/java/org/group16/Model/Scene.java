@@ -45,7 +45,11 @@ public class Scene {
 
     public void update(double currentTime) {
         Collections.shuffle(gameObjects, random);
-        for (var go : gameObjects) go.update(currentTime);
+        for (int i = 0; i < gameObjects.size(); i++) {
+            GameObject go = gameObjects.get(i);
+            go.update(currentTime);
+            if (!go.isAlive()) i--;
+        }
     }
 
     public void onTurnEnd() {
