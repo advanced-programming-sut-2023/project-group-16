@@ -52,63 +52,62 @@ public enum BuildingType implements Resource {
     //economy
     QUARRY("quarry", 0, BasicResource.WOOD, 20, CellType.STONE),
     //economy
-    STOCKPILE("stockpile" , 0 , null , 0 ),
+    STOCKPILE("stockpile", 0, null, 0),
     //economy
-    WOOD_CUTTER("wood cutter" , 0 , BasicResource.WOOD , 3),
+    WOOD_CUTTER("wood cutter", 0, BasicResource.WOOD, 3, CellType.GRASS),
     //economy
-    HOVEL("hovel" , 0 , BasicResource.WOOD , 6),
+    HOVEL("hovel", 0, BasicResource.WOOD, 6),
     //economy
-    CHURCH("church" , 500 , null , 0),
+    CHURCH("church", 500, null, 0),
     //economy
-    CATHEDRAL("cathedral" , 1000 , null , 0),
+    CATHEDRAL("cathedral", 1000, null, 0),
     //economy
-    ARMOURER("armourer" , 100 , BasicResource.WOOD , 20),
+    ARMOURER("armourer", 100, BasicResource.WOOD, 20),
     //economy
-    BLACKSMITH("blacksmith" , 200 , BasicResource.WOOD , 20),
+    BLACKSMITH("blacksmith", 200, BasicResource.WOOD, 20),
     //economy
-    FLETCHER("fletcher" , 100 , BasicResource.WOOD , 20),
+    FLETCHER("fletcher", 100, BasicResource.WOOD, 20),
     //economy
-    POLE_TURNER("pole turner" , 100 , BasicResource.WOOD , 10),
+    POLE_TURNER("pole turner", 100, BasicResource.WOOD, 10),
     //economy
-    OIL_SMELTER("oil smelter" , 100 , BasicResource.IRON , 10),
+    OIL_SMELTER("oil smelter", 100, BasicResource.IRON, 10),
     //TODO : pitch ditch ?-
     //war ?
-    PITCH_DITCH("pitch dig" , 0 , null , 0),
+    PITCH_DITCH("pitch dig", 0, null, 0),
     //TODO : caged war dogs ?
     //war?
-    CAGED_WAR_DOGS("caged war dogs" , 0 , null , 0),
+    CAGED_WAR_DOGS("caged war dogs", 0, null, 0),
     //TODO : siege tent ?-
     //war?
-    SIEGE_TENT("siege tent" , 0 , null , 0),
+    SIEGE_TENT("siege tent", 0, null, 0),
     //economy
-    STABLE("stable" , 400 , BasicResource.WOOD , 20),
+    STABLE("stable", 400, BasicResource.WOOD, 20),
     //economy
-    APPLE_ORCHARD("apple orchard" , 0 , BasicResource.WOOD , 5 , CellType.GRASS),
+    APPLE_ORCHARD("apple orchard", 0, BasicResource.WOOD, 5, CellType.GRASS),
     //economy
-    DIARY_FARMER("diary farm" , 0 , BasicResource.WOOD , 10 , CellType.GRASS),
+    DIARY_FARMER("diary farm", 0, BasicResource.WOOD, 10, CellType.GRASS),
     //economy
-    HOPS_FARMER("hops farmer" , 0 , BasicResource.WOOD , 15 , CellType.GRASS),
+    HOPS_FARMER("hops farmer", 0, BasicResource.WOOD, 15, CellType.GRASS),
     //economy
-    HUNTER_POST("hunter post" , 0 , BasicResource.WOOD , 5),
+    HUNTER_POST("hunter post", 0, BasicResource.WOOD, 5),
     //economy
-    WHEAT_FARMER("wheat farmer" , 0 , BasicResource.WOOD , 15 , CellType.GRASS),
+    WHEAT_FARMER("wheat farmer", 0, BasicResource.WOOD, 15, CellType.GRASS),
     //economy
-    BAKERY("bakery" , 0 , BasicResource.WOOD , 10),
+    BAKERY("bakery", 0, BasicResource.WOOD, 10),
     //economy
-    BREWER("brewer" , 0 , BasicResource.WOOD , 10),
+    BREWER("brewer", 0, BasicResource.WOOD, 10),
     //economy
-    GRANARY("granary" , 0  , BasicResource.WOOD , 5),
-    TOWN_BUILDING("town building" , 0 , null , 0),
-    UNEMPLOYED_PLACE("unemployed place" , 0 , null , 0);
+    GRANARY("granary", 0, BasicResource.WOOD, 5),
+    TOWN_BUILDING("town building", 0, null, 0),
+    UNEMPLOYED_PLACE("unemployed place", 0, null, 0);
     private final String strName;
     private final int cellSize = 1;
     private final ArrayList<Pair<Resource, Integer>> dependencies = new ArrayList<>();
-    //TODO : not sure about current cell types
-    private CellType cellTypeNeeded = CellType.NORMAL;
-
     private final int goldNeeded;
     private final Resource resource;
     private final int resourceNeeded;
+    //TODO : not sure about current cell types
+    private CellType cellTypeNeeded = CellType.NORMAL;
 
     private BuildingType(String strName, int goldNeeded, Resource resource, int resourceNeeded) {
         this.strName = strName;
@@ -125,6 +124,14 @@ public enum BuildingType implements Resource {
         this.cellTypeNeeded = cellTypeNeeded;
     }
 
+    public static BuildingType getBuildingTypeByName(String name) {
+        for (BuildingType buildingType : BuildingType.values()) {
+            if (buildingType.getStrName().equals(name) || buildingType.toString().equals(name))
+                return buildingType;
+        }
+        return null;
+    }
+
     public String getStrName() {
         return strName;
     }
@@ -135,14 +142,6 @@ public enum BuildingType implements Resource {
 
     public CellType getCellTypeNeeded() {
         return cellTypeNeeded;
-    }
-
-    public static BuildingType getBuildingTypeByName(String name) {
-        for (BuildingType buildingType : BuildingType.values()) {
-            if (buildingType.getStrName().equals(name)|| buildingType.toString().equals(name))
-                return buildingType;
-        }
-        return null;
     }
 
     public ArrayList<Pair<Resource, Integer>> getDependencies() {

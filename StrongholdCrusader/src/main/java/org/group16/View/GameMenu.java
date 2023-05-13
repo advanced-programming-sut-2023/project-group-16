@@ -53,10 +53,9 @@ public class GameMenu {
             else if (CommandHandler.matches(Command.SHOW_POPULATION, input) != null) showPopulation();
             else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
             else if (CommandHandler.matches(Command.EXIT, input) != null) {
-                System.out.println("exit game menu") ;
+                System.out.println("exit game menu");
                 break;
-            }
-            else System.out.println("invalid command");
+            } else System.out.println("invalid command");
         }
     }
 
@@ -156,8 +155,8 @@ public class GameMenu {
     private void setFoodRate(TreeMap<String, ArrayList<String>> map) {
         int rate = Integer.parseInt(map.get("r").get(0));
         String output = GameMenuController.setFoodRate(game, getCurrentUser(), rate);
-        if (output.equals("OK")){
-            System.out.println("fear rate changed successfully");
+        if (output.equals("OK")) {
+            System.out.println("food rate changed successfully");
             return;
         }
         System.out.println(output);
@@ -264,11 +263,13 @@ public class GameMenu {
     private void leaveTeam(TreeMap<String, ArrayList<String>> map) {
         System.out.println(GameMenuController.leaveTeam(game, getCurrentUser()));
     }
-    private void showResources(){
+
+    private void showResources() {
         for (BasicResource basicResource : BasicResource.values())
             System.out.println(basicResource.toString() + " : " + game.getKingdoms().get(currentPlayer).getResourceCount(basicResource));
     }
-    private void showPopulation(){
+
+    private void showPopulation() {
         System.out.println(game.getKingdoms().get(currentPlayer).getPopulation());
     }
 }

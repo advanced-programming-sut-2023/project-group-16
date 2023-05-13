@@ -31,10 +31,6 @@ public class UnitMenu {
 
     public void run() {
         while (scanner.hasNextLine()) {
-            if (unit.size()==0) {
-                System.out.println("unit size is 0 !");
-                return;
-            }
             String input = scanner.nextLine();
             TreeMap<String, ArrayList<String>> map;
             if ((map = CommandHandler.matches(Command.PATROL_UNIT, input)) != null) patrolUnit(map);
@@ -51,6 +47,11 @@ public class UnitMenu {
                 System.out.println("closed unit menu successfully");
                 return;
             } else System.out.println("invalid command");
+
+            if (unit.size() == 0) {
+                System.out.println("unit size is 0 !");
+                return;
+            }
         }
     }
 
@@ -136,7 +137,7 @@ public class UnitMenu {
         int x = Integer.parseInt(map.get("x").get(0));
         int y = Integer.parseInt(map.get("y").get(0));
         String type = map.get("q").get(0);
-        SiegeDetail siegeDetail = SiegeDetail.getSiegeDetailByName(type) ;
+        SiegeDetail siegeDetail = SiegeDetail.getSiegeDetailByName(type);
         if (siegeDetail == null) {
             System.out.println("not valid siege name");
             return;

@@ -98,7 +98,7 @@ public class GameMenuController {
         Kingdom kingdom = game.getKingdom(currentUser);
         ArrayList<String> foods = new ArrayList<>();
         for (Food food : kingdom.getFoodList())
-            foods.add(food.name());
+            foods.add(food.name() + " : " + kingdom.getResourceCount(food));
         return foods;
     }
 
