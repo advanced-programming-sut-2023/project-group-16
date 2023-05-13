@@ -54,7 +54,7 @@ public class EditorMenuController {
         if (!(direction.equals("n") || direction.equals("e") || direction.equals("w") ||
                 direction.equals("s") || direction.equals("r"))) return "invalid direction";
         cell.setCellType(CellType.ROCK);
-        return null;
+        return "rock dropped successfully";
     }
 
     public static String dropTree(Map map, int x, int y, TreeType treeType) {

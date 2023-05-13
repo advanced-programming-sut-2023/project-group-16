@@ -141,8 +141,8 @@ public class GameMenuController {
         int cellSize = buildingType.getCellSize() - 1;
         boolean isCellsAppropriate = false;
         ArrayList<Cell> cells = new ArrayList<>();
-        for (int xx = x - cellSize; xx < x + cellSize; xx++) {
-            for (int yy = y - cellSize; yy < y + cellSize; yy++) {
+        for (int xx = x - cellSize; xx <= x + cellSize; xx++) {
+            for (int yy = y - cellSize; yy <= y + cellSize; yy++) {
                 if (xx > game.getScene().getMap().getHeight() || xx < 0 || yy > game.getScene().getMap().getWidth() || yy < 0)
                     return "can not build here : not in map";
                 Cell cell = game.getScene().getCellAt(xx, yy);
@@ -237,6 +237,7 @@ public class GameMenuController {
         }
         return null;
     }
+
     public static String leaveTeam(Game game, User currenUser) {
         Kingdom kingdom = game.getKingdom(currenUser);
         kingdom.setTeam(new Team(kingdom));

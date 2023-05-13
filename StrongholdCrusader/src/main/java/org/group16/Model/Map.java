@@ -74,10 +74,12 @@ public class Map {
     public static void saveMap(Map map) {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/Maps/").concat(map.name).concat(".json");
+                "group16/Model/Data/Maps/");
         FileWriter fileWriter;
         try {
-            fileWriter = new FileWriter(filePath);
+            File file = new File(filePath);
+            file.mkdirs();
+            fileWriter = new FileWriter(filePath.concat(map.name).concat(".json"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
