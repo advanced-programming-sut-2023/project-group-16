@@ -63,21 +63,21 @@ public class GameMenu {
             System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
         } else {
             game.execute();
-            if (GameMenuController.checkEndGame(game)){
+            if (GameMenuController.checkEndGame(game)) {
                 System.out.println("Game ended!!!");
                 System.out.println("Winners : ");
-                Team winnerTeam = GameMenuController.getWinnerTeam(game)  ;
-                for (int i = 0 ; i < game.getKingdoms().size() ; i++){
+                Team winnerTeam = GameMenuController.getWinnerTeam(game);
+                for (int i = 0; i < game.getKingdoms().size(); i++) {
                     if (game.getKingdoms().get(i).getTeam().equals(winnerTeam)) {
-                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() +" : " + game.getKingdoms().get(i).getUser().getSlogan());
-                        game.getKingdoms().get(i).getUser().addHighScore(1);
+                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() + " : " + game.getKingdoms().get(i).getUser().getSlogan());
+                        game.getKingdoms().get(i).getUser().addScore(1);
                     }
                 }
                 System.out.println("Losers : ");
-                for (int i = 0 ; i < game.getKingdoms().size() ; i++){
+                for (int i = 0; i < game.getKingdoms().size(); i++) {
                     if (!game.getKingdoms().get(i).getTeam().equals(winnerTeam)) {
-                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() +" : " + game.getKingdoms().get(i).getUser().getSlogan());
-                        game.getKingdoms().get(i).getUser().addHighScore(-1);
+                        System.out.println(game.getKingdoms().get(i).getUser().getNickname() + " : " + game.getKingdoms().get(i).getUser().getSlogan());
+                        game.getKingdoms().get(i).getUser().addScore(-1);
                     }
                 }
             }
@@ -234,14 +234,15 @@ public class GameMenu {
         unitMenu.run();
     }
 
-    private void teamUpRequest(TreeMap<String, ArrayList<String>> map){
+    private void teamUpRequest(TreeMap<String, ArrayList<String>> map) {
         User user = User.getUserByName(map.get("i").get(0));
-        String output = GameMenuController.teamUpRequest(game , getCurrentUser() , user) ;
+        String output = GameMenuController.teamUpRequest(game, getCurrentUser(), user);
         System.out.println(output);
     }
-    private void teamUpAccept(TreeMap<String, ArrayList<String>> map){
-        int id = Integer.parseInt(map.get("i").get(0)) ;
-        String output = GameMenuController.teamUpAccept(game , getCurrentUser() , id) ;
+
+    private void teamUpAccept(TreeMap<String, ArrayList<String>> map) {
+        int id = Integer.parseInt(map.get("i").get(0));
+        String output = GameMenuController.teamUpAccept(game, getCurrentUser(), id);
         System.out.println(output);
     }
 
