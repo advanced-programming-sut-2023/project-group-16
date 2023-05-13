@@ -61,7 +61,7 @@ public enum SoldierDetail implements Resource {
             true, 0, 0, 0, 0, 1, 3),
     KING(KingdomType.EUROPEAN, 0, null, null, false, 1,
             false, false, false, false, true,
-            true, 0, 0, 0, 6, 6, 1);
+            true, 0, 0, 0, 5, 6, 1);
 
     private final Weaponry armor;
     private final Weaponry weapon;

@@ -50,13 +50,13 @@ public class GameTest {
     @Test
     void soldierPathfindingTest() {
         Cell cell = scene.getCellAt(0, 0);
-        Soldier soldier = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARCHER);
+        Soldier soldier = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
         WarCommand warCommand = new WarCommand(new ArrayList<>(List.of(soldier)), scene.getCellAt(4, 4), false);
         assertSame(warCommand, soldier.getWarCommand());
 
         System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
                 soldier.getRelativeX(), soldier.getRelativeY());
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             game.execute();
             System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
                     soldier.getRelativeX(), soldier.getRelativeY());

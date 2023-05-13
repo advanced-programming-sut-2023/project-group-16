@@ -27,7 +27,6 @@ public class Game {
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
             kingdom.onTurnEnd();
-        System.out.println("here");
     }
 
     public Scene getScene() {

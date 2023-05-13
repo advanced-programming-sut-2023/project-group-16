@@ -18,16 +18,16 @@ import java.util.Iterator;
 public class Kingdom {
     private final KingdomType kingdomType;
     private final User user;
-    private  ArrayList<Human> humans = new ArrayList<>();
     private final ArrayList<Soldier> soldiers = new ArrayList<>();
     private final ArrayList<Building> buildings = new ArrayList<>();
+    private ArrayList<Human> humans = new ArrayList<>();
     private Team team;
     //private int population;
     private int popularity = 0;
     private int tax = 0;
     private int fearRate = 0;
     private int foodRate = 0;
-    private Soldier King ;
+    private Soldier King;
 
     public Kingdom(KingdomType kingdomType, User user) {
         this.kingdomType = kingdomType;
@@ -164,8 +164,9 @@ public class Kingdom {
             }
         }
     }
-    public double getFearRateEffectOnMorality(){
-        return (double)(fearRate)*0.05 ;
+
+    public double getFearRateEffectOnMorality() {
+        return (double) (fearRate) * 0.05;
     }
 
     public double getTaxGold() {
@@ -258,14 +259,14 @@ public class Kingdom {
     }
 
     public void useHuman(int cnt) {
-        for (int ind = 0 ; ind < humans.size() ; ind++){
-            Human human = humans.get(ind) ;
+        for (int ind = 0; ind < humans.size(); ind++) {
+            Human human = humans.get(ind);
             if (cnt <= 0)
                 break;
-            if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0){
+            if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0) {
                 human.destroy();
-                ind-- ;
-                cnt-- ;
+                ind--;
+                cnt--;
             }
         }
     }
@@ -287,8 +288,8 @@ public class Kingdom {
     }
 
     public int getResourceStorageCapacity(Resource resource) {
-        if(resource == null)
-            return 100000 ;
+        if (resource == null)
+            return 100000;
         int count = 0;
         for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding)) continue;
@@ -302,8 +303,8 @@ public class Kingdom {
     }
 
     public int getResourceCount(Resource resource) {
-        if (resource==null)
-            return 100000 ;
+        if (resource == null)
+            return 100000;
         int count = 0;
         for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding)) continue;
@@ -316,8 +317,8 @@ public class Kingdom {
     }
 
     public boolean useResource(Resource resource, int count) {
-        if (resource==null)
-            return true ;
+        if (resource == null)
+            return true;
         if (getResourceCount(resource) < count) return false;
         for (Building building : buildings) {
             if (count == 0) break;
@@ -335,8 +336,8 @@ public class Kingdom {
     }
 
     public boolean addResource(Resource resource, int count) {
-        if (resource==null)
-            return true ;
+        if (resource == null)
+            return true;
         if (getResourceStorageCapacity(resource) < count) return false;
         for (Building building : buildings) {
             if (count == 0) break;
@@ -370,7 +371,7 @@ public class Kingdom {
 
     public boolean addGold(int count) {
         if (count < 0)
-            return useResource(BasicResource.GOLD , -count) ;
+            return useResource(BasicResource.GOLD, -count);
         else
             return addResource(BasicResource.GOLD, count);
     }
@@ -393,7 +394,7 @@ public class Kingdom {
     }
 
     public void update(double deltaTime) {
-        if (getKing().getHp() <= 0){
+        if (getKing().getHp() <= 0) {
             return;
         }
         if (Time.isItTurned(deltaTime, Time.day)) {
@@ -408,7 +409,7 @@ public class Kingdom {
             while (true) {
                 foodNeeded = (int) getFoodForEachPerson() * getPopulation();
                 if (availableFood < foodNeeded)
-                    setFoodRate(getFearRate()-1) ;
+                    setFoodRate(getFearRate() - 1);
                 else
                     break;
             }
@@ -436,7 +437,7 @@ public class Kingdom {
     public ArrayList<EconomicBuilding> getEconomicBuildingsByType(BuildingType buildingType) {
         ArrayList<EconomicBuilding> buildingsArray = new ArrayList<>();
         for (Building building : buildings) {
-            if (building.getBuildingType().equals(buildingType)&&building instanceof EconomicBuilding) {
+            if (building.getBuildingType().equals(buildingType) && building instanceof EconomicBuilding) {
                 buildingsArray.add((EconomicBuilding) building);
             }
         }
@@ -446,6 +447,7 @@ public class Kingdom {
     public Soldier getKing() {
         return King;
     }
+
     public void setKing(Soldier king) {
         King = king;
     }
