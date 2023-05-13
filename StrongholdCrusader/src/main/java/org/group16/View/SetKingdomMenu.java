@@ -55,7 +55,7 @@ public class SetKingdomMenu {
         System.out.println(output);
         if (output.equals("OK")) {
             Building townBuilding = game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0);
-            new Soldier(townBuilding.getCells(), game.getKingdoms().get(currentPlayer), SoldierDetail.KING);
+            game.getKingdoms().get(currentPlayer).setKing(new Soldier(townBuilding.getCells(), game.getKingdoms().get(currentPlayer), SoldierDetail.KING)) ;
             game.getKingdoms().get(currentPlayer).addGold(10000);
         }
     }
@@ -81,9 +81,9 @@ public class SetKingdomMenu {
     }
 
     private void nextTurn(TreeMap<String, ArrayList<String>> map) {
-        if (game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING) == null ||
-                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE) == null||
-                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.STOCKPILE) == null
+        if (game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).size()==0 ||
+                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).size() == 0||
+                game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.STOCKPILE).size() == 0
         ) {
             System.out.println("please set places first");
             return;

@@ -5,6 +5,7 @@ import org.group16.Model.Buildings.Building;
 import org.group16.Model.Siege.Siege;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Soldier extends Human {
@@ -18,11 +19,13 @@ public class Soldier extends Human {
     public Soldier(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom, hp);
         soldierDetail = null;
+        new WarCommand(new ArrayList<>(List.of(this)));
     }
 
     public Soldier(ArrayList<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
         super(cells, kingdom, detail.getHp());
         this.soldierDetail = detail;
+        new WarCommand(new ArrayList<>(List.of(this)));
     }
 
 

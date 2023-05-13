@@ -15,7 +15,7 @@ public enum BasicResource implements Resource {
     IRON(1),
     WHEAT(1),
     HOPS(1),
-    COW(1),
+    COW(Integer.MAX_VALUE),
     HORSE(Integer.MAX_VALUE);
 
 

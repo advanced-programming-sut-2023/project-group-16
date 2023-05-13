@@ -15,7 +15,7 @@ public class WarCommand {
     private final Human targetHuman;
     private final Building targetBuilding;
     private PatrollingStatus patrollingStatus;
-    private Status status;
+    private Status status = Status.STAND_STILL;
 
     public WarCommand(ArrayList<Soldier> unit) {
         this.unit = new ArrayList<>(unit);

@@ -369,7 +369,10 @@ public class Kingdom {
     }
 
     public boolean addGold(int count) {
-        return addResource(BasicResource.GOLD, count);
+        if (count < 0)
+            return useResource(BasicResource.GOLD , -count) ;
+        else
+            return addResource(BasicResource.GOLD, count);
     }
 
     public int getFoodRate() {
@@ -386,6 +389,7 @@ public class Kingdom {
 
     public void onTurnStart() {
         //TODO : on turn start
+        return;
     }
 
     public void update(double deltaTime) {
@@ -441,5 +445,8 @@ public class Kingdom {
 
     public Soldier getKing() {
         return King;
+    }
+    public void setKing(Soldier king) {
+        King = king;
     }
 }
