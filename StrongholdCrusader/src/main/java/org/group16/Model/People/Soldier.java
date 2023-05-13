@@ -124,7 +124,7 @@ public class Soldier extends Human {
         double distance = Map.getCellDistance(target.getCell(), getCell());
         double damage = soldierDetail.getDamage() * (1 + getKingdom().getFearRateEffectOnMorality());
         if (distance <= soldierDetail.getAttackRange())
-            attackTarget(target, (int) (100 * damage * deltaTime)); // TEMP * 100
+            attackTarget(target, (int) (damage * deltaTime));
         else
             moveToward(target.getCell(), soldierDetail.isCanClimbLadder(), soldierDetail.isCanClimbWalls(), soldierDetail.getSpeed() * deltaTime, PATH_FINDING_RANDOMNESS, Scene.getCurrent().getRandom());
     }
