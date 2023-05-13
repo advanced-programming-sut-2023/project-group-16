@@ -146,6 +146,7 @@ public enum Command {
             new Option("a", 1, true)))),
     SELL("sell", new ArrayList<>(List.of(new Option("i", 1, true),
             new Option("a", 1, true)))),
+    ENTER_SHOP_MENU("enter\\s+shop\\s+menu", new ArrayList<>()),
     ;
 
     private final String commandRegex;

@@ -51,7 +51,8 @@ public class Siege extends Soldier {
 
     @Override
     public void destroy() {
-        for (var engineer : operators) engineer.destroy();
+        while(operators.size() > 0)
+            operators.get(0).destroy();
         super.destroy();
     }
 
