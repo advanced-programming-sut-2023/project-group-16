@@ -93,11 +93,15 @@ public class WarCommand {
     }
 
     public Human getTargetHuman() {
-        return targetHuman;
+        if (targetHuman.isAlive())
+            return targetHuman;
+        return null;
     }
 
     public Building getTargetBuilding() {
-        return targetBuilding;
+        if (targetBuilding.isAlive())
+            return targetBuilding;
+        return null;
     }
 
     public Cell getCurrentDestination() {

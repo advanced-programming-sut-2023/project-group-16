@@ -46,7 +46,7 @@ public enum SoldierDetail implements Resource {
             true, 10, 10, 15, 2, 3, 5),
     ARABIAN_SWORDS_MAN(KingdomType.ARAB, 80, null, null, false, 1,
             false, false, false, false, true,
-            true, 0, 3, 10, 4, 4, 5),
+            true, 0, 3, 10, 4, 4, 2),
     FIRE_THROWER(KingdomType.ARAB, 100, null, null, false, 1,
             false, false, false, false, true,
             true, 5, 5, 10, 4, 2, 5),
