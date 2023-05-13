@@ -52,13 +52,15 @@ public class GameMenu {
             else if (CommandHandler.matches(Command.SHOW_RESOURCES, input) != null) showResources();
             else if (CommandHandler.matches(Command.SHOW_POPULATION, input) != null) showPopulation();
             else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
-            else if (CommandHandler.matches(Command.EXIT, input) != null) break;
+            else if (CommandHandler.matches(Command.EXIT, input) != null) {
+                System.out.println("exit game menu") ;
+                break;
+            }
             else System.out.println("invalid command");
         }
     }
 
     private void nextTurn() {
-        //TODO : game end ?
         if (currentPlayer != game.getKingdoms().size() - 1) {
             currentPlayer++;
             if (game.getKingdoms().get(currentPlayer).getKing().getHp() <= 0)
@@ -86,7 +88,7 @@ public class GameMenu {
             }
             System.out.println("game updated");
             currentPlayer = 0;
-            System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
+            System.out.println("now user " + getCurrentUser().getNickname() + " is playing");
         }
     }
 
@@ -154,8 +156,10 @@ public class GameMenu {
     private void setFoodRate(TreeMap<String, ArrayList<String>> map) {
         int rate = Integer.parseInt(map.get("r").get(0));
         String output = GameMenuController.setFoodRate(game, getCurrentUser(), rate);
-        if (output.equals("OK"))
+        if (output.equals("OK")){
+            System.out.println("fear rate changed successfully");
             return;
+        }
         System.out.println(output);
     }
 
@@ -167,8 +171,10 @@ public class GameMenu {
     private void setTaxRate(TreeMap<String, ArrayList<String>> map) {
         int rate = Integer.parseInt(map.get("r").get(0));
         String output = GameMenuController.setTaxRate(game, getCurrentUser(), rate);
-        if (output.equals("OK"))
+        if (output.equals("OK")) {
+            System.out.println("tax rate changed successfully");
             return;
+        }
         System.out.println(output);
     }
 
@@ -180,8 +186,10 @@ public class GameMenu {
     private void setFearRate(TreeMap<String, ArrayList<String>> map) {
         int rate = Integer.parseInt(map.get("r").get(0));
         String output = GameMenuController.setFearRate(game, getCurrentUser(), rate);
-        if (output.equals("OK"))
+        if (output.equals("OK")) {
+            System.out.println("fear rate changed successfully");
             return;
+        }
         System.out.println(output);
     }
 

@@ -62,6 +62,7 @@ public class BuildingMenu {
         }
         String output = BuildingMenuController.createUnit((MilitaryBuilding) building ,soldierDetail , count) ;
         if (output.equals("OK")){
+            System.out.println(count +" "+ type + " created successfully");
             return;
         }
         System.out.println(output);
@@ -69,12 +70,15 @@ public class BuildingMenu {
 
     private void repair(TreeMap<String, ArrayList<String>> map) {
         String output = BuildingMenuController.repair(building) ;
-        if (output.equals("OK"))
+        if (output.equals("OK")){
+            System.out.println(building.getBuildingType() + " repaired");
             return;
+        }
         System.out.println(output);
     }
     private void enterShopMenu(TreeMap<String, ArrayList<String>> map){
         if (building instanceof EconomicBuilding && ((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.MARKET)){
+            System.out.println("entered shop menu");
             ShopMenu shopMenu = new ShopMenu(scanner , game , currentUser) ;
             shopMenu.run();
         }
