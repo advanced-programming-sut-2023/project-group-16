@@ -70,6 +70,13 @@ public class Kingdom {
         if (getPopulationCapacity().equals(getPopulation()) || availableHumans() >= 24) {
             return;
         }
+        if (population < 0){
+            while (population < 0&&humans.size()>0){
+                humans.get(0).destroy();
+                population++ ;
+            }
+            return;
+        }
         int added = Math.min(population, getPopulationCapacity() - getPopulation());
         while (added > 0) {
             new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100);
