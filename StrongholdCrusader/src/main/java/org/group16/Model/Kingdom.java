@@ -389,6 +389,7 @@ public class Kingdom {
 
     public void onTurnStart() {
         //TODO : on turn start
+        return;
     }
 
     public void update(double deltaTime) {
@@ -444,5 +445,8 @@ public class Kingdom {
 
     public Soldier getKing() {
         return King;
+    }
+    public void setKing(Soldier king) {
+        King = king;
     }
 }

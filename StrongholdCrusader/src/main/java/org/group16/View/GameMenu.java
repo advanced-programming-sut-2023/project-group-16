@@ -61,7 +61,7 @@ public class GameMenu {
             currentPlayer++;
             if (game.getKingdoms().get(currentPlayer).getKing().getHp() <= 0)
                 nextTurn();
-            System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
+            System.out.println("now user " + getCurrentUser().getNickname() + " is playing");
         } else {
             game.execute();
             if (GameMenuController.checkEndGame(game)){
