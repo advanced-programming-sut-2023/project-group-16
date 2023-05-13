@@ -139,7 +139,7 @@ public enum BuildingType implements Resource {
 
     public static BuildingType getBuildingTypeByName(String name) {
         for (BuildingType buildingType : BuildingType.values()) {
-            if (buildingType.getStrName().equals(name))
+            if (buildingType.getStrName().equals(name)|| buildingType.toString().equals(name))
                 return buildingType;
         }
         return null;

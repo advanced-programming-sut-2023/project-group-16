@@ -8,6 +8,7 @@ import org.group16.Model.People.Human;
 import org.group16.Model.People.Worker;
 import org.group16.Model.Resources.ProductData;
 import org.group16.Model.Resources.Resource;
+import org.group16.Model.Resources.StorageData;
 import org.group16.Model.Time;
 
 import java.util.ArrayList;
@@ -22,6 +23,10 @@ public class EconomicBuilding extends Building {
     public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, double buildTime, EconomicBuildingDetail detail) {
         super(cells, kingdom, detail.getHp(), buildTime, detail.getBuildingType());
         this.detail = detail;
+        for (StorageData storageData : this.detail.getStorageData()){
+            if (storageData.initialCapacity()!=0)
+                storage.add(new Pair<>(storageData.resource() , storageData.initialCapacity())) ;
+        }
     }
 
     //storage

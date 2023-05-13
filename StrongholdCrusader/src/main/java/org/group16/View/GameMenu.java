@@ -6,6 +6,7 @@ import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
+import org.group16.Model.Resources.BasicResource;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
 import org.ietf.jgss.GSSManager;
@@ -48,8 +49,9 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.TEAM_UP_ACCEPT, input)) != null) teamUpAccept(map);
             else if ((map = CommandHandler.matches(Command.SHOW_TEAM_UP_LIST, input)) != null) showTeamUpList(map);
             else if ((map = CommandHandler.matches(Command.LEAVE_TEAM, input)) != null) leaveTeam(map);
+            else if (CommandHandler.matches(Command.SHOW_RESOURCES, input) != null) showResources();
+            else if (CommandHandler.matches(Command.SHOW_POPULATION, input) != null) showPopulation();
             else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
-            else if (CommandHandler.matches(Command.SHOW_GOLD, input) != null) showMoney();
             else if (CommandHandler.matches(Command.EXIT, input) != null) break;
             else System.out.println("invalid command");
         }
@@ -253,7 +255,11 @@ public class GameMenu {
     private void leaveTeam(TreeMap<String, ArrayList<String>> map) {
         System.out.println(GameMenuController.leaveTeam(game, getCurrentUser()));
     }
-    private void showMoney(){
-        System.out.println("GOLD : " + game.getKingdoms().get(currentPlayer).getGold());
+    private void showResources(){
+        for (BasicResource basicResource : BasicResource.values())
+            System.out.println(basicResource.toString() + " : " + game.getKingdoms().get(currentPlayer).getResourceCount(basicResource));
+    }
+    private void showPopulation(){
+        System.out.println(game.getKingdoms().get(currentPlayer).getPopulation());
     }
 }

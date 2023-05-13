@@ -169,7 +169,13 @@ public class GameMenuController {
                 kingdom.useHuman(economicBuildingDetail.getNeededEngineers() + economicBuildingDetail.getNeededWorkers());
                 for (Pair<Resource, Integer> pair : buildingType.getDependencies())
                     kingdom.useResource(pair.getA(), pair.getB());
-                EconomicBuilding economicBuilding = new EconomicBuilding(cells, kingdom, game.getCurrentTime(), economicBuildingDetail);
+                EconomicBuilding economicBuilding ;
+                if (economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.MERCENARY_POST.getBuildingType())||
+                        economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.BARRACKS.getBuildingType())||
+                        economicBuildingDetail.getBuildingType().equals(EconomicBuildingDetail.ENGINEER_GUILD.getBuildingType())
+                ) economicBuilding = new MilitaryBuilding(cells , kingdom , game.getCurrentTime(), economicBuildingDetail) ;
+                else
+                    economicBuilding = new EconomicBuilding(cells, kingdom, game.getCurrentTime(), economicBuildingDetail);
                 for (int i = 0; i < economicBuildingDetail.getNeededWorkers(); i++)
                     economicBuilding.addWorker(new Worker(cells, kingdom, 100));
                 for (int i = 0; i < economicBuildingDetail.getNeededEngineers(); i++)
