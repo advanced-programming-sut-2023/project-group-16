@@ -1,7 +1,6 @@
 package org.group16.Model;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -109,8 +108,8 @@ public class User {
         return score;
     }
 
-    public void addHighScore(int highScore) {
-        this.score += highScore;
+    public void addScore(int score) {
+        this.score += score;
         saveChanges(this);
     }
 

@@ -60,6 +60,10 @@ public class UserTest {
         user.setPasswordRecoveryQuestion("cng");
         user = User.getUserByName("testUser");
         assertEquals("cng", user.getPasswordRecoveryQuestion());
+
+        user.addScore(10 - user.getScore());
+        user = User.getUserByName("testUser");
+        assertEquals(10, user.getScore());
     }
 
     @Test
@@ -84,5 +88,14 @@ public class UserTest {
         ArrayList<User> users = User.getAllUsers();
 //        System.out.println(users);
         assertEquals(4, users.size());
+    }
+
+    @Test
+    void userEqualsTest() {
+        addUser();
+        User user = User.getUserByName("testUser");
+        User user1 = User.getUserByName("testUser1");
+        assertEquals(user, User.getUserByName("testUser"));
+        assertNotEquals(user, user1);
     }
 }
