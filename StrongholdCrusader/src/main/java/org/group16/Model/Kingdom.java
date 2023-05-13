@@ -70,10 +70,10 @@ public class Kingdom {
         if (getPopulationCapacity().equals(getPopulation()) || availableHumans() >= 24) {
             return;
         }
-        if (population < 0){
-            while (population < 0&&humans.size()>0){
+        if (population < 0) {
+            while (population < 0 && humans.size() > 0) {
                 humans.get(0).destroy();
-                population++ ;
+                population++;
             }
             return;
         }
@@ -392,7 +392,7 @@ public class Kingdom {
     }
 
     public int getFoodEffectOnPopularity() {
-        return getFoodRate() - 1;
+        return getFoodRate() * 4;
     }
 
     public void onTurnStart() {
