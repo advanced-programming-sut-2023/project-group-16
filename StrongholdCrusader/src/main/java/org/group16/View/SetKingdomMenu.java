@@ -52,8 +52,8 @@ public class SetKingdomMenu {
         int x = Integer.parseInt(map.get("x").get(0));
         int y = Integer.parseInt(map.get("y").get(0));
         String output = GameMenuController.dropBuilding(game, getCurrentUser(), x, y, BuildingType.TOWN_BUILDING);
-        System.out.println(output);
         if (output.equals("OK")) {
+            System.out.println("town place dropped successfully");
             Building townBuilding = game.getKingdoms().get(currentPlayer).getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0);
             game.getKingdoms().get(currentPlayer).setKing(new Soldier(townBuilding.getCells(), game.getKingdoms().get(currentPlayer), SoldierDetail.KING)) ;
             game.getKingdoms().get(currentPlayer).addGold(10000);
@@ -63,8 +63,8 @@ public class SetKingdomMenu {
         int x = Integer.parseInt(map.get("x").get(0));
         int y = Integer.parseInt(map.get("y").get(0));
         String output = GameMenuController.dropBuilding(game, getCurrentUser(), x, y, BuildingType.STOCKPILE);
-        System.out.println(output);
         if (output.equals("OK")){
+            System.out.println("stock pile dropped successfully");
             game.getKingdoms().get(currentPlayer).addResource(BasicResource.STONE , 50) ;
             game.getKingdoms().get(currentPlayer).addResource(BasicResource.WOOD , 200) ;
         }
@@ -74,10 +74,12 @@ public class SetKingdomMenu {
         int x = Integer.parseInt(map.get("x").get(0));
         int y = Integer.parseInt(map.get("y").get(0));
         String output = GameMenuController.dropBuilding(game, getCurrentUser(), x, y, BuildingType.UNEMPLOYED_PLACE);
-        System.out.println(output);
         if (output.equals("OK")) {
+            System.out.println("unemployed place dropped successfully");
             game.getKingdoms().get(currentPlayer).addPopulation(10);
+            return;
         }
+        System.out.println(output);
     }
 
     private void nextTurn(TreeMap<String, ArrayList<String>> map) {
