@@ -13,11 +13,12 @@ import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.StorageData;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Kingdom {
     private final KingdomType kingdomType;
     private final User user;
-    private final ArrayList<Human> humans = new ArrayList<>();
+    private  ArrayList<Human> humans = new ArrayList<>();
     private final ArrayList<Soldier> soldiers = new ArrayList<>();
     private final ArrayList<Building> buildings = new ArrayList<>();
     private Team team;
@@ -257,11 +258,14 @@ public class Kingdom {
     }
 
     public void useHuman(int cnt) {
-        for (Human human : humans) {
-            if (cnt == 0) break;
-            if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0) {
+        for (int ind = 0 ; ind < humans.size() ; ind++){
+            Human human = humans.get(ind) ;
+            if (cnt <= 0)
+                break;
+            if (!(human instanceof Worker) && !(human instanceof Soldier) && human.getHp() > 0){
                 human.destroy();
-                cnt--;
+                ind-- ;
+                cnt-- ;
             }
         }
     }
@@ -340,7 +344,7 @@ public class Kingdom {
             if (!((EconomicBuilding) building).isActive()) continue;
             for (StorageData storageData : ((EconomicBuilding) building).getDetail().getStorageData()) {
                 if (storageData.resource().equals(resource)) {
-                    int added = Math.max(count, ((EconomicBuilding) building).getAvailableCapacity());
+                    int added = Math.min(count, ((EconomicBuilding) building).getAvailableCapacity());
                     ((EconomicBuilding) building).addResource(resource, added);
                     count -= added;
                 }
@@ -350,7 +354,7 @@ public class Kingdom {
     }
 
     public Integer getPopulationCapacity() {
-        int pop = 0;
+        int pop = 10;
         for (Building building : buildings) {
             if (!(building instanceof EconomicBuilding)) continue;
             if (building.getBuildingType().equals(BuildingType.HOVEL) || building.getBuildingType().equals(BuildingType.SMALL_STONE_GATEHOUSE))

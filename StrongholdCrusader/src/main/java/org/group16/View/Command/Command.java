@@ -51,6 +51,8 @@ public enum Command {
             new Option("x", 1, true), new Option("y", 1, true)))),
     SET_UNEMPLOYED("set\\s+unemployed\\s+place" ,new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
+    SET_STOCK_PILE("set\\s+stock\\s+pile" ,new ArrayList<>(List.of(
+            new Option("x", 1, true), new Option("y", 1, true)))),
     NEXT_TURN("next\\s+turn" ,new ArrayList<>()),
     TEAM_UP_REQUEST("team\\s+up\\s+request", new ArrayList<>(List.of(new Option("i", 1, true)))),
     TEAM_UP_ACCEPT("team\\s+up\\s+accept", new ArrayList<>(List.of(new Option("i", 1, true)))),
@@ -144,6 +146,7 @@ public enum Command {
             new Option("a", 1, true)))),
     SELL("sell", new ArrayList<>(List.of(new Option("i", 1, true),
             new Option("a", 1, true)))),
+    ENTER_SHOP_MENU("enter\\s+shop\\s+menu", new ArrayList<>()),
     ;
 
     private final String commandRegex;

@@ -26,84 +26,78 @@ public class User {
                                String passwordRecoveryAnswer, String nickname, String slogan) {
         User user = new User(username, password, email, passwordRecoveryQuestion,
                 passwordRecoveryAnswer, nickname, slogan);
-        Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/users.json");
-        FileReader fileReader;
-        try {
-            fileReader = new FileReader(filePath);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayList<User> allUsers = gson.fromJson(fileReader, new TypeToken<ArrayList<User>>() {
-        }.getType());
-        if (allUsers == null) allUsers = new ArrayList<>();
-        allUsers.add(user);
-        try {
-            fileReader.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        FileWriter fileWriter;
-        try {
-            fileWriter = new FileWriter(filePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        gson.toJson(allUsers, fileWriter);
-        try {
-            fileWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        saveChanges(user);
+    }
+
+    public static void removeUser(User user) {
+        String folderPath = new File("").getAbsolutePath() + "/Data/Users";
+        File file = new File(folderPath + "/" + user.username + ".json");
+        file.delete();
     }
 
     public static ArrayList<User> getAllUsers() {
         Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/users.json");
+        String folderPath = new File("").getAbsolutePath().concat("/Data/Users");
+        File[] files = new File(folderPath).listFiles();
+        ArrayList<User> users = new ArrayList<>();
+
+        if (files != null) for (File file : files) {
+            if (file.isDirectory()) continue;
+            FileReader fileReader;
+            try {
+                fileReader = new FileReader(file);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            User user = null;
+            try {
+                user = gson.fromJson(fileReader, User.class);
+            } catch (Exception ignored) {
+            }
+            try {
+                fileReader.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (user != null)
+                users.add(user);
+        }
+        return users;
+    }
+
+    public static User getUserByName(String name) {
+        Gson gson = new Gson();
+        String folderPath = new File("").getAbsolutePath() + "/Data/Users";
         FileReader fileReader;
         try {
-            fileReader = new FileReader(filePath);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            File directory = new File(folderPath);
+            directory.mkdirs();
+            fileReader = new FileReader(folderPath + "/" + name + ".json");
+        } catch (IOException e) {
+            return null;
         }
-        ArrayList<User> allUsers = gson.fromJson(fileReader, new TypeToken<ArrayList<User>>() {
-        }.getType());
+        User user = gson.fromJson(fileReader, User.class);
         try {
             fileReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (allUsers == null) allUsers = new ArrayList<>();
-        return allUsers;
-    }
-
-    public static User getUserByName(String name) {
-        ArrayList<User> allUsers = getAllUsers();
-        for (User user : allUsers)
-            if (user.username.equals(name)) return user;
-        return null;
+        return user;
     }
 
     private static void saveChanges(User user) {
-        ArrayList<User> allUsers = getAllUsers();
-        for (int i = 0; i < allUsers.size(); i++) {
-            if (allUsers.get(i).username.equals(user.username)) {
-                allUsers.set(i, user);
-                break;
-            }
-        }
         Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/users.json");
+        String folderPath = new File("").getAbsolutePath() + "/Data/Users";
         FileWriter fileWriter;
         try {
-            fileWriter = new FileWriter(filePath);
+            File directory = new File(folderPath);
+            directory.mkdirs();
+            fileWriter = new FileWriter(folderPath + "/" + user.username + ".json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        gson.toJson(allUsers, fileWriter);
+        gson.toJson(user, fileWriter);
         try {
             fileWriter.close();
         } catch (IOException e) {
@@ -125,7 +119,9 @@ public class User {
     }
 
     public void setUsername(String username) {
+        removeUser(this);
         this.username = username;
+        saveChanges(this);
     }
 
     public String getPassword() {

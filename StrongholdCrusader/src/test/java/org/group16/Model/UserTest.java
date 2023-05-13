@@ -2,47 +2,87 @@ package org.group16.Model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
     @Test
-    public void testAddUser() {
-        User.addUser("ali", "xyz789#$", "ali@gmail.com",
-                "???", "!!!", "aaaa", "slogan");
-        User user = User.getUserByName("ali");
-        assertEquals("ali", user.getUsername());
+    void addUser() {
+        User.addUser("testUser", "pass", "email",
+                "q1", "a1", "nick", "slog");
+
+        User.addUser("testUser1", "pass", "email",
+                "q1", "a1", "nick", "slog");
+
+        User.addUser("testUser2", "pass", "email",
+                "q1", "a1", "nick", "slog");
+
+        User.addUser("testUser3", "pass", "email",
+                "q1", "a1", "nick", "slog");
     }
 
     @Test
-    public void testGetUserByName() {
-        User.addUser("hasan", "abc123!@", "hasan@gmail.com",
-                "...", "---", "bbbb", "slogan");
-        User user = User.getUserByName("hasan");
-        assertEquals("abc123!@", user.getPassword());
-        assertEquals("hasan@gmail.com", user.getEmail());
-        assertEquals("...", user.getPasswordRecoveryQuestion());
-        assertEquals("---", user.getPasswordRecoveryAnswer());
-        assertEquals(0, user.getScore());
+    void getUser() {
+        addUser();
+
+        User user = User.getUserByName("testUser");
+        assertNotNull(user);
+        assertEquals("testUser", user.getUsername());
     }
 
     @Test
-    public void testGettersAndSetters() {
-        User.addUser("ali", "xyz789#$", "ali@gmail.com",
-                "???", "!!!", "aaaa", "slogan");
-        User user = User.getUserByName("ali");
-        user.setEmail("ali123@gmail.com");
-        assertEquals("ali123@gmail.com", user.getEmail());
-        user.setPasswordRecoveryAnswer("1");
-        assertEquals("1", user.getPasswordRecoveryAnswer());
-        user.setPassword("qwe192&%");
-        assertEquals("qwe192&%", user.getPassword());
-        user.setNickname("ALI");
-        assertEquals("ALI", user.getNickname());
-        user.addHighScore(1000);
-        assertEquals(1000, user.getScore());
-        user.setSlogan("idk");
-        assertEquals("idk", user.getSlogan());
-        user.setPasswordRecoveryQuestion("what?");
-        assertEquals("what?", user.getPasswordRecoveryQuestion());
+    void changeUserDetails() {
+        addUser();
+
+        User user = User.getUserByName("testUser");
+
+        user.setPassword("cng");
+        user = User.getUserByName("testUser");
+        assertEquals("cng", user.getPassword());
+
+        user.setEmail("cng");
+        user = User.getUserByName("testUser");
+        assertEquals("cng", user.getEmail());
+
+        user.setSlogan("cng");
+        user = User.getUserByName("testUser");
+        assertEquals("cng", user.getSlogan());
+
+        user.setNickname("cng");
+        user = User.getUserByName("testUser");
+        assertEquals("cng", user.getNickname());
+
+        user.setPasswordRecoveryAnswer("cng");
+        user = User.getUserByName("testUser");
+        assertEquals("cng", user.getPasswordRecoveryAnswer());
+
+        user.setPasswordRecoveryQuestion("cng");
+        user = User.getUserByName("testUser");
+        assertEquals("cng", user.getPasswordRecoveryQuestion());
+    }
+
+    @Test
+    void changeUserUsername() {
+        addUser();
+
+        User user = User.getUserByName("testUser");
+        user.setUsername("newTestUser");
+        user = User.getUserByName("testUser");
+        assertNull(user);
+        user = User.getUserByName("newTestUser");
+        assertNotNull(user);
+        assertEquals("newTestUser", user.getUsername());
+
+        user.setUsername("testUser");
+    }
+
+    @Test
+    void getUsers() {
+        addUser();
+
+        ArrayList<User> users = User.getAllUsers();
+//        System.out.println(users);
+        assertEquals(4, users.size());
     }
 }

@@ -192,8 +192,10 @@ public class GameMenu {
             return;
         }
         String output = GameMenuController.dropBuilding(game, getCurrentUser(), x, y, buildingType);
-        if (output.equals("OK"))
+        if (output.equals("OK")) {
+            System.out.println(type + " dropped successfully");
             return;
+        }
         System.out.println(output);
     }
 

@@ -37,11 +37,9 @@ public class EconomicBuilding extends Building {
             if (count == 0)
                 break;
             if (pair.getA().equals(resource)) {
-                storage.remove(pair);
+//                storage.remove(pair);
                 int usage = Math.min(count, pair.getB());
-                if (pair.getB() > usage) {
-                    storage.add(new Pair<>(resource, pair.getB() - usage));
-                }
+                pair.setB(pair.getB()-usage);
                 count = count - usage;
                 usedCapacity -= usage;
             }
@@ -92,7 +90,8 @@ public class EconomicBuilding extends Building {
 
     @Override
     public void destroy() {
-        for (var worker : workers) worker.destroy();
+        while(workers.size()>0)
+            workers.get(0).destroy();
         super.destroy();
     }
 
