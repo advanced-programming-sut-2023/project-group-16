@@ -154,19 +154,19 @@ public enum SoldierDetail implements Resource {
     public int getDamage() {
         switch (damage){
             case 1->{
-                return 35 ;
+                return 10 ;
             }
             case 2->{
-                return 80 ;
+                return 25 ;
             }
             case 3->{
-                return 150 ;
+                return 80 ;
             }
             case 4->{
-                return 250 ;
+                return 160 ;
             }
             case 5->{
-                return 400 ;
+                return 250 ;
             }
         }
         return 0;
