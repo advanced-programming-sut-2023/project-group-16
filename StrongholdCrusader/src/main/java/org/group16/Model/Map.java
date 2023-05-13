@@ -9,8 +9,8 @@ import java.util.*;
 public class Map {
 
     private final int width, height;
-    private String name;
-    private Cell[][] cells;
+    private final String name;
+    private final Cell[][] cells;
     private int currentX, currentY;
 
     public Map(String name, int mapWidth, int mapHeight) {
@@ -32,11 +32,6 @@ public class Map {
                 cells[i][j] = new Cell(i, j, map.cells[i][j]);
     }
 
-    public Map() {
-        this.width = 0;
-        this.height = 0;
-    }
-
     public static double getCellDistance(Cell a, Cell b) {
         return Vector2.sub(a.getPosition(), b.getPosition()).length();
     }
@@ -54,8 +49,8 @@ public class Map {
 
     public static Map getMapByName(String name) {
         Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/Maps/").concat(name).concat(".json");
+        String filePath = new File("").getAbsolutePath().concat("/Data/Maps/").concat(name).
+                concat(".json");
         FileReader fileReader;
         try {
             fileReader = new FileReader(filePath);
@@ -73,8 +68,7 @@ public class Map {
 
     public static void saveMap(Map map) {
         Gson gson = new Gson();
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/Maps/");
+        String filePath = new File("").getAbsolutePath().concat("/Data/Maps/");
         FileWriter fileWriter;
         try {
             File file = new File(filePath);
@@ -92,8 +86,7 @@ public class Map {
     }
 
     public static void deleteMap(String name) {
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/org/" +
-                "group16/Model/Data/Maps/").concat(name).concat(".json");
+        String filePath = new File("").getAbsolutePath().concat("/Data/Maps/").concat(name).concat(".json");
         File file = new File(filePath);
         file.delete();
     }
@@ -122,8 +115,8 @@ public class Map {
         for (int dx = -dxBound; dx <= dxBound; dx++) {
             int dyBound = (int) Math.sqrt(range * range - dx * dx);
             for (int dy = -dyBound; dy <= dyBound; dy++) {
-                Cell cell = Scene.getCurrent().getCellAt(origin.getX() + dx, origin.getY() + dy);
-                result.add(cell);
+                Cell cell = getCellAt(origin.getX() + dx, origin.getY() + dy);
+                if (cell != null) result.add(cell);
             }
         }
         return result;
