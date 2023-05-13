@@ -4,7 +4,7 @@ public enum CellType {
     NORMAL(1, true, "\u001B[43m"),
     SMALL_STONE(1, true, "\u001B[40m"),
     ROCK(2, false, "\u001B[40m"),
-    STONE(Integer.MAX_VALUE, false, "\u001B[40m"),
+    STONE(Integer.MAX_VALUE, true, "\u001B[40m"),
     IRON(1, true, "\u001B[41m"),
     GRASS(1, true, "\u001B[42m"),
     LOW_DENSITY_GRASSLAND(1, true, "\u001B[42m"),
