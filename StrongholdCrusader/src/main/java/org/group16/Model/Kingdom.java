@@ -369,7 +369,10 @@ public class Kingdom {
     }
 
     public boolean addGold(int count) {
-        return addResource(BasicResource.GOLD, count);
+        if (count < 0)
+            return useResource(BasicResource.GOLD , -count) ;
+        else
+            return addResource(BasicResource.GOLD, count);
     }
 
     public int getFoodRate() {
@@ -386,6 +389,7 @@ public class Kingdom {
 
     public void onTurnStart() {
         //TODO : on turn start
+        return;
     }
 
     public void update(double deltaTime) {
@@ -404,7 +408,7 @@ public class Kingdom {
             while (true) {
                 foodNeeded = (int) getFoodForEachPerson() * getPopulation();
                 if (availableFood < foodNeeded)
-                    setFearRate(getFoodEffectOnPopularity());
+                    setFoodRate(getFearRate()-1) ;
                 else
                     break;
             }
@@ -432,7 +436,7 @@ public class Kingdom {
     public ArrayList<EconomicBuilding> getEconomicBuildingsByType(BuildingType buildingType) {
         ArrayList<EconomicBuilding> buildingsArray = new ArrayList<>();
         for (Building building : buildings) {
-            if (building.getBuildingType().equals(buildingType)) {
+            if (building.getBuildingType().equals(buildingType)&&building instanceof EconomicBuilding) {
                 buildingsArray.add((EconomicBuilding) building);
             }
         }
@@ -441,5 +445,8 @@ public class Kingdom {
 
     public Soldier getKing() {
         return King;
+    }
+    public void setKing(Soldier king) {
+        King = king;
     }
 }

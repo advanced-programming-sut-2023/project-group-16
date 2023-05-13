@@ -6,6 +6,7 @@ import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
+import org.group16.Model.Resources.BasicResource;
 import org.group16.View.Command.Command;
 import org.group16.View.Command.CommandHandler;
 import org.ietf.jgss.GSSManager;
@@ -48,19 +49,23 @@ public class GameMenu {
             else if ((map = CommandHandler.matches(Command.TEAM_UP_ACCEPT, input)) != null) teamUpAccept(map);
             else if ((map = CommandHandler.matches(Command.SHOW_TEAM_UP_LIST, input)) != null) showTeamUpList(map);
             else if ((map = CommandHandler.matches(Command.LEAVE_TEAM, input)) != null) leaveTeam(map);
+            else if (CommandHandler.matches(Command.SHOW_RESOURCES, input) != null) showResources();
+            else if (CommandHandler.matches(Command.SHOW_POPULATION, input) != null) showPopulation();
             else if (CommandHandler.matches(Command.NEXT_TURN, input) != null) nextTurn();
-            else if (CommandHandler.matches(Command.EXIT, input) != null) break;
+            else if (CommandHandler.matches(Command.EXIT, input) != null) {
+                System.out.println("exit game menu") ;
+                break;
+            }
             else System.out.println("invalid command");
         }
     }
 
     private void nextTurn() {
-        //TODO : game end ?
         if (currentPlayer != game.getKingdoms().size() - 1) {
             currentPlayer++;
             if (game.getKingdoms().get(currentPlayer).getKing().getHp() <= 0)
                 nextTurn();
-            System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
+            System.out.println("now user " + getCurrentUser().getNickname() + " is playing");
         } else {
             game.execute();
             if (GameMenuController.checkEndGame(game)) {
@@ -83,7 +88,7 @@ public class GameMenu {
             }
             System.out.println("game updated");
             currentPlayer = 0;
-            System.out.println("now user " + getCurrentUser().getNickname() + "is playing");
+            System.out.println("now user " + getCurrentUser().getNickname() + " is playing");
         }
     }
 
@@ -151,8 +156,10 @@ public class GameMenu {
     private void setFoodRate(TreeMap<String, ArrayList<String>> map) {
         int rate = Integer.parseInt(map.get("r").get(0));
         String output = GameMenuController.setFoodRate(game, getCurrentUser(), rate);
-        if (output.equals("OK"))
+        if (output.equals("OK")){
+            System.out.println("fear rate changed successfully");
             return;
+        }
         System.out.println(output);
     }
 
@@ -164,8 +171,10 @@ public class GameMenu {
     private void setTaxRate(TreeMap<String, ArrayList<String>> map) {
         int rate = Integer.parseInt(map.get("r").get(0));
         String output = GameMenuController.setTaxRate(game, getCurrentUser(), rate);
-        if (output.equals("OK"))
+        if (output.equals("OK")) {
+            System.out.println("tax rate changed successfully");
             return;
+        }
         System.out.println(output);
     }
 
@@ -177,8 +186,10 @@ public class GameMenu {
     private void setFearRate(TreeMap<String, ArrayList<String>> map) {
         int rate = Integer.parseInt(map.get("r").get(0));
         String output = GameMenuController.setFearRate(game, getCurrentUser(), rate);
-        if (output.equals("OK"))
+        if (output.equals("OK")) {
+            System.out.println("fear rate changed successfully");
             return;
+        }
         System.out.println(output);
     }
 
@@ -252,5 +263,12 @@ public class GameMenu {
 
     private void leaveTeam(TreeMap<String, ArrayList<String>> map) {
         System.out.println(GameMenuController.leaveTeam(game, getCurrentUser()));
+    }
+    private void showResources(){
+        for (BasicResource basicResource : BasicResource.values())
+            System.out.println(basicResource.toString() + " : " + game.getKingdoms().get(currentPlayer).getResourceCount(basicResource));
+    }
+    private void showPopulation(){
+        System.out.println(game.getKingdoms().get(currentPlayer).getPopulation());
     }
 }
