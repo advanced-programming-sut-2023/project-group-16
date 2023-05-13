@@ -61,8 +61,7 @@ public class MainMenu {
 
     private void logout() {
         System.out.println("logged out successfully");
-        String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
-                "org/group16/Model/Data/stayLoggedInUser.txt");
+        String filePath = new File("").getAbsolutePath().concat("/Data/stayLoggedInUser.txt");
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
             writer.write("");
