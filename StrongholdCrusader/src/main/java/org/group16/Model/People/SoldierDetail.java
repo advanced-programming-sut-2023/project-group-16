@@ -152,11 +152,45 @@ public enum SoldierDetail implements Resource {
     }
 
     public int getDamage() {
-        return damage;
+        switch (damage){
+            case 1->{
+                return 35 ;
+            }
+            case 2->{
+                return 80 ;
+            }
+            case 3->{
+                return 150 ;
+            }
+            case 4->{
+                return 250 ;
+            }
+            case 5->{
+                return 400 ;
+            }
+        }
+        return 0;
     }
 
     public int getHp() {
-        return hp;
+        switch (hp){
+            case 1-> {
+                return 100;
+            }
+            case 2->{
+                return 200 ;
+            }
+            case 3->{
+                return 300 ;
+            }
+            case 4->{
+                return 500 ;
+            }
+            case 5->{
+                return 700 ;
+            }
+        }
+        return 1;
     }
 
     public double getSpeed() {
