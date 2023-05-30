@@ -10,49 +10,49 @@ import java.util.ArrayList;
 public enum SoldierDetail implements Resource {
     ARCHER(KingdomType.EUROPEAN, 12, null, Weaponry.BOW, false, 1,
             true, false, false, true, true,
-            true, 10, 10, 10, 2, 2, 4),
+            true, 10, 10, 15, 2, 2, 4),
     CROSSBOW_MAN(KingdomType.EUROPEAN, 20, Weaponry.LEATHER_ARMOR, Weaponry.CROSSBOW, false, 1,
             false, false, false, false, true,
-            true, 8, 8, 8, 2, 3, 2),
+            true, 12, 12, 15, 2, 3, 2),
     SPEAR_MAN(KingdomType.EUROPEAN, 8, null, Weaponry.SPEAR, false, 1,
             true, false, false, true, true,
-            true, 1, 1, 1, 3, 1, 3),
+            true, 0, 3, 10, 3, 1, 3),
     PIKE_MAN(KingdomType.EUROPEAN, 20, Weaponry.METAL_ARMOR, Weaponry.PIKE, false, 1,
             false, false, false, true, true,
-            true, 1, 1, 1, 3, 4, 2),
+            true, 0, 3, 10, 3, 4, 2),
     MACE_MAN(KingdomType.EUROPEAN, 20, Weaponry.LEATHER_ARMOR, Weaponry.MACE, false, 1,
             true, false, false, true, true,
-            true, 1, 1, 1, 4, 3, 3),
+            true, 0, 3, 10, 4, 3, 3),
     SWORDS_MAN(KingdomType.EUROPEAN, 40, Weaponry.METAL_ARMOR, Weaponry.SWORD, false, 1,
             false, false, false, false, true,
-            true, 1, 1, 1, 5, 1, 1),
+            true, 0, 3, 10, 5, 1, 1),
     KNIGHT(KingdomType.EUROPEAN, 40, Weaponry.METAL_ARMOR, Weaponry.SWORD, true, 1,
             false, false, false, false, true,
-            true, 1, 1, 1, 5, 4, 5),
+            true, 0, 3, 10, 5, 4, 5),
     ARCHER_BOW(KingdomType.ARAB, 75, null, Weaponry.BOW, false, 1,
             false, false, false, true, true,
-            true, 10, 10, 10, 2, 2, 4),
+            true, 10, 10, 15, 2, 2, 4),
     SLAVE(KingdomType.ARAB, 5, null, null, false, 1,
             false, false, false, true, true,
-            true, 1, 1, 1, 1, 1, 4),
+            true, 0, 3, 10, 1, 0, 4),
     SLINGER(KingdomType.ARAB, 12, null, null, false, 1,
             false, false, false, false, true,
-            true, 10, 10, 10, 2, 1, 4),
+            true, 8, 8, 15, 2, 1, 4),
     ASSASSIN(KingdomType.ARAB, 60, null, null, false, 1,
             false, true, true, true, false,
-            true, 1, 1, 1, 3, 3, 3),
+            true, 0, 3, 10, 3, 3, 3),
     HORSE_ARCHER(KingdomType.ARAB, 80, null, Weaponry.BOW, true, 1,
             false, false, false, false, true,
-            true, 10, 10, 10, 2, 3, 5),
+            true, 10, 10, 15, 2, 3, 5),
     ARABIAN_SWORDS_MAN(KingdomType.ARAB, 80, null, null, false, 1,
             false, false, false, false, true,
-            true, 1, 1, 1, 4, 4, 5),
+            true, 0, 3, 10, 4, 4, 2),
     FIRE_THROWER(KingdomType.ARAB, 100, null, null, false, 1,
             false, false, false, false, true,
-            true, 10, 10, 10, 4, 2, 5),
+            true, 5, 5, 10, 4, 2, 5),
     BLACK_MONK(KingdomType.EUROPEAN, 10, null, null, false, 1,
             false, false, false, false, true,
-            true, 1, 1, 1, 3, 3, 2),
+            true, 0, 3, 10, 3, 3, 2),
     LADDER_MAN(KingdomType.EUROPEAN, 30, null, null, false, 1,
             false, false, false, false, true,
             true, 0, 0, 0, 0, 1, 4),
@@ -155,42 +155,42 @@ public enum SoldierDetail implements Resource {
     }
 
     public int getDamage() {
-        switch (damage){
-            case 1->{
-                return 10 ;
+        switch (damage) {
+            case 1 -> {
+                return 10;
             }
-            case 2->{
-                return 25 ;
+            case 2 -> {
+                return 25;
             }
-            case 3->{
-                return 80 ;
+            case 3 -> {
+                return 80;
             }
-            case 4->{
-                return 160 ;
+            case 4 -> {
+                return 160;
             }
-            case 5->{
-                return 250 ;
+            case 5 -> {
+                return 250;
             }
         }
         return 0;
     }
 
     public int getHp() {
-        switch (hp){
-            case 1-> {
+        switch (hp) {
+            case 1 -> {
                 return 100;
             }
-            case 2->{
-                return 200 ;
+            case 2 -> {
+                return 200;
             }
-            case 3->{
-                return 300 ;
+            case 3 -> {
+                return 300;
             }
-            case 4->{
-                return 500 ;
+            case 4 -> {
+                return 500;
             }
-            case 5->{
-                return 700 ;
+            case 5 -> {
+                return 700;
             }
             case 6 -> {
                 return 3500;
