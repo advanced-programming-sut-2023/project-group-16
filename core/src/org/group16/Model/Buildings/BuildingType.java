@@ -1,6 +1,5 @@
 package org.group16.Model.Buildings;
 
-import org.checkerframework.checker.units.qual.A;
 import org.group16.Lib.Pair;
 import org.group16.Model.Cell;
 import org.group16.Model.CellType;

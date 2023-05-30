@@ -1,7 +1,7 @@
 package org.group16.Model;
 
 import com.google.gson.Gson;
-import org.group16.Vector2;
+import org.group16.Vec2;
 
 import java.io.*;
 import java.util.*;
@@ -33,18 +33,18 @@ public class Map {
     }
 
     public static double getCellDistance(Cell a, Cell b) {
-        return Vector2.sub(a.getPosition(), b.getPosition()).length();
+        return Vec2.sub(a.getPosition(), b.getPosition()).length();
     }
 
     public static double getDistanceFromLine(Cell a, Cell b, Cell x) {
-        Vector2 ab = Vector2.sub(b.getPosition(), a.getPosition());
-        Vector2 abNorm = ab.normal().normalize();
+        Vec2 ab = Vec2.sub(b.getPosition(), a.getPosition());
+        Vec2 abNorm = ab.normal().normalize();
         double len = ab.length();
-        Vector2 ax = Vector2.sub(x.getPosition(), a.getPosition());
-        double dot = Vector2.dot(ab, ax);
+        Vec2 ax = Vec2.sub(x.getPosition(), a.getPosition());
+        double dot = Vec2.dot(ab, ax);
         if (dot < 0) return getCellDistance(x, a);
         if (dot > len * len) return getCellDistance(x, b);
-        return Math.abs(Vector2.dot(abNorm, ax));
+        return Math.abs(Vec2.dot(abNorm, ax));
     }
 
     public static Map getMapByName(String name) {

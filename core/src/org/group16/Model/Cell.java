@@ -2,7 +2,7 @@ package org.group16.Model;
 
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.People.Soldier;
-import org.group16.Vector2;
+import org.group16.Vec2;
 
 import java.util.ArrayList;
 
@@ -52,8 +52,8 @@ public class Cell implements Comparable<Cell> {
         return y;
     }
 
-    public Vector2 getPosition() {
-        return new Vector2(x, y);
+    public Vec2 getPosition() {
+        return new Vec2(x, y);
     }
 
     public CellType getCellType() {
