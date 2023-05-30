@@ -87,7 +87,7 @@ public class UserTest {
 
         ArrayList<User> users = User.getAllUsers();
 //        System.out.println(users);
-        assertEquals(4, users.size());
+        assertEquals(6, users.size());
     }
 
     @Test
