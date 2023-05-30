@@ -8,5 +8,14 @@
     <file url="file://$PROJECT_DIR$/assets/neon/skin/default.json" />
     <file url="file://$PROJECT_DIR$/assets/neon/skin/monochrome.json" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="19" project-jdk-type="JavaSDK" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/StrongholdCrusader/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
 </project>
