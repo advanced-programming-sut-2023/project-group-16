@@ -1,4 +1,4 @@
-package org.group16.View.Command;
+package org.group16.ViewTerminal.Command;
 
 import java.util.ArrayList;
 import java.util.TreeMap;

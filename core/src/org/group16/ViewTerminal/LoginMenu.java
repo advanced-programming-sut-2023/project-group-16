@@ -1,9 +1,9 @@
-package org.group16.View;
+package org.group16.ViewTerminal;
 
 import org.group16.Controller.LoginMenuController;
 import org.group16.Model.User;
-import org.group16.View.Command.Command;
-import org.group16.View.Command.CommandHandler;
+import org.group16.ViewTerminal.Command.Command;
+import org.group16.ViewTerminal.Command.CommandHandler;
 
 import java.util.ArrayList;
 import java.util.Random;

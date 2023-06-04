@@ -12,7 +12,7 @@ public class DesktopLauncher {
         config.setForegroundFPS(60);
         config.useVsync(true);
         config.setTitle("AP-AA");
-        config.setWindowedMode(640, 800);
+        config.setWindowedMode(800, 640);
         StrongholdGame.fileChooser = new DesktopFileChooser();
         StrongholdGame.fileChooserConfiguration = new NativeFileChooserConfiguration();
 

@@ -1,4 +1,4 @@
-package org.group16.View;
+package org.group16.ViewTerminal;
 
 import org.group16.Controller.TradeMenuController;
 import org.group16.Model.Game;
@@ -7,8 +7,8 @@ import org.group16.Model.Resources.Food;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.Resources.Weaponry;
 import org.group16.Model.User;
-import org.group16.View.Command.Command;
-import org.group16.View.Command.CommandHandler;
+import org.group16.ViewTerminal.Command.Command;
+import org.group16.ViewTerminal.Command.CommandHandler;
 
 import java.util.ArrayList;
 import java.util.Scanner;

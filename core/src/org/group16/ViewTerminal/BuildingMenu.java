@@ -1,23 +1,19 @@
-package org.group16.View;
+package org.group16.ViewTerminal;
 
 import org.group16.Controller.BuildingMenuController;
-import org.group16.Controller.GameMenuController;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.EconomicBuilding;
 import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.Buildings.MilitaryBuilding;
 import org.group16.Model.Game;
 import org.group16.Model.People.SoldierDetail;
-import org.group16.Model.People.SoldierType;
 import org.group16.Model.User;
-import org.group16.View.Command.Command;
-import org.group16.View.Command.CommandHandler;
+import org.group16.ViewTerminal.Command.Command;
+import org.group16.ViewTerminal.Command.CommandHandler;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 
 public class BuildingMenu {
     private final Scanner scanner;

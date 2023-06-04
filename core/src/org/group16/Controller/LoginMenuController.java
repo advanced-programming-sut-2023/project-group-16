@@ -2,7 +2,7 @@ package org.group16.Controller;
 
 import com.google.common.hash.Hashing;
 import org.group16.Model.User;
-import org.group16.View.LoginMenu;
+import org.group16.ViewTerminal.LoginMenu;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

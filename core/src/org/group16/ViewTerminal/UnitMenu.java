@@ -1,4 +1,4 @@
-package org.group16.View;
+package org.group16.ViewTerminal;
 
 import org.group16.Controller.UnitMenuController;
 import org.group16.Model.Game;
@@ -7,14 +7,12 @@ import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.Siege.SiegeDetail;
 import org.group16.Model.User;
 import org.group16.Model.WarCommand;
-import org.group16.View.Command.Command;
-import org.group16.View.Command.CommandHandler;
-import org.ietf.jgss.GSSManager;
+import org.group16.ViewTerminal.Command.Command;
+import org.group16.ViewTerminal.Command.CommandHandler;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 
 public class UnitMenu {
     private final Scanner scanner;
