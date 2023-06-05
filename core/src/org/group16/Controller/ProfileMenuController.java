@@ -2,7 +2,7 @@ package org.group16.Controller;
 
 import com.google.common.hash.Hashing;
 import org.group16.Model.User;
-import org.group16.View.ProfileMenu;
+import org.group16.ViewTerminal.ProfileMenu;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

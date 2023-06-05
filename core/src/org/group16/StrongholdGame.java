@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.ScreenUtils;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
+import org.group16.View.LoginScreen;
 
 
 public class StrongholdGame extends Game {
@@ -23,6 +24,7 @@ public class StrongholdGame extends Game {
 
         fileChooserConfiguration.directory = Gdx.files.absolute(System.getProperty("user.home"));
 
+        setScreen(new LoginScreen(this));
     }
 
     private void manageAssets() {

@@ -2,7 +2,7 @@ package org.group16.Controller;
 
 import com.google.common.hash.Hashing;
 import org.group16.Model.User;
-import org.group16.View.LoginMenu;
+import org.group16.ViewTerminal.LoginMenu;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -14,40 +14,28 @@ import java.util.regex.Pattern;
 
 public class LoginMenuController {
     public static String createUser(String username, String password, String passwordConfirmation,
-                                    String email, String nickname, String slogan) {
-        if (username.isEmpty() || password.isEmpty() ||
-                passwordConfirmation.isEmpty() || email.isEmpty() || nickname.isEmpty()) return "field can't be empty";
+                                    String email, String nickname, String slogan , String passwordRecoveryQ ,
+                                    String passwordRecoveryA) {
+        password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+        User.addUser(username, password, email, passwordRecoveryQ, passwordRecoveryA, nickname, slogan);
+        return "OK";
+    }
+
+    public static String checkUsername(String username) {
         if (!Pattern.compile("\\w+").matcher(username).matches()) return "invalid username format";
         if (User.getUserByName(username) != null)
             return "this username is already exist, suggested username: " + suggestUsername(username);
+        return "OK";
+    }
+
+    public static String checkPassword(String password) {
         if (isPasswordWeak(password) != null) return "password is weak: " + isPasswordWeak(password);
-        if (!password.equals(passwordConfirmation)) return "password and password confirmation are not same";
+        return "OK";
+    }
+    public static String checkEmail(String email){
         if (isUserExistByEmail(email)) return "this email is already exist";
         if (!isEmailValid(email)) return "invalid email format";
-        if (slogan.equals("random")) {
-            slogan = generateSlogan();
-            LoginMenu.print("Your slogan is: " + slogan);
-        }
-        if (password.equals("random")) {
-            password = generatePassword();
-            LoginMenu.print("Your random password is: " + password);
-            passwordConfirmation = LoginMenu.getPasswordConfirmation();
-            if (!password.equals(passwordConfirmation)) return "password and password confirmation are not same";
-        }
-        password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
-        TreeMap<String, ArrayList<String>> map = LoginMenu.questionPick();
-        if (map == null) return "invalid command";
-        String passwordRecoveryQuestion = null;
-        if (map.get("q").get(0).equals("1")) passwordRecoveryQuestion = "What is my father's name?";
-        if (map.get("q").get(0).equals("2")) passwordRecoveryQuestion = "What was my first pet's name?";
-        if (map.get("q").get(0).equals("3")) passwordRecoveryQuestion = "What is my mother's last name?";
-        if (passwordRecoveryQuestion == null) return "invalid command";
-        if (!map.get("a").get(0).equals(map.get("c").get(0)))
-            return "password recovery answer and it's confirmation are not same";
-        String passwordRecoveryAnswer = map.get("a").get(0);
-        if (!LoginMenu.handleCaptcha()) return "incorrect captcha";
-        User.addUser(username, password, email, passwordRecoveryQuestion, passwordRecoveryAnswer, nickname, slogan);
-        return "user created successfully";
+        return "OK";
     }
 
     private static String suggestUsername(String username) {
@@ -100,7 +88,7 @@ public class LoginMenuController {
         return string.charAt(index);
     }
 
-    private static String generatePassword() {
+    public static String generatePassword() {
         Random random = new Random();
         ArrayList<Character> chars = new ArrayList<>();
         chars.add(getChar(random.nextInt(14)));
@@ -119,7 +107,6 @@ public class LoginMenuController {
         User user = User.getUserByName(username);
         password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         if (user == null || !user.getPassword().equals(password)) return "username and password didn't match";
-        if (!LoginMenu.handleCaptcha()) return "incorrect captcha";
         if (stayLoggedIn) {
             String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
                     "Data/stayLoggedInUser.txt");
@@ -131,7 +118,7 @@ public class LoginMenuController {
                 throw new RuntimeException(e);
             }
         }
-        return "user " + username + " logged in successfully";
+        return "OK";
     }
 
     public static String checkRecoveryQuestionAnswer(String username, String answer) {
