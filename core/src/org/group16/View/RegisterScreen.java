@@ -21,10 +21,11 @@ public class RegisterScreen extends Menu {
     TextField usernameField, passwordField, nicknameField, emailField, passwordQAField, sloganField, captchaField;
     Label usernameLabel, passwordLabel, nicknameLabel, emailLabel, passwordQALabel, sloganLabel;
     Label usernameStatus, passwordStatus, nicknameStatus, emailStatus, passwordQAStatus, sloganStatus, captchaStatus;
-    TextButton randomButton, registerButton, newCaptcha;
+    TextButton randomButton, registerButton, newCaptcha , okDialog , back;
     CheckBox sloganCheckBox, passwordHideCheckBox;
     SelectBox<String> passwordQASelectBar, sloganSelectBar;
     Image background , white , captcha;
+    Dialog successDialog ;
     int captchaNumber ;
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
@@ -86,6 +87,8 @@ public class RegisterScreen extends Menu {
         captchaStatus.setColor(Color.RED);
 
         registerButton = new TextButton("register" , skin1);
+
+        back = new TextButton("back" , skin1);
 
         table.add(usernameLabel).pad(0, 0, 0, 5);
         table.add(usernameField).pad(0, 0, 0, 5);
@@ -237,7 +240,19 @@ public class RegisterScreen extends Menu {
             }
         });
 
-        table.add(registerButton).colspan(4);
+        table.add(registerButton).colspan(4).row();
+
+        successDialog = new Dialog("Successfully registered" , skin2) ;
+        successDialog.setColor(Color.GREEN);
+        okDialog = new TextButton("OK" , skin2) ;
+        successDialog.getContentTable().add(okDialog);
+        okDialog.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                successDialog.hide();
+                game.setScreen(new LoginScreen(game));
+            }
+        });
 
         registerButton.addListener(new ChangeListener() {
             @Override
@@ -255,20 +270,32 @@ public class RegisterScreen extends Menu {
                 if (sloganCheckBox.isChecked() && sloganField.getText().length()==0)
                     sloganStatus.setText("fill this part");
                 if (usernameStatus.getText().length()!=0||
-                        passwordStatus.getText().length()!=0||
+                        usernameStatus.getText().length()!=0||
                         nicknameStatus.getText().length()!=0||
                         emailStatus.getText().length()!=0||
                         passwordStatus.getText().length()!=0||
                         sloganStatus.getText().length()!=0||
                         captchaStatus.getText().length()!=0
-                )
-                    return;
+                ) {
+                    int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+                    captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
+                    captchaNumber = random ;
+                }
                 else {
                     LoginMenuController.createUser(usernameField.getText() , passwordField.getText() , passwordField.getText() ,
                             emailField.getText() , nicknameField.getText() , sloganField.getText() ,
                             passwordQASelectBar.getSelected() , passwordQAField.getText());
-                    game.setScreen(new LoginScreen(game));
+                    successDialog.show(uiStage);
                 }
+            }
+        });
+
+        table.add(back).colspan(4);
+
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new LoginScreen(game));
             }
         });
 

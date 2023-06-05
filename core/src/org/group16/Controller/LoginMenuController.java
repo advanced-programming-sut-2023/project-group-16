@@ -107,7 +107,6 @@ public class LoginMenuController {
         User user = User.getUserByName(username);
         password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         if (user == null || !user.getPassword().equals(password)) return "username and password didn't match";
-        if (!LoginMenu.handleCaptcha()) return "incorrect captcha";
         if (stayLoggedIn) {
             String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
                     "Data/stayLoggedInUser.txt");
@@ -119,7 +118,7 @@ public class LoginMenuController {
                 throw new RuntimeException(e);
             }
         }
-        return "user " + username + " logged in successfully";
+        return "OK";
     }
 
     public static String checkRecoveryQuestionAnswer(String username, String answer) {
