@@ -10,13 +10,17 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 public class ProfileMenuController {
-    public static String changeUsername(User user, String newUsername) {
+    public static String checkChangeUsername(User user, String newUsername) {
+        if (newUsername.equals(user.getUsername())) return "choose a new username";
         if (newUsername.isEmpty()) return "username can't be empty";
         if (!Pattern.compile("\\w+").matcher(newUsername).matches()) return "invalid username format";
         if (User.getUserByName(newUsername) != null)
             return "this username is already exist, suggested username: " + suggestUsername(newUsername);
+        return "";
+    }
+
+    public static void changeUsername(User user, String newUsername) {
         user.setUsername(newUsername);
-        return "username changed successfully";
     }
 
     private static String suggestUsername(String username) {
@@ -28,43 +32,49 @@ public class ProfileMenuController {
         return username + number;
     }
 
-    public static String changeNickname(User user, String newNickname) {
+    public static String checkChangeNickname(User user, String newNickname) {
+        if (newNickname.equals(user.getNickname())) return "choose a new nickname";
         if (newNickname.isEmpty()) return "nickname can't be empty";
+        return "";
+    }
+
+    public static void changeNickname(User user, String newNickname) {
         user.setNickname(newNickname);
-        return "nickname changed successfully";
     }
 
-    public static String changePassword(User user, String oldPassword, String newPassword) {
+    public static String checkChangePassword(User user, String oldPassword) {
         oldPassword = Hashing.sha256().hashString(oldPassword, StandardCharsets.UTF_8).toString();
-        String hashedNewPassword = Hashing.sha256().hashString(newPassword, StandardCharsets.UTF_8).toString();
-        if (!user.getPassword().equals(oldPassword)) return "current password is incorrect";
-        if (user.getPassword().equals(hashedNewPassword)) return "please enter a new password";
-        if (newPassword.isEmpty()) return "password can't be empty";
-        if (isPasswordWeak(newPassword) != null) return "password is weak: " + isPasswordWeak(newPassword);
-        if (!ProfileMenu.getPasswordConfirmation().equals(newPassword))
-            return "password and password confirmation are not same";
-        user.setPassword(hashedNewPassword);
-        return "password changed successfully";
+        if (!user.getPassword().equals(oldPassword)) return "password is incorrect";
+        return "";
     }
 
-    private static String isPasswordWeak(String password) {
-        if (password.equals("random")) return null;
+    public static void changePassword(User user, String newPassword) {
+        String hashedNewPassword = Hashing.sha256().hashString(newPassword, StandardCharsets.UTF_8).toString();
+        user.setPassword(hashedNewPassword);
+    }
+
+    public static String isPasswordWeak(String password) {
+        if (password.isEmpty()) return "password can't be empty";
         if (password.length() < 6) return "length is less than 6 character";
         if (Pattern.compile("[^a-z]").matcher(password).matches()) return "doesn't contain small letter";
         if (Pattern.compile("[^A-Z]").matcher(password).matches()) return "doesn't contain capital letter";
         if (Pattern.compile("\\D+").matcher(password).matches()) return "doesn't contain digit";
         if (Pattern.compile("[a-zA-z\\d]+").matcher(password).matches())
             return "doesn't contain non letter and digit character";
-        return null;
+        return "";
     }
 
-    public static String changeEmail(User user, String newEmail) {
+    public static String checkChangeEmail(User user, String newEmail) {
+        if (newEmail.equals(user.getEmail())) return "choose a new email";
         if (newEmail.isEmpty()) return "email can't be empty";
         if (!Pattern.compile("[\\w.]+@[\\w.]+\\.[\\w.]+").matcher(newEmail).matches())
             return "invalid email format";
         if (isUserExistByEmail(newEmail)) return "this email is already exist";
+        return "";
+    }
+
+    public static void changeEmail(User user, String newEmail) {
         user.setEmail(newEmail);
-        return "email changed successfully";
     }
 
     private static boolean isUserExistByEmail(String email) {
@@ -75,10 +85,14 @@ public class ProfileMenuController {
         return false;
     }
 
-    public static String changeSlogan(User user, String newSlogan) {
+    public static String checkChangeSlogan(User user, String newSlogan) {
         if (newSlogan.isEmpty()) return "slogan can't be empty";
+        if (newSlogan.equals(user.getSlogan())) return "choose a new slogan";
+        return "";
+    }
+
+    public static void changeSlogan(User user, String newSlogan) {
         user.setSlogan(newSlogan);
-        return "slogan changed successfully";
     }
 
     public static String removeSlogan(User user) {

@@ -1,32 +1,52 @@
 package org.group16.View;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import org.group16.Model.User;
 import org.group16.StrongholdGame;
 
 public class MainScreen extends Menu {
-    Table table;
+    private final User user;
+    private final Table table;
+    private final Image background, white;
+    private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
+    private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+    private TextButton profileMenu;
 
 
-    Image background;
-    Image white;
-    Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
-    Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-
-
-    public MainScreen(StrongholdGame game) {
+    public MainScreen(StrongholdGame game, User user) {
         super(game);
+        this.user = user;
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
-        table = new Table(skin1);
 
         background = new Image(new Texture(Gdx.files.internal("backgrounds/loginMenu.jpg")));
 
+        profileMenu = new TextButton("Profile", skin1);
+        profileMenu.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new ProfileScreen(game, user));
+            }
+        });
+
         uiStage.addActor(background);
+
+        table = new Table(skin1);
+        table.setBackground(white.getDrawable());
+        table.setColor(Color.BLACK);
+        table.setSize(600, 300);
+        table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
+                uiStage.getHeight() / 2 - table.getHeight() / 2);
+        table.add(profileMenu).center().row();
         uiStage.addActor(table);
     }
 

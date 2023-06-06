@@ -46,28 +46,24 @@ public class ProfileMenu {
 
     private void changeUsername(TreeMap<String, ArrayList<String>> map) {
         String username = map.get("u").get(0);
-        System.out.println(ProfileMenuController.changeUsername(currentUser, username));
+        System.out.println(ProfileMenuController.checkChangeUsername(currentUser, username));
     }
 
     private void changeNickname(TreeMap<String, ArrayList<String>> map) {
         String nickname = map.get("n").get(0);
-        System.out.println(ProfileMenuController.changeNickname(currentUser, nickname));
     }
 
     private void changePassword(TreeMap<String, ArrayList<String>> map) {
         String oldPassword = map.get("o").get(0);
         String newPassword = map.get("n").get(0);
-        System.out.println(ProfileMenuController.changePassword(currentUser, oldPassword, newPassword));
     }
 
     private void changeEmail(TreeMap<String, ArrayList<String>> map) {
         String email = map.get("e").get(0);
-        System.out.println(ProfileMenuController.changeEmail(currentUser, email));
     }
 
     private void changeSlogan(TreeMap<String, ArrayList<String>> map) {
         String slogan = map.get("s").get(0);
-        System.out.println(ProfileMenuController.changeSlogan(currentUser, slogan));
     }
 
     private void removeSlogan() {
