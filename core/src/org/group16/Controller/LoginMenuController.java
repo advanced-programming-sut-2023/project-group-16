@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class LoginMenuController {
     public static String createUser(String username, String password, String passwordConfirmation,
-                                    String email, String nickname, String slogan , String passwordRecoveryQ ,
+                                    String email, String nickname, String slogan, String passwordRecoveryQ,
                                     String passwordRecoveryA) {
         password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         User.addUser(username, password, email, passwordRecoveryQ, passwordRecoveryA, nickname, slogan);
@@ -32,7 +32,8 @@ public class LoginMenuController {
         if (isPasswordWeak(password) != null) return "password is weak: " + isPasswordWeak(password);
         return "OK";
     }
-    public static String checkEmail(String email){
+
+    public static String checkEmail(String email) {
         if (isUserExistByEmail(email)) return "this email is already exist";
         if (!isEmailValid(email)) return "invalid email format";
         return "OK";
@@ -108,8 +109,7 @@ public class LoginMenuController {
         password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         if (user == null || !user.getPassword().equals(password)) return "username and password didn't match";
         if (stayLoggedIn) {
-            String filePath = new File("").getAbsolutePath().concat("/StrongholdCrusader/src/main/java/" +
-                    "Data/stayLoggedInUser.txt");
+            String filePath = new File("").getAbsolutePath().concat("/Data/stayLoggedIn.txt");
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
                 writer.write(username);
@@ -135,12 +135,13 @@ public class LoginMenuController {
         String folderPath = new File("").getAbsolutePath().concat("/Data");
         try {
             new File(folderPath).mkdirs();
-            BufferedReader reader = new BufferedReader(new FileReader(folderPath + "/stayLoggedInUser.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(folderPath + "/stayLoggedIn.txt"));
             String username = reader.readLine();
             reader.close();
             return User.getUserByName(username);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            new File(folderPath + "/stayLoggedIn.txt");
+            return null;
         }
     }
 }

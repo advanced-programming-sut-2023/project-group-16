@@ -7,7 +7,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.ScreenUtils;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserConfiguration;
+import org.group16.Controller.LoginMenuController;
+import org.group16.Model.User;
 import org.group16.View.LoginScreen;
+import org.group16.View.MainScreen;
 
 
 public class StrongholdGame extends Game {
@@ -24,7 +27,7 @@ public class StrongholdGame extends Game {
 
         fileChooserConfiguration.directory = Gdx.files.absolute(System.getProperty("user.home"));
 
-        setScreen(new LoginScreen(this));
+        checkStayLogIn();
     }
 
     private void manageAssets() {
@@ -42,5 +45,11 @@ public class StrongholdGame extends Game {
     public void dispose() {
         if (getScreen() != null) getScreen().dispose();
         assetManager.dispose();
+    }
+
+    void checkStayLogIn() {
+        User user = LoginMenuController.getStayLoggedInUser();
+        if (user != null) setScreen(new MainScreen(this, user));
+        else setScreen(new LoginScreen(this));
     }
 }
