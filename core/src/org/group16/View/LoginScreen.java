@@ -1,19 +1,13 @@
 package org.group16.View;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import org.group16.Controller.LoginMenuController;
 import org.group16.Model.User;
 import org.group16.StrongholdGame;
@@ -22,11 +16,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class LoginScreen extends Menu {
     Table table;
-    TextField username, password, captchaField, forgotPasswordAnswer , newPassword ;
+    TextField username, password, captchaField, forgotPasswordAnswer, newPassword;
 
-    TextButton login, register, forgotPassword, newCaptcha , okDialog;
+    TextButton login, register, forgotPassword, newCaptcha, okDialog;
     CheckBox stayLogIn, passwordHide;
-    Label usernameLabel, passwordLabel, usernameStatus, passwordStatus, captchaStatus , newPasswordStatus , forgotPasswordAnswerStatus;
+    Label usernameLabel, passwordLabel, usernameStatus, passwordStatus, captchaStatus, newPasswordStatus, forgotPasswordAnswerStatus;
 
     Image background, white, captcha;
     int captchaNumber;
@@ -36,17 +30,8 @@ public class LoginScreen extends Menu {
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
-    void checkStayLogIn() {
-        //TODO : bug in getStayLoggedInUser
-//        if (LoginMenuController.getStayLoggedInUser()!=null){
-//            game.setScreen(new MainScreen(game));
-//        }
-    }
-
     public LoginScreen(StrongholdGame game) {
         super(game);
-
-        checkStayLogIn();
 
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
@@ -84,50 +69,46 @@ public class LoginScreen extends Menu {
         captchaStatus = new Label("enter captcha", skin1);
         captchaStatus.setColor(Color.RED);
 
-        forgotPasswordDialog = new Dialog("" , skin1) ;
+        forgotPasswordDialog = new Dialog("", skin1);
         forgotPasswordDialog.setColor(Color.BLACK);
         forgotPasswordDialog.getTitleLabel().setColor(Color.BLACK);
         forgotPasswordDialog.hide();
-        forgotPasswordAnswer = new TextField("" , skin1);
-        forgotPasswordAnswerStatus = new Label("" , skin1);
+        forgotPasswordAnswer = new TextField("", skin1);
+        forgotPasswordAnswerStatus = new Label("", skin1);
         forgotPasswordAnswerStatus.setColor(Color.RED);
-        newPassword = new TextField("" , skin1);
-        newPasswordStatus = new Label("" , skin1) ;
+        newPassword = new TextField("", skin1);
+        newPasswordStatus = new Label("", skin1);
         newPasswordStatus.setColor(Color.RED);
-        okDialog = new TextButton("ok" , skin1);
+        okDialog = new TextButton("ok", skin1);
         forgotPasswordDialog.getContentTable().add(forgotPasswordAnswer).row();
         forgotPasswordDialog.getContentTable().add(forgotPasswordAnswerStatus).row();
 
         forgotPasswordDialog.getContentTable().add(newPassword).row();
         forgotPasswordDialog.getContentTable().add(newPasswordStatus).row();
-        newPassword.setTextFieldListener(new TextField.TextFieldListener() {
-            @Override
-            public void keyTyped(TextField textField, char c) {
-                String passwordText = newPassword.getText() ;
-                String status = LoginMenuController.checkPassword(passwordText);
-                if (status.equals("OK"))
-                    newPasswordStatus.setText("");
-                else
-                    newPasswordStatus.setText(status);
-            }
+        newPassword.setTextFieldListener((textField, c) -> {
+            String passwordText = newPassword.getText();
+            String status = LoginMenuController.checkPassword(passwordText);
+            if (status.equals("OK"))
+                newPasswordStatus.setText("");
+            else
+                newPasswordStatus.setText(status);
         });
         forgotPasswordDialog.getContentTable().add(okDialog);
         okDialog.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                String answer = forgotPasswordAnswer.getText() ;
+                String answer = forgotPasswordAnswer.getText();
                 User user = User.getUserByName(username.getText());
-                if (newPassword.getText().length()==0){
+                if (newPassword.getText().length() == 0) {
                     newPasswordStatus.setText("fill this part");
                     return;
                 }
-                if (newPasswordStatus.getText().length()!=0)
+                if (newPasswordStatus.getText().length() != 0)
                     return;
-                if (!user.getPasswordRecoveryAnswer().equals(answer)){
+                if (!user.getPasswordRecoveryAnswer().equals(answer)) {
                     forgotPasswordAnswerStatus.setText("wrong answer");
                     return;
                 }
-                //TODO : password doesnt change and after this it is not possible ot enter the account
                 user.setPassword(newPassword.getText());
                 forgotPasswordDialog.hide();
             }
@@ -136,27 +117,21 @@ public class LoginScreen extends Menu {
         table.add(usernameLabel).pad(0, 0, 0, 5);
         table.add(username).row();
         table.add(usernameStatus).row();
-        username.setTextFieldListener(new TextField.TextFieldListener() {
-            @Override
-            public void keyTyped(TextField textField, char c) {
-                if (username.getText().length() == 0)
-                    usernameStatus.setText("fill this part");
-                else
-                    usernameStatus.setText("");
-            }
+        username.setTextFieldListener((textField, c) -> {
+            if (username.getText().length() == 0)
+                usernameStatus.setText("fill this part");
+            else
+                usernameStatus.setText("");
         });
         table.add(passwordLabel).pad(0, 0, 0, 5);
         table.add(password).pad(0, 0, 0, 5);
         table.add(passwordHide).row();
         table.add(passwordStatus).row();
-        password.setTextFieldListener(new TextField.TextFieldListener() {
-            @Override
-            public void keyTyped(TextField textField, char c) {
-                if (password.getText().length() == 0)
-                    passwordStatus.setText("fill this part");
-                else
-                    passwordStatus.setText("");
-            }
+        password.setTextFieldListener((textField, c) -> {
+            if (password.getText().length() == 0)
+                passwordStatus.setText("fill this part");
+            else
+                passwordStatus.setText("");
         });
         passwordHide.addListener(new ChangeListener() {
             @Override
@@ -198,7 +173,7 @@ public class LoginScreen extends Menu {
                 } else {
                     String status = LoginMenuController.loginUser(username.getText(), password.getText(), stayLogIn.isChecked());
                     if (status.equals("OK")) {
-                        game.setScreen(new MainScreen(game));
+                        game.setScreen(new MainScreen(game, User.getUserByName(username.getText())));
                     } else {
                         passwordStatus.setText(status);
                         System.out.println(":" + password.getText() + ":");
@@ -227,14 +202,11 @@ public class LoginScreen extends Menu {
                 captchaNumber = random;
             }
         });
-        captchaField.setTextFieldListener(new TextField.TextFieldListener() {
-            @Override
-            public void keyTyped(TextField textField, char c) {
-                if (!("" + captchaNumber).equals(captchaField.getText()))
-                    captchaStatus.setText("wrong captcha");
-                else
-                    captchaStatus.setText("");
-            }
+        captchaField.setTextFieldListener((textField, c) -> {
+            if (!("" + captchaNumber).equals(captchaField.getText()))
+                captchaStatus.setText("wrong captcha");
+            else
+                captchaStatus.setText("");
         });
 
         background = new Image(new Texture(Gdx.files.internal("backgrounds/loginMenu.jpg")));
