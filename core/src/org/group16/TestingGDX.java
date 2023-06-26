@@ -48,7 +48,7 @@ public class TestingGDX extends Game {
         animState = new AnimState(idleAnim);
 
         decal = Decal.newDecal(animState.evaluate(direction), true);
-        decal.setPosition(0, 0, 0);
+        decal.setPosition(100, 0, 0);
         decal.setRotation(new Vector3(1, 1, 1).nor(), camera.up);
     }
 
