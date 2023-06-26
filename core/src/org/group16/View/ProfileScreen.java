@@ -44,7 +44,7 @@ public class ProfileScreen extends Menu {
         createPassword();
         createBack();
 
-        background = new Image(new Texture(Gdx.files.internal("backgrounds/loginMenu.jpg")));
+        background = new Image(new Texture(Gdx.files.internal("backgrounds/profileMenu.jpg")));
         background.setZIndex(0);
         background.setFillParent(true);
         uiStage.addActor(background);
@@ -376,8 +376,8 @@ public class ProfileScreen extends Menu {
 
     private void createTable() {
         table = new Table(skin1);
-        table.setBackground(white.getDrawable());
-        table.setColor(Color.BLACK);
+        //table.setBackground(white.getDrawable());
+        //table.setColor(Color.BLACK);
         table.setSize(600, 300);
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
