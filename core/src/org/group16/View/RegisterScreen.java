@@ -78,7 +78,7 @@ public class RegisterScreen extends Menu {
         sloganStatus = new Label("", skin1);
         sloganStatus.setColor(Color.RED);
 
-        int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+        int random = CaptchaBuilder.captchaBuilder();
         captchaNumber = random;
         captcha = new Image(new Texture(Gdx.files.internal("captcha/" + random + ".png")));
         captchaField = new TextField("", skin1);
@@ -226,7 +226,7 @@ public class RegisterScreen extends Menu {
         newCaptcha.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+                int random = CaptchaBuilder.captchaBuilder();
                 captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
                 captchaNumber = random;
             }
@@ -278,7 +278,7 @@ public class RegisterScreen extends Menu {
                         sloganStatus.getText().length() != 0 ||
                         captchaStatus.getText().length() != 0
                 ) {
-                    int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+                    int random = CaptchaBuilder.captchaBuilder();
                     captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
                     captchaNumber = random;
                 } else {

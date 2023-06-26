@@ -447,7 +447,7 @@ public class ProfileScreen extends Menu {
     }
 
     private void generateCaptcha() {
-        captchaNumber = new Random().nextInt(1000, 10000);
+        captchaNumber = CaptchaBuilder.captchaBuilder();
         if (captcha == null) captcha = new Image();
         captcha.setDrawable(new TextureRegionDrawable(
                 new Texture(Gdx.files.internal("captcha/" + captchaNumber + ".png"))));
