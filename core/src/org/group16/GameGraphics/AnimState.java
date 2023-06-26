@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class AnimState {
     private AnimData currentData;
     private float currentTime = 0;
+    public AnimState(AnimData currentData) {
+        this.currentData = currentData;
+    }
 
     public void update(float dt) {
         currentTime += dt;

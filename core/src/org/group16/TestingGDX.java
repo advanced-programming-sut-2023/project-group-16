@@ -9,29 +9,24 @@ import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import org.group16.GameGraphics.AnimData;
+import org.group16.GameGraphics.AnimState;
 
 import static com.badlogic.gdx.Gdx.*;
 
 public class TestingGDX extends Game {
-    private final long initialTime = TimeUtils.millis();
     private PerspectiveCamera camera;
     private DecalBatch decalBatch;
-    private Array<TextureAtlas.AtlasRegion> currentAnimation;
+    //    private Array<TextureAtlas.AtlasRegion> currentAnimation;
+    private AnimData walkingAnim, runningAnim, fightingAnim;
+    private AnimState animState;
 
     private TextureAtlas atlas;
     private Decal decal;
     private int direction = 0;
 
-    private int getFrame() {
-        float frm = TimeUtils.timeSinceMillis(initialTime) / 82f;
-        return (int) frm;
-    }
-
-    private int getIndex() {
-        return (getFrame() * 8 + direction) % currentAnimation.size;
-    }
+    private long lastFrame = TimeUtils.millis();
 
     @Override
     public void create() {
@@ -46,8 +41,12 @@ public class TestingGDX extends Game {
         decalBatch = new DecalBatch(new CameraGroupStrategy(camera));
 
         atlas = new TextureAtlas("game/soldiers/european_archer.atlas");
-        currentAnimation = atlas.findRegions("walking");
-        decal = Decal.newDecal(currentAnimation.get(0), true);
+        walkingAnim = new AnimData(atlas.findRegions("walking"), 8);
+        runningAnim = new AnimData(atlas.findRegions("running"), 8);
+        fightingAnim = new AnimData(atlas.findRegions("fighting"), 8);
+        animState = new AnimState(walkingAnim);
+
+        decal = Decal.newDecal(animState.evaluate(direction), true);
         decal.setPosition(0, 0, 0);
         decal.setRotation(new Vector3(1, 1, 1).nor(), camera.up);
     }
@@ -57,7 +56,10 @@ public class TestingGDX extends Game {
         gl.glClearColor(1, 0, 0, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        decal.setTextureRegion(currentAnimation.get(getIndex()));
+        long milis = TimeUtils.timeSinceMillis(lastFrame);
+        animState.update(milis / 1000f);
+        lastFrame += milis;
+        decal.setTextureRegion(animState.evaluate(direction));
 
         decalBatch.add(decal);
         decalBatch.flush();
