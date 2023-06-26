@@ -12,6 +12,8 @@ import java.util.Random;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 public class LoginMenuController {
     public static String createUser(String username, String password, String passwordConfirmation,
                                     String email, String nickname, String slogan, String passwordRecoveryQ,
