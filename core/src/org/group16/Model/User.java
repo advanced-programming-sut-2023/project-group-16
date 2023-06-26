@@ -1,8 +1,10 @@
 package org.group16.Model;
 
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class User {
@@ -128,7 +130,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         saveChanges(this);
     }
 

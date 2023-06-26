@@ -3,7 +3,6 @@ package org.group16.Model;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
-import org.group16.View.UnitMenu;
 
 import java.util.ArrayList;
 

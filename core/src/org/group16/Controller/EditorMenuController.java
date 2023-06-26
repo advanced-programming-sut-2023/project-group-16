@@ -4,7 +4,7 @@ import org.group16.Model.Cell;
 import org.group16.Model.CellType;
 import org.group16.Model.Map;
 import org.group16.Model.TreeType;
-import org.group16.View.EditorMenu;
+import org.group16.ViewTerminal.EditorMenu;
 
 import java.util.ArrayList;
 
