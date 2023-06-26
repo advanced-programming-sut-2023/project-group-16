@@ -1,17 +1,25 @@
 package org.group16.View;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
+import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import org.group16.Controller.ProfileMenuController;
 import org.group16.Model.User;
 import org.group16.StrongholdGame;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class ProfileScreen extends Menu {
@@ -19,16 +27,18 @@ public class ProfileScreen extends Menu {
     private final Image background, white;
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-    private Image captcha;
+    private Image captcha, avatar;
     private int captchaNumber;
     private Table table;
     private Label username, nickname, email, slogan, newUsernameError, newNicknameError, newEmailError, newSloganError,
             oldPasswordError, newPasswordError, captchaError;
-    private TextButton changeUsername, changeNickname, changeEmail, changeSlogan, removeSlogan, changePassword,
+    private TextButton changeAvatar, changeUsername, changeNickname, changeEmail, changeSlogan, removeSlogan, changePassword,
             saveUsername, saveNickname, saveEmail, saveSlogan, savePassword, captchaReload, backButton;
     private Dialog changeUsernameDialog, changeNicknameDialog, changeEmailDialog,
             changeSloganDialog, changePasswordDialog;
     private TextField newUsername, newNickname, newEmail, newSlogan, oldPassword, newPassword, captchaField;
+
+    private SelectBox<String> selectAvatar;
 
     public ProfileScreen(StrongholdGame game, User user) {
         super(game);
@@ -36,7 +46,7 @@ public class ProfileScreen extends Menu {
 
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
-
+        createAvatar();
         createUsername();
         createNickname();
         createEmail();
@@ -44,7 +54,7 @@ public class ProfileScreen extends Menu {
         createPassword();
         createBack();
 
-        background = new Image(new Texture(Gdx.files.internal("backgrounds/loginMenu.jpg")));
+        background = new Image(new Texture(Gdx.files.internal("backgrounds/profileMenu.jpg")));
         background.setZIndex(0);
         background.setFillParent(true);
         uiStage.addActor(background);
@@ -63,6 +73,85 @@ public class ProfileScreen extends Menu {
         success.getContentTable().add(text).center().row();
         success.show(uiStage);
     }
+
+    private void createAvatar() {
+        avatar = new Image(picChange.changer(user.getAvatarPicture(), 60, 60));
+
+        changeAvatar = new TextButton("Change Avatar", skin1);
+
+        FileHandle dir = new FileHandle("assets/mainPfp");
+        selectAvatar = new SelectBox<>(skin2);
+        Array<String> picNames = new Array<>();
+        picNames.add("Others");
+        try {
+            for (FileHandle fileHandle : dir.list())
+                picNames.add(fileHandle.name().substring(0, fileHandle.name().length() - 4));
+            selectAvatar.setItems(picNames);
+        } catch (Exception e) {
+            System.out.println("Exception in file handling");
+        }
+
+        changeAvatar.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (!selectAvatar.getSelected().equals("Others")) {
+                    user.setAvatarPicture("mainPfp/" + selectAvatar.getSelected() + ".jpg");
+                    try {
+                        avatar.setDrawable(new TextureRegionDrawable(picChange.changer(user.getAvatarPicture() , 60 , 60)));
+                    }
+                    catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                else {
+                    StrongholdGame.fileChooser.chooseFile(StrongholdGame.fileChooserConfiguration, new NativeFileChooserCallback() {
+                        @Override
+                        public void onFileChosen(FileHandle file) {
+                            if(file.name().endsWith(".png")||file.name().endsWith(".jpg")) {
+                                user.setAvatarPicture(file.path());
+                                try {
+                                    avatar.setDrawable(new TextureRegionDrawable(picChange.changer(user.getAvatarPicture() , 60 , 60)));
+                                }
+                                catch (Exception e){
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancellation() {
+
+                        }
+                        @Override
+                        public void onError(Exception exception) {
+
+                        }
+                    });
+                }
+            }
+        });
+    }
+    //private void choosePfpFile() {
+    //        AAGame.fileChooser.chooseFile(AAGame.fileChooserConfiguration, new NativeFileChooserCallback() {
+    //            @Override
+    //            public void onFileChosen(FileHandle file) {
+    //                if (file.name().endsWith(".png")) {
+    //                    ProfileMenuController.changePfp(user, file.file());
+    //                    refreshPfpImg();
+    //                    goToMain();
+    //                }
+    //            }
+    //
+    //            @Override
+    //            public void onCancellation() {
+    //
+    //            }
+    //
+    //            @Override
+    //            public void onError(Exception exception) {
+    //
+    //            }
+    //        });
+    //    }
 
     private void createUsername() {
         username = new Label("Username: " + user.getUsername(), skin1);
@@ -358,7 +447,7 @@ public class ProfileScreen extends Menu {
     }
 
     private void generateCaptcha() {
-        captchaNumber = new Random().nextInt(1000, 10000);
+        captchaNumber = CaptchaBuilder.captchaBuilder();
         if (captcha == null) captcha = new Image();
         captcha.setDrawable(new TextureRegionDrawable(
                 new Texture(Gdx.files.internal("captcha/" + captchaNumber + ".png"))));
@@ -376,11 +465,15 @@ public class ProfileScreen extends Menu {
 
     private void createTable() {
         table = new Table(skin1);
-        table.setBackground(white.getDrawable());
-        table.setColor(Color.BLACK);
-        table.setSize(600, 300);
+        //table.setBackground(white.getDrawable());
+        //table.setColor(Color.BLACK);
+        table.setSize(600, 600);
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
+        table.add(avatar).colspan(2).row();
+        ;
+        table.add(selectAvatar).left();
+        table.add(changeAvatar).right().row();
         table.add(username).left();
         table.add(changeUsername).right().row();
         table.add(nickname).left();

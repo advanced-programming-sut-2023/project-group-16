@@ -7,8 +7,23 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 public class User {
-    private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
+    private String username;
+    private String password;
+    private String nickname;
+    private String email;
+    private String passwordRecoveryQuestion;
+    private String passwordRecoveryAnswer;
+    private String slogan;
+
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    private String avatarPictureP;
     private int score;
 
     private User(String username, String password, String email, String passwordRecoveryQuestion,
@@ -27,9 +42,9 @@ public class User {
                                String passwordRecoveryAnswer, String nickname, String slogan) {
         User user = new User(username, password, email, passwordRecoveryQuestion,
                 passwordRecoveryAnswer, nickname, slogan);
+        user.setAvatarPicture("mainPfp/LionHeart.jpg");
         saveChanges(user);
     }
-
     public static void removeUser(User user) {
         String folderPath = new File("").getAbsolutePath() + "/Data/Users";
         File file = new File(folderPath + "/" + user.username + ".json");
@@ -176,6 +191,14 @@ public class User {
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+        saveChanges(this);
+    }
+    public String getAvatarPicture() {
+        return avatarPictureP;
+    }
+
+    public void setAvatarPicture(String avatarPictureP) {
+        this.avatarPictureP = avatarPictureP;
         saveChanges(this);
     }
 

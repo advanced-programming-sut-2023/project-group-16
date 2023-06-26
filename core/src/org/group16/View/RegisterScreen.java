@@ -21,12 +21,12 @@ public class RegisterScreen extends Menu {
     TextField usernameField, passwordField, nicknameField, emailField, passwordQAField, sloganField, captchaField;
     Label usernameLabel, passwordLabel, nicknameLabel, emailLabel, passwordQALabel, sloganLabel;
     Label usernameStatus, passwordStatus, nicknameStatus, emailStatus, passwordQAStatus, sloganStatus, captchaStatus;
-    TextButton randomButton, registerButton, newCaptcha , okDialog , back;
+    TextButton randomButton, registerButton, newCaptcha, okDialog, back;
     CheckBox sloganCheckBox, passwordHideCheckBox;
     SelectBox<String> passwordQASelectBar, sloganSelectBar;
-    Image background , white , captcha;
-    Dialog successDialog ;
-    int captchaNumber ;
+    Image background, white, captcha;
+    Dialog successDialog;
+    int captchaNumber;
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
@@ -78,17 +78,17 @@ public class RegisterScreen extends Menu {
         sloganStatus = new Label("", skin1);
         sloganStatus.setColor(Color.RED);
 
-        int random = ThreadLocalRandom.current().nextInt(1000, 10000);
-        captchaNumber = random ;
+        int random = CaptchaBuilder.captchaBuilder();
+        captchaNumber = random;
         captcha = new Image(new Texture(Gdx.files.internal("captcha/" + random + ".png")));
         captchaField = new TextField("", skin1);
         newCaptcha = new TextButton("reload", skin1);
-        captchaStatus = new Label("enter captcha" , skin1);
+        captchaStatus = new Label("enter captcha", skin1);
         captchaStatus.setColor(Color.RED);
 
-        registerButton = new TextButton("register" , skin1);
+        registerButton = new TextButton("register", skin1);
 
-        back = new TextButton("back" , skin1);
+        back = new TextButton("back", skin1);
 
         table.add(usernameLabel).pad(0, 0, 0, 5);
         table.add(usernameField).pad(0, 0, 0, 5);
@@ -97,13 +97,15 @@ public class RegisterScreen extends Menu {
         usernameField.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
-                String usernameText = usernameField.getText() ;
-                String status = LoginMenuController.checkUsername(usernameText) ;
+                String usernameText = usernameField.getText();
+                String status = LoginMenuController.checkUsername(usernameText);
                 if (status.equals("OK"))
                     usernameStatus.setText("");
                 else
                     usernameStatus.setText(status);
-            };
+            }
+
+            ;
         });
 
         table.add(passwordLabel).pad(0, 0, 0, 5);
@@ -121,7 +123,7 @@ public class RegisterScreen extends Menu {
         passwordField.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
-                String passwordText = passwordField.getText() ;
+                String passwordText = passwordField.getText();
                 String status = LoginMenuController.checkPassword(passwordText);
                 if (status.equals("OK"))
                     passwordStatus.setText("");
@@ -145,7 +147,7 @@ public class RegisterScreen extends Menu {
         nicknameField.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
-                if (nicknameField.getText().length()>0)
+                if (nicknameField.getText().length() > 0)
                     nicknameStatus.setText("");
                 else
                     nicknameStatus.setText("fill this part");
@@ -159,8 +161,8 @@ public class RegisterScreen extends Menu {
         emailField.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
-                String emailText = emailField.getText() ;
-                String status = LoginMenuController.checkEmail(emailText) ;
+                String emailText = emailField.getText();
+                String status = LoginMenuController.checkEmail(emailText);
                 if (status.equals("OK"))
                     emailStatus.setText("");
                 else
@@ -176,7 +178,7 @@ public class RegisterScreen extends Menu {
         passwordQAField.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
-                if (passwordQAField.getText().length()>0)
+                if (passwordQAField.getText().length() > 0)
                     passwordQAStatus.setText("");
                 else
                     passwordQAStatus.setText("fill this part");
@@ -185,13 +187,13 @@ public class RegisterScreen extends Menu {
 
         table.add(sloganCheckBox).pad(0, 0, 0, 5);
         table.add(sloganField).pad(0, 0, 0, 5);
-        table.add(sloganSelectBar).pad(0 ,0 , 0,5);
+        table.add(sloganSelectBar).pad(0, 0, 0, 5);
         table.add(sloganStatus).row();
 
         sloganField.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
-                if (sloganCheckBox.isChecked()&&sloganField.getText().length() == 0)
+                if (sloganCheckBox.isChecked() && sloganField.getText().length() == 0)
                     sloganStatus.setText("fill this part");
                 else
                     sloganStatus.setText("");
@@ -200,11 +202,10 @@ public class RegisterScreen extends Menu {
         sloganCheckBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (sloganCheckBox.isChecked()){
+                if (sloganCheckBox.isChecked()) {
                     sloganField.setVisible(true);
                     sloganSelectBar.setVisible(true);
-                }
-                else{
+                } else {
                     sloganField.setVisible(false);
                     sloganSelectBar.setVisible(false);
                 }
@@ -218,22 +219,22 @@ public class RegisterScreen extends Menu {
         });
 
         table.add(captcha).pad(0, 0, 0, 5);
-        table.add(newCaptcha).pad(0 , 0 , 0 , 5);
+        table.add(newCaptcha).pad(0, 0, 0, 5);
         table.add(captchaField).pad(0, 0, 0, 5);
         table.add(captchaStatus).row();
 
         newCaptcha.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+                int random = CaptchaBuilder.captchaBuilder();
                 captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
-                captchaNumber = random ;
+                captchaNumber = random;
             }
         });
         captchaField.setTextFieldListener(new TextField.TextFieldListener() {
             @Override
             public void keyTyped(TextField textField, char c) {
-                if (!(""+captchaNumber).equals(captchaField.getText()))
+                if (!("" + captchaNumber).equals(captchaField.getText()))
                     captchaStatus.setText("wrong captcha");
                 else
                     captchaStatus.setText("");
@@ -242,9 +243,9 @@ public class RegisterScreen extends Menu {
 
         table.add(registerButton).colspan(4).row();
 
-        successDialog = new Dialog("Successfully registered" , skin2) ;
+        successDialog = new Dialog("Successfully registered", skin2);
         successDialog.setColor(Color.GREEN);
-        okDialog = new TextButton("OK" , skin2) ;
+        okDialog = new TextButton("OK", skin2);
         successDialog.getContentTable().add(okDialog);
         okDialog.addListener(new ChangeListener() {
             @Override
@@ -257,34 +258,33 @@ public class RegisterScreen extends Menu {
         registerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (usernameField.getText().length()==0)
+                if (usernameField.getText().length() == 0)
                     usernameStatus.setText("fill this part");
-                if (passwordField.getText().length()==0)
+                if (passwordField.getText().length() == 0)
                     passwordStatus.setText("fill this part");
-                if (nicknameField.getText().length()==0)
+                if (nicknameField.getText().length() == 0)
                     nicknameStatus.setText("fill this part");
-                if (emailField.getText().length()==0)
+                if (emailField.getText().length() == 0)
                     emailStatus.setText("fill this part");
-                if (passwordQAField.getText().length()==0)
+                if (passwordQAField.getText().length() == 0)
                     passwordQAStatus.setText("fill this part");
-                if (sloganCheckBox.isChecked() && sloganField.getText().length()==0)
+                if (sloganCheckBox.isChecked() && sloganField.getText().length() == 0)
                     sloganStatus.setText("fill this part");
-                if (usernameStatus.getText().length()!=0||
-                        usernameStatus.getText().length()!=0||
-                        nicknameStatus.getText().length()!=0||
-                        emailStatus.getText().length()!=0||
-                        passwordStatus.getText().length()!=0||
-                        sloganStatus.getText().length()!=0||
-                        captchaStatus.getText().length()!=0
+                if (usernameStatus.getText().length() != 0 ||
+                        usernameStatus.getText().length() != 0 ||
+                        nicknameStatus.getText().length() != 0 ||
+                        emailStatus.getText().length() != 0 ||
+                        passwordStatus.getText().length() != 0 ||
+                        sloganStatus.getText().length() != 0 ||
+                        captchaStatus.getText().length() != 0
                 ) {
-                    int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+                    int random = CaptchaBuilder.captchaBuilder();
                     captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
-                    captchaNumber = random ;
-                }
-                else {
-                    LoginMenuController.createUser(usernameField.getText() , passwordField.getText() , passwordField.getText() ,
-                            emailField.getText() , nicknameField.getText() , sloganField.getText() ,
-                            passwordQASelectBar.getSelected() , passwordQAField.getText());
+                    captchaNumber = random;
+                } else {
+                    LoginMenuController.createUser(usernameField.getText(), passwordField.getText(), passwordField.getText(),
+                            emailField.getText(), nicknameField.getText(), sloganField.getText(),
+                            passwordQASelectBar.getSelected(), passwordQAField.getText());
                     successDialog.show(uiStage);
                 }
             }

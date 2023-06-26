@@ -30,7 +30,7 @@ public class LoginScreen extends Menu {
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
-    public LoginScreen(StrongholdGame game) {
+    public LoginScreen(StrongholdGame game)  {
         super(game);
 
         uiStage.clear();
@@ -61,9 +61,10 @@ public class LoginScreen extends Menu {
         forgotPassword = new TextButton("forgot password", skin1);
         stayLogIn = new CheckBox("stay log in", skin1);
 
-        int random = ThreadLocalRandom.current().nextInt(1000, 10000);
-        captchaNumber = random;
+
+        int random = CaptchaBuilder.captchaBuilder();
         captcha = new Image(new Texture(Gdx.files.internal("captcha/" + random + ".png")));
+        captchaNumber = random ;
         captchaField = new TextField("", skin1);
         newCaptcha = new TextButton("reload", skin1);
         captchaStatus = new Label("enter captcha", skin1);
@@ -165,7 +166,7 @@ public class LoginScreen extends Menu {
                         passwordStatus.getText().length() != 0 ||
                         captchaStatus.getText().length() != 0
                 ) {
-                    int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+                    int  random = CaptchaBuilder.captchaBuilder();
                     captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
                     captchaNumber = random;
                 } else if (User.getUserByName(username.getText()) == null) {
@@ -197,7 +198,7 @@ public class LoginScreen extends Menu {
         newCaptcha.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                int random = ThreadLocalRandom.current().nextInt(1000, 10000);
+                int random = CaptchaBuilder.captchaBuilder();
                 captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
                 captchaNumber = random;
             }
