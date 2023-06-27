@@ -41,7 +41,7 @@ public class TestingGDX extends Game {
     public void create() {
         camera = new PerspectiveCamera(67, 1f, 1f * graphics.getHeight() / graphics.getWidth());
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
-        camera.position.set(1f, 1f, 1f);
+        camera.position.set(2f, 2f, 2f);
         camera.lookAt(0f, 0f, 0f);
 
         camera.near = 0.01f;
@@ -58,17 +58,17 @@ public class TestingGDX extends Game {
         collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
         collection.addAnimation("running", new AnimData(atlas.findRegions("running"), 8));
         collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
-        AnimatedRenderer renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
-        renderer.setLocalPosition(-.1f, 0, -.1f);
+        AnimatedRenderer renderer = new AnimatedRenderer(collection, 0.3f, forward, camera.up);
+        renderer.setLocalPosition(0f, 0, 0f);
         soldiers.add(renderer);
-        renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
-        renderer.setLocalPosition(-.1f, 0, .1f);
+        renderer = new AnimatedRenderer(collection, 0.3f, forward, camera.up);
+        renderer.setLocalPosition(0f, 0, 1f);
         soldiers.add(renderer);
-        renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
-        renderer.setLocalPosition(.1f, 0f, -.1f);
+        renderer = new AnimatedRenderer(collection, 0.3f, forward, camera.up);
+        renderer.setLocalPosition(1f, 0f, 0f);
         soldiers.add(renderer);
-        renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
-        renderer.setLocalPosition(.1f, 0f, .1f);
+        renderer = new AnimatedRenderer(collection, 0.3f, forward, camera.up);
+        renderer.setLocalPosition(1f, 0f, 1f);
         soldiers.add(renderer);
 
     }
@@ -85,13 +85,13 @@ public class TestingGDX extends Game {
             renderer.update(dt);
         }
         if (input.isKeyPressed(Input.Keys.L))
-            camera.position.add(dt, 0, 0);
+            camera.position.add(-dt, 0, dt);
         if (input.isKeyPressed(Input.Keys.J))
-            camera.position.add(-dt, 0, 0);
+            camera.position.add(dt, 0, -dt);
         if (input.isKeyPressed(Input.Keys.K))
-            camera.position.add(0, 0, -dt);
+            camera.position.add(-dt, 0, -dt);
         if (input.isKeyPressed(Input.Keys.I))
-            camera.position.add(0, 0, dt);
+            camera.position.add(dt, 0, dt);
         camera.update();
 
         for (AnimatedRenderer renderer : soldiers) {
