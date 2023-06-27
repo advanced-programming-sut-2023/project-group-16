@@ -21,6 +21,18 @@ public class Renderer {
         decal.setRotation(forward, up);
     }
 
+    public void setLocalPosition(float x, float y, float z) {
+        localPosition.set(x, y, z);
+    }
+
+    public Vector3 getLocalPosition() {
+        return localPosition;
+    }
+
+    public void setLocalPosition(Vector3 position) {
+        localPosition.set(position);
+    }
+
     public void addChild(Renderer child) {
         children.add(child);
     }

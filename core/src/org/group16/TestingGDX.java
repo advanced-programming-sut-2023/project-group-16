@@ -17,6 +17,9 @@ import org.group16.GameGraphics.AnimData;
 import org.group16.GameGraphics.AnimState;
 import org.group16.GameGraphics.AnimatedRenderer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.badlogic.gdx.Gdx.*;
 
 public class TestingGDX extends Game {
@@ -32,16 +35,16 @@ public class TestingGDX extends Game {
 
     private long lastFrame = TimeUtils.millis();
 
-    private AnimatedRenderer soldier;
+    private List<AnimatedRenderer> soldiers = new ArrayList<>();
 
     @Override
     public void create() {
-//        camera = new PerspectiveCamera(67, 1f, 1f * graphics.getHeight() / graphics.getWidth());
-        camera = new PerspectiveCamera(67, 1, 1f * graphics.getHeight() / graphics.getWidth());
+        camera = new PerspectiveCamera(67, 1f, 1f * graphics.getHeight() / graphics.getWidth());
+//        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
         camera.position.set(1f, 1f, 1f);
         camera.lookAt(0f, 0f, 0f);
 
-        camera.near = 1f;
+        camera.near = 0.01f;
         camera.far = 300f;
         camera.update();
 
@@ -55,7 +58,19 @@ public class TestingGDX extends Game {
         collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
         collection.addAnimation("running", new AnimData(atlas.findRegions("running"), 8));
         collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
-        soldier = new AnimatedRenderer(collection, 0.5f, forward, camera.up);
+        AnimatedRenderer renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
+        renderer.setLocalPosition(-.1f, 0, -.1f);
+        soldiers.add(renderer);
+        renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
+        renderer.setLocalPosition(-.1f, 0, .1f);
+        soldiers.add(renderer);
+        renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
+        renderer.setLocalPosition(.1f, 0f, -.1f);
+        soldiers.add(renderer);
+        renderer = new AnimatedRenderer(collection, 0.1f, forward, camera.up);
+        renderer.setLocalPosition(.1f, 0f, .1f);
+        soldiers.add(renderer);
+
     }
 
     @Override
@@ -64,12 +79,27 @@ public class TestingGDX extends Game {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         long milis = TimeUtils.timeSinceMillis(lastFrame);
-        soldier.update(milis / 1000f);
+        float dt = milis / 1000f;
         lastFrame += milis;
+        for (AnimatedRenderer renderer : soldiers) {
+            renderer.update(dt);
+        }
+        if (input.isKeyPressed(Input.Keys.L))
+            camera.position.add(dt, 0, 0);
+        if (input.isKeyPressed(Input.Keys.J))
+            camera.position.add(-dt, 0, 0);
+        if (input.isKeyPressed(Input.Keys.K))
+            camera.position.add(0, 0, -dt);
+        if (input.isKeyPressed(Input.Keys.I))
+            camera.position.add(0, 0, dt);
+        camera.update();
 
-        soldier.render(decalBatch, new Vector3());
+        for (AnimatedRenderer renderer : soldiers) {
+            renderer.render(decalBatch, new Vector3());
+        }
         decalBatch.flush();
 
+        AnimatedRenderer soldier = soldiers.get(0);
         if (input.isKeyPressed(Input.Keys.F)) {
             soldier.playAnimation("fighting");
         }
