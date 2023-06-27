@@ -17,8 +17,10 @@ import org.group16.GameGraphics.AnimData;
 import org.group16.GameGraphics.AnimState;
 import org.group16.GameGraphics.AnimatedRenderer;
 
+import java.security.KeyFactorySpi;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.badlogic.gdx.Gdx.*;
 
@@ -48,11 +50,14 @@ public class TestingGDX extends Game {
         camera.far = 300f;
         camera.update();
 
-        decalBatch = new DecalBatch(100000, new CameraGroupStrategy(camera));
+        decalBatch = new DecalBatch(100000, new CameraGroupStrategy(camera,
+                (a, b) -> Float.compare(camera.position.dst2(b.getPosition()), camera.position.dst2(a.getPosition()))
+        ));
 
         atlas = new TextureAtlas("game/soldiers/european_archer.atlas");
 
         Vector3 forward = new Vector3(1, 1, 1).nor();
+        Vector3 up = new Vector3(-1, 1, -1).nor();
         AnimCollection collection = new AnimCollection();
         collection.addAnimation("idle", new AnimData(atlas.findRegions("idle"), 1));
         collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
@@ -61,7 +66,7 @@ public class TestingGDX extends Game {
         float size = 0.5f;
         for (float x = 0; x <= 1; x += .15f) {
             for (float y = 0; y <= 1; y += .15f) {
-                AnimatedRenderer renderer = new AnimatedRenderer(collection, size, forward, camera.up);
+                AnimatedRenderer renderer = new AnimatedRenderer(collection, size, forward, up);
                 renderer.setLocalPosition(x, 0, y);
                 soldiers.add(renderer);
             }
@@ -92,12 +97,18 @@ public class TestingGDX extends Game {
             camera.position.add(-dt, -dt, -dt);
         if (input.isKeyPressed(Input.Keys.O))
             camera.position.add(dt, dt, dt);
+//        if (input.isKeyPressed(Input.Keys.N))
+//            camera.rotateAround(, Vector3.Y, -dt * 180);
+//        if (input.isKeyPressed(Input.Keys.M))
+//            camera.rotate(new Vector3(0, 1, 0), dt * 180);
         camera.update();
 
         for (AnimatedRenderer renderer : soldiers) {
             renderer.render(decalBatch, new Vector3());
         }
+        gl.glDepthMask(false);
         decalBatch.flush();
+        gl.glDepthMask(true);
 
         AnimatedRenderer soldier = soldiers.get(0);
         if (input.isKeyPressed(Input.Keys.F)) {

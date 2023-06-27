@@ -7,11 +7,12 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Renderer {
+    public final Decal decal;
     protected final List<Renderer> children = new ArrayList<>();
     protected final Vector3 localPosition = new Vector3();
-    protected final Decal decal;
     protected final Vector3 forward, up;
 
     public Renderer(TextureRegion textureRegion, float size, Vector3 forward, Vector3 up) {
@@ -53,6 +54,7 @@ public class Renderer {
 
     public void render(DecalBatch decalBatch, Vector3 parentPosition) {
         Vector3 worldPosition = parentPosition.cpy().add(localPosition);
+        Random random = new Random();
         decal.setPosition(worldPosition);
         decalBatch.add(decal);
         for (Renderer child : children) {
