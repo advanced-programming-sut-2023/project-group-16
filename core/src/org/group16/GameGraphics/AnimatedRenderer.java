@@ -11,8 +11,8 @@ public class AnimatedRenderer extends Renderer {
     private final AnimState animState;
     private int direction;
 
-    public AnimatedRenderer(AnimCollection animCollection, float size, Vector3 forward, Vector3 up) {
-        super(animCollection.getAnimation("idle").evaluate(0, 0), size, forward, up);
+    public AnimatedRenderer(AnimCollection animCollection, boolean transparent, float size, Vector3 forward, Vector3 up) {
+        super(animCollection.getAnimation("idle").evaluate(0, 0), transparent, size, forward, up);
         animState = new AnimState(animCollection.getAnimation("idle"));
         this.animCollection = animCollection;
     }
@@ -30,6 +30,7 @@ public class AnimatedRenderer extends Renderer {
         animState.setCurrentTime(0);
     }
 
+    @Override
     public void update(float dt) {
         animState.update(dt);
         decal.setTextureRegion(animState.evaluate(direction));

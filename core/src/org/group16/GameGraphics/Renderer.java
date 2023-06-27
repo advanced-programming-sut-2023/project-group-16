@@ -15,11 +15,19 @@ public class Renderer {
     protected final Vector3 localPosition = new Vector3();
     protected final Vector3 forward, up;
 
-    public Renderer(TextureRegion textureRegion, float size, Vector3 forward, Vector3 up) {
+    public Renderer(TextureRegion textureRegion, boolean transparent, float size, Vector3 forward, Vector3 up) {
         this.forward = forward;
         this.up = up;
-        decal = Decal.newDecal(size, size * textureRegion.getRegionHeight() / textureRegion.getRegionWidth(), textureRegion, true);
-        decal.setRotation(forward, up);
+        if (textureRegion == null)
+            decal = null;
+        else {
+            decal = Decal.newDecal(size, size * textureRegion.getRegionHeight() / textureRegion.getRegionWidth(), textureRegion, transparent);
+            decal.setRotation(forward, up);
+        }
+    }
+
+    public void update(float dy) {
+
     }
 
     public void setLocalPosition(float x, float y, float z) {
@@ -42,12 +50,6 @@ public class Renderer {
         children.remove(child);
     }
 
-    public void setTextureRegion(TextureRegion textureRegion, float size) {
-        decal.setTextureRegion(textureRegion);
-        decal.setWidth(size);
-        decal.setHeight(size * textureRegion.getRegionHeight() / textureRegion.getRegionWidth());
-    }
-
     public void setScale(float scale) {
         decal.setScale(scale);
     }
@@ -55,8 +57,10 @@ public class Renderer {
     public void render(DecalBatch decalBatch, Vector3 parentPosition) {
         Vector3 worldPosition = parentPosition.cpy().add(localPosition);
         Random random = new Random();
-        decal.setPosition(worldPosition);
-        decalBatch.add(decal);
+        if (decal != null) {
+            decal.setPosition(worldPosition);
+            decalBatch.add(decal);
+        }
         for (Renderer child : children) {
             render(decalBatch, worldPosition);
         }
