@@ -32,6 +32,7 @@ public class AnimatedRenderer extends Renderer {
 
     @Override
     public void update(float dt) {
+        super.update(dt);
         animState.update(dt);
         decal.setTextureRegion(animState.evaluate(direction));
     }

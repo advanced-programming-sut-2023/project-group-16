@@ -27,7 +27,7 @@ public class Renderer {
     }
 
     public void update(float dy) {
-
+        for (Renderer renderer : children) renderer.update(dy);
     }
 
     public void setLocalPosition(float x, float y, float z) {
@@ -56,13 +56,12 @@ public class Renderer {
 
     public void render(DecalBatch decalBatch, Vector3 parentPosition) {
         Vector3 worldPosition = parentPosition.cpy().add(localPosition);
-        Random random = new Random();
         if (decal != null) {
             decal.setPosition(worldPosition);
             decalBatch.add(decal);
         }
         for (Renderer child : children) {
-            render(decalBatch, worldPosition);
+            child.render(decalBatch, worldPosition);
         }
     }
 }

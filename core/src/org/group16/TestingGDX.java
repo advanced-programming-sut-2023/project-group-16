@@ -57,9 +57,12 @@ public class TestingGDX extends Game {
         float size = 0.5f;
         for (float x = 0; x <= 2; x += .1f) {
             for (float y = 0; y <= 1; y += .1f) {
+                Renderer par = new Renderer(null, false, 1, forward, up);
                 AnimatedRenderer renderer = new AnimatedRenderer(collection, true, size, forward, up);
-                renderer.setLocalPosition(x, .1f, y);
-                renderers.add(renderer);
+                renderer.setLocalPosition(0, .1f, 0);
+                par.setLocalPosition(x, 0, y);
+                par.addChild(renderer);
+                renderers.add(par);
             }
         }
         TextureRegion ground = new TextureRegion(new Texture("game/tiles/desert_tile.jpg"));
@@ -108,27 +111,27 @@ public class TestingGDX extends Game {
         decalBatch.flush();
 //        gl.glDepthMask(true);
 
-        AnimatedRenderer soldier = (AnimatedRenderer) renderers.get(0);
-        if (input.isKeyPressed(Input.Keys.F)) {
-            soldier.playAnimation("fighting");
-        }
-        if (input.isKeyPressed(Input.Keys.R)) {
-            soldier.playAnimation("running");
-        }
-        if (input.isKeyPressed(Input.Keys.W)) {
-            soldier.playAnimation("walking");
-        }
-        if (input.isKeyPressed(Input.Keys.I)) {
-            soldier.playAnimation("idle");
-        }
-        if (input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(1);
-        if (input.isKeyPressed(Input.Keys.DOWN)) soldier.setDirection(3);
-        if (input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(5);
-        if (input.isKeyPressed(Input.Keys.UP)) soldier.setDirection(7);
-        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(0);
-        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(2);
-        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(4);
-        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(6);
+//        AnimatedRenderer soldier = (AnimatedRenderer) renderers.get(0);
+//        if (input.isKeyPressed(Input.Keys.F)) {
+//            soldier.playAnimation("fighting");
+//        }
+//        if (input.isKeyPressed(Input.Keys.R)) {
+//            soldier.playAnimation("running");
+//        }
+//        if (input.isKeyPressed(Input.Keys.W)) {
+//            soldier.playAnimation("walking");
+//        }
+//        if (input.isKeyPressed(Input.Keys.I)) {
+//            soldier.playAnimation("idle");
+//        }
+//        if (input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(1);
+//        if (input.isKeyPressed(Input.Keys.DOWN)) soldier.setDirection(3);
+//        if (input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(5);
+//        if (input.isKeyPressed(Input.Keys.UP)) soldier.setDirection(7);
+//        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(0);
+//        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(2);
+//        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(4);
+//        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(6);
     }
 
     @Override
