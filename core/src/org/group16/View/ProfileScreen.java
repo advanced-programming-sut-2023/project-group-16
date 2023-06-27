@@ -40,6 +40,8 @@ public class ProfileScreen extends Menu {
 
     private SelectBox<String> selectAvatar;
 
+    private Window scoreBoardWindow;
+
     public ProfileScreen(StrongholdGame game, User user) {
         super(game);
         this.user = user;
@@ -54,13 +56,16 @@ public class ProfileScreen extends Menu {
         createPassword();
         createBack();
 
+        scoreBoardWindow = new ScoreBoardWindow(skin1 , user) ;
+        scoreBoardWindow.setZIndex(1) ;
+
         background = new Image(new Texture(Gdx.files.internal("backgrounds/profileMenu.jpg")));
         background.setZIndex(0);
         background.setFillParent(true);
         uiStage.addActor(background);
-
         createTable();
         uiStage.addActor(table);
+        uiStage.addActor(scoreBoardWindow);
     }
 
     private void showSuccess(String message) {
@@ -485,6 +490,7 @@ public class ProfileScreen extends Menu {
         table.add(changeSlogan).right().row();
         table.add(changePassword).center().row();
         table.add(backButton).center();
+
     }
 
     @Override
@@ -495,6 +501,7 @@ public class ProfileScreen extends Menu {
         uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
+        scoreBoardWindow.setHeight(uiStage.getHeight());
         uiStage.draw();
     }
 }
