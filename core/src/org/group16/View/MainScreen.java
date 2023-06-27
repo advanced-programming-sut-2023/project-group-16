@@ -19,7 +19,7 @@ public class MainScreen extends Menu {
     private final Image background, white;
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-    private TextButton profileMenu;
+    private TextButton profileMenu , gameMenu;
 
 
     public MainScreen(StrongholdGame game, User user) {
@@ -37,6 +37,13 @@ public class MainScreen extends Menu {
                 game.setScreen(new ProfileScreen(game, user));
             }
         });
+        gameMenu = new TextButton("Game" , skin1) ;
+        gameMenu.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new GameScreen(game));
+            }
+        });
 
         uiStage.addActor(background);
 
@@ -47,6 +54,7 @@ public class MainScreen extends Menu {
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
         table.add(profileMenu).center().row();
+        table.add(gameMenu).row();
         uiStage.addActor(table);
     }
 

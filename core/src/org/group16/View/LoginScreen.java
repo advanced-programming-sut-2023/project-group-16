@@ -22,22 +22,23 @@ public class LoginScreen extends Menu {
     CheckBox stayLogIn, passwordHide;
     Label usernameLabel, passwordLabel, usernameStatus, passwordStatus, captchaStatus, newPasswordStatus, forgotPasswordAnswerStatus;
 
-    Image background, white, captcha;
+    Image background, white, captcha , soilBackground;
     int captchaNumber;
 
     Dialog forgotPasswordDialog;
 
-    Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
-    Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+    Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
+    Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
     public LoginScreen(StrongholdGame game)  {
         super(game);
 
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
+        soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg"))) ;
         table = new Table(skin1);
-        table.setBackground(white.getDrawable());
-        table.setColor(Color.BLACK);
+        table.setBackground(soilBackground.getDrawable());
+        //table.setColor(Color.BLACK);
         table.setSize(600, 300);
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2, uiStage.getHeight() / 2 - table.getHeight() / 2);
 

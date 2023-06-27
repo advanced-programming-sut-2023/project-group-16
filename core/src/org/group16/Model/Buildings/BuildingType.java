@@ -11,7 +11,7 @@ import java.util.List;
 
 public enum BuildingType implements Resource {
     //economy
-    SMALL_STONE_GATEHOUSE("small stone gatehouse", 0, null, 0),
+    SMALL_STONE_GATEHOUSE("small stone gatehouse", 0, null, 0 ),
     //economy
     LARGE_STONE_GATEHOUSE("large stone gatehouse", 0, BasicResource.STONE, 20),
     //war

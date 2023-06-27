@@ -1,6 +1,7 @@
 package org.group16.View;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -16,7 +17,7 @@ public class ScoreBoardWindow extends Window {
     Skin skin;
     int firstShow = 0;
     final int playersInTable = 5;
-
+    Image soilBackground ;
     User user ;
 
     public ScoreBoardWindow(Skin skin, User user) {
@@ -28,6 +29,8 @@ public class ScoreBoardWindow extends Window {
         upButton = new TextButton("UP", skin);
         downButton = new TextButton("DOWN", skin);
 
+        soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg"))) ;
+        this.setBackground(soilBackground.getDrawable());
         ArrayList<User> users = User.getAllUsers();
 
         for (int i = 0; i < users.size(); i++) {
@@ -39,7 +42,7 @@ public class ScoreBoardWindow extends Window {
                 }
             }
         }
-        ScoreBoardRow[] scoreBoardRows = new ScoreBoardRow[10];
+        ScoreBoardRow[] scoreBoardRows = new ScoreBoardRow[playersInTable];
         for (int i = firstShow; i < playersInTable; i++) {
             scoreBoardRows[i] = new ScoreBoardRow();
             this.add(scoreBoardRows[i].rank).left().pad(0 , 0 , 0 , 5);
@@ -76,7 +79,7 @@ public class ScoreBoardWindow extends Window {
             }
         });
 
-        this.add(table) ;
+
     }
 
     public ScoreBoardWindow(String title, Skin skin) {
