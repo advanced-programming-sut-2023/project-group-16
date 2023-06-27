@@ -2,7 +2,9 @@ package org.group16;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
@@ -10,13 +12,15 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
+import org.group16.GameGraphics.AnimCollection;
 import org.group16.GameGraphics.AnimData;
 import org.group16.GameGraphics.AnimState;
+import org.group16.GameGraphics.AnimatedRenderer;
 
 import static com.badlogic.gdx.Gdx.*;
 
 public class TestingGDX extends Game {
-    private PerspectiveCamera camera;
+    private Camera camera;
     private DecalBatch decalBatch;
     //    private Array<TextureAtlas.AtlasRegion> currentAnimation;
     private AnimData idleAnim, walkingAnim, runningAnim, fightingAnim;
@@ -28,10 +32,13 @@ public class TestingGDX extends Game {
 
     private long lastFrame = TimeUtils.millis();
 
+    private AnimatedRenderer soldier;
+
     @Override
     public void create() {
-        camera = new PerspectiveCamera(67, 1f, 1f * graphics.getHeight() / graphics.getWidth());
-        camera.position.set(100f, 100f, 100f);
+//        camera = new PerspectiveCamera(67, 1f, 1f * graphics.getHeight() / graphics.getWidth());
+        camera = new PerspectiveCamera(67, 1, 1f * graphics.getHeight() / graphics.getWidth());
+        camera.position.set(1f, 1f, 1f);
         camera.lookAt(0f, 0f, 0f);
 
         camera.near = 1f;
@@ -41,15 +48,14 @@ public class TestingGDX extends Game {
         decalBatch = new DecalBatch(new CameraGroupStrategy(camera));
 
         atlas = new TextureAtlas("game/soldiers/european_archer.atlas");
-        idleAnim = new AnimData(atlas.findRegions("idle"), 1);
-        walkingAnim = new AnimData(atlas.findRegions("walking"), 8);
-        runningAnim = new AnimData(atlas.findRegions("running"), 8);
-        fightingAnim = new AnimData(atlas.findRegions("fighting"), 8);
-        animState = new AnimState(idleAnim);
 
-        decal = Decal.newDecal(animState.evaluate(direction), true);
-        decal.setPosition(100, 0, 0);
-        decal.setRotation(new Vector3(1, 1, 1).nor(), camera.up);
+        Vector3 forward = new Vector3(1, 1, 1).nor();
+        AnimCollection collection = new AnimCollection();
+        collection.addAnimation("idle", new AnimData(atlas.findRegions("idle"), 1));
+        collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
+        collection.addAnimation("running", new AnimData(atlas.findRegions("running"), 8));
+        collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
+        soldier = new AnimatedRenderer(collection, 0.5f, forward, camera.up);
     }
 
     @Override
@@ -58,37 +64,32 @@ public class TestingGDX extends Game {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         long milis = TimeUtils.timeSinceMillis(lastFrame);
-        animState.update(milis / 1000f);
+        soldier.update(milis / 1000f);
         lastFrame += milis;
-        decal.setTextureRegion(animState.evaluate(direction));
 
-        decalBatch.add(decal);
+        soldier.render(decalBatch, new Vector3());
         decalBatch.flush();
 
         if (input.isKeyPressed(Input.Keys.F)) {
-            animState.setCurrentData(fightingAnim);
-            animState.setCurrentTime(0);
+            soldier.playAnimation("fighting");
         }
         if (input.isKeyPressed(Input.Keys.R)) {
-            animState.setCurrentData(runningAnim);
-            animState.setCurrentTime(0);
+            soldier.playAnimation("running");
         }
         if (input.isKeyPressed(Input.Keys.W)) {
-            animState.setCurrentData(walkingAnim);
-            animState.setCurrentTime(0);
+            soldier.playAnimation("walking");
         }
         if (input.isKeyPressed(Input.Keys.I)) {
-            animState.setCurrentData(idleAnim);
-            animState.setCurrentTime(0);
+            soldier.playAnimation("idle");
         }
-        if (input.isKeyPressed(Input.Keys.RIGHT)) direction = 1;
-        if (input.isKeyPressed(Input.Keys.DOWN)) direction = 3;
-        if (input.isKeyPressed(Input.Keys.LEFT)) direction = 5;
-        if (input.isKeyPressed(Input.Keys.UP)) direction = 7;
-        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.RIGHT)) direction = 0;
-        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.RIGHT)) direction = 2;
-        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.LEFT)) direction = 4;
-        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.LEFT)) direction = 6;
+        if (input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(1);
+        if (input.isKeyPressed(Input.Keys.DOWN)) soldier.setDirection(3);
+        if (input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(5);
+        if (input.isKeyPressed(Input.Keys.UP)) soldier.setDirection(7);
+        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(0);
+        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(2);
+        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(4);
+        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(6);
     }
 
     @Override
