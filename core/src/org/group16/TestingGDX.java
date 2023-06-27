@@ -48,7 +48,7 @@ public class TestingGDX extends Game {
         camera.far = 300f;
         camera.update();
 
-        decalBatch = new DecalBatch(new CameraGroupStrategy(camera));
+        decalBatch = new DecalBatch(100000, new CameraGroupStrategy(camera));
 
         atlas = new TextureAtlas("game/soldiers/european_archer.atlas");
 
@@ -58,19 +58,14 @@ public class TestingGDX extends Game {
         collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
         collection.addAnimation("running", new AnimData(atlas.findRegions("running"), 8));
         collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
-        float size = .5f;
-        AnimatedRenderer renderer = new AnimatedRenderer(collection, size, forward, camera.up);
-        renderer.setLocalPosition(0f, 0, 0f);
-        soldiers.add(renderer);
-        renderer = new AnimatedRenderer(collection, size, forward, camera.up);
-        renderer.setLocalPosition(0f, 0, 1f);
-        soldiers.add(renderer);
-        renderer = new AnimatedRenderer(collection, size, forward, camera.up);
-        renderer.setLocalPosition(1f, 0f, 0f);
-        soldiers.add(renderer);
-        renderer = new AnimatedRenderer(collection, size, forward, camera.up);
-        renderer.setLocalPosition(1f, 0f, 1f);
-        soldiers.add(renderer);
+        float size = 0.5f;
+        for (float x = 0; x <= 1; x += .15f) {
+            for (float y = 0; y <= 1; y += .15f) {
+                AnimatedRenderer renderer = new AnimatedRenderer(collection, size, forward, camera.up);
+                renderer.setLocalPosition(x, 0, y);
+                soldiers.add(renderer);
+            }
+        }
 
     }
 
@@ -93,6 +88,10 @@ public class TestingGDX extends Game {
             camera.position.add(-dt, 0, -dt);
         if (input.isKeyPressed(Input.Keys.K))
             camera.position.add(dt, 0, dt);
+        if (input.isKeyPressed(Input.Keys.U))
+            camera.position.add(-dt, -dt, -dt);
+        if (input.isKeyPressed(Input.Keys.O))
+            camera.position.add(dt, dt, dt);
         camera.update();
 
         for (AnimatedRenderer renderer : soldiers) {
