@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -22,6 +23,11 @@ import static com.badlogic.gdx.Gdx.*;
 
 public class TestingGDX extends Game {
     private final List<Renderer> renderers = new ArrayList<>();
+    private final Vector3 forward = new Vector3(1, 1, 1).nor();
+    private final Vector3 right = new Vector3(1, 0, -1).nor();
+    private final Vector3 up = forward.cpy().crs(right);
+    float time = 0;
+    private Renderer building;
     private Camera camera;
     private DecalBatch decalBatch;
     //    private Array<TextureAtlas.AtlasRegion> currentAnimation;
@@ -34,43 +40,51 @@ public class TestingGDX extends Game {
 
     @Override
     public void create() {
-        camera = new PerspectiveCamera(67, 1f, 1f * graphics.getHeight() / graphics.getWidth());
+        System.out.println(up);
+        camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
-        camera.position.set(2f, 2f, 2f);
+//        ((OrthographicCamera) camera).zoom = 10;
+        camera.position.set(10f, 10f, 10f);
         camera.lookAt(0f, 0f, 0f);
 
-        camera.near = 0.01f;
-        camera.far = 300f;
+        camera.near = 1f;
+        camera.far = 50f;
         camera.update();
 
         decalBatch = new DecalBatch(10000000, new GS(camera));
 
         atlas = new TextureAtlas("game/soldiers/european_archer.atlas");
 
-        Vector3 forward = new Vector3(1, 1, 1).nor();
-        Vector3 up = new Vector3(-1, 1, -1).nor();
         AnimCollection collection = new AnimCollection();
         collection.addAnimation("idle", new AnimData(atlas.findRegions("idle"), 1));
         collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
         collection.addAnimation("running", new AnimData(atlas.findRegions("running"), 8));
         collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
         float size = 0.5f;
-        for (float x = 0; x <= 2; x += .1f) {
-            for (float y = 0; y <= 1; y += .1f) {
+        float buildingHeight = 2;
+        for (float x = 0; x <= 1; x += .1f) {
+            for (float y = .2f; y <= .8f; y += .1f) {
                 Renderer par = new Renderer(null, false, 1, forward, up);
+                par.setLocalPosition(.5f, 0, .5f);
+                par.getLocalPosition().mulAdd(up, x * buildingHeight * .8f);
+//                par.getLocalPosition().mulAdd(right, x + y);
+                renderers.add(par);
                 AnimatedRenderer renderer = new AnimatedRenderer(collection, true, size, forward, up);
                 renderer.setLocalPosition(0, .1f, 0);
-                par.setLocalPosition(x, 0, y);
                 par.addChild(renderer);
-                renderers.add(par);
             }
         }
         TextureRegion ground = new TextureRegion(new Texture("game/tiles/desert_tile.jpg"));
-        for (int x = -10; x < 10; x++) {
-            for (int y = -10; y < 10; y++) {
-                Renderer renderer = new Renderer(ground, false, 1, Vector3.Y, Vector3.X);
-                renderer.setLocalPosition(x + .5f, 0, y + .5f);
-                renderers.add(renderer);
+        for (int x = -5; x <= 5; x++) {
+            for (int y = -5; y <= 5; y++) {
+                Renderer cell = new Renderer(ground, false, 1, Vector3.Y, Vector3.X);
+                cell.setLocalPosition(x + .5f, 0, y + .5f);
+                renderers.add(cell);
+
+                building = new Renderer(new TextureRegion(new Texture("game/tiles/collection9.png")), true, 1, forward, up);
+                building.setLocalPosition(x + .5f, 0, y + .5f);
+                building.getLocalPosition().mulAdd(Vector3.Y, buildingHeight * .3f);
+                renderers.add(building);
             }
         }
     }
@@ -86,6 +100,7 @@ public class TestingGDX extends Game {
         for (Renderer renderer : renderers) {
             renderer.update(dt);
         }
+        time += dt;
         if (input.isKeyPressed(Input.Keys.J))
             camera.position.add(-dt, 0, dt);
         if (input.isKeyPressed(Input.Keys.L))
