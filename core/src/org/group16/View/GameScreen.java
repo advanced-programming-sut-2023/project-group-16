@@ -14,6 +14,8 @@ public class GameScreen extends Menu{
     ShopWindow shopWindow = new ShopWindow("" , skin1 , uiStage) ;
 
     PopularityWindow popularityWindow = new PopularityWindow(skin1 , 0 , 0 , 0 , 0) ;
+
+    ChangeRateWindow changeRateWindow = new ChangeRateWindow("" , skin1) ;
     public GameScreen(StrongholdGame game) {
         super(game);
         uiStage.clear();
@@ -22,7 +24,9 @@ public class GameScreen extends Menu{
 //        uiStage.addActor(shopWindow);
 //        uiStage.addActor(shopWindow.buyingWindow);
 //        shopWindow.buyingWindow.setPosition(0 , 0);
-        uiStage.addActor(popularityWindow);
+//        uiStage.addActor(popularityWindow);
+
+        uiStage.addActor(changeRateWindow);
     }
 
 
@@ -41,6 +45,8 @@ public class GameScreen extends Menu{
         popularityWindow.setHeight(uiStage.getHeight()/4);
         popularityWindow.setWidth(uiStage.getWidth()*3/5);
 
+        changeRateWindow.setHeight(uiStage.getHeight()/4);
+        changeRateWindow.setWidth(uiStage.getWidth()*3/5);
         uiStage.draw();
     }
 }
