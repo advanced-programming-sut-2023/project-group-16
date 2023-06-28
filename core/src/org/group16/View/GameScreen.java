@@ -16,10 +16,10 @@ public class GameScreen extends Menu{
         super(game);
         uiStage.clear();
 
-        //uiStage.addActor(buildingSelectWindow);
-        uiStage.addActor(shopWindow);
-        uiStage.addActor(shopWindow.buyingWindow);
-        shopWindow.buyingWindow.setPosition(0 , 0);
+        uiStage.addActor(buildingSelectWindow);
+//        uiStage.addActor(shopWindow);
+//        uiStage.addActor(shopWindow.buyingWindow);
+//        shopWindow.buyingWindow.setPosition(0 , 0);
     }
 
 

@@ -26,7 +26,7 @@ public class BuildingSelectWindow extends Window {
     int startPic = 0;
     Skin skin;
 
-    TextButton economicButton, warButton , next , back;
+    ImageButton economicButton, warButton , next , back;
     String currentType = "Economic";
     ImageButtonElement[] imageButtonElements;
     Label status ;
@@ -42,10 +42,14 @@ public class BuildingSelectWindow extends Window {
         for (int i = 0; i < numberOfPics; i++)
             imageButtonElements[i] = new ImageButtonElement();
 
-        economicButton = new TextButton("economic", skin);
-        warButton = new TextButton("war", skin);
-        next = new TextButton("next" , skin) ;
-        back = new TextButton("back" , skin) ;
+        economicButton = new ImageButton(skin) ;
+        makeButtons(economicButton , "ButtonImages/EconomicButton.png" , "ButtonImages/EconomicButton.png");
+        warButton = new ImageButton(skin) ;
+        makeButtons(warButton , "ButtonImages/WarButton.png" , "ButtonImages/WarButton.png");
+        next = new ImageButton(skin) ;
+        makeButtons(next, "ButtonImages/NextButton.png", "ButtonImages/NextButton.png");
+        back = new ImageButton(skin) ;
+        makeButtons(back, "ButtonImages/BackButton.png", "ButtonImages/BackButton.png");
         status = new Label("" , skin) ;
         status.setColor(Color.BLACK);
         remake();
@@ -92,6 +96,17 @@ public class BuildingSelectWindow extends Window {
         this.add(economicButton).pad(0, 0, 0, 5);
         this.add(warButton);
 
+    }
+
+    public void makeButtons(ImageButton imageButton, String up, String down) {
+        try {
+            ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
+            imageStyle.imageUp = new TextureRegionDrawable(picChange.changer(Gdx.files.internal(up).path(), xUp/3, yUp/3));
+            imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal(down).path(), xDown/3, yDown/3));
+            imageButton.setStyle(imageStyle);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public class ImageButtonElement {
