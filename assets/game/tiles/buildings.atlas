@@ -1,0 +1,48 @@
+
+buildings.png
+size: 642, 673
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+archer_tower
+  rotate: false
+  xy: 546, 312
+  size: 94, 359
+  orig: 94, 359
+  offset: 0, 0
+  index: -1
+big_tower
+  rotate: false
+  xy: 2, 2
+  size: 158, 275
+  orig: 158, 275
+  offset: 0, 0
+  index: -1
+circle_tower
+  rotate: false
+  xy: 354, 362
+  size: 190, 309
+  orig: 190, 309
+  offset: 0, 0
+  index: -1
+king_castle
+  rotate: false
+  xy: 2, 279
+  size: 350, 392
+  orig: 350, 392
+  offset: 0, 0
+  index: -1
+small_tower
+  rotate: false
+  xy: 162, 40
+  size: 126, 237
+  orig: 126, 237
+  offset: 0, 0
+  index: -1
+square_tower
+  rotate: false
+  xy: 354, 59
+  size: 190, 301
+  orig: 190, 301
+  offset: 0, 0
+  index: -1

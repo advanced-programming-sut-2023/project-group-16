@@ -2,22 +2,18 @@ package org.group16;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.group16.GameGraphics.*;
 
-import java.security.KeyFactorySpi;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.badlogic.gdx.Gdx.*;
 
@@ -26,8 +22,9 @@ public class TestingGDX extends Game {
     private final Vector3 forward = new Vector3(1, 1, 1).nor();
     private final Vector3 right = new Vector3(1, 0, -1).nor();
     private final Vector3 up = forward.cpy().crs(right);
+    public AssetManager assetManager;
     float time = 0;
-    private Renderer building;
+    private BuildingRenderer building;
     private Camera camera;
     private DecalBatch decalBatch;
     //    private Array<TextureAtlas.AtlasRegion> currentAnimation;
@@ -64,34 +61,38 @@ public class TestingGDX extends Game {
         collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
         float size = 0.3f;
         float buildingHeight = 2;
-        for (float x = 0f; x <= 1.01f; x += .2f) {
-            for (float y = 0f; y <= 1.01f; y += .2f) {
-                Renderer par = new Renderer(null, false, 1, forward, up);
-//                par.setLocalPosition(x, 0, y);
-                par.setLocalPosition(.5f, 0, .5f);
-                par.getLocalPosition().mulAdd(up, buildingHeight * .4f);
-                par.getLocalPosition().mulAdd(up, -(1.5f + x + y) * buildingHeight * .06f);
-                par.getLocalPosition().mulAdd(right, (x - y) * .3f);
-                par.getLocalPosition().mulAdd(forward, (4 + x + y) * .01f);
-                par.getLocalPosition().mulAdd(Vector3.Y, buildingHeight * .3f);
-//                par.getLocalPosition().mulAdd(right, x + y);
-                renderers.add(par);
-                AnimatedRenderer renderer = new AnimatedRenderer(collection, true, size, forward, up);
-                renderer.setLocalPosition(0, .1f, 0);
-                par.addChild(renderer);
-            }
-        }
+
         TextureRegion ground = new TextureRegion(new Texture("game/tiles/desert_tile.jpg"));
-        for (int x = -2; x <= 2; x++) {
-            for (int y = -2; y <= 2; y++) {
+        TextureRegion buildingTexture = new TextureRegion(new Texture("game/tiles/Market-menu.png"));
+        TextureAtlas buildingAtlas = new TextureAtlas("game/tiles/buildings.atlas");
+        BuildingGraphics.load(buildingAtlas);
+
+        for (int x = 0; x <= 5; x++) {
+            for (int y = 0; y <= 5; y++) {
                 Renderer cell = new Renderer(ground, false, 1, Vector3.Y, Vector3.X);
                 cell.setLocalPosition(x + .5f, 0, y + .5f);
                 renderers.add(cell);
 
-                building = new Renderer(new TextureRegion(new Texture("game/tiles/collection9.png")), true, 1, forward, up);
-                building.setLocalPosition(x + .5f, 0, y + .5f);
-                building.getLocalPosition().mulAdd(Vector3.Y, buildingHeight * .3f);
+//                building = new Renderer(buildingTexture, true, .5f, forward, up);
+//                building.setLocalPosition(x + .5f, 0, y + .5f);
+//                building.getLocalPosition().mulAdd(Vector3.Y, .15f);
+//                renderers.add(building);
+                building = new BuildingRenderer(BuildingGraphics.values()[(x + y) % 6], x + .5f, y + .5f);
                 renderers.add(building);
+
+
+                for (float sx = 0f; sx <= 1.01f; sx += .2f) {
+                    for (float sy = 0f; sy <= 1.01f; sy += .2f) {
+                        Renderer par = new Renderer(null, false, 1, forward, up);
+                        par.setLocalPosition(building.getRoofPosition(sx, sy));
+                        renderers.add(par);
+                        AnimatedRenderer renderer = new AnimatedRenderer(collection, true, size, forward, up);
+                        renderer.setLocalPosition(0, .1f, 0);
+                        par.addChild(renderer);
+                        renderer.playAnimation("walking");
+                        renderer.setDirection(2);
+                    }
+                }
             }
         }
     }

@@ -10,14 +10,11 @@ import java.util.List;
 import java.util.Random;
 
 public class Renderer {
-    public final Decal decal;
     protected final List<Renderer> children = new ArrayList<>();
     protected final Vector3 localPosition = new Vector3();
-    protected final Vector3 forward, up;
+    protected final Decal decal;
 
     public Renderer(TextureRegion textureRegion, boolean transparent, float size, Vector3 forward, Vector3 up) {
-        this.forward = forward;
-        this.up = up;
         if (textureRegion == null)
             decal = null;
         else {
