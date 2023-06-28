@@ -44,14 +44,16 @@ public class TestingGDX extends Game {
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
 //        ((OrthographicCamera) camera).zoom = 10;
-        camera.position.set(10f, 10f, 10f);
+        camera.position.set(3f, 3f, 3f);
         camera.lookAt(0f, 0f, 0f);
 
-        camera.near = 1f;
+        camera.near = 2f;
         camera.far = 50f;
         camera.update();
 
-        decalBatch = new DecalBatch(10000000, new GS(camera));
+        decalBatch = new DecalBatch(10000000, new GS(camera,
+                (x, y) -> Float.compare(x.getPosition().dot(forward), y.getPosition().dot(forward))
+        ));
 
         atlas = new TextureAtlas("game/soldiers/european_archer.atlas");
 
@@ -60,13 +62,18 @@ public class TestingGDX extends Game {
         collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
         collection.addAnimation("running", new AnimData(atlas.findRegions("running"), 8));
         collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
-        float size = 0.5f;
+        float size = 0.3f;
         float buildingHeight = 2;
-        for (float x = 0; x <= 1; x += .1f) {
-            for (float y = .2f; y <= .8f; y += .1f) {
+        for (float x = 0f; x <= 1.01f; x += .2f) {
+            for (float y = 0f; y <= 1.01f; y += .2f) {
                 Renderer par = new Renderer(null, false, 1, forward, up);
+//                par.setLocalPosition(x, 0, y);
                 par.setLocalPosition(.5f, 0, .5f);
-                par.getLocalPosition().mulAdd(up, x * buildingHeight * .8f);
+                par.getLocalPosition().mulAdd(up, buildingHeight * .4f);
+                par.getLocalPosition().mulAdd(up, -(1.5f + x + y) * buildingHeight * .06f);
+                par.getLocalPosition().mulAdd(right, (x - y) * .3f);
+                par.getLocalPosition().mulAdd(forward, (4 + x + y) * .01f);
+                par.getLocalPosition().mulAdd(Vector3.Y, buildingHeight * .3f);
 //                par.getLocalPosition().mulAdd(right, x + y);
                 renderers.add(par);
                 AnimatedRenderer renderer = new AnimatedRenderer(collection, true, size, forward, up);
@@ -75,8 +82,8 @@ public class TestingGDX extends Game {
             }
         }
         TextureRegion ground = new TextureRegion(new Texture("game/tiles/desert_tile.jpg"));
-        for (int x = -5; x <= 5; x++) {
-            for (int y = -5; y <= 5; y++) {
+        for (int x = -2; x <= 2; x++) {
+            for (int y = -2; y <= 2; y++) {
                 Renderer cell = new Renderer(ground, false, 1, Vector3.Y, Vector3.X);
                 cell.setLocalPosition(x + .5f, 0, y + .5f);
                 renderers.add(cell);
