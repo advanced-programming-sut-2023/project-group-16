@@ -17,6 +17,26 @@ public class Message {
         this.text = text;
     }
 
+    public User getSender() {
+        return sender;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public ArrayList<Emoji> getReactions() {
+        return reactions;
+    }
+
     enum Emoji {
         NONE, LIKE, DISLIKE, LOVE
     }

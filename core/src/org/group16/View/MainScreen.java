@@ -10,8 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import org.group16.Model.Messenger.Message;
+import org.group16.Model.Messenger.Room;
 import org.group16.Model.User;
 import org.group16.StrongholdGame;
+
+import java.util.ArrayList;
 
 public class MainScreen extends Menu {
     private final User user;
@@ -19,7 +23,7 @@ public class MainScreen extends Menu {
     private final Image background, white;
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-    private TextButton profileMenu, messenger;
+    private TextButton profileMenu, publicChat;
 
 
     public MainScreen(StrongholdGame game, User user) {
@@ -38,11 +42,15 @@ public class MainScreen extends Menu {
             }
         });
 
-        messenger = new TextButton("Messenger", skin1);
-        messenger.addListener(new ChangeListener() {
+        publicChat = new TextButton("Public Chat", skin1);
+        publicChat.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                uiStage.addActor(new Messenger("", skin1));
+                //TODO: read messages from file...
+                Room room = new Room(User.getAllUsers(), new ArrayList<>(), "public-chat");
+                Messenger messenger = new Messenger("", skin1, room);
+                messenger.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
+                uiStage.addActor(messenger);
             }
         });
 
@@ -55,7 +63,7 @@ public class MainScreen extends Menu {
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
         table.add(profileMenu).center().row();
-        table.add(messenger).center().row();
+        table.add(publicChat).center().row();
         uiStage.addActor(table);
     }
 
