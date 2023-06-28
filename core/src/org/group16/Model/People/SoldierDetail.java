@@ -225,4 +225,9 @@ public enum SoldierDetail implements Resource {
     public KingdomType getKingdomType() {
         return kingdomType;
     }
+
+    @Override
+    public String GetName() {
+        return this.name();
+    }
 }
