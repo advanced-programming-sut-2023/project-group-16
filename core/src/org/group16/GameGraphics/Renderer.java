@@ -23,8 +23,8 @@ public class Renderer {
         }
     }
 
-    public void update(float dy) {
-        for (Renderer renderer : children) renderer.update(dy);
+    public void update(float dt) {
+        for (Renderer renderer : children) renderer.update(dt);
     }
 
     public void setLocalPosition(float x, float y, float z) {

@@ -34,7 +34,7 @@ public class Human extends GameObject implements Alive {
             getKingdom().removeHuman(this);
     }
 
-    public double getRelativeX() {
+    public float getRelativeX() {
         return relativeX;
     }
 
@@ -66,10 +66,10 @@ public class Human extends GameObject implements Alive {
         relativeX += dx;
         relativeY += dy;
         int cellDx = 0, cellDy = 0;
-        if (relativeX >= 1) cellDx = 1;
-        else if (relativeX <= -1) cellDx = -1;
-        if (relativeY >= 1) cellDy = 1;
-        else if (relativeY <= -1) cellDy = -1;
+        if (relativeX >= .5f) cellDx = 1;
+        else if (relativeX <= -.5f) cellDx = -1;
+        if (relativeY >= .5f) cellDy = 1;
+        else if (relativeY <= -.5f) cellDy = -1;
         currentCell = Scene.getCurrent().getCellAt(currentCell.getX() + cellDx, currentCell.getY() + cellDy);
         relativeX -= cellDx;
         relativeY -= cellDy;
@@ -124,15 +124,15 @@ public class Human extends GameObject implements Alive {
     @Override
     public void updateRenderer(Renderer renderer) {
         HumanRenderer humanRenderer = (HumanRenderer) renderer;
-        humanRenderer.getLocalPosition().lerp(calculateWorldPosition(), .3f);
+        humanRenderer.getLocalPosition().lerp(calculateWorldPosition(), .02f);
     }
 
     public Vector3 calculateWorldPosition() {
-        float x = getCell().getX() + relativeX / 2;
-        float y = getCell().getY() + relativeY / 2;
+        float x = relativeX;
+        float y = relativeY;
         Building building = getCell().getBuilding();
         if (building == null || building.isTraversable())
-            return new Vector3(x, 0, y);
-        return building.getRenderer().getRoofPosition(x, y);
+            return new Vector3(getCell().getX() + x, 0, getCell().getY() + y);
+        return building.getRenderer().getRoofPosition(x + .5f, y + .5f);
     }
 }
