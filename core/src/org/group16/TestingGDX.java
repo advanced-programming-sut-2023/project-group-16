@@ -154,14 +154,15 @@ public class TestingGDX extends Game {
             renderer.update(dt);
         }
         time += dt;
+        float camSpeed = 3;
         if (input.isKeyPressed(Input.Keys.J))
-            camera.position.add(-dt, 0, dt);
+            camera.position.add(-dt * camSpeed, 0, dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.L))
-            camera.position.add(dt, 0, -dt);
+            camera.position.add(dt * camSpeed, 0, -dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.I))
-            camera.position.add(-dt, 0, -dt);
+            camera.position.add(-dt * camSpeed, 0, -dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.K))
-            camera.position.add(dt, 0, dt);
+            camera.position.add(dt * camSpeed, 0, dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.U))
             camera.position.add(-dt, -dt, -dt);
         if (input.isKeyPressed(Input.Keys.O))
