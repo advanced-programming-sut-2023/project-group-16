@@ -14,20 +14,27 @@ public class Game {
         kingdoms.add(new Kingdom(kingdomType, user));
     }
 
-    public void execute() {
-        for (var kingdom : kingdoms)
-            kingdom.onTurnStart();
-        scene.onTurnStart();
+    public void update() {
         for (int iteration = 0; iteration < Time.updateIterationCount; iteration++) {
             for (var kingdom : kingdoms)
                 kingdom.update(currentTime);
             scene.update(currentTime);
             currentTime += Time.deltaTime;
         }
+    }
+
+    public void onTurnStart() {
+        for (var kingdom : kingdoms)
+            kingdom.onTurnStart();
+        scene.onTurnStart();
+    }
+
+    public void onTurnEnd() {
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
             kingdom.onTurnEnd();
     }
+
 
     public Scene getScene() {
         return scene;

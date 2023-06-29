@@ -3,7 +3,7 @@ package org.group16.GameGraphics;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public enum DetailGraphics {
-    ROCKS("rocks", 1, .5f, AnimData.PlayMode.RANDOM_SELECT),
+    ROCKS("rocks", 1, .4f, AnimData.PlayMode.RANDOM_SELECT),
     CACTII("cactii", .5f, .1f, AnimData.PlayMode.RANDOM_SELECT),
     SHRUB1("shrub1", .5f, .1f, AnimData.PlayMode.PING_PONG),
     SHRUB2("shrub2", .5f, .1f, AnimData.PlayMode.PING_PONG),

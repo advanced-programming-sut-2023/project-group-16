@@ -1,5 +1,7 @@
 package org.group16.Model.People;
 
+import org.group16.GameGraphics.HumanRenderer;
+import org.group16.GameGraphics.Renderer;
 import org.group16.Model.Cell;
 import org.group16.Model.Kingdom;
 import org.group16.Model.Time;
@@ -29,4 +31,10 @@ public class Worker extends Human {
         //TODO : on turn end
     }
 
+    @Override
+    public Renderer createRenderer() {
+        HumanRenderer renderer = new HumanRenderer(SoldierDetail.WORKER.getGraphics());
+        renderer.setLocalPosition(getCell().getX(), 0, getCell().getY());
+        return renderer;
+    }
 }

@@ -4,40 +4,34 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
+import org.group16.Controller.GameMenuController;
 import org.group16.GameGraphics.*;
+import org.group16.Model.*;
+import org.group16.Model.People.Soldier;
+import org.group16.Model.People.SoldierDetail;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class TestingGDX extends Game {
     private final List<Renderer> renderers = new ArrayList<>();
-    private final Vector3 forward = new Vector3(1, 1, 1).nor();
-    private final Vector3 right = new Vector3(1, 0, -1).nor();
-    private final Vector3 up = forward.cpy().crs(right);
     public AssetManager assetManager;
     float time = 0;
-    private BuildingRenderer building;
+    org.group16.Model.Game game;
+    Scene scene;
+    Kingdom k1, k2;
     private Camera camera;
     private DecalBatch decalBatch;
-    //    private Array<TextureAtlas.AtlasRegion> currentAnimation;
-    private AnimData idleAnim, walkingAnim, runningAnim, fightingAnim;
-    private AnimState animState;
-    private TextureAtlas atlas;
-    private Decal decal;
-    private int direction = 0;
     private long lastFrame = TimeUtils.millis();
 
     @Override
     public void create() {
-        System.out.println(up);
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
 //        ((OrthographicCamera) camera).zoom = 10;
@@ -48,41 +42,75 @@ public class TestingGDX extends Game {
         camera.far = 50f;
         camera.update();
 
-        decalBatch = new DecalBatch(10000000, new GS(camera,
-                (x, y) -> Float.compare(x.getPosition().dot(forward), y.getPosition().dot(forward))
-        ));
+        decalBatch = Util.createDecalBatch(camera);
 
-        TextureRegion ground = new TextureRegion(new Texture("game/tiles/desert_tile.jpg"));
-        TextureRegion buildingTexture = new TextureRegion(new Texture("game/tiles/Market-menu.png"));
-        TextureAtlas buildingAtlas = new TextureAtlas("game/tiles/buildings.atlas");
-        TextureAtlas detailsAtlas = new TextureAtlas("game/tiles/details.atlas");
-        TextureAtlas cellsAtlas = new TextureAtlas("game/tiles/cells.atlas");
-        BuildingGraphics.load(buildingAtlas);
-        HumanGraphics.load(new AssetManager());
-        DetailGraphics.load(detailsAtlas);
-        CellGraphics.load(cellsAtlas);
+        assetManager = new AssetManager();
 
+        Util.load(assetManager);
 
-        for (int x = 0; x <= 5; x++) {
-            for (int y = 0; y <= 5; y++) {
-                CellRenderer cellRenderer = new CellRenderer(CellGraphics.SAND, x + .5f, y + .5f);
-                renderers.add(cellRenderer);
+        initialize();
+        GameRenderer gameRenderer = new GameRenderer(game);
+        renderers.add(gameRenderer);
+    }
 
-                DetailRenderer detailRenderer = new DetailRenderer(DetailGraphics.CACTII, x + .5f, y + .5f);
-                renderers.add(detailRenderer);
-
-
-                for (float sx = 0f; sx <= 1.01f; sx += .2f) {
-                    for (float sy = 0f; sy <= 1.01f; sy += .2f) {
-                        HumanRenderer renderer = new HumanRenderer(HumanGraphics.EUROPEAN_ARCHER);
-                        renderer.setLocalPosition(x + sx, 0, y + sy);
-                        renderers.add(renderer);
-                        renderer.playAnimation("walking", true);
-                        renderer.setDirection(2);
-                    }
-                }
+    void createMap0() {
+        Map map = new Map("map0", 10, 10);
+        for (int i = 0; i < 10; i++)
+            for (int j = 0; j < 10; j++) {
+                map.getCellAt(i, j).setTreeType(TreeType.CHERRY_PALM);
+                map.getCellAt(i, j).setCellType(CellType.NORMAL);
             }
+        Map.saveMap(map);
+    }
+
+    void initialize() {
+        User.addUser("player1", "pass", "email",
+                "q1", "a1", "playerA", "slog");
+
+        User.addUser("player2", "pass", "email",
+                "q1", "a1", "playerB", "slog");
+
+        User user = User.getUserByName("player1");
+        User user1 = User.getUserByName("player2");
+
+        game = new org.group16.Model.Game(KingdomType.ARAB, user);
+        game.addUser(user1, KingdomType.EUROPEAN);
+        createMap0();
+        scene = new Scene(Map.getMapByName("map0"));
+        game.setScene(scene);
+        k1 = game.getKingdom(user);
+        k2 = game.getKingdom(user1);
+
+
+        Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
+        k1.setKing(king1);
+        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(4, 4))), k2, SoldierDetail.KING);
+        k2.setKing(king2);
+    }
+
+    void soldierPathfindingTest() {
+        Cell cell = scene.getCellAt(0, 0);
+        Soldier soldier = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+        Soldier soldier2 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+        Soldier soldier3 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+        Soldier soldier4 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+        WarCommand warCommand = new WarCommand(new ArrayList<>(List.of(soldier, soldier2, soldier3, soldier4)), k2.getKing());
+        WarCommand kWarCommand = new WarCommand(new ArrayList<>(List.of(k2.getKing())), scene.getCellAt(0, 4), false);
+        assertSame(warCommand, soldier.getWarCommand());
+//        assertSame(kWarCommand, k2.getKing().getWarCommand());
+
+        System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
+                soldier.getRelativeX(), soldier.getRelativeY());
+        System.out.printf(" | king=%d\n", k2.getKing().getHp());
+        for (int i = 0; i < 20; i++) {
+            game.update();
+            System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
+                    soldier.getRelativeX(), soldier.getRelativeY());
+
+            System.out.printf(" | king=%d\n", k2.getKing().getHp());
         }
+        assertSame(k1.getTeam(), GameMenuController.getWinnerTeam(game));
+        assertSame(k2.getKing().getCell(), soldier.getCell());
     }
 
     @Override
@@ -154,7 +182,7 @@ public class TestingGDX extends Game {
 
     @Override
     public void dispose() {
+        assetManager.dispose();
         decalBatch.dispose();
-        atlas.dispose();
     }
 }

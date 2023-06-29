@@ -1,5 +1,7 @@
 package org.group16.Model.People;
 
+import org.group16.GameGraphics.HumanRenderer;
+import org.group16.GameGraphics.Renderer;
 import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Siege.Siege;
@@ -189,4 +191,10 @@ public class Soldier extends Human {
         this.siege = siege;
     }
 
+    @Override
+    public Renderer createRenderer() {
+        HumanRenderer renderer = new HumanRenderer(soldierDetail.getGraphics());
+        renderer.setLocalPosition(getCell().getX(), 0, getCell().getY());
+        return renderer;
+    }
 }
