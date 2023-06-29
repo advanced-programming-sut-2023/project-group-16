@@ -1,7 +1,5 @@
 package org.group16.GameGraphics;
 
-import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
-import com.badlogic.gdx.math.Vector3;
 import org.group16.Model.*;
 
 import java.util.HashMap;
@@ -75,6 +73,11 @@ public class GameRenderer extends Renderer {
     public void createRenderer(GameObject go) {
         Renderer renderer = go.createRenderer();
         renderers.put(go, renderer);
+        go.setDestroyCallback(this::destroyRenderer);
         addChild(renderer);
+    }
+
+    public void destroyRenderer(GameObject go) {
+        removeChild(renderers.get(go));
     }
 }
