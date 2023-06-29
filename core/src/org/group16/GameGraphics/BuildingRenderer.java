@@ -13,13 +13,13 @@ public class BuildingRenderer extends Renderer {
         localPosition.set(x, 0, y);
 
         shape = new Renderer(graphics.getAtlasRegion(), true, graphics.getSize(), Util.forward, Util.up);
-        shape.setLocalPosition(-graphics.getdOffset(), graphics.getyOffset(), -graphics.getdOffset());
+        shape.localPosition.set(-graphics.getdOffset(), graphics.getyOffset(), -graphics.getdOffset());
         addChild(shape);
 
         roofOrigin = getLocalPosition().cpy().add(shape.getLocalPosition()).mulAdd(Util.up, graphics.getRoofHeight());
 
-        xDir = Util.right.cpy().mulAdd(Util.up, -.52f).scl(graphics.getRoofWidth()).mulAdd(Util.forward, .01f);
-        yDir = Util.right.cpy().mulAdd(Util.up, .52f).scl(-graphics.getRoofWidth()).mulAdd(Util.forward, .01f);
+        xDir = Util.right.cpy().mulAdd(Util.up, -.5f).scl(graphics.getRoofWidth()).mulAdd(Util.forward, .01f);
+        yDir = Util.right.cpy().mulAdd(Util.up, .5f).scl(-graphics.getRoofWidth()).mulAdd(Util.forward, .01f);
     }
 
     public Vector3 getRoofPosition(float x, float y) {

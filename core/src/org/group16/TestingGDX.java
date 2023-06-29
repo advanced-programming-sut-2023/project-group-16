@@ -51,21 +51,17 @@ public class TestingGDX extends Game {
         decalBatch = new DecalBatch(10000000, new GS(camera,
                 (x, y) -> Float.compare(x.getPosition().dot(forward), y.getPosition().dot(forward))
         ));
-
-        atlas = new TextureAtlas("game/soldiers/european_archer.atlas");
-
-        AnimCollection collection = new AnimCollection();
-        collection.addAnimation("idle", new AnimData(atlas.findRegions("idle"), 1));
-        collection.addAnimation("walking", new AnimData(atlas.findRegions("walking"), 8));
-        collection.addAnimation("running", new AnimData(atlas.findRegions("running"), 8));
-        collection.addAnimation("fighting", new AnimData(atlas.findRegions("fighting"), 8));
-        float size = 0.3f;
-        float buildingHeight = 2;
-
+        
         TextureRegion ground = new TextureRegion(new Texture("game/tiles/desert_tile.jpg"));
         TextureRegion buildingTexture = new TextureRegion(new Texture("game/tiles/Market-menu.png"));
         TextureAtlas buildingAtlas = new TextureAtlas("game/tiles/buildings.atlas");
+        TextureAtlas detailsAtlas = new TextureAtlas("game/tiles/details.atlas");
+        TextureAtlas cellsAtlas = new TextureAtlas("game/tiles/cells.atlas");
         BuildingGraphics.load(buildingAtlas);
+        HumanGraphics.load(new AssetManager());
+        DetailGraphics.load(detailsAtlas);
+        CellGraphics.load(cellsAtlas);
+
 
         for (int x = 0; x <= 5; x++) {
             for (int y = 0; y <= 5; y++) {
@@ -73,23 +69,16 @@ public class TestingGDX extends Game {
                 cell.setLocalPosition(x + .5f, 0, y + .5f);
                 renderers.add(cell);
 
-//                building = new Renderer(buildingTexture, true, .5f, forward, up);
-//                building.setLocalPosition(x + .5f, 0, y + .5f);
-//                building.getLocalPosition().mulAdd(Vector3.Y, .15f);
-//                renderers.add(building);
-                building = new BuildingRenderer(BuildingGraphics.values()[(x + y) % 6], x + .5f, y + .5f);
-                renderers.add(building);
+                DetailRenderer detailRenderer = new DetailRenderer(DetailGraphics.TREE_PINE1, x + .5f, y + .5f);
+                renderers.add(detailRenderer);
 
 
                 for (float sx = 0f; sx <= 1.01f; sx += .2f) {
                     for (float sy = 0f; sy <= 1.01f; sy += .2f) {
-                        Renderer par = new Renderer(null, false, 1, forward, up);
-                        par.setLocalPosition(building.getRoofPosition(sx, sy));
-                        renderers.add(par);
-                        AnimatedRenderer renderer = new AnimatedRenderer(collection, true, size, forward, up);
-                        renderer.setLocalPosition(0, .1f, 0);
-                        par.addChild(renderer);
-                        renderer.playAnimation("walking");
+                        HumanRenderer renderer = new HumanRenderer(HumanGraphics.EUROPEAN_ARCHER);
+                        renderer.setLocalPosition(x + sx, 0, y + sy);
+                        renderers.add(renderer);
+                        renderer.playAnimation("walking", true);
                         renderer.setDirection(2);
                     }
                 }
