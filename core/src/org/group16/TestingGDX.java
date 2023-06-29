@@ -4,7 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.group16.Controller.GameMenuController;
@@ -27,35 +30,75 @@ public class TestingGDX extends Game {
     org.group16.Model.Game game;
     Scene scene;
     Kingdom k1, k2;
-    private Camera camera;
-    private DecalBatch decalBatch;
+    GameRenderer gameRenderer;
+    private Camera camera, miniMapCamera;
+    private DecalBatch decalBatch, miniMapDecalBatch;
+    private FrameBuffer miniMapFrameBuffer;
+    private TextureRegion miniMapFrameRegion;
     private long lastFrame = TimeUtils.millis();
+    private DetailRenderer testProbe;
+    private Renderer miniMapPreview;
 
     @Override
     public void create() {
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
+        miniMapCamera = new PerspectiveCamera(30, 5f, 3);
+        miniMapFrameBuffer = new FrameBuffer(Pixmap.Format.RGB565, 500, 300, false);
+        miniMapFrameRegion = new TextureRegion(miniMapFrameBuffer.getColorBufferTexture());
+        miniMapFrameRegion.flip(false, true);
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
 //        ((OrthographicCamera) camera).zoom = 10;
         camera.position.set(3f, 3f, 3f);
         camera.lookAt(0f, 0f, 0f);
+        miniMapCamera.position.set(1f, 1f, 1f);
+        miniMapCamera.lookAt(0f, 0f, 0f);
+        miniMapCamera.position.set(30f, 18f, 30f);
+        miniMapPreview = new Renderer(miniMapFrameRegion, false, 1, Util.forward, Util.up);
+        miniMapPreview.setLocalPosition(0, 2, 0);
 
         camera.near = 1f;
         camera.far = 50f;
         camera.update();
 
+        miniMapCamera.near = 2f;
+        miniMapCamera.far = 100f;
+        miniMapCamera.update();
+
         decalBatch = Util.createDecalBatch(camera);
+        miniMapDecalBatch = Util.createDecalBatch(miniMapCamera);
 
         assetManager = new AssetManager();
 
         Util.load(assetManager);
 
         initialize();
-        GameRenderer gameRenderer = new GameRenderer(game);
+        gameRenderer = new GameRenderer(game);
+        initGameObjects();
+        new WarCommand(List.of(k1.getKing()), k2.getKing());
+        new WarCommand(List.of(k2.getKing()), k1.getKing());
         renderers.add(gameRenderer);
+
+        testProbe = new DetailRenderer(DetailGraphics.CACTII, 0, 0);
+        renderers.add(testProbe);
+
+        ArrayList<Soldier> list1 = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.ARCHER);
+            gameRenderer.createRenderer(soldier);
+            list1.add(soldier);
+        }
+        ArrayList<Soldier> list2 = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(19, 18)), k2, SoldierDetail.ARCHER);
+            gameRenderer.createRenderer(soldier);
+            list2.add(soldier);
+        }
+        new WarCommand(list1, k2.getKing());
+        new WarCommand(list2, k1.getKing());
     }
 
     void createMap0() {
-        Map map = new Map("map0", 10, 10);
+        Map map = new Map("map0", 20, 20);
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
                 map.getCellAt(i, j).setTreeType(TreeType.CHERRY_PALM);
@@ -77,49 +120,54 @@ public class TestingGDX extends Game {
         game = new org.group16.Model.Game(KingdomType.ARAB, user);
         game.addUser(user1, KingdomType.EUROPEAN);
         createMap0();
-        scene = new Scene(Map.getMapByName("map0"));
+        scene = new Scene(Map.getMapByName("map0"), 0);
         game.setScene(scene);
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);
+    }
 
-        
-        System.out.println(GameMenuController.dropBuilding(game, user, 0, 0, BuildingType.TOWN_BUILDING));
-        System.out.println(GameMenuController.dropBuilding(game, user1, 9, 9, BuildingType.TOWN_BUILDING));
+    private void initGameObjects() {
+        GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
+        GameMenuController.dropBuilding(game, k2.getUser(), 19, 19, BuildingType.TOWN_BUILDING);
+        gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
+        gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
+
         Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
         k1.setKing(king1);
-        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(9, 9))), k2, SoldierDetail.KING);
+        gameRenderer.createRenderer(king1);
+        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(19, 19))), k2, SoldierDetail.KING);
         k2.setKing(king2);
+        gameRenderer.createRenderer(king2);
     }
 
-    void soldierPathfindingTest() {
-        Cell cell = scene.getCellAt(0, 0);
-        Soldier soldier = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        Soldier soldier2 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        Soldier soldier3 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        Soldier soldier4 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        WarCommand warCommand = new WarCommand(new ArrayList<>(List.of(soldier, soldier2, soldier3, soldier4)), k2.getKing());
-        WarCommand kWarCommand = new WarCommand(new ArrayList<>(List.of(k2.getKing())), scene.getCellAt(0, 4), false);
-        assertSame(warCommand, soldier.getWarCommand());
-//        assertSame(kWarCommand, k2.getKing().getWarCommand());
-
-        System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
-                soldier.getRelativeX(), soldier.getRelativeY());
-        System.out.printf(" | king=%d\n", k2.getKing().getHp());
-        for (int i = 0; i < 20; i++) {
-            game.update();
-            System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
-                    soldier.getRelativeX(), soldier.getRelativeY());
-
-            System.out.printf(" | king=%d\n", k2.getKing().getHp());
-        }
-        assertSame(k1.getTeam(), GameMenuController.getWinnerTeam(game));
-        assertSame(k2.getKing().getCell(), soldier.getCell());
-    }
+//    void soldierPathfindingTest() {
+//        Cell cell = scene.getCellAt(0, 0);
+//        Soldier soldier = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        Soldier soldier2 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        Soldier soldier3 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        Soldier soldier4 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        WarCommand warCommand = new WarCommand(new ArrayList<>(List.of(soldier, soldier2, soldier3, soldier4)), k2.getKing());
+//        WarCommand kWarCommand = new WarCommand(new ArrayList<>(List.of(k2.getKing())), scene.getCellAt(0, 4), false);
+//        assertSame(warCommand, soldier.getWarCommand());
+////        assertSame(kWarCommand, k2.getKing().getWarCommand());
+//
+//        System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
+//                soldier.getRelativeX(), soldier.getRelativeY());
+//        System.out.printf(" | king=%d\n", k2.getKing().getHp());
+//        for (int i = 0; i < 20; i++) {
+//            game.update();
+//            System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
+//                    soldier.getRelativeX(), soldier.getRelativeY());
+//
+//            System.out.printf(" | king=%d\n", k2.getKing().getHp());
+//        }
+//        assertSame(k1.getTeam(), GameMenuController.getWinnerTeam(game));
+//        assertSame(k2.getKing().getCell(), soldier.getCell());
+//    }
 
     @Override
     public void render() {
-        gl.glClearColor(.3f, .7f, 1, 1);
-        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Util.updateMousePosition(camera);
 
         long milis = TimeUtils.timeSinceMillis(lastFrame);
         float dt = milis / 1000f;
@@ -128,14 +176,15 @@ public class TestingGDX extends Game {
             renderer.update(dt);
         }
         time += dt;
+        float camSpeed = 3;
         if (input.isKeyPressed(Input.Keys.J))
-            camera.position.add(-dt, 0, dt);
+            camera.position.add(-dt * camSpeed, 0, dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.L))
-            camera.position.add(dt, 0, -dt);
+            camera.position.add(dt * camSpeed, 0, -dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.I))
-            camera.position.add(-dt, 0, -dt);
+            camera.position.add(-dt * camSpeed, 0, -dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.K))
-            camera.position.add(dt, 0, dt);
+            camera.position.add(dt * camSpeed, 0, dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.U))
             camera.position.add(-dt, -dt, -dt);
         if (input.isKeyPressed(Input.Keys.O))
@@ -146,10 +195,21 @@ public class TestingGDX extends Game {
 //            camera.rotate(new Vector3(0, 1, 0), dt * 180);
         camera.update();
 
+
         for (Renderer renderer : renderers) {
             renderer.render(decalBatch, new Vector3());
+            renderer.render(miniMapDecalBatch, new Vector3());
         }
 //        gl.glDepthMask(false);
+        miniMapFrameBuffer.begin();
+        gl.glClearColor(.2f, .6f, 1, 1);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        miniMapDecalBatch.flush();
+        miniMapFrameBuffer.end();
+
+        gl.glClearColor(.3f, .7f, 1, 1);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        miniMapPreview.render(decalBatch, new Vector3());
         decalBatch.flush();
 //        gl.glDepthMask(true);
 

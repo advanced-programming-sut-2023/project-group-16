@@ -12,6 +12,7 @@ import org.group16.Model.Resources.StorageData;
 import org.group16.Model.Time;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EconomicBuilding extends Building {
 
@@ -20,12 +21,12 @@ public class EconomicBuilding extends Building {
     private final ArrayList<Pair<Resource, Integer>> storage = new ArrayList<>();
     private int usedCapacity = 0;
 
-    public EconomicBuilding(ArrayList<Cell> cells, Kingdom kingdom, double buildTime, EconomicBuildingDetail detail) {
+    public EconomicBuilding(List<Cell> cells, Kingdom kingdom, double buildTime, EconomicBuildingDetail detail) {
         super(cells, kingdom, detail.getHp(), buildTime, detail.getBuildingType());
         this.detail = detail;
-        for (StorageData storageData : this.detail.getStorageData()){
-            if (storageData.initialCapacity()!=0)
-                storage.add(new Pair<>(storageData.resource() , storageData.initialCapacity())) ;
+        for (StorageData storageData : this.detail.getStorageData()) {
+            if (storageData.initialCapacity() != 0)
+                storage.add(new Pair<>(storageData.resource(), storageData.initialCapacity()));
         }
     }
 
@@ -44,7 +45,7 @@ public class EconomicBuilding extends Building {
             if (pair.getA().equals(resource)) {
 //                storage.remove(pair);
                 int usage = Math.min(count, pair.getB());
-                pair.setB(pair.getB()-usage);
+                pair.setB(pair.getB() - usage);
                 count = count - usage;
                 usedCapacity -= usage;
             }
@@ -95,7 +96,7 @@ public class EconomicBuilding extends Building {
 
     @Override
     public void destroy() {
-        while(workers.size()>0)
+        while (workers.size() > 0)
             workers.get(0).destroy();
         super.destroy();
     }

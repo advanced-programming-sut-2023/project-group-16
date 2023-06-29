@@ -1,7 +1,5 @@
 package org.group16.GameGraphics;
 
-import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
-import com.badlogic.gdx.math.Vector3;
 import org.group16.Model.*;
 
 import java.util.HashMap;
@@ -11,6 +9,9 @@ public class GameRenderer extends Renderer {
     private final Game game;
     private final Random random = new Random();
     private final HashMap<GameObject, Renderer> renderers = new HashMap<>();
+    private float lastActionTime = -1;
+    private float currentTime = 0;
+    private int currentStep = 0;
 
     public GameRenderer(Game game) {
         super(null, false, 1, Util.forward, Util.up);
@@ -42,16 +43,39 @@ public class GameRenderer extends Renderer {
     }
 
     @Override
-    public void render(DecalBatch decalBatch, Vector3 parentPosition) {
+    public void update(float dt) {
+        currentTime += dt;
+        if (currentTime >= lastActionTime + Time.deltaTime) {
+            if (currentStep == 0)
+                game.onTurnStart();
+            game.update();
+            if (currentStep == 9) {
+                game.onTurnEnd();
+                currentStep = -1;
+            }
+            currentStep++;
+
+            lastActionTime = currentTime;
+        }
         for (GameObject go : game.getScene().getGameObjects()) {
             if (renderers.containsKey(go))
                 go.updateRenderer(renderers.get(go));
             else {
-                Renderer renderer = go.createRenderer();
-                renderers.put(go, renderer);
-                addChild(renderer);
+                throw new RuntimeException();
             }
         }
-        super.render(decalBatch, parentPosition);
+        super.update(dt);
+    }
+
+    public void createRenderer(GameObject go) {
+        Renderer renderer = go.createRenderer();
+        renderers.put(go, renderer);
+        go.setDestroyCallback(this::destroyRenderer);
+        addChild(renderer);
+    }
+
+    public void destroyRenderer(GameObject go) {
+        // TODO : animation?
+        removeChild(renderers.get(go));
     }
 }

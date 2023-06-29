@@ -18,16 +18,16 @@ public class Soldier extends Human {
     private Siege siege;
     private Human currentTarget;
 
-    public Soldier(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+    public Soldier(List<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom, hp);
         soldierDetail = null;
-        new WarCommand(new ArrayList<>(List.of(this)));
+        new WarCommand(List.of(this));
     }
 
-    public Soldier(ArrayList<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
+    public Soldier(List<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
         super(cells, kingdom, detail.getHp());
         this.soldierDetail = detail;
-        new WarCommand(new ArrayList<>(List.of(this)));
+        new WarCommand(List.of(this));
     }
 
 
@@ -176,6 +176,7 @@ public class Soldier extends Human {
     }
 
     public void attackTarget(Alive target, int damage) {
+        fightingTarget = (GameObject) target;
         target.dealDamage(damage);
     }
 

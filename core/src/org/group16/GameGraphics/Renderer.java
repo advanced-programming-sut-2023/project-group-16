@@ -13,6 +13,7 @@ public class Renderer {
     protected final List<Renderer> children = new ArrayList<>();
     protected final Vector3 localPosition = new Vector3();
     protected final Decal decal;
+    private final Vector3 worldPosition = new Vector3();
 
     public Renderer(TextureRegion textureRegion, boolean transparent, float size, Vector3 forward, Vector3 up) {
         if (textureRegion == null)
@@ -23,8 +24,13 @@ public class Renderer {
         }
     }
 
-    public void update(float dy) {
-        for (Renderer renderer : children) renderer.update(dy);
+    public boolean isHovering() {
+        if (decal != null) return Util.mousePosition.dst(worldPosition) < (decal.getWidth() / 2);
+        return false;
+    }
+
+    public void update(float dt) {
+        for (Renderer renderer : children) renderer.update(dt);
     }
 
     public void setLocalPosition(float x, float y, float z) {
@@ -52,7 +58,12 @@ public class Renderer {
     }
 
     public void render(DecalBatch decalBatch, Vector3 parentPosition) {
-        Vector3 worldPosition = parentPosition.cpy().add(localPosition);
+//        HOVER DEBUG
+//        if (decal != null) {
+//            if (isHovering()) decal.setColor(1, 0, 0, 1);
+//            else decal.setColor(1, 1, 1, 1);
+//        }
+        worldPosition.set(parentPosition).add(localPosition);
         if (decal != null) {
             decal.setPosition(worldPosition);
             decalBatch.add(decal);
