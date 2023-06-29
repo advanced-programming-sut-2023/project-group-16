@@ -9,7 +9,7 @@ public class Message {
     private final String time;
     private String text;
     private boolean seen;
-    private ArrayList<Emoji> reactions = new ArrayList<>();
+    private ArrayList<Reaction> reactions = new ArrayList<>();
 
     public Message(User sender, String text) {
         this.sender = sender;
@@ -33,11 +33,7 @@ public class Message {
         return seen;
     }
 
-    public ArrayList<Emoji> getReactions() {
+    public ArrayList<Reaction> getReactions() {
         return reactions;
-    }
-
-    enum Emoji {
-        NONE, LIKE, DISLIKE, LOVE
     }
 }

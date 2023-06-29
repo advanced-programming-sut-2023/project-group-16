@@ -5,12 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import org.group16.Model.Messenger.Message;
 import org.group16.Model.Messenger.Room;
 import org.group16.Model.User;
 import org.group16.StrongholdGame;
@@ -23,17 +19,44 @@ public class MainScreen extends Menu {
     private final Image background, white;
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-    private TextButton profileMenu, publicChat;
-
+    private TextButton profileMenu, chatButton, chatBack, publicChat, privateChat, createRoomButton, openRoom,
+            roomNameSend;
+    private Dialog chat, roomNameDialog;
+    private TextField roomName;
+    private Label roomNameError;
 
     public MainScreen(StrongholdGame game, User user) {
         super(game);
         this.user = user;
+
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
-
         background = new Image(new Texture(Gdx.files.internal("backgrounds/loginMenu.jpg")));
 
+        table = new Table(skin1);
+        table.setBackground(white.getDrawable());
+        table.setColor(Color.BLACK);
+        table.setSize(600, 300);
+        table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
+                uiStage.getHeight() / 2 - table.getHeight() / 2);
+        handleProfileMenu();
+        handleChat();
+
+        uiStage.addActor(background);
+        uiStage.addActor(table);
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2, uiStage.getHeight() / 2 - table.getHeight() / 2);
+        uiStage.draw();
+    }
+
+    private void handleProfileMenu() {
         profileMenu = new TextButton("Profile", skin1);
         profileMenu.addListener(new ChangeListener() {
             @Override
@@ -41,7 +64,38 @@ public class MainScreen extends Menu {
                 game.setScreen(new ProfileScreen(game, user));
             }
         });
+        table.add(profileMenu).row();
+    }
 
+    private void handleChat() {
+        chatBack = new TextButton("Back", skin1);
+        chatBack.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                chat.hide();
+            }
+        });
+
+        chat = new Dialog("", skin1);
+        chat.hide();
+        chat.add(chatBack);
+
+        handlePublicChat();
+        handlePrivateChat();
+        handleCreateRoom();
+        handleOpenRoom();
+
+        chatButton = new TextButton("Chat", skin1);
+        chatButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                chat.show(uiStage);
+            }
+        });
+        table.add(chatButton).row();
+    }
+
+    private void handlePublicChat() {
         publicChat = new TextButton("Public Chat", skin1);
         publicChat.addListener(new ChangeListener() {
             @Override
@@ -54,26 +108,76 @@ public class MainScreen extends Menu {
             }
         });
 
-        uiStage.addActor(background);
-
-        table = new Table(skin1);
-        table.setBackground(white.getDrawable());
-        table.setColor(Color.BLACK);
-        table.setSize(600, 300);
-        table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
-                uiStage.getHeight() / 2 - table.getHeight() / 2);
-        table.add(profileMenu).center().row();
-        table.add(publicChat).center().row();
-        uiStage.addActor(table);
+        chat.add(publicChat);
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    private void handlePrivateChat() {
+        privateChat = new TextButton("Private Chat", skin1);
+        privateChat.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                CreateRoom createRoom = new CreateRoom("", skin1, true, user, uiStage);
+                createRoom.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
+                uiStage.addActor(createRoom);
+            }
+        });
 
-        uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2, uiStage.getHeight() / 2 - table.getHeight() / 2);
-        uiStage.draw();
+        chat.add(privateChat);
+    }
+
+    private void handleCreateRoom() {
+        createRoomButton = new TextButton("Create Room", skin1);
+        createRoomButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                CreateRoom createRoom = new CreateRoom("", skin1, false, user, uiStage);
+                createRoom.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
+                uiStage.addActor(createRoom);
+            }
+        });
+
+        chat.add(createRoomButton);
+    }
+
+    private void handleOpenRoom() {
+        openRoom = new TextButton("Open Room", skin1);
+        roomNameDialog = new Dialog("", skin1);
+        roomName = new TextField("", skin1);
+        roomNameError = new Label("", skin1);
+        roomNameError.setColor(Color.RED);
+
+        roomNameSend = new TextButton("OK", skin1);
+        roomNameSend.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //TODO
+                String name = roomName.getText();
+                if (name.isEmpty()) return;
+                Room room = Room.getRoomByName(name);
+                if (room == null) {
+                    roomNameError.setText("no room with such name exist");
+                } else if (room.getUser(user) == null) {
+                    roomNameError.setText("you aren't member of this room");
+                } else {
+                    roomNameDialog.hide();
+                    Messenger messenger = new Messenger("", skin1, room);
+                    messenger.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
+                    uiStage.addActor(messenger);
+                }
+            }
+        });
+
+        roomNameDialog.button("Cancel").row();
+        roomNameDialog.add(roomName);
+        roomNameDialog.add(roomNameSend).row();
+        roomNameDialog.add(roomNameError);
+        openRoom.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                roomNameDialog.show(uiStage);
+            }
+        });
+
+        chat.add(openRoom);
     }
 }

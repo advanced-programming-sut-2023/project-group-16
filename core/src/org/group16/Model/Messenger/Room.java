@@ -14,4 +14,14 @@ public class Room {
         this.messages.addAll(messages);
         this.name = name;
     }
+
+    public static Room getRoomByName(String name) {
+        return null; //TODO
+    }
+
+    public User getUser(User user) {
+        for (User usr : users)
+            if (usr.getUsername().equals(user.getUsername())) return usr;
+        return null;
+    }
 }
