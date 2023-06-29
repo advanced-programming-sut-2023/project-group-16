@@ -32,6 +32,7 @@ public class TestingGDX extends Game {
     private Camera camera;
     private DecalBatch decalBatch;
     private long lastFrame = TimeUtils.millis();
+    private DetailRenderer testProbe;
 
     @Override
     public void create() {
@@ -57,6 +58,9 @@ public class TestingGDX extends Game {
         new WarCommand(List.of(k1.getKing()), k2.getKing());
         new WarCommand(List.of(k2.getKing()), k1.getKing());
         renderers.add(gameRenderer);
+
+        testProbe = new DetailRenderer(DetailGraphics.CACTII, 0, 0);
+        renderers.add(testProbe);
 
         ArrayList<Soldier> list1 = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
@@ -97,7 +101,7 @@ public class TestingGDX extends Game {
         game = new org.group16.Model.Game(KingdomType.ARAB, user);
         game.addUser(user1, KingdomType.EUROPEAN);
         createMap0();
-        scene = new Scene(Map.getMapByName("map0"));
+        scene = new Scene(Map.getMapByName("map0"), 0);
         game.setScene(scene);
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);
@@ -146,6 +150,7 @@ public class TestingGDX extends Game {
     public void render() {
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Util.updateMousePosition(camera);
 
         long milis = TimeUtils.timeSinceMillis(lastFrame);
         float dt = milis / 1000f;

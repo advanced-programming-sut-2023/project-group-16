@@ -35,7 +35,7 @@ public class GameTest {
         game = new Game(KingdomType.ARAB, user);
         game.addUser(user1, KingdomType.EUROPEAN);
         createMap0();
-        scene = new Scene(Map.getMapByName("map0"));
+        scene = new Scene(Map.getMapByName("map0"), 0);
         game.setScene(scene);
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);

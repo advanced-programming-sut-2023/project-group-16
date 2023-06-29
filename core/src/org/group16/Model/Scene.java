@@ -10,11 +10,12 @@ public class Scene {
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final HashMap<UUID, GameObject> gameObjectIndex = new HashMap<>();
     private final Map map;
-    private final Random random = new Random();
+    private final Random random;
 
-    public Scene(Map map) {
+    public Scene(Map map, long randomSeed) {
         this.map = new Map(map);
         current = this;
+        random = new Random(randomSeed);
     }
 
     public static Scene getCurrent() {

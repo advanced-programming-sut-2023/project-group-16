@@ -42,7 +42,7 @@ public class CreateGameMenu {
             System.out.println("no map with this name exist");
             return;
         }
-        game.setScene(new Scene(newMap));
+        game.setScene(new Scene(newMap, 0)); //TODO random seed
         System.out.println("map selected successfully");
     }
 
