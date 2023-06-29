@@ -55,7 +55,7 @@ public class TestingGDX extends Game {
         gameRenderer = new GameRenderer(game);
         initGameObjects();
         new WarCommand(List.of(k1.getKing()), k2.getKing());
-        new WarCommand(List.of(k2.getKing()), scene.getCellAt(0, 19), false);
+        new WarCommand(List.of(k2.getKing()), k1.getKing());
         renderers.add(gameRenderer);
 
         ArrayList<Soldier> list1 = new ArrayList<>();
