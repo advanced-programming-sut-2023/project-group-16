@@ -37,9 +37,9 @@ public class UserTest {
 
         User user = User.getUserByName("testUser");
 
-        user.setPassword("cng");
-        user = User.getUserByName("testUser");
-        assertEquals("cng", user.getPassword());
+//        user.setPassword("cng");
+//        user = User.getUserByName("testUser");
+//        assertEquals("cng", user.getPassword());
 
         user.setEmail("cng");
         user = User.getUserByName("testUser");

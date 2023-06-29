@@ -1,5 +1,9 @@
 package org.group16.Model.People;
 
+import com.badlogic.gdx.math.Vector3;
+import org.group16.GameGraphics.BuildingRenderer;
+import org.group16.GameGraphics.HumanRenderer;
+import org.group16.GameGraphics.Renderer;
 import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 
@@ -9,8 +13,8 @@ import java.util.Random;
 public class Human extends GameObject implements Alive {
     private int hp;
     private Building building;
-    private double relativeX;
-    private double relativeY;
+    private float relativeX;
+    private float relativeY;
 
     public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
@@ -34,15 +38,15 @@ public class Human extends GameObject implements Alive {
         return relativeX;
     }
 
-    public void setRelativeX(double relativeX) {
+    public void setRelativeX(float relativeX) {
         this.relativeX = relativeX;
     }
 
-    public double getRelativeY() {
+    public float getRelativeY() {
         return relativeY;
     }
 
-    public void setRelativeY(double relativeY) {
+    public void setRelativeY(float relativeY) {
         this.relativeY = relativeY;
     }
 
@@ -108,5 +112,27 @@ public class Human extends GameObject implements Alive {
 
     public void onTurnEnd() {
         //TODO
+    }
+
+    @Override
+    public Renderer createRenderer() {
+        HumanRenderer renderer = new HumanRenderer(SoldierDetail.HUMAN.getGraphics());
+        renderer.setLocalPosition(calculateWorldPosition());
+        return renderer;
+    }
+
+    @Override
+    public void updateRenderer(Renderer renderer) {
+        HumanRenderer humanRenderer = (HumanRenderer) renderer;
+        humanRenderer.getLocalPosition().lerp(calculateWorldPosition(), .3f);
+    }
+
+    public Vector3 calculateWorldPosition() {
+        float x = getCell().getX() + relativeX / 2;
+        float y = getCell().getY() + relativeY / 2;
+        Building building = getCell().getBuilding();
+        if (building == null || building.isTraversable())
+            return new Vector3(x, 0, y);
+        return building.getRenderer().getRoofPosition(x, y);
     }
 }

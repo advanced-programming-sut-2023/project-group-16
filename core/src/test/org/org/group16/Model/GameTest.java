@@ -63,7 +63,7 @@ public class GameTest {
                 soldier.getRelativeX(), soldier.getRelativeY());
         System.out.printf(" | king=%d\n", k2.getKing().getHp());
         for (int i = 0; i < 20; i++) {
-            game.execute();
+            game.update();
             System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
                     soldier.getRelativeX(), soldier.getRelativeY());
 

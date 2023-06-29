@@ -65,7 +65,7 @@ public class GameMenu {
                 nextTurn();
             System.out.println("now user " + getCurrentUser().getNickname() + " is playing");
         } else {
-            game.execute();
+            game.update();
             if (GameMenuController.checkEndGame(game)) {
                 System.out.println("Game ended!!!");
                 System.out.println("Winners : ");
