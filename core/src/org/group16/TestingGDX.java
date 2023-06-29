@@ -44,7 +44,7 @@ public class TestingGDX extends Game {
         camera.position.set(3f, 3f, 3f);
         camera.lookAt(0f, 0f, 0f);
 
-        camera.near = 2f;
+        camera.near = 1f;
         camera.far = 50f;
         camera.update();
 
@@ -65,13 +65,10 @@ public class TestingGDX extends Game {
 
         for (int x = 0; x <= 5; x++) {
             for (int y = 0; y <= 5; y++) {
-//                Renderer cell = new Renderer(ground, false, 1, Vector3.Y, Vector3.X);
-//                cell.setLocalPosition(x + .5f, 0, y + .5f);
-//                renderers.add(cell);
-                CellRenderer cellRenderer = new CellRenderer(CellGraphics.ROCKY_SAND, x + .5f, y + .5f);
+                CellRenderer cellRenderer = new CellRenderer(CellGraphics.SAND, x + .5f, y + .5f);
                 renderers.add(cellRenderer);
 
-                DetailRenderer detailRenderer = new DetailRenderer(DetailGraphics.TREE_PINE1, x + .5f, y + .5f);
+                DetailRenderer detailRenderer = new DetailRenderer(DetailGraphics.CACTII, x + .5f, y + .5f);
                 renderers.add(detailRenderer);
 
 
@@ -90,7 +87,7 @@ public class TestingGDX extends Game {
 
     @Override
     public void render() {
-        gl.glClearColor(1, 0, 0, 1);
+        gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         long milis = TimeUtils.timeSinceMillis(lastFrame);
