@@ -1,0 +1,34 @@
+
+cells.png
+size: 1030, 1030
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+grass
+  rotate: false
+  xy: 516, 516
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+rock
+  rotate: false
+  xy: 2, 516
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+rocky_sand
+  rotate: false
+  xy: 516, 2
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+sand
+  rotate: false
+  xy: 2, 2
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1

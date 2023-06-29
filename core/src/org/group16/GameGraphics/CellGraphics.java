@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public enum CellGraphics {
     SAND("sand", AnimData.PlayMode.LOOP),
+    GRASS("grass", AnimData.PlayMode.LOOP),
+    ROCKY_SAND("rocky_sand", AnimData.PlayMode.LOOP),
+    ROCK("rock", AnimData.PlayMode.LOOP),
     ;
     private final String name;
     private final AnimData.PlayMode playMode;

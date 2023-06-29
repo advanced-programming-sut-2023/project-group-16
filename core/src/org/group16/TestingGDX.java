@@ -51,7 +51,7 @@ public class TestingGDX extends Game {
         decalBatch = new DecalBatch(10000000, new GS(camera,
                 (x, y) -> Float.compare(x.getPosition().dot(forward), y.getPosition().dot(forward))
         ));
-        
+
         TextureRegion ground = new TextureRegion(new Texture("game/tiles/desert_tile.jpg"));
         TextureRegion buildingTexture = new TextureRegion(new Texture("game/tiles/Market-menu.png"));
         TextureAtlas buildingAtlas = new TextureAtlas("game/tiles/buildings.atlas");
@@ -65,9 +65,11 @@ public class TestingGDX extends Game {
 
         for (int x = 0; x <= 5; x++) {
             for (int y = 0; y <= 5; y++) {
-                Renderer cell = new Renderer(ground, false, 1, Vector3.Y, Vector3.X);
-                cell.setLocalPosition(x + .5f, 0, y + .5f);
-                renderers.add(cell);
+//                Renderer cell = new Renderer(ground, false, 1, Vector3.Y, Vector3.X);
+//                cell.setLocalPosition(x + .5f, 0, y + .5f);
+//                renderers.add(cell);
+                CellRenderer cellRenderer = new CellRenderer(CellGraphics.ROCKY_SAND, x + .5f, y + .5f);
+                renderers.add(cellRenderer);
 
                 DetailRenderer detailRenderer = new DetailRenderer(DetailGraphics.TREE_PINE1, x + .5f, y + .5f);
                 renderers.add(detailRenderer);
