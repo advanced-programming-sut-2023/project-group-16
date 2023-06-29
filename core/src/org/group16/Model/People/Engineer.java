@@ -7,11 +7,12 @@ import org.group16.Model.Siege.SiegeDetail;
 import org.group16.Model.Siege.SiegeTower;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Engineer extends Soldier {
     private SiegeDetail creationCommand;
 
-    public Engineer(ArrayList<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
+    public Engineer(List<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
         super(cells, kingdom, detail);
     }
 

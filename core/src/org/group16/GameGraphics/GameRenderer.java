@@ -55,9 +55,6 @@ public class GameRenderer extends Renderer {
             }
             currentStep++;
 
-            float relx = game.getKingdoms().get(0).getKing().getRelativeX();
-            float rely = game.getKingdoms().get(0).getKing().getRelativeY();
-            System.out.printf("(%f,%f)\n", relx, rely);
             lastActionTime = currentTime;
         }
         for (GameObject go : game.getScene().getGameObjects()) {

@@ -15,6 +15,7 @@ import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.*;
@@ -31,6 +32,7 @@ public class TestingGDX extends Game {
     private Camera camera;
     private DecalBatch decalBatch;
     private long lastFrame = TimeUtils.millis();
+    private DetailRenderer testProbe;
 
     @Override
     public void create() {
@@ -53,13 +55,31 @@ public class TestingGDX extends Game {
         initialize();
         gameRenderer = new GameRenderer(game);
         initGameObjects();
-        new WarCommand(new ArrayList<>(List.of(k1.getKing())), k2.getKing());
-        new WarCommand(new ArrayList<>(List.of(k2.getKing())), k1.getKing());
+        new WarCommand(List.of(k1.getKing()), k2.getKing());
+        new WarCommand(List.of(k2.getKing()), k1.getKing());
         renderers.add(gameRenderer);
+
+        testProbe = new DetailRenderer(DetailGraphics.CACTII, 0, 0);
+        renderers.add(testProbe);
+
+        ArrayList<Soldier> list1 = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.ARCHER);
+            gameRenderer.createRenderer(soldier);
+            list1.add(soldier);
+        }
+        ArrayList<Soldier> list2 = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(19, 18)), k2, SoldierDetail.ARCHER);
+            gameRenderer.createRenderer(soldier);
+            list2.add(soldier);
+        }
+        new WarCommand(list1, k2.getKing());
+        new WarCommand(list2, k1.getKing());
     }
 
     void createMap0() {
-        Map map = new Map("map0", 10, 10);
+        Map map = new Map("map0", 20, 20);
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
                 map.getCellAt(i, j).setTreeType(TreeType.CHERRY_PALM);
@@ -81,7 +101,7 @@ public class TestingGDX extends Game {
         game = new org.group16.Model.Game(KingdomType.ARAB, user);
         game.addUser(user1, KingdomType.EUROPEAN);
         createMap0();
-        scene = new Scene(Map.getMapByName("map0"));
+        scene = new Scene(Map.getMapByName("map0"), 0);
         game.setScene(scene);
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);
@@ -89,14 +109,14 @@ public class TestingGDX extends Game {
 
     private void initGameObjects() {
         GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
-        GameMenuController.dropBuilding(game, k2.getUser(), 9, 9, BuildingType.TOWN_BUILDING);
+        GameMenuController.dropBuilding(game, k2.getUser(), 19, 19, BuildingType.TOWN_BUILDING);
         gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
         gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
 
         Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
         k1.setKing(king1);
         gameRenderer.createRenderer(king1);
-        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(9, 9))), k2, SoldierDetail.KING);
+        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(19, 19))), k2, SoldierDetail.KING);
         k2.setKing(king2);
         gameRenderer.createRenderer(king2);
     }
@@ -130,6 +150,7 @@ public class TestingGDX extends Game {
     public void render() {
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Util.updateMousePosition(camera);
 
         long milis = TimeUtils.timeSinceMillis(lastFrame);
         float dt = milis / 1000f;
@@ -138,14 +159,15 @@ public class TestingGDX extends Game {
             renderer.update(dt);
         }
         time += dt;
+        float camSpeed = 3;
         if (input.isKeyPressed(Input.Keys.J))
-            camera.position.add(-dt, 0, dt);
+            camera.position.add(-dt * camSpeed, 0, dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.L))
-            camera.position.add(dt, 0, -dt);
+            camera.position.add(dt * camSpeed, 0, -dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.I))
-            camera.position.add(-dt, 0, -dt);
+            camera.position.add(-dt * camSpeed, 0, -dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.K))
-            camera.position.add(dt, 0, dt);
+            camera.position.add(dt * camSpeed, 0, dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.U))
             camera.position.add(-dt, -dt, -dt);
         if (input.isKeyPressed(Input.Keys.O))

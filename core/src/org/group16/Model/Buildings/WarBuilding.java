@@ -8,13 +8,14 @@ import org.group16.Model.People.Soldier;
 import org.group16.Model.Time;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class WarBuilding extends Building {
     private final ArrayList<Human> soldiers = new ArrayList<>();
     private final WarBuildingDetail detail;
 
-    public WarBuilding(ArrayList<Cell> cells, Kingdom kingdom, double BuildTime, WarBuildingDetail detail) {
+    public WarBuilding(List<Cell> cells, Kingdom kingdom, double BuildTime, WarBuildingDetail detail) {
         super(cells, kingdom, detail.getHp(), BuildTime, detail.getBuildingType());
         this.detail = detail;
     }

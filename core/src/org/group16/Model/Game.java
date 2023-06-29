@@ -15,7 +15,6 @@ public class Game {
     }
 
     public void update() {
-        System.out.println("upd");
         for (var kingdom : kingdoms)
             kingdom.update(currentTime);
         scene.update(currentTime);
@@ -23,14 +22,12 @@ public class Game {
     }
 
     public void onTurnStart() {
-        System.out.println("start");
         for (var kingdom : kingdoms)
             kingdom.onTurnStart();
         scene.onTurnStart();
     }
-
+    
     public void onTurnEnd() {
-        System.out.println("end");
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
             kingdom.onTurnEnd();
