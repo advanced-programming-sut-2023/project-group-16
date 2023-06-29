@@ -4,9 +4,10 @@ import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LadderMan extends Soldier {
-    public LadderMan(ArrayList<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
+    public LadderMan(List<Cell> cells, Kingdom kingdom, SoldierDetail detail) {
         super(cells, kingdom, detail);
     }
 

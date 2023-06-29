@@ -8,6 +8,7 @@ import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Human extends GameObject implements Alive {
@@ -15,7 +16,7 @@ public class Human extends GameObject implements Alive {
     private int hp;
     private Building building;
 
-    public Human(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+    public Human(List<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
         if (this instanceof Soldier)
             kingdom.addSoldier((Soldier) this);

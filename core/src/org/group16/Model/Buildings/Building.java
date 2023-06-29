@@ -8,6 +8,7 @@ import org.group16.Model.Kingdom;
 import org.group16.Model.People.Alive;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Building extends GameObject implements Alive {
     private int hp;
@@ -17,13 +18,13 @@ public abstract class Building extends GameObject implements Alive {
     private double buildTime;
     private BuildingRenderer renderer;
 
-    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+    public Building(List<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
         this.hp = hp;
         kingdom.addBuilding(this);
     }
 
-    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp, double buildTime, BuildingType buildingType) {
+    public Building(List<Cell> cells, Kingdom kingdom, int hp, double buildTime, BuildingType buildingType) {
         this(cells, kingdom, hp);
         this.buildTime = buildTime;
         this.buildingType = buildingType;

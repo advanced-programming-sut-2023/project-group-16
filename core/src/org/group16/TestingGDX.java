@@ -15,6 +15,7 @@ import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.*;
@@ -53,13 +54,28 @@ public class TestingGDX extends Game {
         initialize();
         gameRenderer = new GameRenderer(game);
         initGameObjects();
-        new WarCommand(new ArrayList<>(List.of(k1.getKing())), k2.getKing());
-        new WarCommand(new ArrayList<>(List.of(k2.getKing())), k1.getKing());
+        new WarCommand(List.of(k1.getKing()), k2.getKing());
+        new WarCommand(List.of(k2.getKing()), scene.getCellAt(0, 19), false);
         renderers.add(gameRenderer);
+
+        ArrayList<Soldier> list1 = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.ARCHER);
+            gameRenderer.createRenderer(soldier);
+            list1.add(soldier);
+        }
+        ArrayList<Soldier> list2 = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(19, 18)), k2, SoldierDetail.ARCHER);
+            gameRenderer.createRenderer(soldier);
+            list2.add(soldier);
+        }
+        new WarCommand(list1, k2.getKing());
+        new WarCommand(list2, k1.getKing());
     }
 
     void createMap0() {
-        Map map = new Map("map0", 10, 10);
+        Map map = new Map("map0", 20, 20);
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++) {
                 map.getCellAt(i, j).setTreeType(TreeType.CHERRY_PALM);
@@ -89,14 +105,14 @@ public class TestingGDX extends Game {
 
     private void initGameObjects() {
         GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
-        GameMenuController.dropBuilding(game, k2.getUser(), 9, 9, BuildingType.TOWN_BUILDING);
+        GameMenuController.dropBuilding(game, k2.getUser(), 19, 19, BuildingType.TOWN_BUILDING);
         gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
         gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
 
         Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
         k1.setKing(king1);
         gameRenderer.createRenderer(king1);
-        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(9, 9))), k2, SoldierDetail.KING);
+        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(19, 19))), k2, SoldierDetail.KING);
         k2.setKing(king2);
         gameRenderer.createRenderer(king2);
     }

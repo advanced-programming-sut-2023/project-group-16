@@ -7,10 +7,11 @@ import org.group16.Model.Kingdom;
 import org.group16.Model.Time;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Worker extends Human {
 
-    public Worker(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+    public Worker(List<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom, hp);
     }
 

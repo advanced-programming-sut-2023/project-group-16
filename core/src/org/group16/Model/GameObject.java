@@ -3,6 +3,7 @@ package org.group16.Model;
 import org.group16.GameGraphics.Renderer;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class GameObject {
@@ -14,7 +15,7 @@ public abstract class GameObject {
     private ArrayList<Cell> cells;
     private boolean isAlive = true;
 
-    public GameObject(ArrayList<Cell> cells, Kingdom kingdom) {
+    public GameObject(List<Cell> cells, Kingdom kingdom) {
         this.cells = new ArrayList<>(cells);
         Scene.getCurrent().addGameObject(this);
         for (Cell cell : cells)
