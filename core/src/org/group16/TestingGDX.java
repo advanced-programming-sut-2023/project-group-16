@@ -4,7 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.group16.Controller.GameMenuController;
@@ -15,7 +18,6 @@ import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.*;
@@ -29,24 +31,41 @@ public class TestingGDX extends Game {
     Scene scene;
     Kingdom k1, k2;
     GameRenderer gameRenderer;
-    private Camera camera;
-    private DecalBatch decalBatch;
+    private Camera camera, miniMapCamera;
+    private DecalBatch decalBatch, miniMapDecalBatch;
+    private FrameBuffer miniMapFrameBuffer;
+    private TextureRegion miniMapFrameRegion;
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
+    private Renderer miniMapPreview;
 
     @Override
     public void create() {
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
+        miniMapCamera = new PerspectiveCamera(30, 5f, 3);
+        miniMapFrameBuffer = new FrameBuffer(Pixmap.Format.RGB565, 500, 300, false);
+        miniMapFrameRegion = new TextureRegion(miniMapFrameBuffer.getColorBufferTexture());
+        miniMapFrameRegion.flip(false, true);
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
 //        ((OrthographicCamera) camera).zoom = 10;
         camera.position.set(3f, 3f, 3f);
         camera.lookAt(0f, 0f, 0f);
+        miniMapCamera.position.set(1f, 1f, 1f);
+        miniMapCamera.lookAt(0f, 0f, 0f);
+        miniMapCamera.position.set(30f, 18f, 30f);
+        miniMapPreview = new Renderer(miniMapFrameRegion, false, 1, Util.forward, Util.up);
+        miniMapPreview.setLocalPosition(0, 2, 0);
 
         camera.near = 1f;
         camera.far = 50f;
         camera.update();
 
+        miniMapCamera.near = 2f;
+        miniMapCamera.far = 100f;
+        miniMapCamera.update();
+
         decalBatch = Util.createDecalBatch(camera);
+        miniMapDecalBatch = Util.createDecalBatch(miniMapCamera);
 
         assetManager = new AssetManager();
 
@@ -148,8 +167,6 @@ public class TestingGDX extends Game {
 
     @Override
     public void render() {
-        gl.glClearColor(.3f, .7f, 1, 1);
-        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Util.updateMousePosition(camera);
 
         long milis = TimeUtils.timeSinceMillis(lastFrame);
@@ -178,10 +195,21 @@ public class TestingGDX extends Game {
 //            camera.rotate(new Vector3(0, 1, 0), dt * 180);
         camera.update();
 
+
         for (Renderer renderer : renderers) {
             renderer.render(decalBatch, new Vector3());
+            renderer.render(miniMapDecalBatch, new Vector3());
         }
 //        gl.glDepthMask(false);
+        miniMapFrameBuffer.begin();
+        gl.glClearColor(.2f, .6f, 1, 1);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        miniMapDecalBatch.flush();
+        miniMapFrameBuffer.end();
+
+        gl.glClearColor(.3f, .7f, 1, 1);
+        gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        miniMapPreview.render(decalBatch, new Vector3());
         decalBatch.flush();
 //        gl.glDepthMask(true);
 
