@@ -8,6 +8,9 @@ import java.util.UUID;
 public abstract class GameObject {
     private final Kingdom kingdom;
     private final UUID uuid = UUID.randomUUID();
+    protected float relativeX;
+    protected float relativeY;
+    DestroyCallback destroyCallback;
     private ArrayList<Cell> cells;
     private boolean isAlive = true;
 
@@ -59,10 +62,27 @@ public abstract class GameObject {
         for (Cell cell : cells)
             cell.removeGameObject(this);
         isAlive = false;
+        destroyCallback.onDestroy(this);
     }
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    public float getRelativeX() {
+        return relativeX;
+    }
+
+    public void setRelativeX(float relativeX) {
+        this.relativeX = relativeX;
+    }
+
+    public float getRelativeY() {
+        return relativeY;
+    }
+
+    public void setRelativeY(float relativeY) {
+        this.relativeY = relativeY;
     }
 
     public abstract void onTurnStart();
@@ -74,4 +94,16 @@ public abstract class GameObject {
     public abstract Renderer createRenderer();
 
     public abstract void updateRenderer(Renderer renderer);
+
+    public DestroyCallback getDestroyCallback() {
+        return destroyCallback;
+    }
+
+    public void setDestroyCallback(DestroyCallback destroyCallback) {
+        this.destroyCallback = destroyCallback;
+    }
+
+    public interface DestroyCallback {
+        public void onDestroy(GameObject go);
+    }
 }

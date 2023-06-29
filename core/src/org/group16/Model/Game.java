@@ -15,21 +15,22 @@ public class Game {
     }
 
     public void update() {
-        for (int iteration = 0; iteration < Time.updateIterationCount; iteration++) {
-            for (var kingdom : kingdoms)
-                kingdom.update(currentTime);
-            scene.update(currentTime);
-            currentTime += Time.deltaTime;
-        }
+        System.out.println("upd");
+        for (var kingdom : kingdoms)
+            kingdom.update(currentTime);
+        scene.update(currentTime);
+        currentTime += Time.deltaTime;
     }
 
     public void onTurnStart() {
+        System.out.println("start");
         for (var kingdom : kingdoms)
             kingdom.onTurnStart();
         scene.onTurnStart();
     }
 
     public void onTurnEnd() {
+        System.out.println("end");
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
             kingdom.onTurnEnd();

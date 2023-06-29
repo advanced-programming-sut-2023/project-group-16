@@ -21,4 +21,9 @@ public class HumanRenderer extends Renderer {
     public void setDirection(int direction) {
         shape.setDirection(direction);
     }
+
+    public void playOrContinueAnimation(String name, boolean randomizeStart) {
+        if (!name.equals(shape.currentAnimation))
+            playAnimation(name, randomizeStart);
+    }
 }

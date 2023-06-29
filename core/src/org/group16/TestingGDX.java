@@ -27,6 +27,7 @@ public class TestingGDX extends Game {
     org.group16.Model.Game game;
     Scene scene;
     Kingdom k1, k2;
+    GameRenderer gameRenderer;
     private Camera camera;
     private DecalBatch decalBatch;
     private long lastFrame = TimeUtils.millis();
@@ -50,7 +51,10 @@ public class TestingGDX extends Game {
         Util.load(assetManager);
 
         initialize();
-        GameRenderer gameRenderer = new GameRenderer(game);
+        gameRenderer = new GameRenderer(game);
+        initGameObjects();
+        new WarCommand(new ArrayList<>(List.of(k1.getKing())), k2.getKing());
+        new WarCommand(new ArrayList<>(List.of(k2.getKing())), k1.getKing());
         renderers.add(gameRenderer);
     }
 
@@ -81,40 +85,46 @@ public class TestingGDX extends Game {
         game.setScene(scene);
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);
+    }
 
-        
-        System.out.println(GameMenuController.dropBuilding(game, user, 0, 0, BuildingType.TOWN_BUILDING));
-        System.out.println(GameMenuController.dropBuilding(game, user1, 9, 9, BuildingType.TOWN_BUILDING));
+    private void initGameObjects() {
+        GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
+        GameMenuController.dropBuilding(game, k2.getUser(), 9, 9, BuildingType.TOWN_BUILDING);
+        gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
+        gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
+
         Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
         k1.setKing(king1);
+        gameRenderer.createRenderer(king1);
         Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(9, 9))), k2, SoldierDetail.KING);
         k2.setKing(king2);
+        gameRenderer.createRenderer(king2);
     }
 
-    void soldierPathfindingTest() {
-        Cell cell = scene.getCellAt(0, 0);
-        Soldier soldier = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        Soldier soldier2 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        Soldier soldier3 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        Soldier soldier4 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
-        WarCommand warCommand = new WarCommand(new ArrayList<>(List.of(soldier, soldier2, soldier3, soldier4)), k2.getKing());
-        WarCommand kWarCommand = new WarCommand(new ArrayList<>(List.of(k2.getKing())), scene.getCellAt(0, 4), false);
-        assertSame(warCommand, soldier.getWarCommand());
-//        assertSame(kWarCommand, k2.getKing().getWarCommand());
-
-        System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
-                soldier.getRelativeX(), soldier.getRelativeY());
-        System.out.printf(" | king=%d\n", k2.getKing().getHp());
-        for (int i = 0; i < 20; i++) {
-            game.update();
-            System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
-                    soldier.getRelativeX(), soldier.getRelativeY());
-
-            System.out.printf(" | king=%d\n", k2.getKing().getHp());
-        }
-        assertSame(k1.getTeam(), GameMenuController.getWinnerTeam(game));
-        assertSame(k2.getKing().getCell(), soldier.getCell());
-    }
+//    void soldierPathfindingTest() {
+//        Cell cell = scene.getCellAt(0, 0);
+//        Soldier soldier = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        Soldier soldier2 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        Soldier soldier3 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        Soldier soldier4 = new Soldier(new ArrayList<>(List.of(cell)), k1, SoldierDetail.ARABIAN_SWORDS_MAN);
+//        WarCommand warCommand = new WarCommand(new ArrayList<>(List.of(soldier, soldier2, soldier3, soldier4)), k2.getKing());
+//        WarCommand kWarCommand = new WarCommand(new ArrayList<>(List.of(k2.getKing())), scene.getCellAt(0, 4), false);
+//        assertSame(warCommand, soldier.getWarCommand());
+////        assertSame(kWarCommand, k2.getKing().getWarCommand());
+//
+//        System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
+//                soldier.getRelativeX(), soldier.getRelativeY());
+//        System.out.printf(" | king=%d\n", k2.getKing().getHp());
+//        for (int i = 0; i < 20; i++) {
+//            game.update();
+//            System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
+//                    soldier.getRelativeX(), soldier.getRelativeY());
+//
+//            System.out.printf(" | king=%d\n", k2.getKing().getHp());
+//        }
+//        assertSame(k1.getTeam(), GameMenuController.getWinnerTeam(game));
+//        assertSame(k2.getKing().getCell(), soldier.getCell());
+//    }
 
     @Override
     public void render() {

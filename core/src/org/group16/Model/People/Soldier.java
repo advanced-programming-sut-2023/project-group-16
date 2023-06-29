@@ -176,6 +176,7 @@ public class Soldier extends Human {
     }
 
     public void attackTarget(Alive target, int damage) {
+        fightingTarget = (GameObject) target;
         target.dealDamage(damage);
     }
 
