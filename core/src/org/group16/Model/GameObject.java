@@ -1,5 +1,7 @@
 package org.group16.Model;
 
+import org.group16.GameGraphics.Renderer;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -68,4 +70,8 @@ public abstract class GameObject {
     public abstract void update(double currentTime);
 
     public abstract void onTurnEnd();
+
+    public abstract Renderer createRenderer();
+
+    public abstract void updateRenderer(Renderer renderer);
 }

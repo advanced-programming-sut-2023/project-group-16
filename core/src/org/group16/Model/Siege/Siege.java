@@ -1,5 +1,7 @@
 package org.group16.Model.Siege;
 
+import org.group16.GameGraphics.HumanRenderer;
+import org.group16.GameGraphics.Renderer;
 import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.People.Engineer;
@@ -51,7 +53,7 @@ public class Siege extends Soldier {
 
     @Override
     public void destroy() {
-        while(operators.size() > 0)
+        while (operators.size() > 0)
             operators.get(0).destroy();
         super.destroy();
     }
@@ -95,5 +97,12 @@ public class Siege extends Soldier {
             if (dx > 0) direction = Direction.RIGHT;
             if (dy > 0) direction = Direction.UP;
         }
+    }
+
+    @Override
+    public Renderer createRenderer() {
+        HumanRenderer renderer = new HumanRenderer(siegeDetail.getGraphics());
+        renderer.setLocalPosition(getCell().getX(), 0, getCell().getY());
+        return renderer;
     }
 }
