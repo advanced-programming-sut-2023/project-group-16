@@ -43,7 +43,8 @@ public class TestingGDX extends Game {
     public void create() {
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
         miniMapCamera = new PerspectiveCamera(30, 5f, 3);
-        miniMapFrameBuffer = new FrameBuffer(Pixmap.Format.RGB565, 500, 300, false);
+        float resolutionMultiplier = 150;
+        miniMapFrameBuffer = new FrameBuffer(Pixmap.Format.RGB565, (int) (5 * resolutionMultiplier), (int) (3 * resolutionMultiplier), false);
         miniMapFrameRegion = new TextureRegion(miniMapFrameBuffer.getColorBufferTexture());
         miniMapFrameRegion.flip(false, true);
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
