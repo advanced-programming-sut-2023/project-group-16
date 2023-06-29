@@ -78,6 +78,7 @@ public class GameRenderer extends Renderer {
     }
 
     public void destroyRenderer(GameObject go) {
+        // TODO : animation?
         removeChild(renderers.get(go));
     }
 }

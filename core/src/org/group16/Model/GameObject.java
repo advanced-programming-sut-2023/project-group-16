@@ -8,6 +8,8 @@ import java.util.UUID;
 public abstract class GameObject {
     private final Kingdom kingdom;
     private final UUID uuid = UUID.randomUUID();
+    protected float relativeX;
+    protected float relativeY;
     DestroyCallback destroyCallback;
     private ArrayList<Cell> cells;
     private boolean isAlive = true;
@@ -65,6 +67,22 @@ public abstract class GameObject {
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    public float getRelativeX() {
+        return relativeX;
+    }
+
+    public void setRelativeX(float relativeX) {
+        this.relativeX = relativeX;
+    }
+
+    public float getRelativeY() {
+        return relativeY;
+    }
+
+    public void setRelativeY(float relativeY) {
+        this.relativeY = relativeY;
     }
 
     public abstract void onTurnStart();

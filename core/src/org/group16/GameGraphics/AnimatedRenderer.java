@@ -11,6 +11,7 @@ public class AnimatedRenderer extends Renderer {
     protected final AnimCollection animCollection;
     protected final AnimState animState;
     private final Random random = new Random();
+    protected String currentAnimation = "idle";
     protected int direction;
 
     public AnimatedRenderer(AnimCollection animCollection, boolean transparent, float size, Vector3 forward, Vector3 up) {
@@ -30,6 +31,7 @@ public class AnimatedRenderer extends Renderer {
 
     public void playAnimation(String name, boolean randomizeStart) {
         animState.setCurrentData(animCollection.getAnimation(name));
+        currentAnimation = name;
         if (randomizeStart)
             animState.setCurrentTime(random.nextFloat() * animState.getCurrentData().getDuration());
         else
