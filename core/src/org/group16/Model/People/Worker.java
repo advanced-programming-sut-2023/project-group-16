@@ -34,7 +34,7 @@ public class Worker extends Human {
     @Override
     public Renderer createRenderer() {
         HumanRenderer renderer = new HumanRenderer(SoldierDetail.WORKER.getGraphics());
-        renderer.setLocalPosition(getCell().getX(), 0, getCell().getY());
+        renderer.setLocalPosition(calculateWorldPosition());
         return renderer;
     }
 }

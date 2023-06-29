@@ -68,7 +68,7 @@ public enum SoldierDetail implements Resource {
             true, 0, 0, 0, 0, 1, 3, null),
     KING(KingdomType.EUROPEAN, 0, null, null, false, 1,
             false, false, false, false, true,
-            true, 0, 0, 0, 5, 6, 1, null);
+            true, 0, 0, 0, 5, 6, 1, HumanGraphics.EUROPEAN_ARCHER);
     //TODO : fill in graphics
 
     private final Weaponry armor;
@@ -84,6 +84,7 @@ public enum SoldierDetail implements Resource {
     private final int goldNeeded;
     private final KingdomType kingdomType;
     private final HumanGraphics graphics;
+
     SoldierDetail(KingdomType kingdomType, int goldNeeded, Weaponry armor, Weaponry weapon, boolean hasHorse, int resultCount,
                   boolean canClimbLadder, boolean canClimbWalls, boolean canHide, boolean canDigMoats,
                   boolean canDamageHuman, boolean canDamageBuilding, int attackRange, int defensiveRange, int offensiveRange, int damage, int hp, int speed, HumanGraphics graphics) {

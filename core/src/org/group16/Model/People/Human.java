@@ -1,6 +1,7 @@
 package org.group16.Model.People;
 
 import com.badlogic.gdx.math.Vector3;
+import org.group16.GameGraphics.BuildingRenderer;
 import org.group16.GameGraphics.HumanRenderer;
 import org.group16.GameGraphics.Renderer;
 import org.group16.Model.*;
@@ -116,7 +117,7 @@ public class Human extends GameObject implements Alive {
     @Override
     public Renderer createRenderer() {
         HumanRenderer renderer = new HumanRenderer(SoldierDetail.HUMAN.getGraphics());
-        renderer.setLocalPosition(getCell().getX(), 0, getCell().getY());
+        renderer.setLocalPosition(calculateWorldPosition());
         return renderer;
     }
 
@@ -129,6 +130,7 @@ public class Human extends GameObject implements Alive {
     public Vector3 calculateWorldPosition() {
         float x = getCell().getX() + relativeX / 2;
         float y = getCell().getY() + relativeY / 2;
+        Building building = getCell().getBuilding();
         if (building == null || building.isTraversable())
             return new Vector3(x, 0, y);
         return building.getRenderer().getRoofPosition(x, y);

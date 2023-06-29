@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import org.group16.Controller.GameMenuController;
 import org.group16.GameGraphics.*;
 import org.group16.Model.*;
+import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
 
@@ -81,10 +82,12 @@ public class TestingGDX extends Game {
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);
 
-
+        
+        System.out.println(GameMenuController.dropBuilding(game, user, 0, 0, BuildingType.TOWN_BUILDING));
+        System.out.println(GameMenuController.dropBuilding(game, user1, 9, 9, BuildingType.TOWN_BUILDING));
         Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
         k1.setKing(king1);
-        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(4, 4))), k2, SoldierDetail.KING);
+        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(9, 9))), k2, SoldierDetail.KING);
         k2.setKing(king2);
     }
 

@@ -194,7 +194,7 @@ public class Soldier extends Human {
     @Override
     public Renderer createRenderer() {
         HumanRenderer renderer = new HumanRenderer(soldierDetail.getGraphics());
-        renderer.setLocalPosition(getCell().getX(), 0, getCell().getY());
+        renderer.setLocalPosition(calculateWorldPosition());
         return renderer;
     }
 }

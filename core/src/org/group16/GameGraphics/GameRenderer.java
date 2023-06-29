@@ -3,10 +3,6 @@ package org.group16.GameGraphics;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
 import org.group16.Model.*;
-import org.group16.Model.Buildings.Building;
-import org.group16.Model.People.Human;
-import org.group16.Model.People.Soldier;
-import org.group16.Model.Siege.Siege;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -14,7 +10,7 @@ import java.util.Random;
 public class GameRenderer extends Renderer {
     private final Game game;
     private final Random random = new Random();
-    private final HashMap<GameObject, Renderer> renderer = new HashMap<>();
+    private final HashMap<GameObject, Renderer> renderers = new HashMap<>();
 
     public GameRenderer(Game game) {
         super(null, false, 1, Util.forward, Util.up);
@@ -48,9 +44,13 @@ public class GameRenderer extends Renderer {
     @Override
     public void render(DecalBatch decalBatch, Vector3 parentPosition) {
         for (GameObject go : game.getScene().getGameObjects()) {
-            if (renderer.containsKey(go))
-                go.updateRenderer(renderer.get(go));
-            else renderer.put(go, go.createRenderer());
+            if (renderers.containsKey(go))
+                go.updateRenderer(renderers.get(go));
+            else {
+                Renderer renderer = go.createRenderer();
+                renderers.put(go, renderer);
+                addChild(renderer);
+            }
         }
         super.render(decalBatch, parentPosition);
     }
