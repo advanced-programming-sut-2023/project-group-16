@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -12,10 +11,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import org.group16.Controller.GameMenuController;
 import org.group16.GameGraphics.*;
+import org.group16.GameGraphics.CommandHandling.CreateBuildingCommand;
+import org.group16.GameGraphics.CommandHandling.DeleteBuildingCommand;
+import org.group16.GameGraphics.CommandHandling.EndTurnCommand;
+import org.group16.GameGraphics.CommandHandling.InputProcessor;
 import org.group16.Model.*;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
+import org.group16.Model.Resources.BasicResource;
+import org.group16.Model.Resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,7 @@ public class TestingGDX extends Game {
     Scene scene;
     Kingdom k1, k2;
     GameRenderer gameRenderer;
+    private InputProcessor inputProcessor;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -42,8 +48,9 @@ public class TestingGDX extends Game {
     @Override
     public void create() {
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
-        miniMapCamera = new PerspectiveCamera(30, 5f, 3);
-        miniMapFrameBuffer = new FrameBuffer(Pixmap.Format.RGB565, 500, 300, false);
+        miniMapCamera = new OrthographicCamera(5f, 3);
+        float resolutionMultiplier = 200;
+        miniMapFrameBuffer = new FrameBuffer(Pixmap.Format.RGB565, (int) (5 * resolutionMultiplier), (int) (3 * resolutionMultiplier), false);
         miniMapFrameRegion = new TextureRegion(miniMapFrameBuffer.getColorBufferTexture());
         miniMapFrameRegion.flip(false, true);
 //        camera = new OrthographicCamera(1, 1f * graphics.getHeight() / graphics.getWidth());
@@ -52,7 +59,8 @@ public class TestingGDX extends Game {
         camera.lookAt(0f, 0f, 0f);
         miniMapCamera.position.set(1f, 1f, 1f);
         miniMapCamera.lookAt(0f, 0f, 0f);
-        miniMapCamera.position.set(30f, 18f, 30f);
+        miniMapCamera.position.set(20, 10, 20);
+        ((OrthographicCamera) miniMapCamera).zoom = 6;
         miniMapPreview = new Renderer(miniMapFrameRegion, false, 1, Util.forward, Util.up);
         miniMapPreview.setLocalPosition(0, 2, 0);
 
@@ -72,7 +80,9 @@ public class TestingGDX extends Game {
         Util.load(assetManager);
 
         initialize();
-        gameRenderer = new GameRenderer(game);
+
+        inputProcessor = new InputProcessor(List.of(k1.getUser(), k2.getUser()));
+        gameRenderer = new GameRenderer(game, inputProcessor);
         initGameObjects();
         new WarCommand(List.of(k1.getKing()), k2.getKing());
         new WarCommand(List.of(k2.getKing()), k1.getKing());
@@ -93,8 +103,8 @@ public class TestingGDX extends Game {
             gameRenderer.createRenderer(soldier);
             list2.add(soldier);
         }
-        new WarCommand(list1, k2.getKing());
-        new WarCommand(list2, k1.getKing());
+        new WarCommand(list1, scene.getCellAt(9, 9), false);
+        new WarCommand(list2, scene.getCellAt(9, 9), false);
     }
 
     void createMap0() {
@@ -132,11 +142,23 @@ public class TestingGDX extends Game {
         gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
         gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
 
+        GameMenuController.dropBuilding(game, k1.getUser(), 0, 1, BuildingType.STOCKPILE);
+        GameMenuController.dropBuilding(game, k2.getUser(), 18, 19, BuildingType.STOCKPILE);
+        gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.STOCKPILE).get(0));
+        gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.STOCKPILE).get(0));
+
+        k1.addResource(BasicResource.STONE, 50);
+        k1.addResource(BasicResource.WOOD, 200);
+        k2.addResource(BasicResource.STONE, 50);
+        k2.addResource(BasicResource.WOOD, 200);
+
         Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
         k1.setKing(king1);
+        k1.addGold(10000);
         gameRenderer.createRenderer(king1);
         Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(19, 19))), k2, SoldierDetail.KING);
         k2.setKing(king2);
+        k2.addGold(10000);
         gameRenderer.createRenderer(king2);
     }
 
@@ -189,6 +211,13 @@ public class TestingGDX extends Game {
             camera.position.add(-dt, -dt, -dt);
         if (input.isKeyPressed(Input.Keys.O))
             camera.position.add(dt, dt, dt);
+
+        if (input.isKeyJustPressed(Input.Keys.B))
+            inputProcessor.submitCommand(new CreateBuildingCommand(k1.getUser(), BuildingType.LOOKOUT_TOWER, 4, 2));
+        if (input.isKeyJustPressed(Input.Keys.V))
+            inputProcessor.submitCommand(new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(2)));
+        if (input.isKeyJustPressed(Input.Keys.N)) inputProcessor.submitCommand(new EndTurnCommand(k1.getUser()));
+        if (input.isKeyJustPressed(Input.Keys.M)) inputProcessor.submitCommand(new EndTurnCommand(k2.getUser()));
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
 //        if (input.isKeyPressed(Input.Keys.M))
