@@ -33,6 +33,9 @@ public class GameScreen extends Menu{
     StorageWindow storageWindow ;
 
     MiniWindow miniWindow = new MiniWindow(skin1 , 63 , 23 , 26 , 2435) ;
+
+
+
     public GameScreen(StrongholdGame game) {
         super(game);
         uiStage.clear();
