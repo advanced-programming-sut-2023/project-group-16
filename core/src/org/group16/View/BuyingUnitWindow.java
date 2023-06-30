@@ -16,38 +16,38 @@ import org.group16.Model.Resources.Resource;
 import java.util.ArrayList;
 
 public class BuyingUnitWindow extends Window {
-    Stage uistage ;
-    Image soilBackground , grayBackGround;
+    Stage uistage;
+    Image soilBackground, grayBackGround;
     public Skin skin;
-    final int  xUp = 120, yUp = 120, xDown = 115, yDown = 115;
-    int numberOfPics ;
-    ImageButton back ;
+    final int xUp = 120, yUp = 120, xDown = 115, yDown = 115;
+    int numberOfPics;
+    ImageButton back;
 
-    Label status ;
+    Label status;
 
-    EconomicBuildingDetail economicBuildingDetail ;
-    ArrayList<SoldierDetail> soldierDetails = new ArrayList<>() ;
+    EconomicBuildingDetail economicBuildingDetail;
+    ArrayList<SoldierDetail> soldierDetails = new ArrayList<>();
     int startPic = 0;
 
 
-    public BuyingUnitWindow(Skin skin , EconomicBuildingDetail economicBuildingDetail  ) {
+    public BuyingUnitWindow(Skin skin, EconomicBuildingDetail economicBuildingDetail) {
         super("", skin);
 
 
-        this.economicBuildingDetail = economicBuildingDetail ;
-        for (ProductData productData: economicBuildingDetail.getProductsData()){
-            soldierDetails.add((SoldierDetail) productData.resource()) ;
+        this.economicBuildingDetail = economicBuildingDetail;
+        for (ProductData productData : economicBuildingDetail.getProductsData()) {
+            soldierDetails.add((SoldierDetail) productData.resource());
         }
-        numberOfPics = soldierDetails.size() ;
-        this.skin = skin ;
+        numberOfPics = soldierDetails.size();
+        this.skin = skin;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         this.background(soilBackground.getDrawable());
 
-        status = new Label("" , skin) ;
+        status = new Label("", skin);
         this.add(status).row();
 
-        for (int i = 0 ; i < numberOfPics ; i++){
+        for (int i = 0; i < numberOfPics; i++) {
             try {
 
 
@@ -67,19 +67,18 @@ public class BuyingUnitWindow extends Window {
                         //TODO
                     }
                 });
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        this.row() ;
+        this.row();
 
         back = new ImageButton(skin);
         ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
         imageStyle.imageUp = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 30, 30));
         imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
         back.setStyle(imageStyle);
-        this.add(back) ;
+        this.add(back);
 
         back.addListener(new ChangeListener() {
             @Override

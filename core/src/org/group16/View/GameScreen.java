@@ -29,9 +29,15 @@ public class GameScreen extends Menu{
     BuildingWindow buildingWindow ;
 
     BuyingUnitWindow buyingUnitWindow = new BuyingUnitWindow(skin1 , EconomicBuildingDetail.BARRACKS) ;
+
+    StorageWindow storageWindow ;
+
+    MiniWindow miniWindow = new MiniWindow(skin1 , 63 , 23 , 26 , 2435) ;
     public GameScreen(StrongholdGame game) {
         super(game);
         uiStage.clear();
+
+
 
 //        uiStage.addActor(buildingSelectWindow);
 //        uiStage.addActor(shopWindow);
@@ -60,7 +66,7 @@ public class GameScreen extends Menu{
             game1.addUser(user1, KingdomType.EUROPEAN);
             Map map = new Map("map0", 5, 5);
             Map.saveMap(map);
-            scene = new Scene(Map.getMapByName("map0"));
+            scene = new Scene(Map.getMapByName("map0") , 543536);
             game1.setScene(scene);
             k1 = game1.getKingdom(user);
             k2 = game1.getKingdom(user1);
@@ -71,14 +77,16 @@ public class GameScreen extends Menu{
             Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(4, 4))), k2, SoldierDetail.KING);
             k2.setKing(king2);
 
-            EconomicBuilding building = new EconomicBuilding(new ArrayList<>(List.of(scene.getCellAt(0 , 0 ))) , k1 , 0 , EconomicBuildingDetail.MERCENARY_POST) ;
+            EconomicBuilding building = new EconomicBuilding(new ArrayList<>(List.of(scene.getCellAt(0 , 0 ))) , k1 , 0 , EconomicBuildingDetail.ARMOURY) ;
 
             buildingWindow = new BuildingWindow(skin1 , building) ;
+            storageWindow = new StorageWindow(skin1 , building) ;
            // uiStage.addActor(buildingWindow);
         }
 
-        uiStage.addActor(buyingUnitWindow);
-
+       // uiStage.addActor(buyingUnitWindow);
+        uiStage.addActor(storageWindow);
+        uiStage.addActor(miniWindow);
     }
 
 
@@ -109,6 +117,13 @@ public class GameScreen extends Menu{
 
         buyingUnitWindow.setHeight(uiStage.getHeight()/4);
         buyingUnitWindow.setWidth(uiStage.getWidth()*3/5);
+
+        storageWindow.setHeight(uiStage.getHeight()/4);
+        storageWindow.setWidth(uiStage.getWidth()*3/5);
+
+        miniWindow.setHeight(uiStage.getHeight()/4);
+        miniWindow.setWidth(300);
+        miniWindow.setPosition(uiStage.getWidth()-miniWindow.getWidth(), 0);
 
         uiStage.draw();
     }

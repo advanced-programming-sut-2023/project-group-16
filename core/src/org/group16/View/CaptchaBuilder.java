@@ -11,6 +11,6 @@ public class CaptchaBuilder {
     public static int captchaBuilder() {
         FileHandle dir = new FileHandle("assets/captcha");
         int random = ThreadLocalRandom.current().nextInt(0, 30);
-        return Integer.parseInt(dir.list()[random].name().substring(0 , 4)) ;
+        return Integer.parseInt(dir.list()[random].name().substring(0, 4));
     }
 }

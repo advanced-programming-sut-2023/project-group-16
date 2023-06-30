@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShopWindow extends Window {
-    Stage uistage ;
-    Image soilBackground , grayBackGround;
+    Stage uistage;
+    Image soilBackground, grayBackGround;
     public Skin skin;
     final int numberOfPics = 5, xUp = 60, yUp = 60, xDown = 50, yDown = 50;
     int startPic = 0;
@@ -29,19 +29,19 @@ public class ShopWindow extends Window {
 
     {
         typeOfGoodArrayListHashMap.put(TypeOfGood.BASIC, new ArrayList<>());
-        for (Resource resource : BasicResource.values()){
-            if (resource.getPrice()< Integer.MAX_VALUE)
-                typeOfGoodArrayListHashMap.get(TypeOfGood.BASIC).add(resource) ;
+        for (Resource resource : BasicResource.values()) {
+            if (resource.getPrice() < Integer.MAX_VALUE)
+                typeOfGoodArrayListHashMap.get(TypeOfGood.BASIC).add(resource);
         }
         typeOfGoodArrayListHashMap.put(TypeOfGood.WEAPONRY, new ArrayList<>());
-        for (Resource resource : Weaponry.values()){
-            if (resource.getPrice()< Integer.MAX_VALUE)
-                typeOfGoodArrayListHashMap.get(TypeOfGood.WEAPONRY).add(resource) ;
+        for (Resource resource : Weaponry.values()) {
+            if (resource.getPrice() < Integer.MAX_VALUE)
+                typeOfGoodArrayListHashMap.get(TypeOfGood.WEAPONRY).add(resource);
         }
         typeOfGoodArrayListHashMap.put(TypeOfGood.FOOD, new ArrayList<>());
-        for (Resource resource : Food.values()){
-            if (resource.getPrice()< Integer.MAX_VALUE)
-                typeOfGoodArrayListHashMap.get(TypeOfGood.FOOD).add(resource) ;
+        for (Resource resource : Food.values()) {
+            if (resource.getPrice() < Integer.MAX_VALUE)
+                typeOfGoodArrayListHashMap.get(TypeOfGood.FOOD).add(resource);
         }
 
     }
@@ -53,11 +53,11 @@ public class ShopWindow extends Window {
 
     public ImageButton backImageButton, nextImageButton, foodButton, weaponryButton, basicButton;
 
-    BuyingWindow buyingWindow ;
+    BuyingWindow buyingWindow;
 
-    public ShopWindow(String title, Skin skin , Stage uistage) {
+    public ShopWindow(String title, Skin skin, Stage uistage) {
         super(title, skin);
-        this.uistage = uistage ;
+        this.uistage = uistage;
         this.skin = skin;
         status = new Label("", skin);
         status.setColor(Color.BLACK);
@@ -69,11 +69,11 @@ public class ShopWindow extends Window {
         makeButtons(backImageButton, "ButtonImages/BackButton.png", "ButtonImages/BackButton.png");
         nextImageButton = new ImageButton(skin);
         makeButtons(nextImageButton, "ButtonImages/NextButton.png", "ButtonImages/NextButton.png");
-        foodButton = new ImageButton(skin) ;
+        foodButton = new ImageButton(skin);
         makeButtons(foodButton, "ButtonImages/FoodButton.png", "ButtonImages/FoodButton.png");
-        weaponryButton = new ImageButton(skin) ;
+        weaponryButton = new ImageButton(skin);
         makeButtons(weaponryButton, "ButtonImages/WeaponryButton.png", "ButtonImages/WeaponryButton.png");
-        basicButton = new ImageButton(skin) ;
+        basicButton = new ImageButton(skin);
         makeButtons(basicButton, "ButtonImages/BasicButton.png", "ButtonImages/BasicButton.png");
 
         this.add(status).row();
@@ -82,7 +82,7 @@ public class ShopWindow extends Window {
         backImageButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                startPic-= numberOfPics;
+                startPic -= numberOfPics;
                 if (startPic < 0)
                     startPic = 0;
                 remake();
@@ -96,7 +96,7 @@ public class ShopWindow extends Window {
         remake();
 
         this.add(nextImageButton).pad(0, 20, 0, 0).row();
-        this.row() ;
+        this.row();
         nextImageButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -134,7 +134,7 @@ public class ShopWindow extends Window {
             }
         });
 
-        buyingWindow = new BuyingWindow(Food.BREAD , skin) ;
+        buyingWindow = new BuyingWindow(Food.BREAD, skin);
         buyingWindow.hide();
     }
 
@@ -154,7 +154,7 @@ public class ShopWindow extends Window {
         ImageButton imageButton;
         ImageButton.ImageButtonStyle imageButtonStyle;
         String name;
-        Resource resource ;
+        Resource resource;
 
         public ImageButtonElement() {
             imageButtonStyle = new ImageButton.ImageButtonStyle();
@@ -171,8 +171,7 @@ public class ShopWindow extends Window {
                     try {
                         buyingWindow.changeResource(resource);
                         buyingWindow.show(uistage);
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                 }
@@ -180,7 +179,7 @@ public class ShopWindow extends Window {
         }
 
         public void setNewImage(Resource resource, TypeOfGood typeOfGood) {
-            this.resource = resource ;
+            this.resource = resource;
             if (typeOfGood.equals(TypeOfGood.NULL)) {
                 imageButtonStyle.imageUp = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("backgrounds/soilBackground.jpg").path(), xUp, yUp));
                 imageButtonStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("backgrounds/soilBackground.jpg").path(), xDown, yDown));
@@ -218,25 +217,26 @@ public class ShopWindow extends Window {
         NULL
     }
 
-    public class BuyingWindow extends Dialog{
-        TextField amount = new TextField("1" , skin) ;
-        Label price , goodName , error ;
-        TextButton buyButton , sellButton , back;
+    public class BuyingWindow extends Dialog {
+        TextField amount = new TextField("1", skin);
+        Label price, goodName, error;
+        TextButton buyButton, sellButton, back;
 
-        Resource resource ;
-        public BuyingWindow(Resource resource , Skin skin) {
+        Resource resource;
+
+        public BuyingWindow(Resource resource, Skin skin) {
             super("", skin);
 
-            this.resource = resource ;
+            this.resource = resource;
 
             this.setBackground(grayBackGround.getDrawable());
 
-            buyButton = new TextButton("buy" , skin) ;
-            sellButton = new TextButton("sell" , skin) ;
-            price = new Label("price : " + resource.getPrice() , skin) ;
-            goodName = new Label(resource.GetName() , skin) ;
-            back = new TextButton("back" ,skin) ;
-            error = new Label("" , skin)  ;
+            buyButton = new TextButton("buy", skin);
+            sellButton = new TextButton("sell", skin);
+            price = new Label("price : " + resource.getPrice(), skin);
+            goodName = new Label(resource.GetName(), skin);
+            back = new TextButton("back", skin);
+            error = new Label("", skin);
             error.setColor(Color.RED);
             this.getContentTable().add(goodName).row();
             this.getContentTable().add(amount).row();
@@ -265,7 +265,7 @@ public class ShopWindow extends Window {
             });
         }
 
-        public void changeResource(Resource resource){
+        public void changeResource(Resource resource) {
             goodName.setText(resource.GetName());
             price.setText("price : " + resource.getPrice());
         }

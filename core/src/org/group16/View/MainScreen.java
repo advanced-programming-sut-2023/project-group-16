@@ -37,7 +37,7 @@ public class MainScreen extends Menu {
                 game.setScreen(new ProfileScreen(game, user));
             }
         });
-        gameMenu = new TextButton("Game" , skin1) ;
+        gameMenu = new TextButton("Game", skin1);
         gameMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

@@ -61,19 +61,19 @@ public class BuildingWindow extends Window {
             makeOnOff.setText("on");
         }
         this.add(name).row();
-        this.add(status).pad(0 , 0 , 0 , 10);
+        this.add(status).pad(0, 0, 0, 10);
         this.add(makeOnOff).row();
-        if (building instanceof EconomicBuilding && ((EconomicBuilding)building).getDetail().equals(EconomicBuildingDetail.MARKET)){
-            this.add(shop) ;
+        if (building instanceof EconomicBuilding && ((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.MARKET)) {
+            this.add(shop);
         }
-        if (building instanceof EconomicBuilding && (((EconomicBuilding)building).getDetail().equals(EconomicBuildingDetail.MERCENARY_POST)||
-                ((EconomicBuilding)building).getDetail().equals(EconomicBuildingDetail.BARRACKS)||
-                ((EconomicBuilding)building).getDetail().equals(EconomicBuildingDetail.ENGINEER_GUILD)
-        )){
-            this.add(buildUnit) ;
+        if (building instanceof EconomicBuilding && (((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.MERCENARY_POST) ||
+                ((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.BARRACKS) ||
+                ((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.ENGINEER_GUILD)
+        )) {
+            this.add(buildUnit);
         }
-        if (building instanceof EconomicBuilding && ((EconomicBuilding)building).getDetail().getStorageData().length > 0)
-            this.add(seeStorage) ;
+        if (building instanceof EconomicBuilding && ((EconomicBuilding) building).getDetail().getStorageData().length > 0)
+            this.add(seeStorage);
         this.add(repair).row();
         this.add(back);
     }

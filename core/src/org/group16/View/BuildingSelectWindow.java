@@ -22,7 +22,7 @@ public class BuildingSelectWindow extends Window {
 
     Image soilBackground;
 
-    final int numberOfPics = 5, xUp = 150, yUp = 150 , xDown=140 , yDown = 140;
+    final int numberOfPics = 5, xUp = 150, yUp = 150 , xDown=145 , yDown = 145;
     int startPic = 0;
     Skin skin;
 

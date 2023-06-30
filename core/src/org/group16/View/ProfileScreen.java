@@ -478,7 +478,7 @@ public class ProfileScreen extends Menu {
         uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
-        scoreBoardWindow.setHeight(uiStage.getHeight()-100);
+        scoreBoardWindow.setHeight(uiStage.getHeight() - 100);
         uiStage.draw();
     }
 }

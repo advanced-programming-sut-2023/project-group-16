@@ -172,5 +172,9 @@ public enum BuildingType implements Resource {
         //just should be something
         return 0;
     }
+    @Override
+    public String GetName() {
+        return this.name() ;
+    }
 
 }

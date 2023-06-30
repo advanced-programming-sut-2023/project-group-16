@@ -22,7 +22,7 @@ public class LoginScreen extends Menu {
     CheckBox stayLogIn, passwordHide;
     Label usernameLabel, passwordLabel, usernameStatus, passwordStatus, captchaStatus, newPasswordStatus, forgotPasswordAnswerStatus;
 
-    Image background, white, captcha , soilBackground;
+    Image background, white, captcha, soilBackground;
     int captchaNumber;
 
     Dialog forgotPasswordDialog;
@@ -30,12 +30,12 @@ public class LoginScreen extends Menu {
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
-    public LoginScreen(StrongholdGame game)  {
+    public LoginScreen(StrongholdGame game) {
         super(game);
 
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
-        soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg"))) ;
+        soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         table = new Table(skin1);
         table.setBackground(soilBackground.getDrawable());
         //table.setColor(Color.BLACK);
@@ -65,7 +65,7 @@ public class LoginScreen extends Menu {
 
         int random = CaptchaBuilder.captchaBuilder();
         captcha = new Image(new Texture(Gdx.files.internal("captcha/" + random + ".png")));
-        captchaNumber = random ;
+        captchaNumber = random;
         captchaField = new TextField("", skin1);
         newCaptcha = new TextButton("reload", skin1);
         captchaStatus = new Label("enter captcha", skin1);
@@ -167,7 +167,7 @@ public class LoginScreen extends Menu {
                         passwordStatus.getText().length() != 0 ||
                         captchaStatus.getText().length() != 0
                 ) {
-                    int  random = CaptchaBuilder.captchaBuilder();
+                    int random = CaptchaBuilder.captchaBuilder();
                     captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
                     captchaNumber = random;
                 } else if (User.getUserByName(username.getText()) == null) {

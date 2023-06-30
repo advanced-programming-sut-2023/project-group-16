@@ -8,20 +8,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 public class CellDetailWindow extends Window {
-    Label description ;
-    Image soilBackground ;
+    Label description;
+    Image soilBackground;
 
-    public CellDetailWindow(String title, Skin skin , String details) {
+    public CellDetailWindow(String title, Skin skin, String details) {
         super(title, skin);
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
-        this.background(soilBackground.getDrawable()) ;
+        this.background(soilBackground.getDrawable());
 
-        description = new Label(details , skin) ;
-        this.add(description) ;
+        description = new Label(details, skin);
+        this.add(description);
 
     }
-    public void remake(String detail){
+
+    public void remake(String detail) {
         description.setText(detail);
     }
 }
