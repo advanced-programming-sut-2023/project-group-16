@@ -26,7 +26,7 @@ public class CreateBuildingCommand extends UserCommand {
             return res;
         building = game.getScene().getCellAt(x, y).getBuilding();
         gameRenderer.createRenderer(building);
-        return super.execute(game, gameRenderer);
+        return success();
     }
 
     @Override

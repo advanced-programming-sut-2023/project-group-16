@@ -1,6 +1,5 @@
 package org.group16.GameGraphics.CommandHandling;
 
-import org.group16.Controller.GameMenuController;
 import org.group16.GameGraphics.GameRenderer;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Game;
@@ -18,7 +17,7 @@ public class DeleteBuildingCommand extends UserCommand {
     public String execute(Game game, GameRenderer gameRenderer) {
         if (building == null || !building.isAlive()) return "building already destroyed";
         building.destroy();
-        return super.execute(game, gameRenderer);
+        return success();
     }
 
     @Override
