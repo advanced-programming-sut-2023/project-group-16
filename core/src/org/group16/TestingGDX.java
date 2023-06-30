@@ -216,8 +216,8 @@ public class TestingGDX extends Game {
             inputProcessor.submitCommand(new CreateBuildingCommand(k1.getUser(), BuildingType.LOOKOUT_TOWER, 4, 2));
         if (input.isKeyJustPressed(Input.Keys.V))
             inputProcessor.submitCommand(new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(2)));
-        if (input.isKeyJustPressed(Input.Keys.N)) inputProcessor.submitCommand(new EndTurnCommand(k1.getUser()));
-        if (input.isKeyJustPressed(Input.Keys.M)) inputProcessor.submitCommand(new EndTurnCommand(k2.getUser()));
+        if (input.isKeyPressed(Input.Keys.N)) inputProcessor.submitCommand(new EndTurnCommand(k1.getUser()));
+        if (input.isKeyPressed(Input.Keys.M)) inputProcessor.submitCommand(new EndTurnCommand(k2.getUser()));
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
 //        if (input.isKeyPressed(Input.Keys.M))
