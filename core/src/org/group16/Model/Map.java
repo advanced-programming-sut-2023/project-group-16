@@ -66,6 +66,29 @@ public class Map {
         return map;
     }
 
+    public static ArrayList<Map> getAllMaps() {
+        Gson gson = new Gson();
+        String folderPath = new File("").getAbsolutePath().concat("/Data/Maps");
+        File[] files = new File(folderPath).listFiles();
+        ArrayList<Map> maps = new ArrayList<>() ;
+
+        if (files!=null) for (File file : files){
+            if (file.isDirectory())continue;
+            FileReader fileReader ;
+            try {
+                fileReader = new FileReader(file) ;
+                Map map = null ;
+                map = gson.fromJson(fileReader , Map.class) ;
+                fileReader.close();
+                if (map!=null)
+                    maps.add(map) ;
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return maps ;
+    }
+
     public static void saveMap(Map map) {
         Gson gson = new Gson();
         String filePath = new File("").getAbsolutePath().concat("/Data/Maps/");
@@ -136,5 +159,8 @@ public class Map {
 
     public void setCurrentY(int currentY) {
         this.currentY = currentY;
+    }
+    public String getName(){
+        return name ;
     }
 }

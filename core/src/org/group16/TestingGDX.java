@@ -92,14 +92,14 @@ public class TestingGDX extends Game {
         renderers.add(testProbe);
 
         ArrayList<Soldier> list1 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.ARCHER);
+        for (int i = 0; i < 5; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.MACE_MAN);
             gameRenderer.createRenderer(soldier);
             list1.add(soldier);
         }
         ArrayList<Soldier> list2 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Soldier soldier = new Soldier(List.of(scene.getCellAt(19, 18)), k2, SoldierDetail.ARCHER);
+        for (int i = 0; i < 15; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(10, 10)), k2, SoldierDetail.ASSASSIN);
             gameRenderer.createRenderer(soldier);
             list2.add(soldier);
         }

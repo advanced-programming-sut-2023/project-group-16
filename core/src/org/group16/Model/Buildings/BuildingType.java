@@ -7,6 +7,7 @@ import org.group16.Model.Resources.BasicResource;
 import org.group16.Model.Resources.Resource;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public enum BuildingType implements Resource {
     //economy
@@ -34,7 +35,7 @@ public enum BuildingType implements Resource {
     //economy
     ENGINEER_GUILD("engineer guid", 100, BasicResource.WOOD, 10, null),
     //war
-    KILLING_PIT("killing pit", 0, BasicResource.WOOD, 6, null),
+//    KILLING_PIT("killing pit", 0, BasicResource.WOOD, 6, null),
     //economy
     INN("inn", 100, BasicResource.WOOD, 20, null),
     //economy
@@ -71,13 +72,13 @@ public enum BuildingType implements Resource {
     OIL_SMELTER("oil smelter", 100, BasicResource.IRON, 10, null),
     //TODO : pitch ditch ?-
     //war ?
-    PITCH_DITCH("pitch dig", 0, null, 0, null),
+//    PITCH_DITCH("pitch dig", 0, null, 0, null),
     //TODO : caged war dogs ?
     //war?
-    CAGED_WAR_DOGS("caged war dogs", 0, null, 0, null),
+//    CAGED_WAR_DOGS("caged war dogs", 0, null, 0, null),
     //TODO : siege tent ?-
     //war?
-    SIEGE_TENT("siege tent", 0, null, 0, null),
+//    SIEGE_TENT("siege tent", 0, null, 0, null),
     //economy
     STABLE("stable", 400, BasicResource.WOOD, 20, null),
     //economy
@@ -97,7 +98,7 @@ public enum BuildingType implements Resource {
     //economy
     GRANARY("granary", 0, BasicResource.WOOD, 5, null),
     TOWN_BUILDING("town building", 0, null, 0, BuildingGraphics.KING_CASTLE),
-    UNEMPLOYED_PLACE("unemployed place", 0, null, 0, null);
+    UNEMPLOYED_PLACE("unemployed place", 0, null, 0, BuildingGraphics.UNEMPLOYED_PLACE);
     private final String strName;
     private final int cellSize = 1;
     private final ArrayList<Pair<Resource, Integer>> dependencies = new ArrayList<>();
@@ -113,7 +114,11 @@ public enum BuildingType implements Resource {
         this.goldNeeded = goldNeeded;
         this.resource = resource;
         this.resourceNeeded = resourceNeeded;
-        this.graphics = graphics;
+        if (graphics==null){
+            this.graphics = BuildingGraphics.valueOf(this.GetName()) ;
+        }
+        else
+            this.graphics = graphics ;
         this.dependencies.add(new Pair<>(BasicResource.GOLD, goldNeeded));
         if (resource != null)
             this.dependencies.add(new Pair<>(resource, resourceNeeded));
