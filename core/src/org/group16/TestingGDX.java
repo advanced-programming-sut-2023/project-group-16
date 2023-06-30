@@ -42,8 +42,8 @@ public class TestingGDX extends Game {
     @Override
     public void create() {
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
-        miniMapCamera = new PerspectiveCamera(30, 5f, 3);
-        float resolutionMultiplier = 150;
+        miniMapCamera = new OrthographicCamera(5f, 3);
+        float resolutionMultiplier = 200;
         miniMapFrameBuffer = new FrameBuffer(Pixmap.Format.RGB565, (int) (5 * resolutionMultiplier), (int) (3 * resolutionMultiplier), false);
         miniMapFrameRegion = new TextureRegion(miniMapFrameBuffer.getColorBufferTexture());
         miniMapFrameRegion.flip(false, true);
@@ -53,7 +53,8 @@ public class TestingGDX extends Game {
         camera.lookAt(0f, 0f, 0f);
         miniMapCamera.position.set(1f, 1f, 1f);
         miniMapCamera.lookAt(0f, 0f, 0f);
-        miniMapCamera.position.set(30f, 18f, 30f);
+        miniMapCamera.position.set(20, 10, 20);
+        ((OrthographicCamera) miniMapCamera).zoom = 6;
         miniMapPreview = new Renderer(miniMapFrameRegion, false, 1, Util.forward, Util.up);
         miniMapPreview.setLocalPosition(0, 2, 0);
 
@@ -94,8 +95,8 @@ public class TestingGDX extends Game {
             gameRenderer.createRenderer(soldier);
             list2.add(soldier);
         }
-        new WarCommand(list1, k2.getKing());
-        new WarCommand(list2, k1.getKing());
+        new WarCommand(list1, scene.getCellAt(9, 9), false);
+        new WarCommand(list2, scene.getCellAt(9, 9), false);
     }
 
     void createMap0() {
