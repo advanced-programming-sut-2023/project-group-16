@@ -12,7 +12,7 @@ import org.group16.Model.Messenger.Message;
 import org.group16.Model.Messenger.Room;
 import org.group16.Model.User;
 
-public class Messenger extends Window {
+public class Chat extends Window {
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
     private final Image white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
@@ -26,9 +26,9 @@ public class Messenger extends Window {
     private Dialog dialog;
     private Room room;
     private Message selectedMessage;
-    private Messenger tmp = this;
+    private Chat tmp = this;
 
-    public Messenger(String title, Skin skin, Room room) {
+    public Chat(String title, Skin skin, Room room) {
         super(title, skin);
         this.room = room;
 

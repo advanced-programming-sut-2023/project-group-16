@@ -102,9 +102,9 @@ public class MainScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 //TODO: read messages from file...
                 Room room = new Room(User.getAllUsers(), new ArrayList<>(), "public-chat");
-                Messenger messenger = new Messenger("", skin1, room);
-                messenger.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
-                uiStage.addActor(messenger);
+                Chat chat = new Chat("", skin1, room);
+                chat.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
+                uiStage.addActor(chat);
             }
         });
 
@@ -160,9 +160,9 @@ public class MainScreen extends Menu {
                     roomNameError.setText("you aren't member of this room");
                 } else {
                     roomNameDialog.hide();
-                    Messenger messenger = new Messenger("", skin1, room);
-                    messenger.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
-                    uiStage.addActor(messenger);
+                    Chat chat = new Chat("", skin1, room);
+                    chat.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
+                    uiStage.addActor(chat);
                 }
             }
         });
