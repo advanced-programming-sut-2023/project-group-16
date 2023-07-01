@@ -129,6 +129,9 @@ public class testingGameScreen extends Menu {
         changeRateWindow = new ChangeRateWindow(skin1, game, this);
         changeRateWindow.setVisible(false);
 
+        buyingUnitWindow = new BuyingUnitWindow(skin1, game, this);
+        buyingUnitWindow.setVisible(false);
+
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
         uiStage.addActor(currentPlayerWindow);
@@ -140,6 +143,7 @@ public class testingGameScreen extends Menu {
         uiStage.addActor(buyingWindow);
         uiStage.addActor(popularityWindow);
         uiStage.addActor(changeRateWindow);
+        uiStage.addActor(buyingUnitWindow);
     }
 
     @Override
@@ -268,6 +272,9 @@ public class testingGameScreen extends Menu {
 
         changeRateWindow.setWidth(uiStage.getWidth() * 3 / 5);
         changeRateWindow.setHeight(uiStage.getHeight() / 4);
+
+        buyingUnitWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        buyingUnitWindow.setHeight(uiStage.getHeight() / 4);
 
         uiStage.draw();
     }

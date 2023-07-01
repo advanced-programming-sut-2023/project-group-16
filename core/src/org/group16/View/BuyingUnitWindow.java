@@ -7,8 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.group16.GameGraphics.CommandHandling.CreateSoldierCommand;
 import org.group16.Model.Buildings.EconomicBuilding;
 import org.group16.Model.Buildings.EconomicBuildingDetail;
+import org.group16.Model.Game;
 import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.Resources.ProductData;
 import org.group16.Model.Resources.Resource;
@@ -29,17 +31,26 @@ public class BuyingUnitWindow extends Window {
     ArrayList<SoldierDetail> soldierDetails = new ArrayList<>();
     int startPic = 0;
 
+    Game game;
+    testingGameScreen gameScreen;
 
-    public BuyingUnitWindow(Skin skin, EconomicBuildingDetail economicBuildingDetail) {
+
+    public BuyingUnitWindow(Skin skin, Game game, testingGameScreen gameScreen) {
         super("", skin);
+        this.skin = skin;
+        this.game = game;
+        this.gameScreen = gameScreen;
 
+        soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
+    }
 
-        this.economicBuildingDetail = economicBuildingDetail;
+    public void remake(EconomicBuilding economicBuilding) {
+        this.clear();
+        this.economicBuildingDetail = economicBuilding.getDetail();
         for (ProductData productData : economicBuildingDetail.getProductsData()) {
             soldierDetails.add((SoldierDetail) productData.resource());
         }
         numberOfPics = soldierDetails.size();
-        this.skin = skin;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         this.background(soilBackground.getDrawable());
@@ -49,8 +60,6 @@ public class BuyingUnitWindow extends Window {
 
         for (int i = 0; i < numberOfPics; i++) {
             try {
-
-
                 SoldierDetail soldierDetail = soldierDetails.get(i);
                 ImageButton imageButton = new ImageButton(skin);
                 ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
@@ -64,7 +73,7 @@ public class BuyingUnitWindow extends Window {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         status.setText(soldierDetail.GetName());
-                        //TODO
+                        gameScreen.inputProcessor.submitCommand(new CreateSoldierCommand(gameScreen.getCurUser() ,economicBuilding , soldierDetail , 1 ));
                     }
                 });
             } catch (Exception e) {
@@ -83,10 +92,9 @@ public class BuyingUnitWindow extends Window {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO
+                gameScreen.setCurrentRunningWindow(gameScreen.buyingWindow);
             }
         });
-
     }
 
 }

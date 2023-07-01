@@ -14,7 +14,7 @@ public enum BuildingGraphics {
     DRAWBRIDGE("DRAWBRIDGE", 1, .4f, -.05f, .35f, .3f),
     ARMOURY("ARMOURY", 1, .4f, -.05f, .35f, .3f),
     BARRACKS("BARRACKS", 1, .4f, -.05f, .35f, .3f),
-    MERCENARY_POST(" MERCENARY_POST", 1, .4f, -.05f, .35f, .3f),
+    MERCENARY_POST("MERCENARY_POST", 1, .4f, -.05f, .35f, .3f),
     ENGINEER_GUILD("ENGINEER_GUILD", 1, .4f, -.05f, .35f, .3f),
     INN("INN", 1, .4f, -.05f, .35f, .3f),
     MILL("MILL", 1, .4f, -.05f, .35f, .3f),
