@@ -44,15 +44,15 @@ public class CreateRoom extends Window {
         addButton();
         removeButton();
         container.add(error).row();
+        table = new Table(skin1);
+        table.setBackground(white.getDrawable());
+        table.setColor(Color.BLACK);
+        table.add(owner.getUsername()).row();
         container.add(table).row();
         okButton();
 
         error = new Label("", skin1);
 
-        table = new Table(skin1);
-        table.setBackground(white.getDrawable());
-        table.setColor(Color.BLACK);
-        table.add(owner.getUsername()).row();
 
         this.add(container);
     }
@@ -69,9 +69,9 @@ public class CreateRoom extends Window {
     }
 
     private void handleRoomName() {
+        roomName = new TextField("", skin1);
         if (isPV) return;
         roomNameLabel = new Label("Room Name:", skin1);
-        roomName = new TextField("", skin1);
         roomNameError = new Label("", skin1);
         roomNameError.setColor(Color.RED);
 
@@ -137,6 +137,7 @@ public class CreateRoom extends Window {
             }
         });
         container.add(remove).row();
+        container.add(error).row();
     }
 
     private void okButton() {
@@ -162,8 +163,10 @@ public class CreateRoom extends Window {
                         if (room == null)
                             room = new Room(users, new ArrayList<>(),
                                     users.get(0).getUsername() + "-" + users.get(1).getUsername());
-                    } else room = ChatServer.getRoomByName(name);
-
+                    } else {
+                        room = ChatServer.getRoomByName(name);
+                        if (room == null) room = new Room(users, new ArrayList<>(), name);
+                    }
 
                     Chat chat = new Chat("", skin1, room, owner);
                     chat.setSize(stage.getWidth() / 5.0F, stage.getHeight());
