@@ -22,6 +22,11 @@ public class BuildingRenderer extends Renderer {
         yDir = Util.right.cpy().mulAdd(Util.up, .5f).scl(-graphics.getRoofWidth()).mulAdd(Util.forward, .01f);
     }
 
+    @Override
+    public boolean isHovering() {
+        return shape.isHovering();
+    }
+
     public Vector3 getRoofPosition(float x, float y) {
         Vector3 pos = roofOrigin.cpy();
         pos.mulAdd(xDir, x);

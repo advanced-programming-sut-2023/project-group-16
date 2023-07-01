@@ -10,6 +10,11 @@ public class HumanRenderer extends Renderer {
         addChild(shape);
     }
 
+    @Override
+    public boolean isHovering() {
+        return shape.isHovering();
+    }
+
     public void playAnimation(String name, boolean randomizeStart) {
         shape.playAnimation(name, randomizeStart);
     }

@@ -92,14 +92,14 @@ public class TestingGDX extends Game {
         renderers.add(testProbe);
 
         ArrayList<Soldier> list1 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.ARCHER);
+        for (int i = 0; i < 5; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.ASSASSIN);
             gameRenderer.createRenderer(soldier);
             list1.add(soldier);
         }
         ArrayList<Soldier> list2 = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            Soldier soldier = new Soldier(List.of(scene.getCellAt(19, 18)), k2, SoldierDetail.ARCHER);
+        for (int i = 0; i < 15; i++) {
+            Soldier soldier = new Soldier(List.of(scene.getCellAt(10, 10)), k2, SoldierDetail.ASSASSIN);
             gameRenderer.createRenderer(soldier);
             list2.add(soldier);
         }
@@ -108,12 +108,7 @@ public class TestingGDX extends Game {
     }
 
     void createMap0() {
-        Map map = new Map("map0", 20, 20);
-        for (int i = 0; i < 10; i++)
-            for (int j = 0; j < 10; j++) {
-                map.getCellAt(i, j).setTreeType(TreeType.CHERRY_PALM);
-                map.getCellAt(i, j).setCellType(CellType.NORMAL);
-            }
+        Map map = new Map("map1", 60, 60);
         Map.saveMap(map);
     }
 
@@ -130,7 +125,7 @@ public class TestingGDX extends Game {
         game = new org.group16.Model.Game(KingdomType.ARAB, user);
         game.addUser(user1, KingdomType.EUROPEAN);
         createMap0();
-        scene = new Scene(Map.getMapByName("map0"), 0);
+        scene = new Scene(Map.getMapByName("map1"), 0);
         game.setScene(scene);
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);
@@ -138,6 +133,7 @@ public class TestingGDX extends Game {
 
     private void initGameObjects() {
         GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
+        inputProcessor.submitCommand(new CreateBuildingCommand(k1.getUser(), BuildingType.GRANARY, 3, 2));
         GameMenuController.dropBuilding(game, k2.getUser(), 19, 19, BuildingType.TOWN_BUILDING);
         gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
         gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
@@ -208,16 +204,23 @@ public class TestingGDX extends Game {
         if (input.isKeyPressed(Input.Keys.K))
             camera.position.add(dt * camSpeed, 0, dt * camSpeed);
         if (input.isKeyPressed(Input.Keys.U))
-            camera.position.add(-dt, -dt, -dt);
+            camera.position.add(-5 * dt, -5 * dt, -5 * dt);
         if (input.isKeyPressed(Input.Keys.O))
-            camera.position.add(dt, dt, dt);
+            camera.position.add(5 * dt, 5 * dt, 5 * dt);
 
-        if (input.isKeyJustPressed(Input.Keys.B))
+        if (input.isKeyJustPressed(Input.Keys.B)) {
             inputProcessor.submitCommand(new CreateBuildingCommand(k1.getUser(), BuildingType.LOOKOUT_TOWER, 4, 2));
-        if (input.isKeyJustPressed(Input.Keys.V))
-            inputProcessor.submitCommand(new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(2)));
-        if (input.isKeyJustPressed(Input.Keys.N)) inputProcessor.submitCommand(new EndTurnCommand(k1.getUser()));
-        if (input.isKeyJustPressed(Input.Keys.M)) inputProcessor.submitCommand(new EndTurnCommand(k2.getUser()));
+        }
+        if (input.isKeyJustPressed(Input.Keys.V)) {
+            inputProcessor.submitCommand(new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(1)));
+
+        }
+        if (input.isKeyPressed(Input.Keys.N)) inputProcessor.submitCommand(new EndTurnCommand(k1.getUser()));
+        if (input.isKeyPressed(Input.Keys.M)) inputProcessor.submitCommand(new EndTurnCommand(k2.getUser()));
+
+       if (input.isTouched()) {
+           System.out.println(Util.getMouseCell(game).getGameObjects()) ;
+       }
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
 //        if (input.isKeyPressed(Input.Keys.M))

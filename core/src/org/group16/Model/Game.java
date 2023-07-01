@@ -14,6 +14,10 @@ public class Game {
         kingdoms.add(new Kingdom(kingdomType, user));
     }
 
+    public  Game(){
+
+    }
+
     public void update() {
         for (var kingdom : kingdoms)
             kingdom.update(currentTime);

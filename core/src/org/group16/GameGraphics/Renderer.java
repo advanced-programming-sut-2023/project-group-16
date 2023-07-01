@@ -72,4 +72,8 @@ public class Renderer {
             child.render(decalBatch, worldPosition);
         }
     }
+
+    public Decal getDecal(){
+        return decal ;
+    }
 }

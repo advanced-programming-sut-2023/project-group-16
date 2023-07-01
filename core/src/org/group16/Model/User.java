@@ -9,6 +9,13 @@ import java.util.ArrayList;
 
 public class User implements Serializable {
     private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
+
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    private String avatarPictureP;
     private int score;
 
     private User(String username, String password, String email, String passwordRecoveryQuestion,
@@ -27,6 +34,7 @@ public class User implements Serializable {
                                String passwordRecoveryAnswer, String nickname, String slogan) {
         User user = new User(username, password, email, passwordRecoveryQuestion,
                 passwordRecoveryAnswer, nickname, slogan);
+        user.setAvatarPicture("mainPfp/LionHeart.jpg");
         saveChanges(user);
     }
 
@@ -176,6 +184,14 @@ public class User implements Serializable {
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+        saveChanges(this);
+    }
+    public String getAvatarPicture() {
+        return avatarPictureP;
+    }
+
+    public void setAvatarPicture(String avatarPictureP) {
+        this.avatarPictureP = avatarPictureP;
         saveChanges(this);
     }
 

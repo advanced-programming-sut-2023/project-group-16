@@ -119,9 +119,9 @@ public class Human extends GameObject implements Alive {
             humanRenderer.playOrContinueAnimation("fighting", false);
         } else {
             humanRenderer.setDirection(calculateDirection(delta));
-            if (delta.len2() > .5f) {
+            if (delta.len2() > .3f) {
                 humanRenderer.playOrContinueAnimation("running", true);
-            } else if (delta.len2() > .1f) {
+            } else if (delta.len2() > .01f) {
                 humanRenderer.playOrContinueAnimation("walking", true);
             } else {
                 humanRenderer.playOrContinueAnimation("idle", true);
