@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class GameObject {
+public abstract class GameObject implements ReferenceSerializable {
     private final Kingdom kingdom;
-    private final UUID uuid = UUID.randomUUID();
+    private final UUID uuid;
     protected float relativeX;
     protected float relativeY;
     DestroyCallback destroyCallback;
@@ -16,6 +16,9 @@ public abstract class GameObject {
     private boolean isAlive = true;
 
     public GameObject(List<Cell> cells, Kingdom kingdom) {
+        uuid = UUIDResolver.generateUUID(Scene.getCurrent().getRandom());
+        UUIDResolver.subscribeObject(this);
+
         this.cells = new ArrayList<>(cells);
         Scene.getCurrent().addGameObject(this);
         for (Cell cell : cells)
