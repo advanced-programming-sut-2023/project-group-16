@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.group16.Model.Game;
 import org.group16.Model.Resources.BasicResource;
 import org.group16.Model.Resources.Food;
 import org.group16.Model.Resources.Resource;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShopWindow extends Window {
-    Stage uistage;
+
     Image soilBackground, grayBackGround;
     public Skin skin;
     final int numberOfPics = 5, xUp = 60, yUp = 60, xDown = 50, yDown = 50;
@@ -51,13 +52,19 @@ public class ShopWindow extends Window {
     ImageButtonElement[] imageButtonElements = new ImageButtonElement[numberOfPics];
 
 
-    public ImageButton backImageButton, nextImageButton, foodButton, weaponryButton, basicButton;
+    public ImageButton backImageButton, nextImageButton, foodButton, weaponryButton, basicButton , back;
 
     BuyingWindow buyingWindow;
 
-    public ShopWindow(String title, Skin skin, Stage uistage) {
-        super(title, skin);
-        this.uistage = uistage;
+    Game game  ;
+    testingGameScreen gameScreen ;
+
+    public ShopWindow(Skin skin, Game game ,testingGameScreen gameScreen) {
+        super("", skin);
+
+        this.game = game ;
+        this.gameScreen = gameScreen ;
+
         this.skin = skin;
         status = new Label("", skin);
         status.setColor(Color.BLACK);
@@ -75,6 +82,13 @@ public class ShopWindow extends Window {
         makeButtons(weaponryButton, "ButtonImages/WeaponryButton.png", "ButtonImages/WeaponryButton.png");
         basicButton = new ImageButton(skin);
         makeButtons(basicButton, "ButtonImages/BasicButton.png", "ButtonImages/BasicButton.png");
+
+        back = new ImageButton(skin);
+        ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
+        imageStyle.imageUp = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 30, 30));
+        imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
+        back.setStyle(imageStyle);
+
 
         this.add(status).row();
 
@@ -134,8 +148,19 @@ public class ShopWindow extends Window {
             }
         });
 
-        buyingWindow = new BuyingWindow(Food.BREAD, skin);
-        buyingWindow.hide();
+
+        this.row() ;
+
+        this.add(back) ;
+
+
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.setCurrentRunningWindow(gameScreen.buildingWindow);
+            }
+        }) ;
+
     }
 
     public void makeButtons(ImageButton imageButton, String up, String down) {
@@ -169,8 +194,9 @@ public class ShopWindow extends Window {
                 public void changed(ChangeEvent event, Actor actor) {
                     status.setText(name);
                     try {
-                        buyingWindow.changeResource(resource);
-                        buyingWindow.show(uistage);
+                        gameScreen.buyingWindow.remake(resource);
+                        gameScreen.setCurrentRunningWindow(gameScreen.buyingWindow) ;
+
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -217,58 +243,5 @@ public class ShopWindow extends Window {
         NULL
     }
 
-    public class BuyingWindow extends Dialog {
-        TextField amount = new TextField("1", skin);
-        Label price, goodName, error;
-        TextButton buyButton, sellButton, back;
 
-        Resource resource;
-
-        public BuyingWindow(Resource resource, Skin skin) {
-            super("", skin);
-
-            this.resource = resource;
-
-            this.setBackground(grayBackGround.getDrawable());
-
-            buyButton = new TextButton("buy", skin);
-            sellButton = new TextButton("sell", skin);
-            price = new Label("price : " + resource.getPrice(), skin);
-            goodName = new Label(resource.GetName(), skin);
-            back = new TextButton("back", skin);
-            error = new Label("", skin);
-            error.setColor(Color.RED);
-            this.getContentTable().add(goodName).row();
-            this.getContentTable().add(amount).row();
-            this.getContentTable().add(price).row();
-            this.getContentTable().add(buyButton).row();
-            this.getContentTable().add(sellButton).row();
-            this.getContentTable().add(back).row();
-            this.getContentTable().add(error).row();
-            buyButton.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    //TODO
-                }
-            });
-            sellButton.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    //TODO
-                }
-            });
-            back.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    hide();
-                }
-            });
-        }
-
-        public void changeResource(Resource resource) {
-            goodName.setText(resource.GetName());
-            price.setText("price : " + resource.getPrice());
-        }
-
-    }
 }

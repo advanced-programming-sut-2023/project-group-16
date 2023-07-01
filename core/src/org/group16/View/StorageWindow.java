@@ -2,11 +2,14 @@ package org.group16.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.group16.Model.Buildings.EconomicBuilding;
 import org.group16.Model.Buildings.EconomicBuildingDetail;
+import org.group16.Model.Game;
 import org.group16.Model.Resources.*;
 
 import java.util.ArrayList;
@@ -23,19 +26,24 @@ public class StorageWindow extends Window {
 
     ArrayList<Resource> resources = new ArrayList<>();
 
-    public StorageWindow(Skin skin, EconomicBuilding economicBuilding) {
+    Game game ;
+    testingGameScreen gameScreen ;
+
+    public StorageWindow(Skin skin, Game game , testingGameScreen gameScreen) {
         super("", skin);
         this.skin = skin;
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
-        this.background(soilBackground.getDrawable());
-        remake(economicBuilding);
+
+        this.game = game ;
+        this.gameScreen = gameScreen ;
+
     }
 
 
     public void remake(EconomicBuilding economicBuilding) {
-       this.clear();
+        this.clear();
 
-
+        this.background(soilBackground.getDrawable());
         this.economicBuilding = economicBuilding;
         this.economicBuildingDetail = economicBuilding.getDetail();
 
@@ -68,6 +76,13 @@ public class StorageWindow extends Window {
         imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
         back.setStyle(imageStyle);
         this.add(back);
+
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.setCurrentRunningWindow(gameScreen.buildingWindow) ;
+            }
+        });
 
 
     }

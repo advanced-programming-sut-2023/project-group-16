@@ -2,12 +2,15 @@ package org.group16.View;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.EconomicBuilding;
 import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.Buildings.WarBuilding;
+import org.group16.Model.Game;
 import org.w3c.dom.Text;
 
 public class BuildingWindow extends Window {
@@ -18,17 +21,26 @@ public class BuildingWindow extends Window {
     ImageButton back;
     Image soilBackground;
     Building building;
+    Game game ;
+    testingGameScreen gameScreen ;
 
-    public BuildingWindow(Skin skin, Building building) {
+    public BuildingWindow(Skin skin , Game game , testingGameScreen gameScreen) {
         super("", skin);
 
-        this.building = building;
+        this.game = game ;
+        this.gameScreen = gameScreen ;
 
         this.skin = skin;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         this.background(soilBackground.getDrawable());
+    }
 
+
+    public void makeWindow() {
+        System.out.println("hi");
+        this.clear();
+        this.background(soilBackground.getDrawable());
         shop = new TextButton("shop", skin);
         seeStorage = new TextButton("storage", skin);
         buildUnit = new TextButton("build unit", skin);
@@ -45,14 +57,6 @@ public class BuildingWindow extends Window {
 
         name = new Label("", skin);
         status = new Label("", skin);
-
-
-        makeWindow();
-
-    }
-
-
-    public void makeWindow() {
         name.setText(building.getBuildingType().GetName().toLowerCase());
         if (building instanceof WarBuilding || ((EconomicBuilding) building).isActive()) {
             status.setText("on");
@@ -78,6 +82,28 @@ public class BuildingWindow extends Window {
             this.add(seeStorage);
         this.add(repair).row();
         this.add(back);
+
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.setCurrentRunningWindow(gameScreen.buildingSelectWindow) ;
+            }
+        });
+
+        seeStorage.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.storageWindow.remake((EconomicBuilding) building);
+                gameScreen.setCurrentRunningWindow(gameScreen.storageWindow) ;
+            }
+        });
+
+        shop.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.setCurrentRunningWindow(gameScreen.shopWindow);
+            }
+        });
     }
 
     public void changeBuilding(Building building) {
