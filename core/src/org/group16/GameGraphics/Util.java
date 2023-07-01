@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import org.group16.Model.Cell;
+import org.group16.Model.Game;
+import org.group16.Vec2;
 
 public class Util {
     public static final Vector3 forward = new Vector3(1, 1, 1).nor();
@@ -43,5 +46,13 @@ public class Util {
 //        ray.origin.y + t * ray.direction.y = 0
         float t = -ray.origin.y / ray.direction.y;
         mousePosition.set(ray.origin).mulAdd(ray.direction, t);
+    }
+
+    public static Cell getMouseCell(Game game) {
+        float x = mousePosition.x, y = mousePosition.z;
+        int X = (int) x, Y = (int) y;
+        if (x > X + .5f) X++;
+        if (y > Y + .5f) Y++;
+        return game.getScene().getCellAt(X, Y);
     }
 }

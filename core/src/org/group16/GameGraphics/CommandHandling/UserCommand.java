@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public abstract class UserCommand {
     private static final Pattern dataPattern = Pattern.compile("\\[\\[(?<type>\\S+)]](?<json>.+)");
-    public final User user;
+    public User user;
     protected boolean executed;
 
     public UserCommand(User user) {
@@ -33,6 +33,10 @@ public abstract class UserCommand {
     protected String success() {
         executed = true;
         return "OK";
+    }
+
+    public void resolveUser(Game game) {
+        user = game.getUserByUsername(user.getUsername());
     }
 
     public abstract String execute(Game game, GameRenderer gameRenderer);

@@ -38,8 +38,10 @@ public class InputProcessor {
         for (User user : allUsers) {
             int i = commandIter.get(user);
             List<UserCommand> userCommands = commands.get(user);
-            for (; i < userCommands.size(); i++)
+            for (; i < userCommands.size(); i++) {
+                userCommands.get(i).resolveUser(game);
                 userCommands.get(i).execute(game, gameRenderer);
+            }
             commandIter.put(user, i);
         }
         finalizedUsers.clear();

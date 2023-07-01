@@ -49,6 +49,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "games.spooky.gdx:gdx-nativefilechooser-desktop-lwjgl:2.1.0"
 
+        implementation group: 'com.google.guava', name: 'guava', version: '11.0'
     }
 }
 
