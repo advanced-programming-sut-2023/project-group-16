@@ -1,11 +1,8 @@
 package org.group16.Server.Lobby;
 
-import com.google.common.base.Strings;
 import org.group16.Model.*;
 import org.group16.Server.Lobby.Command.Command;
 import org.group16.Server.Lobby.Command.CommandHandler;
-import org.group16.ViewTerminal.CreateGameMenu;
-import org.group16.ViewTerminal.SetKingdomMenu;
 
 import java.io.*;
 import java.net.Socket;
@@ -22,6 +19,7 @@ public class LobbyConnection extends Thread {
     private User currentUser;
     private Game currentGame;
     private Long randSeed;
+    private String mapname;
 
     public LobbyConnection(Socket socket) throws IOException {
         this.socket = socket;
@@ -173,7 +171,9 @@ public class LobbyConnection extends Thread {
     }
 
     private void getAllUsers() throws IOException {
-        outputStream.writeObject(new UserList(User.getAllUsers()));
+        UserList userList = new UserList();
+        userList.users.addAll(User.getAllUsers());
+        outputStream.writeObject(userList);
     }
 
     private void createGame(TreeMap<String, ArrayList<String>> map) throws IOException {
@@ -195,6 +195,7 @@ public class LobbyConnection extends Thread {
             return;
         }
         outputStream.writeUTF("OK");
+        this.mapname = mapname;
         currentGame.setScene(new Scene(newMap, randSeed));
     }
 
@@ -237,10 +238,14 @@ public class LobbyConnection extends Thread {
             return;
         }
         outputStream.writeUTF("OK");
-//        SetKingdomMenu setKingdomMenu = new SetKingdomMenu(scanner, game);
-//        System.out.println("now please select places of primary buildings");
-//        setKingdomMenu.run();
-//        back = true;
+        PlayerList players = new PlayerList();
+        for (Kingdom kingdom : currentGame.getKingdoms()) {
+            players.users.add(kingdom.getUser());
+            players.kingdomTypes.add(kingdom.getKingdomType());
+        }
+        outputStream.writeUTF(mapname);
+        outputStream.writeLong(randSeed);
+        outputStream.writeObject(players);
     }
 }
 
