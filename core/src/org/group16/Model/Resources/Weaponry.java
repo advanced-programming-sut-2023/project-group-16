@@ -38,6 +38,11 @@ public enum Weaponry implements Resource {
 
     @Override
     public int getPrice() {
-        return Integer.MAX_VALUE;
+        return 50;
+    }
+
+    @Override
+    public String GetName() {
+        return this.name();
     }
 }

@@ -7,6 +7,20 @@ public enum HumanGraphics {
     EUROPEAN_ARCHER("game/soldiers/european_archer.atlas", .3f, .1f,
             new String[]{"idle", "walking", "running", "fighting"},
             new int[]{1, 8, 8, 8}),
+    SLAVE("game/soldiers/slave.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8}) ,
+    ASSASSIN("game/soldiers/assassin.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8}) ,
+    //TODO : wtf ?
+//    ARABIAN_ARCHER("game/soldiers/arabian_archer.atlas", .3f, .1f,
+//            new String[]{"idle", "walking", "running", "fighting"},
+//            new int[]{1, 8, 8, 8})
+
+    MACE_MAN("game/soldiers/maceman.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8})
     ;
     private final String path;
     private final float size;

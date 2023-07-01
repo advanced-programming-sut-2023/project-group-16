@@ -39,4 +39,9 @@ public enum BasicResource implements Resource {
     public int getPrice() {
         return price;
     }
+
+    @Override
+    public String GetName() {
+        return this.name() ;
+    }
 }

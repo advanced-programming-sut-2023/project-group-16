@@ -37,4 +37,9 @@ public enum Food implements Resource {
     public int getPrice() {
         return 3;
     }
+
+    @Override
+    public String GetName() {
+        return this.name() ;
+    }
 }

@@ -72,7 +72,7 @@ public class GameRenderer extends Renderer {
             if (renderers.containsKey(go))
                 go.updateRenderer(renderers.get(go));
             else {
-                throw new RuntimeException();
+                go.createRenderer() ;
             }
         }
         super.update(dt);

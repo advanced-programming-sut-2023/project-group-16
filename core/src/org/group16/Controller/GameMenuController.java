@@ -251,4 +251,6 @@ public class GameMenuController {
         return "leaved team successfully";
 
     }
+
+
 }
