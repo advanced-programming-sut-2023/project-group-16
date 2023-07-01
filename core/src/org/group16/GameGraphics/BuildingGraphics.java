@@ -20,29 +20,29 @@ public enum BuildingGraphics {
     MILL("MILL", .6f, .5f, .1f, 0, 0),//TESTED
     IRON_MINE("IRON_MINE", .6f, .15f, -.1f, 0, 0),//TESTED
     MARKET("MARKET", .5f, .2f, 0, 0, 0), //TESTED
-    OX_TETHER("OX_TETHER", 1, .4f, -.05f, .35f, .3f),
-    PITCH_RIG("PITCH_RIG", 1, .4f, -.05f, .35f, .3f),
-    QUARRY("QUARRY", 1, .4f, -.05f, .35f, .3f),
-    STOCKPILE("STOCKPILE", 0.4f, 0.1f, -0, .1f, .3f),
-    WOOD_CUTTER("WOOD_CUTTER", 1, .4f, -.05f, .35f, .3f),
-    HOVEL("HOVEL", 1, .4f, -.05f, .35f, .3f),
-    CHURCH("CHURCH", 1, .4f, -.05f, .35f, .3f),
-    CATHEDRAL("CATHEDRAL", 1, .4f, -.05f, .35f, .3f),
-    ARMOURER("ARMOURER", 1, .4f, -.05f, .35f, .3f),
-    BLACKSMITH("BLACKSMITH", 1, .4f, -.05f, .35f, .3f),
-    FLETCHER("FLETCHER", 1, .4f, -.05f, .35f, .3f),
-    POLE_TURNER("POLE_TURNER", 1, .4f, -.05f, .35f, .3f),
-    OIL_SMELTER("OIL_SMELTER", 1, .4f, -.05f, .35f, .3f),
-    STABLE("STABLE", 1, .4f, -.05f, .35f, .3f),
-    APPLE_ORCHARD("APPLE_ORCHARD", 1, .4f, -.05f, .35f, .3f),
-    DIARY_FARMER("DIARY_FARMER", 1, .4f, -.05f, .35f, .3f),
-    HOPS_FARMER("HOPS_FARMER", 1, .4f, -.05f, .35f, .3f),
-    HUNTER_POST("HUNTER_POST", 1, .4f, -.05f, .35f, .3f),
-    WHEAT_FARMER("WHEAT_FARMER", 1, .4f, -.05f, .35f, .3f),
-    BAKERY("BAKERY", 1, .4f, -.05f, .35f, .3f),
-    BREWER("BREWER", 1, .4f, -.05f, .35f, .3f),
-    GRANARY("GRANARY", 0.4f, .4f, -.05f, .35f, .3f),
-    UNEMPLOYED_PLACE("STOCKPILE", 0.4f, .1f, 0f, .1f, .3f),
+    OX_TETHER("OX_TETHER", .4f, .12f, -.05f, 0, 0),//TESTED
+    PITCH_RIG("PITCH_RIG", .4f, .12f, -.05f, 0, 0),//TESTED
+    QUARRY("QUARRY", .7f, .25f, -.05f, 0, 0),//TESTED
+    STOCKPILE("STOCKPILE", 0.5f, 0.05f, -0.1f, 0, 0),//TESTED
+    WOOD_CUTTER("WOOD_CUTTER", .4f, .15f, -.05f, 0, 0),//TESTED
+    HOVEL("HOVEL", .5f, .15f, -.05f, 0, 0),//TESTED
+    CHURCH("CHURCH", 1, .3f, -.15f, 0, 0),//TESTED
+    CATHEDRAL("CATHEDRAL", 1, .3f, -.15f, 0, 0),//TESTED
+    ARMOURER("ARMOURER", .4f, .15f, -.05f, 0, 0),//TESTED
+    BLACKSMITH("BLACKSMITH", .4f, .15f, -.05f, 0, 0),//TESTED
+    FLETCHER("FLETCHER", .4f, .15f, -.05f, 0, 0),//TESTED
+    POLE_TURNER("POLE_TURNER", .4f, .15f, -.05f, 0, 0),//TESTED
+    OIL_SMELTER("OIL_SMELTER", .6f, .2f, -.05f, 0, 0),//TESTED
+    STABLE("STABLE", .7f, .2f, -.15f, 0, 0),//TESTED
+    APPLE_ORCHARD("APPLE_ORCHARD", .4f, .15f, -.05f, 0, 0),//TESTED
+    DIARY_FARMER("DIARY_FARMER", .4f, .15f, -.05f, 0, 0),//TESTED
+    HOPS_FARMER("HOPS_FARMER", .4f, .15f, -.05f, 0, 0),//TESTED
+    HUNTER_POST("HUNTER_POST", .5f, .15f, -.05f, 0, 0),//TESTED
+    WHEAT_FARMER("WHEAT_FARMER", .5f, .15f, -.05f, 0, 0),//TESTED
+    BAKERY("BAKERY", .5f, .2f, -.05f, 0, 0),//TESTED
+    BREWER("BREWER", .4f, .2f, -.05f, 0, 0),//TESTED
+    GRANARY("GRANARY", .5f, .15f, -.05f, 0, 0),//TESTED
+    UNEMPLOYED_PLACE("UNEMPLOYED_PLACE", 0.5f, .1f, -.1f, 0, 0),
 
 
     ;

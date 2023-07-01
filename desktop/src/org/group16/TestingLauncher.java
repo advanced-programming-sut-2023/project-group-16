@@ -24,7 +24,7 @@ public class TestingLauncher {
 //        GameSocket.initSocket(Server.host, Server.gamePort);
         config.setWindowIcon("icons/game_icon.png");
         new Lwjgl3Application(new TestBuildingGraphics(
-                BuildingGraphics.IRON_MINE,
+                BuildingGraphics.UNEMPLOYED_PLACE,
                 0)
                 , config);
     }
