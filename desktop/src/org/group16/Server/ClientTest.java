@@ -2,6 +2,7 @@ package org.group16.Server;
 
 import org.group16.GameGraphics.CommandHandling.CreateBuildingCommand;
 import org.group16.Model.Buildings.BuildingType;
+import org.group16.Model.User;
 import org.group16.Model.UserList;
 
 import java.io.*;
@@ -18,10 +19,6 @@ public class ClientTest {
         cmdStream = new DataOutputStream(socket.getOutputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
-
-        cmdStream.writeUTF("get all users");
-        UserList userList = (UserList) inputStream.readObject();
-        System.out.println(userList.users);
     }
 
     public static void main(String[] args) {

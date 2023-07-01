@@ -1,14 +1,17 @@
 package org.group16.Server.Lobby;
 
-import org.group16.Model.User;
-import org.group16.Model.UserList;
+import com.google.common.base.Strings;
+import org.group16.Model.*;
 import org.group16.Server.Lobby.Command.Command;
 import org.group16.Server.Lobby.Command.CommandHandler;
+import org.group16.ViewTerminal.CreateGameMenu;
+import org.group16.ViewTerminal.SetKingdomMenu;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Random;
 import java.util.TreeMap;
 
 public class LobbyConnection extends Thread {
@@ -17,6 +20,8 @@ public class LobbyConnection extends Thread {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
     private User currentUser;
+    private Game currentGame;
+    private Long randSeed;
 
     public LobbyConnection(Socket socket) throws IOException {
         this.socket = socket;
@@ -46,8 +51,6 @@ public class LobbyConnection extends Thread {
                 else if ((map = CommandHandler.matches(Command.GET_ALL_USERS, msg)) != null) getAllUsers();
 //                else if((map = CommandHandler.matches(Command.))
             }
-        } catch (ClassNotFoundException ex) {
-            System.out.println("cnf");
         } catch (Exception ex) {
             System.out.println("User Disconnected");
         }
@@ -169,10 +172,75 @@ public class LobbyConnection extends Thread {
         outputStream.writeObject(User.getUserByName(username));
     }
 
-    private void getAllUsers() throws IOException, ClassNotFoundException {
-        System.out.println("all user");
+    private void getAllUsers() throws IOException {
         outputStream.writeObject(new UserList(User.getAllUsers()));
     }
 
+    private void createGame(TreeMap<String, ArrayList<String>> map) throws IOException {
+        KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
+        if (kingdomType == null) {
+            outputStream.writeUTF("invalid kingdom type");
+            return;
+        }
+        outputStream.writeUTF("OK");
+        currentGame = new Game(kingdomType, currentUser);
+    }
+
+    private void selectMap(TreeMap<String, ArrayList<String>> map) throws IOException {
+        String mapname = map.get("m").get(0);
+        randSeed = new Random().nextLong();
+        Map newMap = Map.getMapByName(mapname);
+        if (newMap == null) {
+            outputStream.writeUTF("no map with this name exist");
+            return;
+        }
+        outputStream.writeUTF("OK");
+        currentGame.setScene(new Scene(newMap, randSeed));
+    }
+
+    private void addUser(TreeMap<String, ArrayList<String>> map) throws IOException {
+        User user = User.getUserByName(map.get("u").get(0));
+        KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
+        if (kingdomType == null) {
+            outputStream.writeUTF("invalid kingdom type");
+            return;
+        }
+        if (currentGame.getKingdoms().size() == 8) {
+            outputStream.writeUTF("game is full");
+            return;
+        }
+        if (currentGame.getKingdom(user) != null) {
+            outputStream.writeUTF("this user already exist");
+            return;
+        }
+        outputStream.writeUTF("OK");
+        currentGame.addUser(user, kingdomType);
+    }
+
+    private void removeUser(TreeMap<String, ArrayList<String>> map) throws IOException {
+        User user = User.getUserByName(map.get("u").get(0));
+        if (currentGame.getKingdom(user) == null) {
+            outputStream.writeUTF("this user doesn't exist");
+            return;
+        }
+        outputStream.writeUTF("OK");
+        currentGame.removeUser(user);
+    }
+
+    private void startGame() throws IOException {
+        if (currentGame.getKingdoms().size() < 2) {
+            outputStream.writeUTF("insufficient user to start game");
+            return;
+        }
+        if (currentGame.getScene() == null) {
+            outputStream.writeUTF("no map is selected");
+            return;
+        }
+        outputStream.writeUTF("OK");
+//        SetKingdomMenu setKingdomMenu = new SetKingdomMenu(scanner, game);
+//        System.out.println("now please select places of primary buildings");
+//        setKingdomMenu.run();
+//        back = true;
+    }
 }
 
