@@ -26,7 +26,6 @@ public enum Command {
             new Option("u", 1, true)
     ))),
     GET_ALL_USERS("get\\s+all\\s+users", new ArrayList<>()),
-    DISPLAY_PROFILE("display\\s+profile", new ArrayList<>()),
     // GAME LOBBY
     CREATE_GAME("create\\s+game", new ArrayList<>(List.of(
             new Option("t", 1, true)))),

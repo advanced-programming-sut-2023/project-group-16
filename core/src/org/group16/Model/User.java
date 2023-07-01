@@ -7,16 +7,8 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.math.MathUtils.random;
-
-public class User {
-    private String username;
-    private String password;
-    private String nickname;
-    private String email;
-    private String passwordRecoveryQuestion;
-    private String passwordRecoveryAnswer;
-    private String slogan;
+public class User implements Serializable {
+    private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
 
 
     public void setScore(int score) {
@@ -45,6 +37,7 @@ public class User {
         user.setAvatarPicture("mainPfp/LionHeart.jpg");
         saveChanges(user);
     }
+
     public static void removeUser(User user) {
         String folderPath = new File("").getAbsolutePath() + "/Data/Users";
         File file = new File(folderPath + "/" + user.username + ".json");

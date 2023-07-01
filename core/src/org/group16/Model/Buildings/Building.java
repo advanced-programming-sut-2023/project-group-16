@@ -7,6 +7,7 @@ import org.group16.Model.GameObject;
 import org.group16.Model.Kingdom;
 import org.group16.Model.People.Alive;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
