@@ -14,6 +14,7 @@ import org.group16.Model.Resources.StorageData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Kingdom {
     private final KingdomType kingdomType;
@@ -79,7 +80,9 @@ public class Kingdom {
         }
         int added = Math.min(population, getPopulationCapacity() - getPopulation());
         while (added > 0) {
-            new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100);
+            var human = new Human(getEconomicBuildingsByType(BuildingType.UNEMPLOYED_PLACE).get(0).getCells(), this, 100);
+            human.setRelativeX(Scene.getCurrent().getRandom().nextFloat(-.5f, .5f));
+            human.setRelativeY(Scene.getCurrent().getRandom().nextFloat(-.5f, .5f));
             added--;
         }
     }
