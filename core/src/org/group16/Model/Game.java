@@ -14,20 +14,29 @@ public class Game {
         kingdoms.add(new Kingdom(kingdomType, user));
     }
 
-    public void execute() {
+    public  Game(){
+
+    }
+
+    public void update() {
+        for (var kingdom : kingdoms)
+            kingdom.update(currentTime);
+        scene.update(currentTime);
+        currentTime += Time.deltaTime;
+    }
+
+    public void onTurnStart() {
         for (var kingdom : kingdoms)
             kingdom.onTurnStart();
         scene.onTurnStart();
-        for (int iteration = 0; iteration < Time.updateIterationCount; iteration++) {
-            for (var kingdom : kingdoms)
-                kingdom.update(currentTime);
-            scene.update(currentTime);
-            currentTime += Time.deltaTime;
-        }
+    }
+
+    public void onTurnEnd() {
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
             kingdom.onTurnEnd();
     }
+
 
     public Scene getScene() {
         return scene;
@@ -115,5 +124,12 @@ public class Game {
 
     public void removeUser(User user) {
         kingdoms.remove(getKingdom(user));
+    }
+
+    public User getUserByUsername(String username) {
+        for (Kingdom kingdom : kingdoms) {
+            if (kingdom.getUser().getUsername().equals(username)) return kingdom.getUser();
+        }
+        return null;
     }
 }

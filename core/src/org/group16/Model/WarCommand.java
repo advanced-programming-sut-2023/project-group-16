@@ -5,6 +5,7 @@ import org.group16.Model.People.Human;
 import org.group16.Model.People.Soldier;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WarCommand {
     private final ArrayList<Soldier> unit;
@@ -16,7 +17,7 @@ public class WarCommand {
     private PatrollingStatus patrollingStatus;
     private Status status = Status.STAND_STILL;
 
-    public WarCommand(ArrayList<Soldier> unit) {
+    public WarCommand(List<Soldier> unit) {
         this.unit = new ArrayList<>(unit);
         destination = null;
         attackCell = false;
@@ -26,7 +27,7 @@ public class WarCommand {
         patrolDestination = null;
     }
 
-    public WarCommand(ArrayList<Soldier> unit, Cell destination, boolean attackCell) {
+    public WarCommand(List<Soldier> unit, Cell destination, boolean attackCell) {
         this.unit = new ArrayList<>(unit);
         this.destination = destination;
         this.attackCell = attackCell;
@@ -36,7 +37,7 @@ public class WarCommand {
         patrolDestination = null;
     }
 
-    public WarCommand(ArrayList<Soldier> unit, Cell destination, Cell patrolDestination) {
+    public WarCommand(List<Soldier> unit, Cell destination, Cell patrolDestination) {
         this.unit = new ArrayList<>(unit);
         this.destination = destination;
         this.patrolDestination = patrolDestination;
@@ -47,7 +48,7 @@ public class WarCommand {
         for (Soldier soldier : unit) soldier.setWarCommand(this);
     }
 
-    public WarCommand(ArrayList<Soldier> unit, Human targetHuman) {
+    public WarCommand(List<Soldier> unit, Human targetHuman) {
         this.unit = new ArrayList<>(unit);
         this.targetHuman = targetHuman;
         attackCell = false;
@@ -57,7 +58,7 @@ public class WarCommand {
         patrolDestination = null;
     }
 
-    public WarCommand(ArrayList<Soldier> unit, Building targetBuilding) {
+    public WarCommand(List<Soldier> unit, Building targetBuilding) {
         this.unit = new ArrayList<>(unit);
         this.targetBuilding = targetBuilding;
         attackCell = false;

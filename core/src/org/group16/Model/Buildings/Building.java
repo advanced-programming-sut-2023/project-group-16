@@ -1,11 +1,15 @@
 package org.group16.Model.Buildings;
 
+import org.group16.GameGraphics.BuildingRenderer;
+import org.group16.GameGraphics.Renderer;
 import org.group16.Model.Cell;
 import org.group16.Model.GameObject;
 import org.group16.Model.Kingdom;
 import org.group16.Model.People.Alive;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Building extends GameObject implements Alive {
     private int hp;
@@ -13,21 +17,22 @@ public abstract class Building extends GameObject implements Alive {
     private BuildingType buildingType;
 
     private double buildTime;
+    private BuildingRenderer renderer;
 
-    public BuildingType getBuildingType() {
-        return buildingType;
-    }
-
-    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+    public Building(List<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom);
         this.hp = hp;
         kingdom.addBuilding(this);
     }
 
-    public Building(ArrayList<Cell> cells, Kingdom kingdom, int hp, double buildTime, BuildingType buildingType) {
+    public Building(List<Cell> cells, Kingdom kingdom, int hp, double buildTime, BuildingType buildingType) {
         this(cells, kingdom, hp);
         this.buildTime = buildTime;
         this.buildingType = buildingType;
+    }
+
+    public BuildingType getBuildingType() {
+        return buildingType;
     }
 
     public int getHp() {
@@ -55,11 +60,11 @@ public abstract class Building extends GameObject implements Alive {
     }
 
     public void repair() {
-        int basicHp ;
-        if (this instanceof  EconomicBuilding)
-            basicHp = ((EconomicBuilding) this).getDetail().getHp() ;
+        int basicHp;
+        if (this instanceof EconomicBuilding)
+            basicHp = ((EconomicBuilding) this).getDetail().getHp();
         else
-            basicHp = ((WarBuilding)this).getDetail().getHp() ;
+            basicHp = ((WarBuilding) this).getDetail().getHp();
         setHp(basicHp);
     }
 
@@ -73,7 +78,6 @@ public abstract class Building extends GameObject implements Alive {
         super.destroy();
     }
 
-
     @Override
     public void onTurnEnd() {
         if (hp <= 0) {
@@ -86,5 +90,19 @@ public abstract class Building extends GameObject implements Alive {
     public void dealDamage(int damage) {
         hp -= damage;
         if (hp <= 0) destroy();
+    }
+
+    public BuildingRenderer getRenderer() {
+        return renderer;
+    }
+
+    @Override
+    public Renderer createRenderer() {
+        return renderer = new BuildingRenderer(buildingType.getGraphics(), getCell().getX(), getCell().getY());
+    }
+
+    @Override
+    public void updateRenderer(Renderer renderer) {
+        // TODO?
     }
 }

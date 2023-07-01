@@ -2,6 +2,7 @@ package org.group16.Controller;
 
 import org.group16.Model.Game;
 import org.group16.Model.Kingdom;
+import org.group16.Model.Resources.BasicResource;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.Trade;
 import org.group16.Model.User;
@@ -14,7 +15,8 @@ public class TradeMenuController {
         if (amount < 0) return "amount should be positive";
         if (resource == null) return "invalid resource type";
         Kingdom kingdom = game.getKingdom(currentUser);
-        if (kingdom.getResourceCount(resource) < amount) return "insufficient amount in storage";
+        if (kingdom.getResourceCount(BasicResource.GOLD) < amount*price) return "not enough money";
+
         Trade trade = new Trade(resource, kingdom, price, amount, massage);
         game.addTrade(trade);
         return "trade request made successfully";

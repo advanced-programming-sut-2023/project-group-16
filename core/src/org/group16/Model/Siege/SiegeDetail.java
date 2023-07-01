@@ -1,16 +1,14 @@
 package org.group16.Model.Siege;
 
-import org.group16.Model.People.SoldierDetail;
+import org.group16.GameGraphics.HumanGraphics;
 import org.group16.Model.TargetType;
 
-import javax.swing.plaf.TreeUI;
-
 public enum SiegeDetail {
-    PORTABLE_SHIELD(1, true, true, 1, 1, 1, 1, TargetType.NONE),
-    SIEGE_TOWER(1, true, true, 1, 1, 1, 1, TargetType.NONE),
-    CATAPULT(1, true, true, 1, 1, 1, 1, TargetType.BUILDING),
-    TRABUCHET(1, true, true, 1, 1, 1, 1, TargetType.BUILDING),
-    FIRE_BALLISTA(1, true, true, 1, 1, 1, 1, TargetType.UNIT);
+    PORTABLE_SHIELD(1, true, true, 1, 1, 1, 1, TargetType.NONE, null),
+    SIEGE_TOWER(1, true, true, 1, 1, 1, 1, TargetType.NONE, null),
+    CATAPULT(1, true, true, 1, 1, 1, 1, TargetType.BUILDING, null),
+    TRABUCHET(1, true, true, 1, 1, 1, 1, TargetType.BUILDING, null),
+    FIRE_BALLISTA(1, true, true, 1, 1, 1, 1, TargetType.UNIT, null);
     //TODO : values
     private final int hp;
     private final boolean canMove;
@@ -20,8 +18,8 @@ public enum SiegeDetail {
     private final int speed;
     private final int operatorCount;
     private final TargetType targetType;
-
-    SiegeDetail(int hp, boolean canMove, boolean canRotate, int attackRange, int damage, int speed, int operatorCount, TargetType targetType) {
+    private final HumanGraphics graphics;
+    SiegeDetail(int hp, boolean canMove, boolean canRotate, int attackRange, int damage, int speed, int operatorCount, TargetType targetType, HumanGraphics graphics) {
         this.hp = hp;
         this.canMove = canMove;
         this.canRotate = canRotate;
@@ -30,6 +28,27 @@ public enum SiegeDetail {
         this.speed = speed;
         this.operatorCount = operatorCount;
         this.targetType = targetType;
+        this.graphics = graphics;
+    }
+
+    public static SiegeDetail getSiegeDetailByName(String name) {
+        for (SiegeDetail siegeDetail : SiegeDetail.values()) {
+            if (siegeDetail.toString().equals(name))
+                return siegeDetail;
+        }
+        return null;
+    }
+
+    public boolean isCanMove() {
+        return canMove;
+    }
+
+    public boolean isCanRotate() {
+        return canRotate;
+    }
+
+    public HumanGraphics getGraphics() {
+        return graphics;
     }
 
     public int getAttackRange() {
@@ -62,13 +81,5 @@ public enum SiegeDetail {
 
     public int getSpeed() {
         return speed;
-    }
-
-    public static SiegeDetail getSiegeDetailByName(String name){
-        for (SiegeDetail siegeDetail : SiegeDetail.values()){
-            if (siegeDetail.toString().equals(name))
-                return siegeDetail ;
-        }
-        return null ;
     }
 }

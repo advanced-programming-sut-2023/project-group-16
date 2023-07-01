@@ -1,14 +1,17 @@
 package org.group16.Model.People;
 
+import org.group16.GameGraphics.HumanRenderer;
+import org.group16.GameGraphics.Renderer;
 import org.group16.Model.Cell;
 import org.group16.Model.Kingdom;
 import org.group16.Model.Time;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Worker extends Human {
 
-    public Worker(ArrayList<Cell> cells, Kingdom kingdom, int hp) {
+    public Worker(List<Cell> cells, Kingdom kingdom, int hp) {
         super(cells, kingdom, hp);
     }
 
@@ -29,4 +32,10 @@ public class Worker extends Human {
         //TODO : on turn end
     }
 
+    @Override
+    public Renderer createRenderer() {
+        HumanRenderer renderer = new HumanRenderer(SoldierDetail.WORKER.getGraphics());
+        renderer.setLocalPosition(calculateWorldPosition());
+        return renderer;
+    }
 }

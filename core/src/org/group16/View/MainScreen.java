@@ -20,6 +20,8 @@ public class MainScreen extends Menu {
     private final Image background, white;
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+    private TextButton profileMenu, messenger, gameMenu , lobbyMenu;
+
     private TextButton profileMenu, chatButton, chatBack, publicChat, privateChat, createRoomButton, openRoom,
             roomNameSend;
     private Dialog chat, roomNameDialog;
@@ -29,10 +31,43 @@ public class MainScreen extends Menu {
     public MainScreen(StrongholdGame game, User user) {
         super(game);
         this.user = user;
-
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
+
         background = new Image(new Texture(Gdx.files.internal("backgrounds/loginMenu.jpg")));
+
+        profileMenu = new TextButton("Profile", skin1);
+        profileMenu.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new ProfileScreen(game, user));
+            }
+        });
+        gameMenu = new TextButton("Game", skin1);
+        gameMenu.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+              //  game.setScreen(new GameScreen(game));
+            }
+        });
+
+        messenger = new TextButton("Messenger", skin1);
+        messenger.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                uiStage.addActor(new Messenger("", skin1));
+            }
+        });
+
+        lobbyMenu = new TextButton("Lobby" , skin1) ;
+        lobbyMenu.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new LobbyScreen(game , user));
+            }
+        });
+
+        uiStage.addActor(background);
 
         table = new Table(skin1);
         table.setBackground(white.getDrawable());
@@ -44,6 +79,10 @@ public class MainScreen extends Menu {
         handleChat();
 
         uiStage.addActor(background);
+        table.add(profileMenu).center().row();
+        table.add(messenger).center().row();
+        table.add(gameMenu).row();
+        table.add(lobbyMenu).row();
         uiStage.addActor(table);
     }
 
