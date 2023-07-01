@@ -12,6 +12,8 @@ import org.group16.Model.User;
 import org.group16.View.LoginScreen;
 import org.group16.View.MainScreen;
 
+import java.net.Socket;
+
 
 public class StrongholdGame extends Game {
     public static NativeFileChooser fileChooser;
