@@ -12,13 +12,12 @@ public class GameServer extends Thread {
 
     @Override
     public void run() {
-        try {
-            while (true) {
+        while (true) {
+            try {
                 Socket socket = serverSocket.accept();
-
+            } catch (Exception ex) {
+                System.out.println("User Disconnected");
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 }

@@ -1,27 +1,28 @@
 package org.group16.Server.Lobby;
 
 import org.group16.Model.*;
+import org.group16.Model.Map;
 import org.group16.Server.Lobby.Command.Command;
 import org.group16.Server.Lobby.Command.CommandHandler;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 
 public class LobbyConnection extends Thread {
+    private final LobbyServer server;
     private final Socket socket;
     private final DataInputStream cmdStream;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
     private User currentUser;
     private Game currentGame;
-    private Long randSeed;
     private String mapname;
+    private long randSeed;
+    private boolean inGameLobby;
 
-    public LobbyConnection(Socket socket) throws IOException {
+    public LobbyConnection(LobbyServer server, Socket socket) throws IOException {
+        this.server = server;
         this.socket = socket;
         socket.setTcpNoDelay(true);
         cmdStream = new DataInputStream(socket.getInputStream());
@@ -30,9 +31,12 @@ public class LobbyConnection extends Thread {
         System.out.println("Connected to client");
     }
 
+    public boolean isInGameLobby() {
+        return inGameLobby;
+    }
+
     @Override
     public void run() {
-        System.out.println("hello");
         try {
             while (true) {
                 String msg = cmdStream.readUTF();
@@ -87,8 +91,13 @@ public class LobbyConnection extends Thread {
         String password = matcher.get("p").get(0);
 
         String response = LoginMenuController.loginUser(username, password);
+        if (server.userLoggedIn(username))
+            response = "user already logged in";
         outputStream.writeUTF(response);
-        if (response.equals("OK")) currentUser = User.getUserByName(username);
+        if (response.equals("OK")) {
+            currentUser = User.getUserByName(username);
+            server.userLogin(currentUser.getUsername(), this);
+        }
     }
 
     private void forgotPassword(TreeMap<String, ArrayList<String>> map) throws IOException {
@@ -112,6 +121,7 @@ public class LobbyConnection extends Thread {
 
     private void logout() throws IOException {
         outputStream.writeUTF("OK");
+        server.userLogout(currentUser.getUsername());
         currentUser = null;
     }
 
@@ -188,7 +198,6 @@ public class LobbyConnection extends Thread {
 
     private void selectMap(TreeMap<String, ArrayList<String>> map) throws IOException {
         String mapname = map.get("m").get(0);
-        randSeed = new Random().nextLong();
         Map newMap = Map.getMapByName(mapname);
         if (newMap == null) {
             outputStream.writeUTF("no map with this name exist");
@@ -196,6 +205,7 @@ public class LobbyConnection extends Thread {
         }
         outputStream.writeUTF("OK");
         this.mapname = mapname;
+        randSeed = new Random().nextLong();
         currentGame.setScene(new Scene(newMap, randSeed));
     }
 
@@ -237,15 +247,33 @@ public class LobbyConnection extends Thread {
             outputStream.writeUTF("no map is selected");
             return;
         }
-        outputStream.writeUTF("OK");
         PlayerList players = new PlayerList();
         for (Kingdom kingdom : currentGame.getKingdoms()) {
             players.users.add(kingdom.getUser());
             players.kingdomTypes.add(kingdom.getKingdomType());
         }
-        outputStream.writeUTF(mapname);
-        outputStream.writeLong(randSeed);
-        outputStream.writeObject(players);
+        GameInfo gameInfo = new GameInfo(UUID.randomUUID()
+                , randSeed, mapname, players);
+        server.submitGame(gameInfo);
+    }
+
+    private void joinGameLobby() throws IOException {
+        outputStream.writeObject("OK");
+        inGameLobby = true;
+    }
+
+    private void leaveGameLobby() throws IOException {
+        outputStream.writeObject("OK");
+        inGameLobby = false;
+    }
+
+    public void startGameFailed() throws IOException {
+        outputStream.writeUTF("one of users is offline");
+    }
+
+    public void startGameSuccessful(GameInfo gameInfo) throws IOException {
+        outputStream.writeUTF("START GAME");
+        outputStream.writeObject(gameInfo);
     }
 }
 

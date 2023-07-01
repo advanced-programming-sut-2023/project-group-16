@@ -29,6 +29,8 @@ public enum Command {
     REMOVE_USER("remove\\s+user", new ArrayList<>(List.of(
             new Option("u", 1, true)))),
     START_GAME("start\\s+game", new ArrayList<>()),
+    JOIN_GAME_LOBBY("join\\s+game\\s+lobby", new ArrayList<>()),
+    LEAVE_GAME_LOBBY("leave\\s+game\\s+lobby", new ArrayList<>()),
     ENTER_PROFILE_MENU("enter\\s+profile\\s+menu", new ArrayList<>()),
     ENTER_EDITOR_MENU("enter\\s+editor\\s+menu", new ArrayList<>()),
     CHANGE_USERNAME("profile\\s+change", new ArrayList<>(List.of(
@@ -47,13 +49,13 @@ public enum Command {
     DISPLAY_SLOGAN("profile\\s+display\\s+slogan", new ArrayList<>()),
     DISPLAY_PROFILE("profile\\s+display", new ArrayList<>()),
     BACK("back", new ArrayList<>()),
-    SET_KINGDOM("set\\s+kingdom\\s+place" ,new ArrayList<>(List.of(
+    SET_KINGDOM("set\\s+kingdom\\s+place", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
-    SET_UNEMPLOYED("set\\s+unemployed\\s+place" ,new ArrayList<>(List.of(
+    SET_UNEMPLOYED("set\\s+unemployed\\s+place", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
-    SET_STOCK_PILE("set\\s+stock\\s+pile" ,new ArrayList<>(List.of(
+    SET_STOCK_PILE("set\\s+stock\\s+pile", new ArrayList<>(List.of(
             new Option("x", 1, true), new Option("y", 1, true)))),
-    NEXT_TURN("next\\s+turn" ,new ArrayList<>()),
+    NEXT_TURN("next\\s+turn", new ArrayList<>()),
     TEAM_UP_REQUEST("team\\s+up\\s+request", new ArrayList<>(List.of(new Option("i", 1, true)))),
     TEAM_UP_ACCEPT("team\\s+up\\s+accept", new ArrayList<>(List.of(new Option("i", 1, true)))),
     SHOW_TEAM_UP_LIST("show\\s+team\\s+up\\s+list", new ArrayList<>()),
@@ -148,8 +150,7 @@ public enum Command {
             new Option("a", 1, true)))),
     ENTER_SHOP_MENU("enter\\s+shop\\s+menu", new ArrayList<>()),
     SHOW_RESOURCES("show\\s+resources", new ArrayList<>()),
-    SHOW_POPULATION("show\\s+population" , new ArrayList<>())
-    ;
+    SHOW_POPULATION("show\\s+population", new ArrayList<>());
 
     private final String commandRegex;
     private final ArrayList<Option> options;
