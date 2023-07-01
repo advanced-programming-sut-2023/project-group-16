@@ -23,7 +23,7 @@ public enum BuildingGraphics {
     OX_TETHER("OX_TETHER", 1, .4f, -.05f, .35f, .3f),
     PITCH_RIG("PITCH_RIG", 1, .4f, -.05f, .35f, .3f),
     QUARRY("QUARRY", 1, .4f, -.05f, .35f, .3f),
-    STOCKPILE("STOCKPILE", 1, .4f, -.05f, .35f, .3f),
+    STOCKPILE("STOCKPILE", 0.4f, 0.1f, -0, .1f, .3f),
     WOOD_CUTTER("WOOD_CUTTER", 1, .4f, -.05f, .35f, .3f),
     HOVEL("HOVEL", 1, .4f, -.05f, .35f, .3f),
     CHURCH("CHURCH", 1, .4f, -.05f, .35f, .3f),
@@ -41,8 +41,8 @@ public enum BuildingGraphics {
     WHEAT_FARMER("WHEAT_FARMER", 1, .4f, -.05f, .35f, .3f),
     BAKERY("BAKERY", 1, .4f, -.05f, .35f, .3f),
     BREWER("BREWER", 1, .4f, -.05f, .35f, .3f),
-    GRANARY("GRANARY", 1, .4f, -.05f, .35f, .3f),
-    UNEMPLOYED_PLACE("STOCKPILE", 1, .4f, -.05f, .35f, .3f),
+    GRANARY("GRANARY", 0.4f, .4f, -.05f, .35f, .3f),
+    UNEMPLOYED_PLACE("STOCKPILE", 0.4f, .1f, 0f, .1f, .3f),
 
 
     ;

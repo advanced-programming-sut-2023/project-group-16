@@ -51,7 +51,7 @@ public enum BuildingType implements Resource {
     //economy
     QUARRY("quarry", 0, BasicResource.WOOD, 20, CellType.STONE, null),
     //economy
-    STOCKPILE("stockpile", 0, null, 0, BuildingGraphics.KING_CASTLE),
+    STOCKPILE("stockpile", 0, null, 0, null),
     //economy
     WOOD_CUTTER("wood cutter", 0, BasicResource.WOOD, 3, CellType.GRASS, null),
     //economy

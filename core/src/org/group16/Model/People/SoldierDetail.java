@@ -11,10 +11,10 @@ import java.util.ArrayList;
 public enum SoldierDetail implements Resource {
     HUMAN(KingdomType.EUROPEAN, 0, null, null, false, 1,
             false, false, false, false, false,
-            false, 0, 0, 0, 0, 0, 4, null),
+            false, 0, 0, 0, 0, 0, 4, HumanGraphics.MACE_MAN),
     WORKER(KingdomType.EUROPEAN, 0, null, null, false, 1,
             false, false, false, false, false,
-            false, 0, 0, 0, 0, 0, 4, null),
+            false, 0, 0, 0, 0, 0, 4, HumanGraphics.MACE_MAN),
     ARCHER(KingdomType.EUROPEAN, 12, null, Weaponry.BOW, false, 1,
             true, false, false, true, true,
             true, 10, 10, 15, 2, 2, 4, HumanGraphics.EUROPEAN_ARCHER),

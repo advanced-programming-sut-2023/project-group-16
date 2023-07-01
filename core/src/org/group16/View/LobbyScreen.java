@@ -30,7 +30,7 @@ public class LobbyScreen extends Menu {
     Label usernameStatus, startStatus;
 
     SelectBox<String> selectBox = new SelectBox<String>(skin1);
-    SelectBox<String> mapSelectBox = new SelectBox<String>(skin1) ;
+    SelectBox<String> mapSelectBox = new SelectBox<String>(skin1);
 
     Game realGame = new Game();
 
@@ -53,11 +53,12 @@ public class LobbyScreen extends Menu {
         selectBox.setItems("ARABIAN", "EUROPEAN");
 
 
-        Array<String> mapArray = new Array<>() ;
-        for (Map map : Map.getAllMaps()){
+        Array<String> mapArray = new Array<>();
+        for (Map map : Map.getAllMaps()) {
             mapArray.add(map.getName());
         }
-        mapSelectBox.setItems(mapArray); ;
+        mapSelectBox.setItems(mapArray);
+        ;
 
         uiStage.addActor(background);
         uiStage.addActor(table);
@@ -87,7 +88,7 @@ public class LobbyScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 if (User.getUserByName(usernameField.getText()) == null) {
                     usernameStatus.setText("no user Found");
-                } else if (realGame.getKingdom(User.getUserByName(usernameField.getText()))!=null) {
+                } else if (realGame.getKingdom(User.getUserByName(usernameField.getText())) != null) {
                     usernameStatus.setText("user already added");
                 } else {
                     if (selectBox.getSelected().equals("ARABIAN"))
@@ -135,21 +136,11 @@ public class LobbyScreen extends Menu {
                 } else if (realGame.getKingdoms().size() >= 8) {
                     startStatus.setText("game is full");
                 } else {
-                    try {
-                        System.out.println(realGame.getKingdoms().size());
-                        realGame.setScene(new Scene(Map.getMapByName(mapSelectBox.getSelected()), 0));
-                        GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 0, 0, BuildingType.TOWN_BUILDING);
-                        GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 0, 1, BuildingType.UNEMPLOYED_PLACE);
-                        GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 0, 2, BuildingType.STOCKPILE);
-                        GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 10, 0, BuildingType.TOWN_BUILDING);
-                        GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 10, 1, BuildingType.UNEMPLOYED_PLACE);
-                        GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 10, 2, BuildingType.STOCKPILE);
 
-                        game.setScreen(new testingGameScreen(game , realGame) );
-                    }
-                    catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
+                    Scene scene = new Scene(Map.getMapByName(mapSelectBox.getSelected()), 0);
+                    realGame.setScene(scene);
+                    game.setScreen(new testingGameScreen(game, realGame));
+
                 }
             }
         });
