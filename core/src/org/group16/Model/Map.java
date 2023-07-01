@@ -6,7 +6,7 @@ import org.group16.Vec2;
 import java.io.*;
 import java.util.*;
 
-public class Map {
+public class Map implements Serializable {
 
     private final int width, height;
     private final String name;
@@ -70,23 +70,23 @@ public class Map {
         Gson gson = new Gson();
         String folderPath = new File("").getAbsolutePath().concat("/Data/Maps");
         File[] files = new File(folderPath).listFiles();
-        ArrayList<Map> maps = new ArrayList<>() ;
+        ArrayList<Map> maps = new ArrayList<>();
 
-        if (files!=null) for (File file : files){
-            if (file.isDirectory())continue;
-            FileReader fileReader ;
+        if (files != null) for (File file : files) {
+            if (file.isDirectory()) continue;
+            FileReader fileReader;
             try {
-                fileReader = new FileReader(file) ;
-                Map map = null ;
-                map = gson.fromJson(fileReader , Map.class) ;
+                fileReader = new FileReader(file);
+                Map map = null;
+                map = gson.fromJson(fileReader, Map.class);
                 fileReader.close();
-                if (map!=null)
-                    maps.add(map) ;
-            }catch (Exception e){
+                if (map != null)
+                    maps.add(map);
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        return maps ;
+        return maps;
     }
 
     public static void saveMap(Map map) {
@@ -112,6 +112,29 @@ public class Map {
         String filePath = new File("").getAbsolutePath().concat("/Data/Maps/").concat(name).concat(".json");
         File file = new File(filePath);
         file.delete();
+    }
+
+    public static ArrayList<String> getAllMapNames() {
+        Gson gson = new Gson();
+        String folderPath = new File("").getAbsolutePath().concat("/Data/Maps");
+        File[] files = new File(folderPath).listFiles();
+        ArrayList<String> names = new ArrayList<>();
+
+        if (files != null) for (File file : files) {
+            if (file.isDirectory()) continue;
+            FileReader fileReader;
+            try {
+                fileReader = new FileReader(file);
+                Map map = null;
+                map = gson.fromJson(fileReader, Map.class);
+                fileReader.close();
+                if (map != null)
+                    names.add(file.getName().split("\\.")[0]);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return names;
     }
 
     public int getWidth() {
@@ -160,7 +183,8 @@ public class Map {
     public void setCurrentY(int currentY) {
         this.currentY = currentY;
     }
-    public String getName(){
-        return name ;
+
+    public String getName() {
+        return name;
     }
 }

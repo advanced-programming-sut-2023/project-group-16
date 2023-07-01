@@ -37,16 +37,20 @@ public enum Command {
             new Option("u", 1, true), new Option("t", 1, true)))),
     REMOVE_USER("remove\\s+user", new ArrayList<>(List.of(
             new Option("u", 1, true)))),
+    JOIN_GAME_LOBBY("join\\s+game\\s+lobby", new ArrayList<>()),
+    LEAVE_GAME_LOBBY("leave\\s+game\\s+lobby", new ArrayList<>()),
     START_GAME("start\\s+game", new ArrayList<>()),
 
 
-    // MISC
-    UPLOAD_PFP("upload\\s+pfp", new ArrayList<>(List.of())),
-    DOWNLOAD_PFP("download\\s+pfp", new ArrayList<>(List.of())),
     UPLOAD_MAP("upload\\s+map", new ArrayList<>()),
     DOWNLOAD_MAP("download\\s+map", new ArrayList<>(List.of(
             new Option("m", 1, true)
-    )));
+    ))),
+    // MISC
+
+    UPLOAD_PFP("upload\\s+pfp", new ArrayList<>(List.of())),
+    DOWNLOAD_PFP("download\\s+pfp", new ArrayList<>(List.of())),
+    ;
 
     private final String commandRegex;
     private final ArrayList<Option> options;

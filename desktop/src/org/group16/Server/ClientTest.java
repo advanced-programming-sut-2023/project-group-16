@@ -2,6 +2,8 @@ package org.group16.Server;
 
 import org.group16.GameGraphics.CommandHandling.CreateBuildingCommand;
 import org.group16.Model.Buildings.BuildingType;
+import org.group16.Model.Map;
+import org.group16.Model.StringList;
 import org.group16.Model.User;
 import org.group16.Model.UserList;
 
@@ -19,6 +21,13 @@ public class ClientTest {
         cmdStream = new DataOutputStream(socket.getOutputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
+
+        cmdStream.writeUTF("get all maps");
+        StringList list = (StringList) inputStream.readObject();
+        cmdStream.writeUTF(
+                String.format("download map -m \"%s\"", list.strings.get(0)));
+        Map mp = (Map) inputStream.readObject();
+        System.out.println(mp.getName());
     }
 
     public static void main(String[] args) {

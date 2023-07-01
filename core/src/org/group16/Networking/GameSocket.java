@@ -17,4 +17,9 @@ public class GameSocket {
         inputStream = new ObjectInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
+
+    public static void initSocket(String host, int port) {
+        GameSocket.host = host;
+        GameSocket.port = port;
+    }
 }
