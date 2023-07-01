@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
     private int score;
 

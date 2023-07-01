@@ -1,54 +1,58 @@
 package org.group16.Server.Lobby;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Tree;
-import com.google.common.hash.Hashing;
 import org.group16.Model.User;
+import org.group16.Model.UserList;
 import org.group16.Server.Lobby.Command.Command;
 import org.group16.Server.Lobby.Command.CommandHandler;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.CoderMalfunctionError;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
 
 public class LobbyConnection extends Thread {
     private final Socket socket;
-    private final DataInputStream inputStream;
-    private final DataOutputStream outputStream;
-    private final ObjectInputStream objectInputStream;
-    private final ObjectOutputStream objectOutputStream;
+    private final DataInputStream cmdStream;
+    private final ObjectInputStream inputStream;
+    private final ObjectOutputStream outputStream;
     private User currentUser;
 
     public LobbyConnection(Socket socket) throws IOException {
         this.socket = socket;
-        inputStream = new DataInputStream(socket.getInputStream());
-        outputStream = new DataOutputStream(socket.getOutputStream());
-        objectInputStream = new ObjectInputStream(socket.getInputStream());
-        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        socket.setTcpNoDelay(true);
+        cmdStream = new DataInputStream(socket.getInputStream());
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        inputStream = new ObjectInputStream(socket.getInputStream());
+        System.out.println("Connected to client");
     }
 
     @Override
     public void run() {
+        System.out.println("hello");
         try {
             while (true) {
-                String msg = inputStream.readUTF();
+                String msg = cmdStream.readUTF();
+                System.out.println(msg);
                 TreeMap<String, ArrayList<String>> map;
                 if ((map = CommandHandler.matches(Command.REGISTER, msg)) != null) register(map);
                 else if ((map = CommandHandler.matches(Command.LOGIN, msg)) != null) login(map);
                 else if ((map = CommandHandler.matches(Command.FORGOT_PASSWORD, msg)) != null) forgotPassword(map);
                 else if ((map = CommandHandler.matches(Command.LOGOUT, msg)) != null) logout();
                 else if ((map = CommandHandler.matches(Command.CHANGE_PROFILE, msg)) != null) changeProfile(map);
-//                else if((map = CommandHandler.matches(Command.DISPLAY_SCORE,msg)) != null)
+                else if ((map = CommandHandler.matches(Command.DISPLAY_SCORE, msg)) != null) displayScore();
+                else if ((map = CommandHandler.matches(Command.DISPLAY_RANK, msg)) != null) displayRank();
+                else if ((map = CommandHandler.matches(Command.GET_USER, msg)) != null) getUser(map);
+                else if ((map = CommandHandler.matches(Command.GET_ALL_USERS, msg)) != null) getAllUsers();
 //                else if((map = CommandHandler.matches(Command.))
             }
+        } catch (ClassNotFoundException ex) {
+            System.out.println("cnf");
         } catch (Exception ex) {
             System.out.println("User Disconnected");
         }
     }
+
 
     private void register(TreeMap<String, ArrayList<String>> matcher) throws IOException {
         String username = matcher.get("u").get(0);
@@ -160,8 +164,15 @@ public class LobbyConnection extends Thread {
         outputStream.writeInt(rnk);
     }
 
-    private void getAllUsers() throws IOException {
-        ArrayList<User> users = User.getAllUsers();
-        objectOutputStream.writeObject(users);
+    private void getUser(TreeMap<String, ArrayList<String>> map) throws IOException {
+        String username = map.get("u").get(0);
+        outputStream.writeObject(User.getUserByName(username));
     }
+
+    private void getAllUsers() throws IOException, ClassNotFoundException {
+        System.out.println("all user");
+        outputStream.writeObject(new UserList(User.getAllUsers()));
+    }
+
 }
+

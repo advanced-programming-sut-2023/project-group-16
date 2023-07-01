@@ -16,7 +16,6 @@ public class LobbyServer extends Thread {
         try {
             while (true) {
                 Socket socket = serverSocket.accept();
-                System.out.println("Connected to client");
                 LobbyConnection connection = new LobbyConnection(socket);
                 connection.start();
             }

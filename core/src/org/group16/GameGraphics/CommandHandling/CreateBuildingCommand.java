@@ -7,6 +7,9 @@ import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Game;
 import org.group16.Model.User;
 
+import java.beans.Transient;
+import java.io.Serializable;
+
 public class CreateBuildingCommand extends UserCommand {
     private final BuildingType buildingType;
     private final int x, y;
