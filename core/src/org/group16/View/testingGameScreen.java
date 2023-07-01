@@ -64,10 +64,11 @@ public class testingGameScreen extends Menu {
     MiniWindow miniWindow;
     BuildingWindow buildingWindow;
 
-
     StorageWindow storageWindow;
     ShopWindow shopWindow;
     BuyingWindow buyingWindow;
+    PopularityWindow popularityWindow ;
+    ChangeRateWindow changeRateWindow ;
     BuyingUnitWindow buyingUnitWindow;
 
     public testingGameScreen(StrongholdGame game1, Game game) {
@@ -127,6 +128,12 @@ public class testingGameScreen extends Menu {
         buyingWindow = new BuyingWindow(skin1, game, this);
         buyingWindow.setVisible(false);
 
+        popularityWindow = new PopularityWindow(skin1 , 0 , 0 , 0 , 0 , game , this) ;
+        popularityWindow.setVisible(false);
+
+        changeRateWindow = new ChangeRateWindow(skin1 , game , this ) ;
+        changeRateWindow.setVisible(false);
+
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
         uiStage.addActor(currentPlayerWindow);
@@ -136,6 +143,8 @@ public class testingGameScreen extends Menu {
         uiStage.addActor(storageWindow);
         uiStage.addActor(shopWindow);
         uiStage.addActor(buyingWindow);
+        uiStage.addActor(popularityWindow);
+        uiStage.addActor(changeRateWindow);
     }
 
     @Override
@@ -191,9 +200,14 @@ public class testingGameScreen extends Menu {
             if (currentCell != null && currentCell != lastSelectedCell) {
                 for (GameObject gameObject : currentCell.getGameObjects()) {
                     if (gameObject instanceof Building) {
-
-                        buildingWindow.changeBuilding((Building) gameObject);
-                        setCurrentRunningWindow(buildingWindow);
+                        if (((Building) gameObject).getBuildingType().equals(BuildingType.TOWN_BUILDING)){
+                            Kingdom kingdom = game.getKingdom(getCurUser()) ;
+                            popularityWindow.reset(kingdom.getFoodRate() , kingdom.getFearRate() , kingdom.getTax() , 0);
+                            setCurrentRunningWindow(popularityWindow);
+                        }else {
+                            buildingWindow.changeBuilding((Building) gameObject);
+                            setCurrentRunningWindow(buildingWindow);
+                        }
                         break;
                     }
                 }
@@ -258,6 +272,11 @@ public class testingGameScreen extends Menu {
         buyingWindow.setWidth(uiStage.getWidth() * 3 / 5);
         buyingWindow.setHeight(uiStage.getHeight() / 4);
 
+        popularityWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        popularityWindow.setHeight(uiStage.getHeight() / 4);
+
+        changeRateWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        changeRateWindow.setHeight(uiStage.getHeight() / 4);
 
         uiStage.draw();
     }

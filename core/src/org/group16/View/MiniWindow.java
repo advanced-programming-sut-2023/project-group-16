@@ -3,10 +3,7 @@ package org.group16.View;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MiniWindow extends Window {
@@ -14,6 +11,7 @@ public class MiniWindow extends Window {
     Image soilBackground , face;
     Label popularityLabel , populationLabel , maxPopulationLabel , goldLabel ;
     int popularity , population ,  maxPopulation , gold ;
+
 
     public float lastChangeTime = 0 ;
 

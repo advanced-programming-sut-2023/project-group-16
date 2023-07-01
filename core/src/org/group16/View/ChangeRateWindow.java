@@ -1,10 +1,18 @@
 package org.group16.View;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.group16.GameGraphics.CommandHandling.SetFearRateCommand;
+import org.group16.GameGraphics.CommandHandling.SetFoodRateCommand;
+import org.group16.GameGraphics.CommandHandling.SetTaxRateCommand;
+import org.group16.Model.Game;
+import org.group16.Model.Kingdom;
+import org.group16.Model.User;
 
 public class ChangeRateWindow extends Window {
 
@@ -13,8 +21,16 @@ public class ChangeRateWindow extends Window {
 
     Image soilBackground;
 
-    public ChangeRateWindow(String title, Skin skin) {
-        super(title, skin);
+    ImageButton back;
+
+    Game game ;
+    testingGameScreen gameScreen;
+
+    public ChangeRateWindow(Skin skin , Game game , testingGameScreen gameScreen) {
+        super("" , skin);
+
+        this.game = game ;
+        this.gameScreen = gameScreen ;
 
         this.skin = skin;
 
@@ -35,6 +51,45 @@ public class ChangeRateWindow extends Window {
         this.add(taxSlideBar.slider).pad(0, 0, 0, 10);
         this.add(taxSlideBar.amount).row();
 
+        back = new ImageButton(skin);
+        ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
+        imageStyle.imageUp = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 30, 30));
+        imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
+        back.setStyle(imageStyle);
+
+        this.add(back) ;
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.setCurrentRunningWindow(gameScreen.popularityWindow);
+            }
+        }) ;
+
+
+        foodSlideBar.slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                User user = gameScreen.getCurUser() ;
+                gameScreen.inputProcessor.submitCommand(new SetFoodRateCommand(user , (int) foodSlideBar.slider.getValue()));
+                foodSlideBar.amount.setText(foodSlideBar.slider.getValue()+"");
+            }
+        });
+        taxSlideBar.slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                User user = gameScreen.getCurUser() ;
+                gameScreen.inputProcessor.submitCommand(new SetTaxRateCommand(user , (int) taxSlideBar.slider.getValue()));
+                taxSlideBar.amount.setText(taxSlideBar.slider.getValue()+"");
+            }
+        });
+        fearSlideBar.slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                User user = gameScreen.getCurUser() ;
+                gameScreen.inputProcessor.submitCommand(new SetFearRateCommand(user , (int) fearSlideBar.slider.getValue()));
+                fearSlideBar.amount.setText(fearSlideBar.slider.getValue()+"");
+            }
+        });
 
     }
 
@@ -53,14 +108,12 @@ public class ChangeRateWindow extends Window {
 
             slider.setWidth(100);
             amount = new Label(slider.getValue() + "", skin);
-
-            slider.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    amount.setText(slider.getValue() + "");
-                    //TODO
-                }
-            });
         }
+    }
+
+    public void remake(int food , int fear , int tax){
+        foodSlideBar.slider.setValue(food) ;
+        fearSlideBar.slider.setValue(fear) ;
+        taxSlideBar.slider.setValue(tax) ;
     }
 }

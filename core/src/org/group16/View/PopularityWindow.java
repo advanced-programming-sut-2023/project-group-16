@@ -1,26 +1,35 @@
 package org.group16.View;
 
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.group16.Model.Game;
 
 public class PopularityWindow extends Window {
 
     int food = 0, fear = 0, tax = 0, religion = 0;
 
     ImageButton back;
-
+    TextButton changeRates ;
     Image soilBackground;
     Label foodLabel, fearLabel, taxLabel, religionLabel;
 
     Skin skin;
 
-    public PopularityWindow(Skin skin, int food, int fear, int tax, int religion) {
+    Game game ;
+    testingGameScreen gameScreen ;
+
+    public PopularityWindow(Skin skin, int food, int fear, int tax, int religion , Game game, testingGameScreen gameScreen) {
         super("", skin);
+
+        this.gameScreen = gameScreen ;
+        this.game = game ;
+
         this.skin = skin;
         this.food = food;
         this.fear = fear;
@@ -28,6 +37,13 @@ public class PopularityWindow extends Window {
         this.religion = religion;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
+
+        makeWindow();
+    }
+
+    private void makeWindow() {
+        this.clear();
+        this.setBackground(soilBackground.getDrawable());
 
         back = new ImageButton(skin);
         ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
@@ -38,16 +54,19 @@ public class PopularityWindow extends Window {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO
+                gameScreen.setCurrentRunningWindow(gameScreen.shopWindow);
             }
         });
 
-        makeWindow();
-    }
+        changeRates = new TextButton("change" , skin) ;
 
-    private void makeWindow() {
-        this.clear();
-        this.setBackground(soilBackground.getDrawable());
+        changeRates.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.changeRateWindow.remake(food , fear , tax);
+                gameScreen.setCurrentRunningWindow(gameScreen.changeRateWindow) ;
+            }
+        });
 
         foodLabel = new Label("food : " + food, skin);
         fearLabel = new Label("fear : " + fear, skin);
@@ -58,11 +77,12 @@ public class PopularityWindow extends Window {
         this.add(rateToEmoji(food)).pad(0, 0, 0, 60);
         this.add(fearLabel);
         this.add(rateToEmoji(fear)).row();
-        ;
+
         this.add(taxLabel);
         this.add(rateToEmoji(tax)).pad(0, 0, 0, 60);
         this.add(religionLabel);
         this.add(rateToEmoji(religion)).row();
+        this.add(changeRates).row();
         this.add(back);
     }
 
