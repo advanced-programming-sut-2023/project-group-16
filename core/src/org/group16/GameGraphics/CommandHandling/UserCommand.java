@@ -18,6 +18,7 @@ public abstract class UserCommand implements Serializable {
         this.user = user;
     }
 
+    @Deprecated
     public static UserCommand tryDeserialize(String data) {
         Gson gson = new Gson();
         Matcher matcher = dataPattern.matcher(data);
@@ -44,6 +45,7 @@ public abstract class UserCommand implements Serializable {
 
     public abstract UserCommand getUndoCommand();
 
+    @Deprecated
     public String serialize() {
         Gson gson = new Gson();
         return String.format("[[%s]]%s", getClass().getName(), gson.toJson(this));
