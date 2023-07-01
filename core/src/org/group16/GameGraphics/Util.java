@@ -55,4 +55,12 @@ public class Util {
         if (y > Y + .5f) Y++;
         return game.getScene().getCellAt(X, Y);
     }
+
+    public static CellRenderer getMouseCellRenderer(int x , int y , GameRenderer gameRenderer){
+        for (Renderer renderer : gameRenderer.children){
+            if (Math.abs(renderer.localPosition.x-x) < 0.5 && Math.abs(renderer.localPosition.z-y) < 0.5&& renderer instanceof CellRenderer)
+                return (CellRenderer) renderer;
+        }
+        return null ;
+    }
 }

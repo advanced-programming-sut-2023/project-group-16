@@ -19,7 +19,7 @@ public class Messenger extends Window {
         table.setBackground(white.getDrawable());
         table.setColor(Color.BLACK);
         table.setSize(600, 300);
-        
+
         for (int i = 0; i < 100; i++)
             table.add("" + i).row();
 

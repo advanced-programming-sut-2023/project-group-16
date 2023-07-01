@@ -10,7 +10,7 @@ public enum WarBuildingDetail {
     DEFENCE_TURRET(1200, 10, 10, 2, 0, BuildingType.DEFENCE_TURRET),
     SQUARE_TOWER(1600, 10, 10, 2, 0, BuildingType.SQUARE_TOWER),
     ROUND_TOWER(2000, 20, 10, 2, 0, BuildingType.ROUND_TOWER),
-    KILLING_PIT(1, 0, 0, 0, 300, BuildingType.KILLING_PIT),
+    //KILLING_PIT(1, 0, 0, 0, 300, BuildingType.KILLING_PIT),
     ;
 
     private final int hp;
