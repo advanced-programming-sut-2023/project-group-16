@@ -86,13 +86,7 @@ public class ScoreBoardWindow extends Window {
         super(title, skin);
     }
 
-    public ScoreBoardWindow(String title, Skin skin, String styleName) {
-        super(title, skin, styleName);
-    }
 
-    public ScoreBoardWindow(String title, com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle style) {
-        super(title, style);
-    }
 
     public class ScoreBoardRow {
         User user;
