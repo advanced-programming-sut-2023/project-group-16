@@ -8,9 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import org.group16.Client.ChatClient;
 import org.group16.Model.Messenger.Message;
 import org.group16.Model.Messenger.Room;
 import org.group16.Model.User;
+
+import java.io.IOException;
 
 public class Chat extends Window {
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
@@ -22,15 +25,24 @@ public class Chat extends Window {
     private final Table table, container;
     private final TextButton back, send, save, delete, cancel;
     private final TextField text, editText;
+    private final User user;
     private ScrollPane scrollPane;
     private Dialog dialog;
     private Room room;
     private Message selectedMessage;
     private Chat tmp = this;
+    private ChatClient client;
 
-    public Chat(String title, Skin skin, Room room) {
+    public Chat(String title, Skin skin, Room room, User user) {
         super(title, skin);
         this.room = room;
+        this.user = user;
+
+        try {
+            this.client = new ChatClient(this);
+        } catch (IOException e) {
+            this.client = null;
+        }
 
         back = new TextButton("Back", skin1);
         back.addListener(new ChangeListener() {
@@ -95,17 +107,24 @@ public class Chat extends Window {
         dialog.getContentTable().add(cancel).row();
 
         container = new Table();
-        //container.setFillParent(true);
         container.add(back).top().row();
-        container.add(scrollPane); //.fill().expand();
+        container.add(scrollPane);
         container.row();
         container.add(text).bottom();
         container.add(send).bottom().row();
 
         this.add(container);
+    }
 
-        for (int i = 0; i < 100; i++)
-            table.add(renderMessage(new Message(User.getUserByName("test"), "" + i))).row();
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room newRoom) {
+        room = newRoom;
+        table.clear();
+        for (Message message : room.getMessages())
+            table.add(renderMessage(message)).row();
     }
 
     private Table renderMessage(Message message) {
@@ -128,7 +147,13 @@ public class Chat extends Window {
     private void sendMessage() {
         String txt = text.getText();
         if (txt.isEmpty()) return;
-        //TODO
+        room.addMessage(new Message(user, txt));
+        text.setText("");
+        try {
+            client.notifyServer(room);
+        } catch (IOException e) {
+
+        }
     }
 
     private void editMessage(String txt) {
@@ -136,10 +161,20 @@ public class Chat extends Window {
             deleteMessage();
             return;
         }
-        //TODO
+        selectedMessage.setText(txt);
+        try {
+            client.notifyServer(room);
+        } catch (IOException e) {
+
+        }
     }
 
     private void deleteMessage() {
-        //TODO
+        room.removeMessage(selectedMessage);
+        try {
+            client.notifyServer(room);
+        } catch (IOException e) {
+
+        }
     }
 }

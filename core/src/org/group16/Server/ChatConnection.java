@@ -1,5 +1,8 @@
 package org.group16.Server;
 
+import com.google.gson.Gson;
+import org.group16.Model.Messenger.Room;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,6 +21,25 @@ public class ChatConnection extends Thread {
 
     @Override
     public synchronized void run() {
+        try {
+            ChatServer.addConnection(getRoom(), this);
+            while (true) {
+                Room room = getRoom();
+                ChatServer.notifyMembers(room);
+            }
+        } catch (IOException e) {
 
+        }
+    }
+
+    private Room getRoom() throws IOException {
+        String data = dataInputStream.readUTF();
+        System.out.println("read");
+        Room room = new Gson().fromJson(data, Room.class);
+        return room;
+    }
+
+    public DataOutputStream getDataOutputStream() {
+        return dataOutputStream;
     }
 }

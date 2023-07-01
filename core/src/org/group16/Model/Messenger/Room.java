@@ -24,4 +24,20 @@ public class Room {
             if (usr.getUsername().equals(user.getUsername())) return usr;
         return null;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+    public void removeMessage(Message message) {
+        messages.remove(message);
+    }
 }

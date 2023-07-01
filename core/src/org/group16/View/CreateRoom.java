@@ -153,7 +153,7 @@ public class CreateRoom extends Window {
                     error.setText("add a person");
                 } else {
                     Room room = new Room(users, new ArrayList<>(), name);
-                    Chat chat = new Chat("", skin1, room);
+                    Chat chat = new Chat("", skin1, room, owner);
                     chat.setSize(stage.getWidth() / 5.0F, stage.getHeight());
                     stage.getActors().removeValue(tmp, true);
                     stage.addActor(chat);
