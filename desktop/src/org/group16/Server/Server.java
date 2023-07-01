@@ -1,8 +1,6 @@
 package org.group16.Server;
 
-import org.group16.Server.Game.GameServer;
 import org.group16.Server.Lobby.LobbyServer;
-import org.group16.Server.Telegram.TelegramServer;
 
 import java.net.ServerSocket;
 
