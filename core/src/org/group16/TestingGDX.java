@@ -138,6 +138,7 @@ public class TestingGDX extends Game {
 
     private void initGameObjects() {
         GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
+        GameMenuController.dropBuilding(game , k1.getUser() , 16 , 17 , BuildingType.GRANARY) ;
         GameMenuController.dropBuilding(game, k2.getUser(), 19, 19, BuildingType.TOWN_BUILDING);
         gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
         gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));

@@ -26,19 +26,20 @@ public class StorageWindow extends Window {
     public StorageWindow(Skin skin, EconomicBuilding economicBuilding) {
         super("", skin);
         this.skin = skin;
+        soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
+        this.background(soilBackground.getDrawable());
         remake(economicBuilding);
     }
 
 
     public void remake(EconomicBuilding economicBuilding) {
-        this.clear();
+       this.clear();
 
-        soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
-        this.background(soilBackground.getDrawable());
 
         this.economicBuilding = economicBuilding;
         this.economicBuildingDetail = economicBuilding.getDetail();
 
+        resources.clear();
         for (StorageData storageData : economicBuildingDetail.getStorageData())
             resources.add(storageData.resource());
 

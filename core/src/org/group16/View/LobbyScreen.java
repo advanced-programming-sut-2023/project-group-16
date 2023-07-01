@@ -136,7 +136,8 @@ public class LobbyScreen extends Menu {
                     startStatus.setText("game is full");
                 } else {
                     try {
-                        realGame.setScene(new Scene(Map.getMapByName(mapSelectBox.getName()), 0));
+                        System.out.println(realGame.getKingdoms().size());
+                        realGame.setScene(new Scene(Map.getMapByName(mapSelectBox.getSelected()), 0));
                         GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 0, 0, BuildingType.TOWN_BUILDING);
                         GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 0, 1, BuildingType.UNEMPLOYED_PLACE);
                         GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 0, 2, BuildingType.STOCKPILE);
@@ -144,7 +145,7 @@ public class LobbyScreen extends Menu {
                         GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 10, 1, BuildingType.UNEMPLOYED_PLACE);
                         GameMenuController.dropBuilding(realGame, realGame.getKingdoms().get(0).getUser(), 10, 2, BuildingType.STOCKPILE);
 
-                        // game.setScreen(new testingGameScreen(game , realGame, Map.getMapByName(mapSelectBox.getName())));
+                        game.setScreen(new testingGameScreen(game , realGame) );
                     }
                     catch (Exception e) {
                         System.out.println(e.getMessage());

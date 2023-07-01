@@ -13,7 +13,7 @@ import org.w3c.dom.Text;
 public class BuildingWindow extends Window {
     Skin skin;
     Label name, status;
-    TextButton shop, seeStorage, buildUnit, repair, makeOnOff;
+    TextButton shop, seeStorage, buildUnit, repair, makeOnOff , trade;
 
     ImageButton back;
     Image soilBackground;
@@ -33,6 +33,7 @@ public class BuildingWindow extends Window {
         seeStorage = new TextButton("storage", skin);
         buildUnit = new TextButton("build unit", skin);
         repair = new TextButton("repair", skin);
+        trade = new TextButton("trade" , skin) ;
         makeOnOff = new TextButton("off", skin);
 
         back = new ImageButton(skin);
@@ -64,7 +65,8 @@ public class BuildingWindow extends Window {
         this.add(status).pad(0, 0, 0, 10);
         this.add(makeOnOff).row();
         if (building instanceof EconomicBuilding && ((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.MARKET)) {
-            this.add(shop);
+            this.add(shop).pad(0, 0 , 0 , 5);
+            this.add(trade) ;
         }
         if (building instanceof EconomicBuilding && (((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.MERCENARY_POST) ||
                 ((EconomicBuilding) building).getDetail().equals(EconomicBuildingDetail.BARRACKS) ||

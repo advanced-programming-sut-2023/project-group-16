@@ -43,9 +43,9 @@ public class GameScreen extends Menu{
 
 
 //        uiStage.addActor(buildingSelectWindow);
-//        uiStage.addActor(shopWindow);
-//        uiStage.addActor(shopWindow.buyingWindow);
-//        shopWindow.buyingWindow.setPosition(0 , 0);
+       uiStage.addActor(shopWindow);
+        uiStage.addActor(shopWindow.buyingWindow);
+       shopWindow.buyingWindow.setPosition(0 , 0);
 //        uiStage.addActor(popularityWindow);
 //        uiStage.addActor(cellDetailWindow);
 //        uiStage.addActor(changeRateWindow);
@@ -89,7 +89,7 @@ public class GameScreen extends Menu{
 
        // uiStage.addActor(buyingUnitWindow);
         uiStage.addActor(storageWindow);
-        uiStage.addActor(miniWindow);
+//        uiStage.addActor(miniWindow);
     }
 
 

@@ -11,9 +11,9 @@ public class Trade {
     private Kingdom buyer;
     private String buyerMessage;
 
-    public Trade(Resource resource, Kingdom seller, int price, int amount, String sellerMessage) {
+    public Trade(Resource resource, Kingdom buyer, int price, int amount, String sellerMessage) {
         this.resource = resource;
-        this.seller = seller;
+        this.seller = buyer;
         this.price = price;
         this.amount = amount;
         this.sellerMessage = sellerMessage;
