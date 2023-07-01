@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.group16.Model.Messenger.Room;
 import org.group16.Model.User;
+import org.group16.Server.ChatServer;
 import org.group16.StrongholdGame;
 
 import java.util.ArrayList;
@@ -100,8 +101,8 @@ public class MainScreen extends Menu {
         publicChat.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO: read messages from file...
-                Room room = new Room(User.getAllUsers(), new ArrayList<>(), "public-chat");
+                Room room = ChatServer.getRoomByName("public-chat");
+                if (room == null) room = new Room(User.getAllUsers(), new ArrayList<>(), "public-chat");
                 Chat chat = new Chat("", skin1, room, user);
                 chat.setSize(uiStage.getWidth() / 5.0F, uiStage.getHeight());
                 uiStage.addActor(chat);
@@ -152,7 +153,7 @@ public class MainScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 String name = roomName.getText();
                 if (name.isEmpty()) return;
-                Room room = Room.getRoomByName(name);
+                Room room = ChatServer.getRoomByName(name);
                 if (room == null) {
                     roomNameError.setText("no room with such name exist");
                 } else if (room.getUser(user) == null) {

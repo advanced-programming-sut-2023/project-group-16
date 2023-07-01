@@ -114,6 +114,8 @@ public class Chat extends Window {
         container.add(send).bottom().row();
 
         this.add(container);
+
+        setRoom(room);
     }
 
     public Room getRoom() {

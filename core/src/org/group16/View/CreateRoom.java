@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.group16.Model.Messenger.Room;
 import org.group16.Model.User;
+import org.group16.Server.ChatServer;
 
 import java.util.ArrayList;
 
@@ -146,13 +147,24 @@ public class CreateRoom extends Window {
                 String name = roomName.getText();
                 if (!isPV && !name.matches("\\w+")) {
                     roomNameError.setText("invalid room name format");
-                } else if (Room.getRoomByName(name) != null) {
+                } else if (ChatServer.getRoomByName(name) != null) {
                     roomNameError.setText("room with this name already exist");
                 } else if (users.size() == 1) {
                     error.setColor(Color.RED);
                     error.setText("add a person");
                 } else {
-                    Room room = new Room(users, new ArrayList<>(), name);
+                    Room room;
+                    if (isPV) {
+                        room = ChatServer.getRoomByName(users.get(0).getUsername() + "-" + users.get(1).getUsername());
+                        if (room == null)
+                            room = ChatServer.getRoomByName(users.get(1).getUsername() + "-" +
+                                    users.get(0).getUsername());
+                        if (room == null)
+                            room = new Room(users, new ArrayList<>(),
+                                    users.get(0).getUsername() + "-" + users.get(1).getUsername());
+                    } else room = ChatServer.getRoomByName(name);
+
+
                     Chat chat = new Chat("", skin1, room, owner);
                     chat.setSize(stage.getWidth() / 5.0F, stage.getHeight());
                     stage.getActors().removeValue(tmp, true);

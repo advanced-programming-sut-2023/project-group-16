@@ -1,7 +1,12 @@
 package org.group16.Model.Messenger;
 
+import com.google.gson.Gson;
 import org.group16.Model.User;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Room {
@@ -13,10 +18,6 @@ public class Room {
         this.users.addAll(users);
         this.messages.addAll(messages);
         this.name = name;
-    }
-
-    public static Room getRoomByName(String name) {
-        return null; //TODO
     }
 
     public User getUser(User user) {
