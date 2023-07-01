@@ -35,8 +35,29 @@ public class testingGameScreen extends Menu {
     ////////////////////////////////////// render stuff
     private final List<Renderer> renderers = new ArrayList<>();
     public AssetManager assetManager;
+    public Window currentRunningWindow;
     float time = 0;
     GameRenderer gameRenderer;
+    InputProcessor inputProcessor;
+    org.group16.Model.Game game;
+    ///////////////////////////////////////////////////
+    int curUser = 0;
+    ArrayList<Cell> selectedCells = new ArrayList<>();
+    Cell lastSelectedCell = null;
+    Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
+    Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+    BuildingSelectWindow buildingSelectWindow;
+    CurrentPlayerWindow currentPlayerWindow;
+    CellDetailWindow cellDetailWindow;
+    MiniWindow miniWindow;
+    //////////////////////////////////////////////////
+    BuildingWindow buildingWindow;
+    StorageWindow storageWindow;
+    ShopWindow shopWindow;
+    BuyingWindow buyingWindow;
+    PopularityWindow popularityWindow;
+    ChangeRateWindow changeRateWindow;
+    BuyingUnitWindow buyingUnitWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -44,32 +65,6 @@ public class testingGameScreen extends Menu {
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
     private Renderer miniMapPreview;
-
-    InputProcessor inputProcessor;
-    org.group16.Model.Game game;
-    ///////////////////////////////////////////////////
-    int curUser = 0;
-
-    ArrayList<Cell> selectedCells = new ArrayList<>();
-    Cell lastSelectedCell = null;
-    //////////////////////////////////////////////////
-
-    Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
-    Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-
-    public Window currentRunningWindow;
-    BuildingSelectWindow buildingSelectWindow;
-    CurrentPlayerWindow currentPlayerWindow;
-    CellDetailWindow cellDetailWindow;
-    MiniWindow miniWindow;
-    BuildingWindow buildingWindow;
-
-    StorageWindow storageWindow;
-    ShopWindow shopWindow;
-    BuyingWindow buyingWindow;
-    PopularityWindow popularityWindow ;
-    ChangeRateWindow changeRateWindow ;
-    BuyingUnitWindow buyingUnitWindow;
 
     public testingGameScreen(StrongholdGame game1, Game game) {
         super(game1);
@@ -128,10 +123,10 @@ public class testingGameScreen extends Menu {
         buyingWindow = new BuyingWindow(skin1, game, this);
         buyingWindow.setVisible(false);
 
-        popularityWindow = new PopularityWindow(skin1 , 0 , 0 , 0 , 0 , game , this) ;
+        popularityWindow = new PopularityWindow(skin1, 0, 0, 0, 0, game, this);
         popularityWindow.setVisible(false);
 
-        changeRateWindow = new ChangeRateWindow(skin1 , game , this ) ;
+        changeRateWindow = new ChangeRateWindow(skin1, game, this);
         changeRateWindow.setVisible(false);
 
         currentRunningWindow = buildingSelectWindow;
@@ -196,15 +191,16 @@ public class testingGameScreen extends Menu {
         Cell currentCell = Util.getMouseCell(game);
 
         if (input.isTouched() && input.getY() < 3 * uiStage.getHeight() / 4) {
-
+            if (!input.isKeyPressed(Input.Keys.SHIFT_LEFT) && !input.isKeyPressed(Input.Keys.SHIFT_RIGHT))
+                resetSelection();
             if (currentCell != null && currentCell != lastSelectedCell) {
                 for (GameObject gameObject : currentCell.getGameObjects()) {
                     if (gameObject instanceof Building) {
-                        if (((Building) gameObject).getBuildingType().equals(BuildingType.TOWN_BUILDING)){
-                            Kingdom kingdom = game.getKingdom(getCurUser()) ;
-                            popularityWindow.reset(kingdom.getFoodRate() , kingdom.getFearRate() , kingdom.getTax() , 0);
+                        if (((Building) gameObject).getBuildingType().equals(BuildingType.TOWN_BUILDING)) {
+                            Kingdom kingdom = game.getKingdom(getCurUser());
+                            popularityWindow.reset(kingdom.getFoodRate(), kingdom.getFearRate(), kingdom.getTax(), 0);
                             setCurrentRunningWindow(popularityWindow);
-                        }else {
+                        } else {
                             buildingWindow.changeBuilding((Building) gameObject);
                             setCurrentRunningWindow(buildingWindow);
                         }
@@ -220,12 +216,7 @@ public class testingGameScreen extends Menu {
             }
         }
         if (input.isKeyPressed(Input.Keys.Z)) {
-            for (Cell cell : selectedCells) {
-                CellRenderer cellRenderer = Util.getMouseCellRenderer(cell.getX(), cell.getY(), gameRenderer);
-                cellRenderer.getDecal().setColor(Color.WHITE);
-            }
-            selectedCells.clear();
-            lastSelectedCell = null;
+            resetSelection();
         }
 
 
@@ -281,6 +272,15 @@ public class testingGameScreen extends Menu {
         uiStage.draw();
     }
 
+    private void resetSelection() {
+        for (Cell cell : selectedCells) {
+            CellRenderer cellRenderer = Util.getMouseCellRenderer(cell.getX(), cell.getY(), gameRenderer);
+            cellRenderer.getDecal().setColor(Color.WHITE);
+        }
+        selectedCells.clear();
+        lastSelectedCell = null;
+    }
+
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = 1f;
@@ -324,12 +324,7 @@ public class testingGameScreen extends Menu {
         currentPlayerWindow.makeWindow(getCurUser());
         System.out.println(getCurUser().getNickname());
 
-        for (Cell cell : selectedCells) {
-            CellRenderer cellRenderer = Util.getMouseCellRenderer(cell.getX(), cell.getY(), gameRenderer);
-            cellRenderer.getDecal().setColor(Color.WHITE);
-        }
-        selectedCells.clear();
-        lastSelectedCell = null;
+        resetSelection();
 
     }
 
