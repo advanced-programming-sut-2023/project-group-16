@@ -1,8 +1,13 @@
 package org.group16.Model;
 
 import org.group16.Controller.GameMenuController;
+import org.group16.GameGraphics.CommandHandling.CreateBuildingCommand;
+import org.group16.GameGraphics.CommandHandling.DeleteBuildingCommand;
+import org.group16.GameGraphics.CommandHandling.UserCommand;
+import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
+import org.group16.Model.Resources.BasicResource;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -40,11 +45,31 @@ public class GameTest {
         k1 = game.getKingdom(user);
         k2 = game.getKingdom(user1);
 
+        GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
+        k1.addGold(10000);
+        GameMenuController.dropBuilding(game, k1.getUser(), 0, 1, BuildingType.STOCKPILE);
+        k1.addResource(BasicResource.STONE, 100);
+        k1.addResource(BasicResource.WOOD, 100);
+
 
         Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
         k1.setKing(king1);
         Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(4, 4))), k2, SoldierDetail.KING);
         k2.setKing(king2);
+    }
+
+    @Test
+    void commandSerializationTest() {
+        CreateBuildingCommand createBuildingCommand = new CreateBuildingCommand(k1.getUser(), BuildingType.TOWN_BUILDING, 0, 1);
+        String data = createBuildingCommand.serialize();
+        CreateBuildingCommand createBuildingCommand1 = (CreateBuildingCommand) UserCommand.tryDeserialize(data);
+
+        DeleteBuildingCommand deleteBuildingCommand = new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(1));
+        String data1 = deleteBuildingCommand.serialize();
+        DeleteBuildingCommand deleteBuildingCommand1 = (DeleteBuildingCommand) UserCommand.tryDeserialize(data1);
+
+        createBuildingCommand1.resolveUser(game);
+        deleteBuildingCommand1.resolveUser(game);
     }
 
     @Test
@@ -63,7 +88,10 @@ public class GameTest {
                 soldier.getRelativeX(), soldier.getRelativeY());
         System.out.printf(" | king=%d\n", k2.getKing().getHp());
         for (int i = 0; i < 20; i++) {
-            game.update();
+            game.onTurnStart();
+            for (int j = 0; j < Time.updateIterationCount; j++)
+                game.update();
+            game.onTurnEnd();
             System.out.printf("[%d,%d] : (%f,%f)", soldier.getCell().getX(), soldier.getCell().getY(),
                     soldier.getRelativeX(), soldier.getRelativeY());
 

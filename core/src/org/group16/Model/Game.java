@@ -26,7 +26,7 @@ public class Game {
             kingdom.onTurnStart();
         scene.onTurnStart();
     }
-    
+
     public void onTurnEnd() {
         scene.onTurnEnd();
         for (var kingdom : kingdoms)
@@ -120,5 +120,12 @@ public class Game {
 
     public void removeUser(User user) {
         kingdoms.remove(getKingdom(user));
+    }
+
+    public User getUserByUsername(String username) {
+        for (Kingdom kingdom : kingdoms) {
+            if (kingdom.getUser().getUsername().equals(username)) return kingdom.getUser();
+        }
+        return null;
     }
 }

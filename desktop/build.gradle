@@ -41,6 +41,10 @@ task dist(type: Jar) {
     with jar
 }
 
+dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.40.1.0'
+}
+
 
 dist.dependsOn classes
 
