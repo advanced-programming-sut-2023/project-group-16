@@ -11,6 +11,8 @@ public class CellDetailWindow extends Window {
     Label description;
     Image soilBackground;
 
+    float lastRemakeTime = 0 ;
+
     public CellDetailWindow(String title, Skin skin, String details) {
         super(title, skin);
 

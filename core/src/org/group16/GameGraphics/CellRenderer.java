@@ -7,4 +7,5 @@ public class CellRenderer extends AnimatedRenderer {
         super(new AnimCollection(cellGraphics.getAnimData()), false, 1, Vector3.Y, Vector3.X);
         localPosition.set(x, 0, y);
     }
+
 }

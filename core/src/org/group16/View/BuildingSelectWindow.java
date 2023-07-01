@@ -10,8 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Scaling;
+import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.Buildings.WarBuildingDetail;
+import org.group16.Model.Game;
 import org.group16.StrongholdGame;
 
 
@@ -32,8 +34,15 @@ public class BuildingSelectWindow extends Window {
     Label status ;
     Image image;
 
-    public BuildingSelectWindow(String title, Skin skin) {
-        super(title, skin);
+    Game game ;
+    testingGameScreen gameScreen ;
+
+    public BuildingSelectWindow(Skin skin , Game game , testingGameScreen gameScreen) {
+        super("", skin);
+
+        this.game = game ;
+        this.gameScreen = gameScreen ;
+
         this.skin = skin;
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         this.setBackground(soilBackground.getDrawable());
@@ -91,6 +100,7 @@ public class BuildingSelectWindow extends Window {
         this.add(back).pad(0 , 0 , 0 , 5) ;
         for (int i = 0; i < numberOfPics; i++)
             this.add(imageButtonElements[i].imageButton);
+
         this.add(next).pad(0 , 0 , 5 , 0) ;
         this.add().row();
         this.add(economicButton).pad(0, 0, 0, 5);
@@ -127,6 +137,9 @@ public class BuildingSelectWindow extends Window {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     status.setText(name);
+                    if (name.equals("null"))
+                        return;
+                    gameScreen.makeBuilding(BuildingType.valueOf(name));
                 }
             }) ;
         }

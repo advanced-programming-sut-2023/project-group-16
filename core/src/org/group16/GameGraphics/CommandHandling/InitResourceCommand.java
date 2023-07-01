@@ -25,6 +25,7 @@ public class InitResourceCommand extends UserCommand{
         game.getKingdom(user).addResource(BasicResource.WOOD, 200);
 
         game.getKingdom(user).addPopulation(10);
+        game.getKingdom(user).addPopularity(100);
 
         gameRenderer.createRenderer(game.getKingdom(user).getKing());
         for (Human human : game.getKingdom(user).getHumans()){

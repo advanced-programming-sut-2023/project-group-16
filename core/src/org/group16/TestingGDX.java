@@ -217,6 +217,10 @@ public class TestingGDX extends Game {
         }
         if (input.isKeyPressed(Input.Keys.N)) inputProcessor.submitCommand(new EndTurnCommand(k1.getUser()));
         if (input.isKeyPressed(Input.Keys.M)) inputProcessor.submitCommand(new EndTurnCommand(k2.getUser()));
+
+       if (input.isTouched()) {
+           System.out.println(Util.getMouseCell(game).getGameObjects()) ;
+       }
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
 //        if (input.isKeyPressed(Input.Keys.M))

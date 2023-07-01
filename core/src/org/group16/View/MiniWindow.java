@@ -15,6 +15,8 @@ public class MiniWindow extends Window {
     Label popularityLabel , populationLabel , maxPopulationLabel , goldLabel ;
     int popularity , population ,  maxPopulation , gold ;
 
+    public float lastChangeTime = 0 ;
+
     public MiniWindow(Skin skin , int popularity , int population , int maxPopulation , int gold) {
         super("", skin);
 

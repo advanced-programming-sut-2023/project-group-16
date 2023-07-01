@@ -3,10 +3,7 @@ package org.group16.View;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -31,13 +28,12 @@ import java.util.List;
 import static com.badlogic.gdx.Gdx.*;
 import static com.badlogic.gdx.Gdx.gl;
 
+
 public class testingGameScreen extends Menu{
+    ////////////////////////////////////// render stuff
     private final List<Renderer> renderers = new ArrayList<>();
     public AssetManager assetManager;
     float time = 0;
-    org.group16.Model.Game game;
-    Scene scene;
-    Kingdom k1, k2;
     GameRenderer gameRenderer;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
@@ -48,11 +44,21 @@ public class testingGameScreen extends Menu{
     private Renderer miniMapPreview;
 
     InputProcessor inputProcessor ;
+    org.group16.Model.Game game;
+    ///////////////////////////////////////////////////
+    int curUser = 0 ;
+
+    ArrayList<Cell> selectedCells = new ArrayList<>() ;
+    Cell lastSelectedCell = null ;
+    //////////////////////////////////////////////////
 
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
-    BuildingSelectWindow buildingSelectWindow = new BuildingSelectWindow("" , skin2) ;
+    BuildingSelectWindow buildingSelectWindow ;
+    CurrentPlayerWindow currentPlayerWindow ;
+    CellDetailWindow cellDetailWindow ;
+    MiniWindow miniWindow ;
     public testingGameScreen(StrongholdGame game1 , Game game) {
         super(game1);
         this.game = game ;
@@ -107,53 +113,15 @@ public class testingGameScreen extends Menu{
 //        }
 //        new WarCommand(list1, k2.getKing());
 //        new WarCommand(list2, k1.getKing());
-
+        currentPlayerWindow = new CurrentPlayerWindow(game.getKingdoms().get(0).getUser() , skin1 , game , this) ;
+        buildingSelectWindow = new BuildingSelectWindow( skin2 , game , this) ;
+        cellDetailWindow = new CellDetailWindow("" , skin1 , "") ;
+        miniWindow = new MiniWindow(skin1 ,0 , 0 , 0 , 0 ) ;
         uiStage.addActor(buildingSelectWindow);
+        uiStage.addActor(currentPlayerWindow);
+        uiStage.addActor(cellDetailWindow);
+        uiStage.addActor(miniWindow);
     }
-
-
-//    void initialize() {
-//        User.addUser("player1", "pass", "email",
-//                "q1", "a1", "playerA", "slog");
-//
-//        User.addUser("player2", "pass", "email",
-//                "q1", "a1", "playerB", "slog");
-//
-//        User user = User.getUserByName("player1");
-//        User user1 = User.getUserByName("player2");
-//
-//        game = new org.group16.Model.Game(KingdomType.ARAB, user);
-//        game.addUser(user1, KingdomType.EUROPEAN);
-//        createMap0();
-//        scene = new Scene(Map.getMapByName("map0"), 0);
-//        game.setScene(scene);
-//        k1 = game.getKingdom(user);
-//        k2 = game.getKingdom(user1);
-//    }
-
-//    void createMap0() {
-//        Map map = new Map("map0", 20, 20);
-//        for (int i = 0; i < 10; i++)
-//            for (int j = 0; j < 10; j++) {
-//                map.getCellAt(i, j).setTreeType(TreeType.CHERRY_PALM);
-//                map.getCellAt(i, j).setCellType(CellType.NORMAL);
-//            }
-//        Map.saveMap(map);
-//    }
-
-
-
-//    private void initGameObjects() {
-//        gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
-//        gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
-//
-//        Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
-//        k1.setKing(king1);
-//        gameRenderer.createRenderer(king1);
-//        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(19, 19))), k2, SoldierDetail.KING);
-//        k2.setKing(king2);
-//        gameRenderer.createRenderer(king2);
-//    }
 
     @Override
     public void render(float delta) {
@@ -200,33 +168,56 @@ public class testingGameScreen extends Menu{
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         miniMapPreview.render(decalBatch, new Vector3());
-        decalBatch.flush();
-//        gl.glDepthMask(true);
 
-//        AnimatedRenderer soldier = (AnimatedRenderer) renderers.get(0);
-//        if (input.isKeyPressed(Input.Keys.F)) {
-//            soldier.playAnimation("fighting");
-//        }
-//        if (input.isKeyPressed(Input.Keys.R)) {
-//            soldier.playAnimation("running");
-//        }
-//        if (input.isKeyPressed(Input.Keys.W)) {
-//            soldier.playAnimation("walking");
-//        }
-//        if (input.isKeyPressed(Input.Keys.I)) {
-//            soldier.playAnimation("idle");
-//        }
-//        if (input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(1);
-//        if (input.isKeyPressed(Input.Keys.DOWN)) soldier.setDirection(3);
-//        if (input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(5);
-//        if (input.isKeyPressed(Input.Keys.UP)) soldier.setDirection(7);
-//        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(0);
-//        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.RIGHT)) soldier.setDirection(2);
-//        if (input.isKeyPressed(Input.Keys.DOWN) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(4);
-//        if (input.isKeyPressed(Input.Keys.UP) && input.isKeyPressed(Input.Keys.LEFT)) soldier.setDirection(6);
+        Cell currentCell = Util.getMouseCell(game) ;
+
+        if (input.isTouched()&&input.getY() < 3*uiStage.getHeight()/4){
+            lastSelectedCell = currentCell ;
+            if (currentCell!=null && !selectedCells.contains(currentCell)) {
+                selectedCells.add(currentCell);
+                CellRenderer cellRenderer = Util.getMouseCellRenderer(currentCell.getX() , currentCell.getY() , gameRenderer) ;
+                cellRenderer.getDecal().setColor(Color.GREEN);
+            }
+        }
+        if (input.isKeyPressed(Input.Keys.Z)){
+            for (Cell cell : selectedCells){
+                CellRenderer cellRenderer = Util.getMouseCellRenderer(cell.getX() , cell.getY() , gameRenderer) ;
+                cellRenderer.getDecal().setColor(Color.WHITE);
+            }
+            selectedCells.clear();
+            lastSelectedCell = null ;
+        }
+
+        if (currentCell!=null && time - cellDetailWindow.lastRemakeTime>=1){
+            int x = currentCell.getX() ;
+            int y = currentCell.getY() ;
+            cellDetailWindow.remake(GameMenuController.showMapDetails(game , x , y));
+            cellDetailWindow.lastRemakeTime = time ;
+        }
+
+        if (time - miniWindow.lastChangeTime >=1){
+            Kingdom curKingdom = game.getKingdom(getCurUser()) ;
+            miniWindow.remake(curKingdom.getPopularity() , curKingdom.getPopulation() , curKingdom.getPopulationCapacity() , curKingdom.getGold());
+        }
+
+
+        decalBatch.flush();
 
         buildingSelectWindow.setWidth(uiStage.getWidth()*3/5);
         buildingSelectWindow.setHeight(uiStage.getHeight()/4);
+
+        currentPlayerWindow.setPosition(0 , uiStage.getHeight()-100);
+        currentPlayerWindow.setWidth(100);
+        currentPlayerWindow.setHeight(100);
+
+        cellDetailWindow.setWidth(200);
+        cellDetailWindow.setHeight(200);
+        cellDetailWindow.setPosition(uiStage.getWidth()-200 , uiStage.getHeight()-200);
+
+        miniWindow.setHeight(uiStage.getHeight()/4);
+        miniWindow.setWidth(200);
+        miniWindow.setPosition(uiStage.getWidth() - miniWindow.getWidth() , 0);
+
         uiStage.draw();
     }
 
@@ -262,6 +253,33 @@ public class testingGameScreen extends Menu{
 
             inputProcessor.submitCommand(new EndTurnCommand(user));
         }
+    }
+
+    public void nextPlayer(){
+
+        inputProcessor.submitCommand(new EndTurnCommand(getCurUser()));
+        curUser++ ;
+        curUser=curUser%game.getKingdoms().size() ;
+        currentPlayerWindow.makeWindow(getCurUser());
+        System.out.println(getCurUser().getNickname());
+
+        for (Cell cell : selectedCells){
+            CellRenderer cellRenderer = Util.getMouseCellRenderer(cell.getX() , cell.getY() , gameRenderer) ;
+            cellRenderer.getDecal().setColor(Color.WHITE);
+        }
+        selectedCells.clear();
+        lastSelectedCell = null ;
+
+    }
+
+    public User getCurUser(){
+        return game.getKingdoms().get(curUser).getUser() ;
+    }
+
+    public void makeBuilding(BuildingType buildingType){
+        System.out.println(buildingType.GetName());
+        if (lastSelectedCell!=null)
+            inputProcessor.submitCommand(new CreateBuildingCommand(getCurUser(), buildingType,lastSelectedCell.getX() , lastSelectedCell.getY() ));
     }
 
 
