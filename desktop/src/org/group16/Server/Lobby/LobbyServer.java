@@ -37,8 +37,10 @@ public class LobbyServer extends Thread {
         for (int i = 0; i < gameInfo.playerList().users.size(); i++) {
             String username = gameInfo.playerList().users.get(i).getUsername();
             LobbyConnection connection = userConnections.get(username);
+            connections.add(connection);
             if (connection == null || !connection.isInGameLobby()) {
                 connections.get(0).startGameFailed();
+                return;
             }
         }
 

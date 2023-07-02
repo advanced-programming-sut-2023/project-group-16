@@ -271,10 +271,12 @@ public class LobbyConnection extends Thread {
 
     private void startGame() throws IOException {
         if (currentGame.getKingdoms().size() < 2) {
+            System.out.println("insufficient user to start game");
             utfOutputStream.writeUTF("insufficient user to start game");
             return;
         }
         if (currentGame.getScene() == null) {
+            System.out.println("no map is selected");
             utfOutputStream.writeUTF("no map is selected");
             return;
         }
@@ -285,6 +287,7 @@ public class LobbyConnection extends Thread {
         }
         GameInfo gameInfo = new GameInfo(UUID.randomUUID()
                 , randSeed, mapname, players);
+        inGameLobby = true;
         server.submitGame(gameInfo);
     }
 
@@ -299,10 +302,14 @@ public class LobbyConnection extends Thread {
     }
 
     public void startGameFailed() throws IOException {
+        inGameLobby = false;
+        System.out.println("one of users is offline");
         utfOutputStream.writeUTF("one of users is offline");
     }
 
     public void startGameSuccessful(GameInfo gameInfo) throws IOException {
+        inGameLobby = false;
+        System.out.println("START GAME");
         utfOutputStream.writeUTF("START GAME");
         outputStream.writeObject(gameInfo);
     }

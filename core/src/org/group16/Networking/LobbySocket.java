@@ -85,7 +85,8 @@ public class LobbySocket {
     }
 
     public static Map downloadMap(String mapname) throws IOException, ClassNotFoundException {
-        utfOutputStream.writeUTF("download map");
+        utfOutputStream.writeUTF(
+                String.format("download map -m \"%s\"", mapname));
         return (Map) inputStream.readObject();
     }
 
