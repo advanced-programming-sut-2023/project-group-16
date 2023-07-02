@@ -119,9 +119,10 @@ public class LobbySocket {
     }
 
     public static GameInfo joinGameLobby() throws IOException, ClassNotFoundException {
+        System.out.println("JOIN");
         utfOutputStream.writeUTF("join game lobby");
-        utfInputStream.readUTF(); //OK
-        utfInputStream.readUTF(); //START GAME
+        System.out.println(utfInputStream.readUTF()); //OK
+        System.out.println(utfInputStream.readUTF()); //START GAME
         return (GameInfo) inputStream.readObject();
     }
 
