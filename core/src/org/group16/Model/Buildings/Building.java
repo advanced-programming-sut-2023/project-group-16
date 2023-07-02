@@ -52,7 +52,10 @@ public abstract class Building extends GameObject implements Alive {
     }
 
     public boolean isTraversable() {
-        return traversable;
+        if (this instanceof WarBuilding)
+            return false;
+        else
+            return true ;
     }
 
     public void setTraversable(boolean traversable) {
