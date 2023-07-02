@@ -12,6 +12,7 @@ import org.group16.Model.User;
 import org.group16.Server.ChatServer;
 import org.group16.StrongholdGame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainScreen extends Menu {
@@ -20,8 +21,8 @@ public class MainScreen extends Menu {
     private final Image background, white;
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-    private TextButton profileMenu, gameMenu, lobbyMenu, chatButton, chatBack, publicChat, privateChat,
-            createRoomButton, openRoom, roomNameSend;
+    private TextButton profileMenu, gameMenu, chatButton, chatBack, publicChat, privateChat,
+            createRoomButton, openRoom, roomNameSend , joinGame , createGame;
     private Dialog chat, roomNameDialog;
     private TextField roomName;
     private Label roomNameError;
@@ -49,11 +50,31 @@ public class MainScreen extends Menu {
             }
         });
 
-        lobbyMenu = new TextButton("Lobby", skin1);
-        lobbyMenu.addListener(new ChangeListener() {
+        createGame = new TextButton("createGame", skin1);
+        createGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new LobbyScreen(game, user));
+                try {
+                    game.setScreen(new LobbyScreen(game, user));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        joinGame = new TextButton("joinGame" , skin1) ;
+        joinGame.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    game.setScreen(new JoinRoomScreen(game , user));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -70,7 +91,8 @@ public class MainScreen extends Menu {
         uiStage.addActor(background);
         table.add(profileMenu).row();
         table.add(gameMenu).row();
-        table.add(lobbyMenu).row();
+        table.add(createGame).row();
+        table.add(joinGame).row();
         uiStage.addActor(table);
     }
 
