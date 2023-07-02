@@ -26,6 +26,7 @@ public class GameServer extends Thread {
             try {
                 Socket socket = serverSocket.accept();
                 GameConnection connection = new GameConnection(this, socket);
+                connection.start();
             } catch (Exception ex) {
                 System.out.println("User Disconnected");
             }
@@ -42,8 +43,10 @@ public class GameServer extends Thread {
     }
 
     public void shareCommand(UUID gameID, UserCommand obj) throws IOException {
+        System.out.println("sharing?");
         if (!gameExists(gameID)) return;
         ArrayList<GameConnection> connections = games.get(gameID);
+        System.out.printf("Sending %s to %d connections\n", obj.getClass().toString(), connections.size());
         for (GameConnection connection : connections) {
             connection.sendCommand(obj);
         }

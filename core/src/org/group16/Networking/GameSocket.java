@@ -42,8 +42,10 @@ public class GameSocket {
                 }
             } catch (Exception e) {
                 System.out.println("Client Disconnected");
+                alive = false;
             }
         });
+        connection.start();
         outputStream.writeObject(gameInfo);
     }
 
