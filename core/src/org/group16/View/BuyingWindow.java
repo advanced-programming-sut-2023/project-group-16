@@ -12,8 +12,6 @@ import org.group16.Model.Game;
 import org.group16.Model.Resources.Resource;
 import org.group16.Model.User;
 
-import java.util.HashMap;
-
 
 public class BuyingWindow extends Window {
 
@@ -22,21 +20,20 @@ public class BuyingWindow extends Window {
     Label price, goodName, error;
     TextButton buyButton, sellButton, back;
     Image soilBackground;
-    Skin skin ;
+    Skin skin;
     Resource resource;
 
-    testingGameScreen gameScreen ;
-    Game game ;
+    testingGameScreen gameScreen;
+    Game game;
 
-    public BuyingWindow(Skin skin ,  Game game , testingGameScreen gameScreen ) {
+    public BuyingWindow(Skin skin, Game game, testingGameScreen gameScreen) {
         super("", skin);
-        this.skin = skin ;
+        this.skin = skin;
 
-        this.gameScreen = gameScreen ;
-        this.game = game ;
+        this.gameScreen = gameScreen;
+        this.game = game;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
-
 
 
     }
@@ -66,11 +63,10 @@ public class BuyingWindow extends Window {
         buyButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                User user = gameScreen.getCurUser() ;
+                User user = gameScreen.getCurUser();
                 try {
-                    gameScreen.inputProcessor.submitCommand(new BuyCommand(user, resource, Integer.parseInt(amount.getText())));
-                }
-                catch (Exception e){
+                    gameScreen.inputProcessor.submitCommandToServer(new BuyCommand(user, resource, Integer.parseInt(amount.getText())));
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
             }
@@ -78,10 +74,10 @@ public class BuyingWindow extends Window {
         sellButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                User user = gameScreen.getCurUser() ;
-                try{
-                    gameScreen.inputProcessor.submitCommand(new SellCommand(user , resource , Integer.parseInt(amount.getText())));
-                }catch (Exception e){
+                User user = gameScreen.getCurUser();
+                try {
+                    gameScreen.inputProcessor.submitCommandToServer(new SellCommand(user, resource, Integer.parseInt(amount.getText())));
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
             }
@@ -89,7 +85,7 @@ public class BuyingWindow extends Window {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                gameScreen.setCurrentRunningWindow(gameScreen.shopWindow) ;
+                gameScreen.setCurrentRunningWindow(gameScreen.shopWindow);
             }
         });
     }

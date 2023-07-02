@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.Gdx.*;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static com.badlogic.gdx.Gdx.graphics;
 
-public class TestingGDX extends Game {
+public class TestBuildingGraphics extends Game {
     private final List<Renderer> renderers = new ArrayList<>();
     public AssetManager assetManager;
     float time = 0;
@@ -35,6 +35,8 @@ public class TestingGDX extends Game {
     Scene scene;
     Kingdom k1, k2;
     GameRenderer gameRenderer;
+    BuildingGraphics buildingGraphics;
+    int roofHumanCnt;
     private InputProcessor inputProcessor;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
@@ -43,6 +45,11 @@ public class TestingGDX extends Game {
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
     private Renderer miniMapPreview;
+
+    public TestBuildingGraphics(BuildingGraphics graphics, int roofHumanCnt) {
+        buildingGraphics = graphics;
+        this.roofHumanCnt = roofHumanCnt;
+    }
 
     @Override
     public void create() {
@@ -78,83 +85,16 @@ public class TestingGDX extends Game {
 
         Util.load(assetManager);
 
-        initialize();
-
-        inputProcessor = new InputProcessor(List.of(k1.getUser(), k2.getUser()));
-        gameRenderer = new GameRenderer(game, inputProcessor);
-        initGameObjects();
-        new WarCommand(List.of(k1.getKing()), k2.getKing());
-        new WarCommand(List.of(k2.getKing()), k1.getKing());
-        renderers.add(gameRenderer);
-
-        testProbe = new DetailRenderer(DetailGraphics.CACTII, 0, 0);
-        renderers.add(testProbe);
-
-        ArrayList<Soldier> list1 = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Soldier soldier = new Soldier(List.of(scene.getCellAt(0, 1)), k1, SoldierDetail.ASSASSIN);
-            gameRenderer.createRenderer(soldier);
-            list1.add(soldier);
-        }
-        ArrayList<Soldier> list2 = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            Soldier soldier = new Soldier(List.of(scene.getCellAt(10, 10)), k2, SoldierDetail.ASSASSIN);
-            gameRenderer.createRenderer(soldier);
-            list2.add(soldier);
-        }
-        new WarCommand(list1, scene.getCellAt(9, 9), false);
-        new WarCommand(list2, scene.getCellAt(9, 9), false);
-    }
-
-    void createMap0() {
-        Map map = new Map("map1", 60, 60);
-        Map.saveMap(map);
-    }
-
-    void initialize() {
-        User.addUser("player1", "pass", "email",
-                "q1", "a1", "playerA", "slog");
-
-        User.addUser("player2", "pass", "email",
-                "q1", "a1", "playerB", "slog");
-
-        User user = User.getUserByName("player1");
-        User user1 = User.getUserByName("player2");
-
-        game = new org.group16.Model.Game(KingdomType.ARAB, user);
-        game.addUser(user1, KingdomType.EUROPEAN);
-        createMap0();
-        scene = new Scene(Map.getMapByName("map1"), 0);
-        game.setScene(scene);
-        k1 = game.getKingdom(user);
-        k2 = game.getKingdom(user1);
-    }
-
-    private void initGameObjects() {
-        GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
-        inputProcessor.submitCommandToServer(new CreateBuildingCommand(k1.getUser(), BuildingType.GRANARY, 3, 2));
-        GameMenuController.dropBuilding(game, k2.getUser(), 19, 19, BuildingType.TOWN_BUILDING);
-        gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
-        gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
-
-        GameMenuController.dropBuilding(game, k1.getUser(), 0, 1, BuildingType.STOCKPILE);
-        GameMenuController.dropBuilding(game, k2.getUser(), 18, 19, BuildingType.STOCKPILE);
-        gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.STOCKPILE).get(0));
-        gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.STOCKPILE).get(0));
-
-        k1.addResource(BasicResource.STONE, 50);
-        k1.addResource(BasicResource.WOOD, 200);
-        k2.addResource(BasicResource.STONE, 50);
-        k2.addResource(BasicResource.WOOD, 200);
-
-        Soldier king1 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(0, 0))), k1, SoldierDetail.KING);
-        k1.setKing(king1);
-        k1.addGold(10000);
-        gameRenderer.createRenderer(king1);
-        Soldier king2 = new Soldier(new ArrayList<>(List.of(scene.getCellAt(19, 19))), k2, SoldierDetail.KING);
-        k2.setKing(king2);
-        k2.addGold(10000);
-        gameRenderer.createRenderer(king2);
+        BuildingRenderer buildingRenderer = new BuildingRenderer(buildingGraphics, 0, 0);
+        for (int i = 0; i < roofHumanCnt; i++)
+            for (int j = 0; j < roofHumanCnt; j++) {
+                HumanRenderer humanRenderer = new HumanRenderer(HumanGraphics.EUROPEAN_ARCHER);
+                humanRenderer.setLocalPosition(buildingRenderer.getRoofPosition(1.0f * i / (roofHumanCnt - 1), 1.0f * j / (roofHumanCnt - 1)));
+                renderers.add(humanRenderer);
+            }
+        renderers.add(buildingRenderer);
+        CellRenderer cellRenderer = new CellRenderer(CellGraphics.SAND, 0, 0);
+        renderers.add(cellRenderer);
     }
 
 //    void soldierPathfindingTest() {
@@ -206,24 +146,6 @@ public class TestingGDX extends Game {
             camera.position.add(-5 * dt, -5 * dt, -5 * dt);
         if (input.isKeyPressed(Input.Keys.O))
             camera.position.add(5 * dt, 5 * dt, 5 * dt);
-
-        if (input.isKeyJustPressed(Input.Keys.B)) {
-            inputProcessor.submitCommandToServer(new CreateBuildingCommand(k1.getUser(), BuildingType.LOOKOUT_TOWER, 4, 2));
-        }
-        if (input.isKeyJustPressed(Input.Keys.V)) {
-            inputProcessor.submitCommandToServer(new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(1)));
-
-        }
-        if (input.isKeyPressed(Input.Keys.N)) inputProcessor.submitCommandToServer(new EndTurnCommand(k1.getUser()));
-        if (input.isKeyPressed(Input.Keys.M)) inputProcessor.submitCommandToServer(new EndTurnCommand(k2.getUser()));
-
-        if (input.isTouched()) {
-            System.out.println(Util.getMouseCell(game).getGameObjects());
-        }
-//        if (input.isKeyPressed(Input.Keys.N))
-//            camera.rotateAround(, Vector3.Y, -dt * 180);
-//        if (input.isKeyPressed(Input.Keys.M))
-//            camera.rotate(new Vector3(0, 1, 0), dt * 180);
         camera.update();
 
 

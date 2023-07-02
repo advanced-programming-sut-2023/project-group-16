@@ -110,7 +110,7 @@ public class Human extends GameObject implements Alive {
         HumanRenderer humanRenderer = (HumanRenderer) renderer;
         Vector3 target = calculateWorldPosition();
         Vector3 delta = target.cpy().sub(humanRenderer.getLocalPosition());
-        humanRenderer.getLocalPosition().mulAdd(delta, .03f);
+        humanRenderer.getLocalPosition().mulAdd(delta, .07f);
         if (fightingTarget != null && fightingTarget.isAlive()) {
             delta = new Vector3(fightingTarget.getCell().getX() + fightingTarget.getRelativeX() - humanRenderer.getLocalPosition().x,
                     0,

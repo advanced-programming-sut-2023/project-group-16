@@ -1,5 +1,6 @@
 package org.group16.Server.Lobby;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import org.group16.Model.*;
 import org.group16.Model.Map;
 import org.group16.Server.Lobby.Command.Command;
@@ -51,11 +52,30 @@ public class LobbyConnection extends Thread {
                 else if ((map = CommandHandler.matches(Command.DISPLAY_RANK, msg)) != null) displayRank();
                 else if ((map = CommandHandler.matches(Command.GET_USER, msg)) != null) getUser(map);
                 else if ((map = CommandHandler.matches(Command.GET_ALL_USERS, msg)) != null) getAllUsers();
+                else if ((map = CommandHandler.matches(Command.CREATE_GAME, msg)) != null) createGame(map);
+                else if ((map = CommandHandler.matches(Command.GET_ALL_MAPS, msg)) != null) getAllMaps();
+                else if ((map = CommandHandler.matches(Command.SELECT_MAP, msg)) != null) selectMap(map);
+                else if ((map = CommandHandler.matches(Command.ADD_USER, msg)) != null) addUser(map);
+                else if ((map = CommandHandler.matches(Command.REMOVE_USER, msg)) != null) removeUser(map);
+                else if ((map = CommandHandler.matches(Command.JOIN_GAME_LOBBY, msg)) != null) joinGameLobby();
+                else if ((map = CommandHandler.matches(Command.LEAVE_GAME_LOBBY, msg)) != null) leaveGameLobby();
+                else if ((map = CommandHandler.matches(Command.START_GAME, msg)) != null) startGame();
+                else if ((map = CommandHandler.matches(Command.UPLOAD_MAP, msg)) != null) uploadMap();
+                else if ((map = CommandHandler.matches(Command.DOWNLOAD_MAP, msg)) != null) downloadMap(map);
+
+
 //                else if((map = CommandHandler.matches(Command.))
             }
         } catch (Exception ex) {
             System.out.println("User Disconnected");
         }
+    }
+
+    private void getAllMaps() throws IOException {
+        List<String> res = Map.getAllMapNames();
+        StringList data = new StringList();
+        data.strings.addAll(res);
+        outputStream.writeObject(data);
     }
 
 
@@ -274,6 +294,17 @@ public class LobbyConnection extends Thread {
     public void startGameSuccessful(GameInfo gameInfo) throws IOException {
         outputStream.writeUTF("START GAME");
         outputStream.writeObject(gameInfo);
+    }
+
+    public void uploadMap() throws IOException, ClassNotFoundException {
+        Map mp = (Map) inputStream.readObject();
+        Map.saveMap(mp);
+    }
+
+    public void downloadMap(TreeMap<String, ArrayList<String>> map) throws IOException {
+        String mapname = map.get("m").get(0);
+        Map mp = Map.getMapByName(mapname);
+        outputStream.writeObject(mp);
     }
 }
 

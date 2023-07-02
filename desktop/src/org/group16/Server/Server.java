@@ -5,6 +5,11 @@ import org.group16.Server.Lobby.LobbyServer;
 import java.net.ServerSocket;
 
 public class Server {
+    public static final int lobbyPort = 8080;
+    public static final int gamePort = 8081;
+    public static final int telegramPort = 8082;
+    public static final String host = "localhost";
+
     private Server(int lobbyPort, int gamePort, int telegramPort) {
         System.out.println("Starting Server...");
         try {
@@ -23,6 +28,6 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        new Server(8080, 8081, 8082);
+        new Server(lobbyPort, gamePort, telegramPort);
     }
 }

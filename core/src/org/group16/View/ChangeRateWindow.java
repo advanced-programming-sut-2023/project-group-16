@@ -11,7 +11,6 @@ import org.group16.GameGraphics.CommandHandling.SetFearRateCommand;
 import org.group16.GameGraphics.CommandHandling.SetFoodRateCommand;
 import org.group16.GameGraphics.CommandHandling.SetTaxRateCommand;
 import org.group16.Model.Game;
-import org.group16.Model.Kingdom;
 import org.group16.Model.User;
 
 public class ChangeRateWindow extends Window {
@@ -22,15 +21,16 @@ public class ChangeRateWindow extends Window {
     Image soilBackground;
 
     ImageButton back;
+    TextButton change;
 
-    Game game ;
+    Game game;
     testingGameScreen gameScreen;
 
-    public ChangeRateWindow(Skin skin , Game game , testingGameScreen gameScreen) {
-        super("" , skin);
+    public ChangeRateWindow(Skin skin, Game game, testingGameScreen gameScreen) {
+        super("", skin);
 
-        this.game = game ;
-        this.gameScreen = gameScreen ;
+        this.game = game;
+        this.gameScreen = gameScreen;
 
         this.skin = skin;
 
@@ -57,42 +57,55 @@ public class ChangeRateWindow extends Window {
         imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
         back.setStyle(imageStyle);
 
-        this.add(back) ;
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 gameScreen.setCurrentRunningWindow(gameScreen.popularityWindow);
             }
-        }) ;
+        });
 
+        change = new TextButton("change", skin);
+
+
+        change.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                User user = gameScreen.getCurUser();
+                gameScreen.inputProcessor.submitCommandToServer(new SetFoodRateCommand(user, (int) foodSlideBar.slider.getValue()));
+                gameScreen.inputProcessor.submitCommandToServer(new SetTaxRateCommand(user, (int) taxSlideBar.slider.getValue()));
+                gameScreen.inputProcessor.submitCommandToServer(new SetFearRateCommand(user, (int) fearSlideBar.slider.getValue()));
+            }
+        });
+
+        this.add(change).pad(0, 0, 0, 5);
+        this.add(back);
 
         foodSlideBar.slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                User user = gameScreen.getCurUser() ;
-                gameScreen.inputProcessor.submitCommand(new SetFoodRateCommand(user , (int) foodSlideBar.slider.getValue()));
-                foodSlideBar.amount.setText(foodSlideBar.slider.getValue()+"");
+                foodSlideBar.amount.setText(foodSlideBar.slider.getValue() + "");
             }
         });
         taxSlideBar.slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                User user = gameScreen.getCurUser() ;
-                gameScreen.inputProcessor.submitCommand(new SetTaxRateCommand(user , (int) taxSlideBar.slider.getValue()));
-                taxSlideBar.amount.setText(taxSlideBar.slider.getValue()+"");
+                taxSlideBar.amount.setText(taxSlideBar.slider.getValue() + "");
             }
         });
         fearSlideBar.slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                User user = gameScreen.getCurUser() ;
-                gameScreen.inputProcessor.submitCommand(new SetFearRateCommand(user , (int) fearSlideBar.slider.getValue()));
-                fearSlideBar.amount.setText(fearSlideBar.slider.getValue()+"");
+                fearSlideBar.amount.setText(fearSlideBar.slider.getValue() + "");
             }
         });
 
     }
 
+    public void remake(int food, int fear, int tax) {
+        foodSlideBar.slider.setValue(food);
+        fearSlideBar.slider.setValue(fear);
+        taxSlideBar.slider.setValue(tax);
+    }
 
     public class SlideBar {
         Slider.SliderStyle sliderStyle;
@@ -109,11 +122,5 @@ public class ChangeRateWindow extends Window {
             slider.setWidth(100);
             amount = new Label(slider.getValue() + "", skin);
         }
-    }
-
-    public void remake(int food , int fear , int tax){
-        foodSlideBar.slider.setValue(food) ;
-        fearSlideBar.slider.setValue(fear) ;
-        taxSlideBar.slider.setValue(tax) ;
     }
 }

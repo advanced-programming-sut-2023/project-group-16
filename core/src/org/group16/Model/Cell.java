@@ -4,11 +4,12 @@ import org.group16.Model.Buildings.Building;
 import org.group16.Model.People.Soldier;
 import org.group16.Vec2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cell implements Comparable<Cell> {
+public class Cell implements Comparable<Cell>, Serializable {
     private final int x, y;
-    private final ArrayList<GameObject> gameObjects = new ArrayList<>();
+    private transient final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private CellType cellType;
     private TreeType treeType;
     private boolean hasLadder;

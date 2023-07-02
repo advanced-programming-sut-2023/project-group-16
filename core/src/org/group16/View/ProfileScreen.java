@@ -15,9 +15,11 @@ import com.badlogic.gdx.utils.Array;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
 import org.group16.Controller.ProfileMenuController;
 import org.group16.Model.User;
+import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -55,7 +57,6 @@ public class ProfileScreen extends Menu {
         createSlogan();
         createPassword();
         createBack();
-
         scoreBoardWindow = new ScoreBoardWindow(skin2, user);
         scoreBoardWindow.setMovable(true);
 
@@ -168,7 +169,17 @@ public class ProfileScreen extends Menu {
 
         newUsername.setTextFieldListener((textField, c) -> {
             String username = newUsername.getText();
-            String status = ProfileMenuController.checkChangeUsername(user, username);
+            String status = "" ;
+            try {
+                if (LobbySocket.getUser(username) != null)
+                    status = "username already exists";
+                if (username.length()==0)
+                    status = "username can no tbe empty" ;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             newUsernameError.setText(status);
         });
 
@@ -176,7 +187,11 @@ public class ProfileScreen extends Menu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (newUsernameError.getText().isEmpty()) {
-                    ProfileMenuController.changeUsername(user, newUsername.getText());
+                    try {
+                        LobbySocket.changeProfile(newUsername.getText() ,user.getPassword() , user.getNickname() ,user.getEmail() , user.getSlogan()) ;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     username.setText("Username: " + user.getUsername());
                     changeUsernameDialog.hide();
                     showSuccess("Username changed successfully");
@@ -226,7 +241,11 @@ public class ProfileScreen extends Menu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (newNicknameError.getText().isEmpty()) {
-                    ProfileMenuController.changeNickname(user, newNickname.getText());
+                    try {
+                        LobbySocket.changeProfile(username.getName() ,user.getPassword() , newNickname.getText() ,user.getEmail() , user.getSlogan()) ;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     nickname.setText("Nickname: " + user.getNickname());
                     changeNicknameDialog.hide();
                     showSuccess("Nickname changed successfully");
@@ -268,15 +287,21 @@ public class ProfileScreen extends Menu {
 
         newEmail.setTextFieldListener((textField, c) -> {
             String email = newEmail.getText();
-            String status = ProfileMenuController.checkChangeEmail(user, email);
-            newEmailError.setText(status);
+            if (email.isEmpty())
+                newEmailError.setText("fill this part");
+            newEmailError.setText("");
         });
 
         saveEmail.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (newEmailError.getText().isEmpty()) {
-                    ProfileMenuController.changeEmail(user, newEmail.getText());
+
+                    try {
+                        LobbySocket.changeProfile(user.getUsername() ,user.getPassword() , user.getNickname() ,newEmail.getText(), user.getSlogan()) ;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     email.setText("Email: " + user.getEmail());
                     changeEmailDialog.hide();
                     showSuccess("Email changed successfully");
@@ -293,6 +318,11 @@ public class ProfileScreen extends Menu {
         removeSlogan.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    LobbySocket.changeProfile(user.getUsername() , user.getPassword() , user.getNickname() , user.getEmail() , "") ;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 ProfileMenuController.removeSlogan(user);
                 slogan.setText("Slogan: Slogan is empty");
             }
@@ -328,15 +358,20 @@ public class ProfileScreen extends Menu {
 
         newSlogan.setTextFieldListener((textField, c) -> {
             String slogan = newSlogan.getText();
-            String status = ProfileMenuController.checkChangeSlogan(user, slogan);
-            newSloganError.setText(status);
+            if (slogan.isEmpty())
+                newSloganError.setText("fill this part");
+            newSloganError.setText("") ;
         });
 
         saveSlogan.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (newSloganError.getText().isEmpty()) {
-                    ProfileMenuController.changeSlogan(user, newSlogan.getText());
+                    try {
+                        LobbySocket.changeProfile(user.getUsername() , user.getPassword() , user.getNickname() , user.getEmail() , newSlogan.getText()) ;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     slogan.setText("Slogan: " + user.getSlogan());
                     changeSloganDialog.hide();
                     showSuccess("Slogan changed successfully");
@@ -416,7 +451,11 @@ public class ProfileScreen extends Menu {
                     String status = ProfileMenuController.checkChangePassword(user, oldPassword.getText());
                     oldPasswordError.setText(status);
                     if (status.isEmpty()) {
-                        ProfileMenuController.changePassword(user, newPassword.getText());
+                        try {
+                            LobbySocket.changeProfile(user.getUsername() , newPassword.getText() , user.getNickname() , user.getEmail() , user.getSlogan()) ;
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                         changePasswordDialog.hide();
                         oldPassword.setText("");
                         newPassword.setText("");

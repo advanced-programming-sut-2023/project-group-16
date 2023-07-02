@@ -1,32 +1,43 @@
 package org.group16.View;
 
-import com.badlogic.gdx.Game;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.group16.GameGraphics.CommandHandling.*;
+import org.group16.Model.Cell;
+import org.group16.Model.Game;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
-import org.w3c.dom.ls.LSException;
+import org.group16.Model.WarCommand;
 
 import java.util.ArrayList;
 
 
 public class SoldierControlWindow extends Window {
-    Image soilBackground, grayBackGround;
-
-    ImageButton attackButton, disbandButton, patrolButton, defensiveButton, offensiveButton, standingButton , back;
-
     public Skin skin;
+    Image soilBackground, grayBackGround;
+    ImageButton attackButton, disbandButton, patrolButton, defensiveButton, offensiveButton, standingButton, moveButton, back;
+    Game game;
+    testingGameScreen gameScreen;
 
-    public SoldierControlWindow(Skin skin, Game game, ArrayList<Soldier> unit) {
+    public SoldierControlWindow(Skin skin, Game game, testingGameScreen gameScreen) {
         super("", skin);
 
         this.skin = skin;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
+
+        this.game = game;
+        this.gameScreen = gameScreen;
+    }
+
+
+    public void makeWindow(Game game, ArrayList<Soldier> unit) {
+        this.clear();
         this.background(soilBackground.getDrawable());
 
 
@@ -39,14 +50,9 @@ public class SoldierControlWindow extends Window {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO
+                gameScreen.setCurrentRunningWindow(gameScreen.buildingSelectWindow);
             }
         });
-    }
-
-
-    public void makeWindow(Game game, ArrayList<Soldier> unit) {
-        this.clear();
         ArrayList<SoldierDetail> soldierDetails = new ArrayList<>();
         for (Soldier soldier : unit) {
             if (!soldierDetails.contains(soldier.getSoldierDetail()))
@@ -55,16 +61,15 @@ public class SoldierControlWindow extends Window {
 
         for (SoldierDetail soldierDetail : soldierDetails) {
             Image soldierImage = new Image(picChange.changer("MenuPictures/Soldiers/" + soldierDetail.getKingdomType() + "/" + soldierDetail.GetName() + ".png", 100, 100));
-            Label erase = new Label("-", skin);
-            this.add(soldierImage);
+            TextButton erase = new TextButton("del", skin);
+            this.add(soldierImage).pad(0, 0, 0, 5);
             this.add(erase);
 
             erase.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    //TODO
-
-                    //makeWindow();
+                    unit.removeIf(soldier -> soldier.getSoldierDetail().equals(soldierDetail));
+                    makeWindow(game, unit);
                 }
             });
         }
@@ -81,6 +86,8 @@ public class SoldierControlWindow extends Window {
         makeButtons(offensiveButton, "ButtonImages/Offensive.png", "ButtonImages/Offensive.png");
         standingButton = new ImageButton(skin);
         makeButtons(standingButton, "ButtonImages/Standing.png", "ButtonImages/Standing.png");
+        moveButton = new ImageButton(skin);
+        makeButtons(moveButton, "ButtonImages/Move.png", "ButtonImages/Move.png");
 
         this.row();
         this.add(standingButton).pad(0, 0, 0, 5);
@@ -89,6 +96,7 @@ public class SoldierControlWindow extends Window {
         this.add(attackButton).pad(0, 0, 0, 5);
         this.add(disbandButton).pad(0, 0, 0, 5);
         this.add(patrolButton).row();
+        this.add(moveButton).row();
 
         this.add(back).row();
 
@@ -96,42 +104,65 @@ public class SoldierControlWindow extends Window {
         standingButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                gameScreen.inputProcessor.submitCommandToServer(new unitSetStatsCommand(gameScreen.getCurUser(), unit, WarCommand.Status.STAND_STILL));
             }
         });
 
         defensiveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                gameScreen.inputProcessor.submitCommandToServer(new unitSetStatsCommand(gameScreen.getCurUser(), unit, WarCommand.Status.DEFENSIVE));
             }
         });
 
         offensiveButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                gameScreen.inputProcessor.submitCommandToServer(new unitSetStatsCommand(gameScreen.getCurUser(), unit, WarCommand.Status.OFFENSIVE));
             }
         });
 
         attackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                Cell cell = gameScreen.lastSelectedCell;
+                try {
+                    gameScreen.inputProcessor.submitCommandToServer(new unitAttackCommand(gameScreen.getCurUser(), unit, cell.getX(), cell.getY()));
+                } catch (Exception e) {
+                    e.getMessage();
+                }
             }
         });
 
         disbandButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                gameScreen.inputProcessor.submitCommandToServer(new unitDisbandCommand(gameScreen.getCurUser(), unit));
             }
         });
 
         patrolButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    Cell cell1 = gameScreen.selectedCells.get(0);
+                    Cell cell2 = gameScreen.selectedCells.get(1);
+                    gameScreen.inputProcessor.submitCommandToServer(new unitPatrolCommand(gameScreen.getCurUser(), unit, cell1.getX(), cell1.getY(), cell2.getX(), cell2.getY()));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
 
+        moveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Cell cell = gameScreen.lastSelectedCell;
+                try {
+                    gameScreen.inputProcessor.submitCommandToServer(new unitMoveCommand(gameScreen.getCurUser(), unit, cell.getX(), cell.getY()));
+                } catch (Exception e) {
+                    e.getMessage();
+                }
             }
         });
 

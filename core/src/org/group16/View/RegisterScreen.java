@@ -9,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.group16.Controller.LoginMenuController;
+import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.group16.Controller.LoginMenuController.generatePassword;
@@ -98,11 +100,18 @@ public class RegisterScreen extends Menu {
             @Override
             public void keyTyped(TextField textField, char c) {
                 String usernameText = usernameField.getText();
-                String status = LoginMenuController.checkUsername(usernameText);
-                if (status.equals("OK"))
-                    usernameStatus.setText("");
-                else
-                    usernameStatus.setText(status);
+//                String status = LoginMenuController.checkUsername(usernameText);
+//                String status = LobbySocket.
+                try {
+                    if (LobbySocket.getUser(usernameText)!=null)
+                        usernameStatus.setText("");
+                    else
+                        usernameStatus.setText("username already exists");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             ;
@@ -282,6 +291,13 @@ public class RegisterScreen extends Menu {
                     captcha.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal("captcha/" + random + ".png"))));
                     captchaNumber = random;
                 } else {
+                    try {
+                        LobbySocket.register(usernameField.getText(), passwordField.getText(),
+                                emailField.getText(), nicknameField.getText(), sloganField.getText(),
+                                passwordQASelectBar.getSelected(), passwordQAField.getText()) ;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     LoginMenuController.createUser(usernameField.getText(), passwordField.getText(), passwordField.getText(),
                             emailField.getText(), nicknameField.getText(), sloganField.getText(),
                             passwordQASelectBar.getSelected(), passwordQAField.getText());
