@@ -25,6 +25,7 @@ public class GameSocket {
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
 //        inputStream = new ObjectInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
+        System.out.println();
     }
 
     public static void initSocket(String host, int port) {

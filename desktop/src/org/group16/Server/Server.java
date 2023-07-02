@@ -6,9 +6,9 @@ import org.group16.Server.Lobby.LobbyServer;
 import java.net.ServerSocket;
 
 public class Server {
-    public static final int lobbyPort = 8080;
-    public static final int gamePort = 8081;
-    public static final int chatPort = 8082;
+    public static final int lobbyPort = 8000;
+    public static final int gamePort = 8080;
+    public static final int chatPort = 8081;
     public static final String host = "localhost";
 
     private Server(int lobbyPort, int gamePort, int chatPort) {
