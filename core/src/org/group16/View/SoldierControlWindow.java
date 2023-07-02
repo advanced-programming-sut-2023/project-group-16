@@ -66,7 +66,7 @@ public class SoldierControlWindow extends Window {
 
         for (SoldierDetail soldierDetail : soldierDetails) {
             Image soldierImage = new Image(picChange.changer("MenuPictures/Soldiers/" + soldierDetail.getKingdomType() + "/" + soldierDetail.GetName() + ".png", 100, 100));
-            Label erase = new Label("-", skin);
+            TextButton erase = new TextButton("del", skin);
             this.add(soldierImage).pad(0  , 0 , 0 , 5);
             this.add(erase);
 
