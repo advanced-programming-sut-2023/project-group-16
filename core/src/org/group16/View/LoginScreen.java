@@ -10,8 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.group16.Controller.LoginMenuController;
 import org.group16.Model.User;
+import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LoginScreen extends Menu {
@@ -100,7 +102,15 @@ public class LoginScreen extends Menu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 String answer = forgotPasswordAnswer.getText();
-                User user = User.getUserByName(username.getText());
+                User user = null;
+                try {
+                    user = LobbySocket.getUser(username.getText());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+
                 if (newPassword.getText().length() == 0) {
                     newPasswordStatus.setText("fill this part");
                     return;
@@ -146,11 +156,23 @@ public class LoginScreen extends Menu {
         forgotPassword.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (User.getUserByName(username.getText()) == null) {
-                    usernameStatus.setText("no user found");
-                    return;
+                try {
+                    if (LobbySocket.getUser(username.getText()) == null) {
+                        usernameStatus.setText("no user found");
+                        return;
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-                forgotPasswordDialog.getTitleLabel().setText(User.getUserByName(username.getText()).getPasswordRecoveryQuestion());
+                try {
+                    forgotPasswordDialog.getTitleLabel().setText(LobbySocket.getUser(username.getText()).getPasswordRecoveryQuestion());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 forgotPasswordDialog.show(uiStage);
             }
         });
@@ -173,7 +195,12 @@ public class LoginScreen extends Menu {
                 } else if (User.getUserByName(username.getText()) == null) {
                     usernameStatus.setText("no user found");
                 } else {
-                    String status = LoginMenuController.loginUser(username.getText(), password.getText(), stayLogIn.isChecked());
+                    String status = null;
+                    try {
+                        status = LobbySocket.login(username.getText() , password.getText());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     if (status.equals("OK")) {
                         game.setScreen(new MainScreen(game, User.getUserByName(username.getText())));
                     } else {
