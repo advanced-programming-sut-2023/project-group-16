@@ -1,6 +1,7 @@
 package org.group16.Networking;
 
 import org.group16.Model.Map;
+import org.group16.Model.StringList;
 import org.group16.Model.User;
 import org.group16.Model.UserList;
 import org.group16.StrongholdGame;
@@ -12,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LobbySocket {
     public static Socket socket;
@@ -87,5 +89,38 @@ public class LobbySocket {
     public static Map downloadMap(String mapname) throws IOException, ClassNotFoundException {
         cmdStream.writeUTF("download map");
         return (Map) inputStream.readObject();
+    }
+
+    public static ArrayList<String> getAllMaps() throws IOException, ClassNotFoundException {
+        cmdStream.writeUTF("get all maps");
+        return ((StringList) inputStream.readObject()).strings;
+    }
+
+    public static String createGame(String kingdomType) throws IOException {
+        cmdStream.writeUTF(
+                String.format("create game -t \"%s\"", kingdomType));
+        return inputStream.readUTF();
+    }
+
+    public static String addUser(String username, String kingdomType) throws IOException {
+        cmdStream.writeUTF(
+                String.format("add user -u \"%s\" -t \"%s\"", username, kingdomType));
+        return inputStream.readUTF();
+    }
+
+    public static String removeUser(String username, String kingdomType) throws IOException {
+        cmdStream.writeUTF(
+                String.format("remove user -u \"%s\"", username, kingdomType));
+        return inputStream.readUTF();
+    }
+
+    public static String joinGameLobby() throws IOException {
+        cmdStream.writeUTF("join game lobby");
+        return inputStream.readUTF();
+    }
+
+    public static String leaveGameLobby() throws IOException {
+        cmdStream.writeUTF("leave game lobby");
+        return inputStream.readUTF();
     }
 }
