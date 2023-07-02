@@ -228,6 +228,16 @@ public class testingGameScreen extends Menu {
         if (input.isKeyPressed(Input.Keys.Z)) {
             resetSelection();
         }
+        if (input.isKeyPressed(Input.Keys.S)&& lastSelectedCell!=null){
+            ArrayList<Soldier> soldiers = new ArrayList<>() ;
+            for (Cell cell : selectedCells){
+                for (GameObject gameObject : cell.getGameObjects())
+                    if (gameObject instanceof Soldier)
+                        soldiers.add((Soldier) gameObject) ;
+            }
+            soldierControlWindow.makeWindow(game , soldiers);
+            setCurrentRunningWindow(soldierControlWindow);
+        }
 
 
         if (currentCell != null && time - cellDetailWindow.lastRemakeTime >= 1) {
