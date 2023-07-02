@@ -1,6 +1,5 @@
 package org.group16.Server.Lobby;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import org.group16.Model.*;
 import org.group16.Model.Map;
 import org.group16.Server.Lobby.Command.Command;
@@ -13,7 +12,8 @@ import java.util.*;
 public class LobbyConnection extends Thread {
     private final LobbyServer server;
     private final Socket socket;
-    private final DataInputStream cmdStream;
+    private final DataInputStream utfInputStream;
+    private final DataOutputStream utfOutputStream;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
     private User currentUser;
@@ -26,7 +26,8 @@ public class LobbyConnection extends Thread {
         this.server = server;
         this.socket = socket;
         socket.setTcpNoDelay(true);
-        cmdStream = new DataInputStream(socket.getInputStream());
+        utfOutputStream = new DataOutputStream(socket.getOutputStream());
+        utfInputStream = new DataInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         System.out.println("Connected to client");
@@ -40,7 +41,7 @@ public class LobbyConnection extends Thread {
     public void run() {
         try {
             while (true) {
-                String msg = cmdStream.readUTF();
+                String msg = utfInputStream.readUTF();
                 System.out.println(msg);
                 TreeMap<String, ArrayList<String>> map;
                 if ((map = CommandHandler.matches(Command.REGISTER, msg)) != null) register(map);
@@ -67,6 +68,8 @@ public class LobbyConnection extends Thread {
 //                else if((map = CommandHandler.matches(Command.))
             }
         } catch (Exception ex) {
+            if (currentUser != null)
+                server.userLogout(currentUser.getUsername());
             System.out.println("User Disconnected");
         }
     }
@@ -89,21 +92,21 @@ public class LobbyConnection extends Thread {
         String slogan = matcher.get("s").get(0);
         String response = LoginMenuController.checkUsername(username);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
         response = LoginMenuController.checkPassword(password);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
         response = LoginMenuController.checkEmail(email);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
         response = LoginMenuController.createUser(username, password, password, email, nick, slogan, question, answer);
-        outputStream.writeUTF(response);
+        utfOutputStream.writeUTF(response);
     }
 
     private void login(TreeMap<String, ArrayList<String>> matcher) throws IOException {
@@ -113,7 +116,7 @@ public class LobbyConnection extends Thread {
         String response = LoginMenuController.loginUser(username, password);
         if (server.userLoggedIn(username))
             response = "user already logged in";
-        outputStream.writeUTF(response);
+        utfOutputStream.writeUTF(response);
         if (response.equals("OK")) {
             currentUser = User.getUserByName(username);
             server.userLogin(currentUser.getUsername(), this);
@@ -126,21 +129,21 @@ public class LobbyConnection extends Thread {
         String newPassword = map.get("p").get(0);
         String response = LoginMenuController.checkRecoveryQuestionAnswer(username, answer);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
         response = LoginMenuController.checkPassword(newPassword);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
-        outputStream.writeUTF(response);
+        utfOutputStream.writeUTF(response);
         User user = User.getUserByName(username);
         user.setPassword(newPassword);
     }
 
     private void logout() throws IOException {
-        outputStream.writeUTF("OK");
+        utfOutputStream.writeUTF("OK");
         server.userLogout(currentUser.getUsername());
         currentUser = null;
     }
@@ -154,21 +157,21 @@ public class LobbyConnection extends Thread {
 
         String response = LoginMenuController.checkUsername(newUsername);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
         response = LoginMenuController.checkPassword(newPassword);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
         response = LoginMenuController.checkEmail(newEmail);
         if (!response.equals("OK")) {
-            outputStream.writeUTF(response);
+            utfOutputStream.writeUTF(response);
             return;
         }
 
-        outputStream.writeUTF(response);
+        utfOutputStream.writeUTF(response);
         if (!currentUser.getPassword().equals(newPassword))
             currentUser.setPassword(newPassword);
         if (!currentUser.getEmail().equals(newEmail))
@@ -197,7 +200,9 @@ public class LobbyConnection extends Thread {
 
     private void getUser(TreeMap<String, ArrayList<String>> map) throws IOException {
         String username = map.get("u").get(0);
-        outputStream.writeObject(User.getUserByName(username));
+        UserList userList = new UserList();
+        userList.users.add(User.getUserByName(username));
+        outputStream.writeObject(userList);
     }
 
     private void getAllUsers() throws IOException {
@@ -209,10 +214,10 @@ public class LobbyConnection extends Thread {
     private void createGame(TreeMap<String, ArrayList<String>> map) throws IOException {
         KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
         if (kingdomType == null) {
-            outputStream.writeUTF("invalid kingdom type");
+            utfOutputStream.writeUTF("invalid kingdom type");
             return;
         }
-        outputStream.writeUTF("OK");
+        utfOutputStream.writeUTF("OK");
         currentGame = new Game(kingdomType, currentUser);
     }
 
@@ -220,10 +225,10 @@ public class LobbyConnection extends Thread {
         String mapname = map.get("m").get(0);
         Map newMap = Map.getMapByName(mapname);
         if (newMap == null) {
-            outputStream.writeUTF("no map with this name exist");
+            utfOutputStream.writeUTF("no map with this name exist");
             return;
         }
-        outputStream.writeUTF("OK");
+        utfOutputStream.writeUTF("OK");
         this.mapname = mapname;
         randSeed = new Random().nextLong();
         currentGame.setScene(new Scene(newMap, randSeed));
@@ -233,38 +238,38 @@ public class LobbyConnection extends Thread {
         User user = User.getUserByName(map.get("u").get(0));
         KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
         if (kingdomType == null) {
-            outputStream.writeUTF("invalid kingdom type");
+            utfOutputStream.writeUTF("invalid kingdom type");
             return;
         }
         if (currentGame.getKingdoms().size() == 8) {
-            outputStream.writeUTF("game is full");
+            utfOutputStream.writeUTF("game is full");
             return;
         }
         if (currentGame.getKingdom(user) != null) {
-            outputStream.writeUTF("this user already exist");
+            utfOutputStream.writeUTF("this user already exist");
             return;
         }
-        outputStream.writeUTF("OK");
+        utfOutputStream.writeUTF("OK");
         currentGame.addUser(user, kingdomType);
     }
 
     private void removeUser(TreeMap<String, ArrayList<String>> map) throws IOException {
         User user = User.getUserByName(map.get("u").get(0));
         if (currentGame.getKingdom(user) == null) {
-            outputStream.writeUTF("this user doesn't exist");
+            utfOutputStream.writeUTF("this user doesn't exist");
             return;
         }
-        outputStream.writeUTF("OK");
+        utfOutputStream.writeUTF("OK");
         currentGame.removeUser(user);
     }
 
     private void startGame() throws IOException {
         if (currentGame.getKingdoms().size() < 2) {
-            outputStream.writeUTF("insufficient user to start game");
+            utfOutputStream.writeUTF("insufficient user to start game");
             return;
         }
         if (currentGame.getScene() == null) {
-            outputStream.writeUTF("no map is selected");
+            utfOutputStream.writeUTF("no map is selected");
             return;
         }
         PlayerList players = new PlayerList();
@@ -288,11 +293,11 @@ public class LobbyConnection extends Thread {
     }
 
     public void startGameFailed() throws IOException {
-        outputStream.writeUTF("one of users is offline");
+        utfOutputStream.writeUTF("one of users is offline");
     }
 
     public void startGameSuccessful(GameInfo gameInfo) throws IOException {
-        outputStream.writeUTF("START GAME");
+        utfOutputStream.writeUTF("START GAME");
         outputStream.writeObject(gameInfo);
     }
 
