@@ -41,6 +41,7 @@ public class ProfileScreen extends Menu {
     public ProfileScreen(StrongholdGame game, User user) {
         super(game);
         this.user = user;
+        System.out.println(this.user.getUsername());
 
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
