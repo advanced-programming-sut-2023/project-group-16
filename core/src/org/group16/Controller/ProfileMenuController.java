@@ -1,6 +1,5 @@
 package org.group16.Controller;
 
-import com.google.common.hash.Hashing;
 import org.group16.Model.User;
 import org.group16.ViewTerminal.ProfileMenu;
 
@@ -43,14 +42,12 @@ public class ProfileMenuController {
     }
 
     public static String checkChangePassword(User user, String oldPassword) {
-        oldPassword = Hashing.sha256().hashString(oldPassword, StandardCharsets.UTF_8).toString();
         if (!user.getPassword().equals(oldPassword)) return "password is incorrect";
         return "";
     }
 
     public static void changePassword(User user, String newPassword) {
-        String hashedNewPassword = Hashing.sha256().hashString(newPassword, StandardCharsets.UTF_8).toString();
-        user.setPassword(hashedNewPassword);
+        user.setPassword(newPassword);
     }
 
     public static String isPasswordWeak(String password) {

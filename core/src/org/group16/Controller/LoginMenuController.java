@@ -1,6 +1,5 @@
 package org.group16.Controller;
 
-import com.google.common.hash.Hashing;
 import org.group16.Model.User;
 import org.group16.ViewTerminal.LoginMenu;
 
@@ -18,7 +17,6 @@ public class LoginMenuController {
     public static String createUser(String username, String password, String passwordConfirmation,
                                     String email, String nickname, String slogan, String passwordRecoveryQ,
                                     String passwordRecoveryA) {
-        password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         User.addUser(username, password, email, passwordRecoveryQ, passwordRecoveryA, nickname, slogan);
         return "OK";
     }
@@ -108,7 +106,6 @@ public class LoginMenuController {
 
     public static String loginUser(String username, String password, boolean stayLoggedIn) {
         User user = User.getUserByName(username);
-        password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         if (user == null || !user.getPassword().equals(password)) return "username and password didn't match";
         if (stayLoggedIn) {
             String filePath = new File("").getAbsolutePath().concat("/Data/stayLoggedIn.txt");
