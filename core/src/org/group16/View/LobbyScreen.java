@@ -99,6 +99,7 @@ public class LobbyScreen extends Menu {
                         usernameStatus.setText("user already added");
                     } else {
                         if (selectBox.getSelected().equals("ARABIAN")) {
+                            users.add(LobbySocket.getUser(usernameField.getText()));
                             hashMap.put(LobbySocket.getUser(usernameField.getText()) , KingdomType.ARAB) ;
                         }
                         else {
