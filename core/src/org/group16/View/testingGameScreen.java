@@ -296,7 +296,7 @@ public class testingGameScreen extends Menu {
                 resetSelection();
             if (currentCell != null && currentCell != lastSelectedCell) {
                 for (GameObject gameObject : currentCell.getGameObjects()) {
-                    if (gameObject instanceof Building) {
+                    if (gameObject instanceof Building && gameObject.getKingdom().getUser().equals(getCurUser())) {
                         if (((Building) gameObject).getBuildingType().equals(BuildingType.TOWN_BUILDING)) {
                             Kingdom kingdom = game.getKingdom(getCurUser());
                             popularityWindow.reset(kingdom.getFoodRate(), kingdom.getFearRate(), kingdom.getTax(), 0);
@@ -323,7 +323,7 @@ public class testingGameScreen extends Menu {
             ArrayList<Soldier> soldiers = new ArrayList<>();
             for (Cell cell : selectedCells) {
                 for (GameObject gameObject : cell.getGameObjects())
-                    if (gameObject instanceof Soldier)
+                    if (gameObject instanceof Soldier && gameObject.getKingdom().getUser().equals(getCurUser()))
                         soldiers.add((Soldier) gameObject);
             }
             soldierControlWindow.makeWindow(game, soldiers);
