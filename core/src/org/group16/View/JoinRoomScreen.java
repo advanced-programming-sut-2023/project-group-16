@@ -20,7 +20,8 @@ public class JoinRoomScreen extends Menu {
     User user;
     private Image soilBackground;
     private Table table;
-
+    private Game gameData;
+    private GameInfo gameInfo;
 
     public JoinRoomScreen(StrongholdGame game, User user) throws IOException, ClassNotFoundException {
         super(game);
@@ -54,9 +55,9 @@ public class JoinRoomScreen extends Menu {
                     }
 
                     game1.setScene(scene);
-                    testingGameScreen gameScreen = new testingGameScreen(game, game1, gameInfo, user);
-                    synchronized (game) {
-                        game.setScreen(gameScreen);
+                    synchronized (this) {
+                        this.gameData = game1;
+                        this.gameInfo = gameInfo;
                     }
                 }
             } catch (Exception e) {
@@ -68,7 +69,6 @@ public class JoinRoomScreen extends Menu {
 
     }
 
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
@@ -79,6 +79,11 @@ public class JoinRoomScreen extends Menu {
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
 
         uiStage.draw();
+
+        if (gameData != null) {
+            testingGameScreen gameScreen = new testingGameScreen(game, gameData, gameInfo, user);
+            game.setScreen(gameScreen);
+        }
     }
 
 
