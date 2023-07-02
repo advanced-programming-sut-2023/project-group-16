@@ -39,6 +39,8 @@ public class testingGameScreen extends Menu {
     private final float minimapDist = 15;
     private final GameInfo gameInfo;
     private final User currentUser;
+    private final Kingdom userKingdom;
+    private final int userIndex;
     public AssetManager assetManager;
     public Window currentRunningWindow;
     Image miniMapImage;
@@ -72,11 +74,19 @@ public class testingGameScreen extends Menu {
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
 
-    public testingGameScreen(StrongholdGame game1, Game game, GameInfo gameInfo, User currentUser) {
-        super(game1);
+    public testingGameScreen(StrongholdGame strongholdGame, Game game, GameInfo gameInfo, User currentUser) {
+        super(strongholdGame);
         this.game = game;
         this.gameInfo = gameInfo;
+        currentUser = game.getUserByUsername(currentUser.getUsername());
+        this.userKingdom = game.getKingdom(currentUser);
         this.currentUser = currentUser;
+        int idx = 0;
+        for (Kingdom kingdom : game.getKingdoms()) {
+            if (kingdom == userKingdom) break;
+            idx++;
+        }
+        userIndex = idx;
 
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
         miniMapCamera = new PerspectiveCamera(30, 5f, 3);
@@ -104,7 +114,7 @@ public class testingGameScreen extends Menu {
         Util.load(assetManager);
 
 
-        dropKingdoms();
+        dropKingdom();
 
         renderers.add(gameRenderer);
 
@@ -336,7 +346,7 @@ public class testingGameScreen extends Menu {
         decalBatch.dispose();
     }
 
-    public void dropKingdoms() {
+    public void dropKingdom() {
         ArrayList<User> allUsers = new ArrayList<>();
         for (Kingdom kingdom : game.getKingdoms())
             allUsers.add(kingdom.getUser());
@@ -348,19 +358,17 @@ public class testingGameScreen extends Menu {
         }
 
         gameRenderer = new GameRenderer(game, inputProcessor);
-        for (int i = 0; i < game.getKingdoms().size(); i++) {
-            int x = (i % 4) * 15;
-            int y = (i / 2) * 30;
-            Kingdom kingdom = game.getKingdoms().get(i);
-            User user = kingdom.getUser();
 
-            inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.TOWN_BUILDING, x, y));
-            inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.STOCKPILE, x + 1, y));
-            inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.UNEMPLOYED_PLACE, x, y + 1));
-            inputProcessor.submitCommandToServer(new InitResourceCommand(user));
+        int x = (userIndex % 4) * 15;
+        int y = (userIndex / 2) * 30;
+        Kingdom kingdom = userKingdom;
+        User user = currentUser;
 
-            inputProcessor.submitCommandToServer(new EndTurnCommand(user));
-        }
+        inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.TOWN_BUILDING, x, y));
+        inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.STOCKPILE, x + 1, y));
+        inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.UNEMPLOYED_PLACE, x, y + 1));
+        inputProcessor.submitCommandToServer(new InitResourceCommand(user));
+        inputProcessor.submitCommandToServer(new EndTurnCommand(user));
     }
 
     public void nextPlayer() {

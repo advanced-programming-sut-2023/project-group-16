@@ -8,9 +8,9 @@ import org.group16.Networking.GameSocket;
 import java.util.*;
 
 public class InputProcessor {
-    private final HashMap<User, List<UserCommand>> commands = new HashMap<>();
-    private final HashMap<User, Integer> commandIter = new HashMap<>();
-    private final HashSet<User> finalizedUsers = new HashSet<>();
+    private final HashMap<String, List<UserCommand>> commands = new HashMap<>();
+    private final HashMap<String, Integer> commandIter = new HashMap<>();
+    private final HashSet<String> finalizedUsers = new HashSet<>();
     private final List<User> allUsers = new ArrayList<>();
 
     public InputProcessor(List<User> allUsers) {
@@ -22,8 +22,8 @@ public class InputProcessor {
         allUsers.add(user);
         List<UserCommand> cmd = new ArrayList<>();
         cmd.add(new UserJoinCommand(user, 0));
-        commands.put(user, cmd);
-        commandIter.put(user, 0);
+        commands.put(user.getUsername(), cmd);
+        commandIter.put(user.getUsername(), 0);
     }
 
     public synchronized void submitCommandToServer(UserCommand command) {
@@ -31,23 +31,24 @@ public class InputProcessor {
     }
 
     public synchronized void submitCommand(UserCommand command) {
-        if (!finalizedUsers.contains(command.user)) {
-            commands.get(command.user).add(command);
+        if (!finalizedUsers.contains(command.user.getUsername())) {
+            commands.get(command.user.getUsername()).add(command);
             if (command instanceof EndTurnCommand)
-                finalizedUsers.add(command.user);
+                finalizedUsers.add(command.user.getUsername());
         }
     }
 
     public synchronized boolean process(Game game, GameRenderer gameRenderer) {
-        for (User user : allUsers) if (!finalizedUsers.contains(user)) return false;
+        for (User user : allUsers) if (!finalizedUsers.contains(user.getUsername())) return false;
+        System.out.println("PRC");
         for (User user : allUsers) {
-            int i = commandIter.get(user);
-            List<UserCommand> userCommands = commands.get(user);
+            int i = commandIter.get(user.getUsername());
+            List<UserCommand> userCommands = commands.get(user.getUsername());
             for (; i < userCommands.size(); i++) {
                 userCommands.get(i).resolveUser(game);
                 userCommands.get(i).execute(game, gameRenderer);
             }
-            commandIter.put(user, i);
+            commandIter.put(user.getUsername(), i);
         }
         finalizedUsers.clear();
         return true;

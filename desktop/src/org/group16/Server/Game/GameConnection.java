@@ -21,6 +21,8 @@ public class GameConnection extends Thread {
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         gameInfo = (GameInfo) inputStream.readObject();
+        System.out.printf("gameId : %s", gameInfo.gameID().toString());
+        server.subscribeConnection(gameInfo.gameID(), this);
     }
 
     @Override
@@ -28,6 +30,7 @@ public class GameConnection extends Thread {
         try {
             while (true) {
                 UserCommand obj = (UserCommand) inputStream.readObject();
+                System.out.printf(" Received Command %s\n", obj.getClass().getSimpleName());
                 server.shareCommand(gameInfo.gameID(), obj);
             }
         } catch (Exception e) {
