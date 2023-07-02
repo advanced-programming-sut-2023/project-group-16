@@ -181,7 +181,7 @@ public class testingGameScreen extends Menu {
         for (Renderer renderer : renderers) {
             renderer.update(dt);
         }
-        if (lastTurn >= 1.25f) {
+        if (lastTurn >= 2f) {
             lastTurn = 0;
             inputProcessor.submitCommandToServer(new EndTurnCommand(currentUser));
         }
