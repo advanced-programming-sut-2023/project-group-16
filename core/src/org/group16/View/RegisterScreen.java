@@ -103,7 +103,7 @@ public class RegisterScreen extends Menu {
 //                String status = LoginMenuController.checkUsername(usernameText);
 //                String status = LobbySocket.
                 try {
-                    if (LobbySocket.getUser(usernameText)!=null)
+                    if (LobbySocket.getUser(usernameText)==null)
                         usernameStatus.setText("");
                     else
                         usernameStatus.setText("username already exists");
@@ -113,8 +113,6 @@ public class RegisterScreen extends Menu {
                     throw new RuntimeException(e);
                 }
             }
-
-            ;
         });
 
         table.add(passwordLabel).pad(0, 0, 0, 5);
