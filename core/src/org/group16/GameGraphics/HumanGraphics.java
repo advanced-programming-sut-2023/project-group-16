@@ -14,11 +14,24 @@ public enum HumanGraphics {
             new String[]{"idle", "walking", "running", "fighting"},
             new int[]{1, 8, 8, 8}) ,
     //TODO : wtf ?
-//    ARABIAN_ARCHER("game/soldiers/arabian_archer.atlas", .3f, .1f,
-//            new String[]{"idle", "walking", "running", "fighting"},
-//            new int[]{1, 8, 8, 8})
+    ARABIAN_ARCHER("game/soldiers/arabian_archer.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8}) ,
 
     MACE_MAN("game/soldiers/maceman.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8}) ,
+
+    KHAR("game/soldiers/khar.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8}) ,
+    SLINGER("game/soldiers/slinger.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8}),
+    SWORD_MAN("game/soldiers/swordman.atlas", .3f, .1f,
+            new String[]{"idle", "walking", "running", "fighting"},
+            new int[]{1, 8, 8, 8}) ,
+    MONK("game/soldiers/monk.atlas", .3f, .1f,
             new String[]{"idle", "walking", "running", "fighting"},
             new int[]{1, 8, 8, 8})
     ;
