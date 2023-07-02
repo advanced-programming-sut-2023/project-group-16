@@ -18,7 +18,7 @@ public class LoginMenuController {
     }
 
     public static String checkUsername(String username) {
-        if (!Pattern.compile("\\w*").matcher(username).matches()) return "invalid username format";
+        if (!Pattern.compile("\\w+").matcher(username).matches()) return "invalid username format";
         if (User.getUserByName(username) != null)
             return "this username is already exist, suggested username: " + suggestUsername(username);
         return "OK";
@@ -46,7 +46,7 @@ public class LoginMenuController {
 
     public static String isPasswordWeak(String password) {
         if (password.equals("random") || password.isEmpty()) return null;
-        //if (password.length() < 6) return "length is less than 6 character";
+        if (password.length() < 6) return "length is less than 6 character";
         if (Pattern.compile("[^a-z]").matcher(password).matches()) return "doesn't contain small letter";
         if (Pattern.compile("[^A-Z]").matcher(password).matches()) return "doesn't contain capital letter";
         if (Pattern.compile("\\D+").matcher(password).matches()) return "doesn't contain digit";
@@ -69,7 +69,7 @@ public class LoginMenuController {
     }
 
     private static boolean isEmailValid(String email) {
-        return Pattern.compile("[\\w.]+@[\\w.]+\\.[\\w.]+").matcher(email).matches() || email.isEmpty();
+        return Pattern.compile("[\\w.]+@[\\w.]+\\.[\\w.]+").matcher(email).matches();
     }
 
     private static String generateSlogan() {
