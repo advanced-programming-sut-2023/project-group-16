@@ -37,6 +37,7 @@ public class GameSocket {
         connection = new Thread(() -> {
             try {
                 while (true) {
+                    Thread.sleep(10, 0);
                     UserCommand userCommand = UserCommand.tryDeserialize(dataInputStream.readUTF());
                     System.out.printf("Received %s\n", userCommand.getClass().getSimpleName());
                     synchronized (inputProcessor) {
@@ -49,17 +50,12 @@ public class GameSocket {
             }
         });
         connection.start();
-        try {
-            Thread.sleep(10, 0);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         outputStream.writeObject(gameInfo);
     }
 
     public static void submitCommand(UserCommand command) {
         try {
-            Thread.sleep(10, 0);
+            Thread.sleep(100, 0);
             dataOutputStream.writeUTF(command.serialize());
 //            outputStream.writeObject(command);
         } catch (Exception e) {
