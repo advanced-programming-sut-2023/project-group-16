@@ -1,8 +1,6 @@
 package org.group16.Server;
 
-import org.group16.Server.Game.GameServer;
 import org.group16.Server.Lobby.LobbyServer;
-import org.group16.Server.Telegram.TelegramServer;
 
 import java.net.ServerSocket;
 
@@ -17,10 +15,10 @@ public class Server {
         try {
             LobbyServer lobbyServer = new LobbyServer(new ServerSocket(lobbyPort));
 //            GameServer gameServer = new GameServer(new ServerSocket(gamePort));
-//            TelegramServer telegramServer = new TelegramServer(new ServerSocket(telegramPort));
+            ChatServer chatServer = new ChatServer(new ServerSocket(telegramPort)); //Server(new ServerSocket(telegramPort));
 
 //            gameServer.start();
-//            telegramServer.start();
+            chatServer.start();
             lobbyServer.start();
         } catch (Exception ex) {
             ex.printStackTrace();

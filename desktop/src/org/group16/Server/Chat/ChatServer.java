@@ -1,11 +1,11 @@
-package org.group16.Server.Telegram;
+package org.group16.Server.Chat;
 
 import java.net.ServerSocket;
 
-public class TelegramServer extends Thread {
+public class ChatServer extends Thread {
     private final ServerSocket serverSocket;
 
-    public TelegramServer(ServerSocket serverSocket) {
+    public ChatServer(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
