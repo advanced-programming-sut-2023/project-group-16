@@ -1,285 +1,292 @@
 
 buildings.png
-size: 2048, 1024
+size: 2033, 699
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 APPLE_ORCHARD
   rotate: false
-  xy: 850, 198
+  xy: 1889, 66
   size: 79, 80
   orig: 79, 80
   offset: 0, 0
   index: -1
 ARMOURER
   rotate: false
-  xy: 713, 31
+  xy: 1792, 68
   size: 95, 101
   orig: 95, 101
   offset: 0, 0
   index: -1
 ARMOURY
   rotate: false
-  xy: 2, 5
+  xy: 1478, 210
   size: 148, 125
   orig: 148, 125
   offset: 0, 0
   index: -1
 BAKERY
   rotate: false
-  xy: 624, 134
+  xy: 868, 118
   size: 132, 152
   orig: 132, 152
   offset: 0, 0
   index: -1
 BARRACKS
   rotate: false
-  xy: 312, 2
+  xy: 1162, 83
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 BLACKSMITH
   rotate: false
-  xy: 758, 185
+  xy: 1922, 294
   size: 90, 101
   orig: 90, 101
   offset: 0, 0
   index: -1
 BREWER
   rotate: false
-  xy: 1851, 526
+  xy: 1906, 397
   size: 121, 159
   orig: 121, 159
   offset: 0, 0
   index: -1
 CATHEDRAL
   rotate: false
-  xy: 2, 132
+  xy: 504, 272
   size: 431, 425
   orig: 431, 425
   offset: 0, 0
   index: -1
 CHURCH
   rotate: false
-  xy: 1558, 480
+  xy: 2, 22
   size: 291, 215
   orig: 291, 215
   offset: 0, 0
   index: -1
 DEFENCE_TURRET
   rotate: false
-  xy: 1207, 375
-  size: 349, 320
-  orig: 349, 320
+  xy: 1002, 28
+  size: 158, 275
+  orig: 158, 275
   offset: 0, 0
   index: -1
 DIARY_FARMER
   rotate: false
-  xy: 1437, 294
+  xy: 1162, 2
   size: 80, 79
   orig: 80, 79
   offset: 0, 0
   index: -1
 DRAWBRIDGE
   rotate: false
-  xy: 2, 559
+  xy: 2, 239
   size: 500, 458
   orig: 500, 458
   offset: 0, 0
   index: -1
 ENGINEER_GUILD
   rotate: false
-  xy: 1791, 273
+  xy: 1162, 213
   size: 114, 90
   orig: 114, 90
   offset: 0, 0
   index: -1
 FLETCHER
   rotate: false
-  xy: 1350, 283
+  xy: 1576, 3
   size: 85, 90
   orig: 85, 90
   offset: 0, 0
   index: -1
 GRANARY
   rotate: false
-  xy: 1079, 282
+  xy: 1489, 2
   size: 85, 91
   orig: 85, 91
   offset: 0, 0
   index: -1
 HOPS_FARMER
   rotate: false
-  xy: 777, 541
+  xy: 813, 4
   size: 74, 82
   orig: 74, 82
   offset: 0, 0
   index: -1
 HOVEL
   rotate: false
-  xy: 1791, 365
+  xy: 1566, 95
   size: 128, 113
   orig: 128, 113
   offset: 0, 0
   index: -1
 HUNTER_POST
   rotate: false
-  xy: 883, 280
+  xy: 1792, 171
   size: 105, 93
   orig: 105, 93
   offset: 0, 0
   index: -1
 INN
   rotate: false
-  xy: 629, 441
+  xy: 720, 88
   size: 146, 182
   orig: 146, 182
   offset: 0, 0
   index: -1
 IRON_MINE
   rotate: false
-  xy: 1791, 181
+  xy: 1381, 4
   size: 106, 90
   orig: 106, 90
   offset: 0, 0
   index: -1
 LARGE_STONE_GATEHOUSE
   rotate: false
-  xy: 1558, 218
+  xy: 1481, 437
   size: 231, 260
   orig: 231, 260
   offset: 0, 0
   index: -1
 LOOKOUT_TOWER
   rotate: false
-  xy: 856, 375
-  size: 349, 320
-  orig: 349, 320
+  xy: 1696, 35
+  size: 94, 359
+  orig: 94, 359
   offset: 0, 0
   index: -1
 MARKET
   rotate: false
-  xy: 629, 288
-  size: 165, 151
-  orig: 165, 151
+  xy: 1292, 96
+  size: 128, 128
+  orig: 128, 128
   offset: 0, 0
   index: -1
 MERCENARY_POST
   rotate: false
-  xy: 152, 32
+  xy: 1481, 337
   size: 158, 98
   orig: 158, 98
   offset: 0, 0
   index: -1
 MILL
   rotate: false
-  xy: 1909, 817
+  xy: 489, 37
   size: 101, 200
   orig: 101, 200
   offset: 0, 0
   index: -1
-OIL_SMELTER-
+OIL_SMELTER
   rotate: false
-  xy: 1909, 687
+  xy: 1792, 266
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 OX_TETHER
   rotate: false
-  xy: 504, 559
+  xy: 1792, 2
   size: 74, 64
   orig: 74, 64
   offset: 0, 0
   index: -1
 PERIMETER_TOWER
   rotate: false
-  xy: 1558, 697
-  size: 349, 320
-  orig: 349, 320
+  xy: 1714, 396
+  size: 190, 301
+  orig: 190, 301
   offset: 0, 0
   index: -1
 PITCH_RIG
   rotate: false
-  xy: 569, 20
+  xy: 1422, 96
   size: 142, 112
   orig: 142, 112
   offset: 0, 0
   index: -1
 POLE_TURNER
   rotate: false
-  xy: 796, 288
+  xy: 889, 31
   size: 85, 85
   orig: 85, 85
   offset: 0, 0
   index: -1
 QUARRY
   rotate: false
-  xy: 442, 20
+  xy: 1906, 558
   size: 125, 139
   orig: 125, 139
   offset: 0, 0
   index: -1
 ROUND_TOWER
   rotate: false
-  xy: 1207, 697
-  size: 349, 320
-  orig: 349, 320
+  xy: 1289, 388
+  size: 190, 309
+  orig: 190, 309
   offset: 0, 0
   index: -1
 SMALL_STONE_GATEHOUSE
   rotate: false
-  xy: 435, 323
+  xy: 295, 3
   size: 192, 234
   orig: 192, 234
   offset: 0, 0
   index: -1
 SQUARE_TOWER
   rotate: false
-  xy: 856, 697
-  size: 349, 320
-  orig: 349, 320
+  xy: 592, 33
+  size: 126, 237
+  orig: 126, 237
   offset: 0, 0
   index: -1
 STABLE
   rotate: false
-  xy: 435, 161
+  xy: 1289, 226
   size: 187, 160
   orig: 187, 160
   offset: 0, 0
   index: -1
 STOCKPILE
   rotate: false
-  xy: 1851, 481
+  xy: 1868, 21
   size: 67, 43
   orig: 67, 43
   offset: 0, 0
   index: -1
 TANNER
   rotate: false
-  xy: 990, 281
+  xy: 1292, 2
   size: 87, 92
   orig: 87, 92
   offset: 0, 0
   index: -1
 TOWN_BUILDING
   rotate: false
-  xy: 504, 625
+  xy: 937, 305
   size: 350, 392
   orig: 350, 392
   offset: 0, 0
   index: -1
+UNEMPLOYED_PLACE
+  rotate: false
+  xy: 1922, 231
+  size: 96, 61
+  orig: 96, 61
+  offset: 0, 0
+  index: -1
 WHEAT_FARMER
   rotate: false
-  xy: 1259, 292
+  xy: 1899, 148
   size: 89, 81
   orig: 89, 81
   offset: 0, 0
   index: -1
 WOOD_CUTTER
   rotate: false
-  xy: 1166, 289
+  xy: 720, 2
   size: 91, 84
   orig: 91, 84
   offset: 0, 0

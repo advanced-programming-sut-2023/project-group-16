@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -34,8 +35,10 @@ import static com.badlogic.gdx.Gdx.gl;
 public class testingGameScreen extends Menu {
     ////////////////////////////////////// render stuff
     private final List<Renderer> renderers = new ArrayList<>();
+    private final float minimapDist = 15;
     public AssetManager assetManager;
     public Window currentRunningWindow;
+    Image miniMapImage;
     float time = 0;
     GameRenderer gameRenderer;
     InputProcessor inputProcessor;
@@ -66,7 +69,6 @@ public class testingGameScreen extends Menu {
     private TextureRegion miniMapFrameRegion;
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
-    private Renderer miniMapPreview;
 
     public testingGameScreen(StrongholdGame game1, Game game) {
         super(game1);
@@ -79,18 +81,15 @@ public class testingGameScreen extends Menu {
         miniMapFrameRegion.flip(false, true);
         camera.position.set(3f, 3f, 3f);
         camera.lookAt(0f, 0f, 0f);
-        miniMapCamera.position.set(1f, 1f, 1f);
+        miniMapCamera.position.set(3f, 3f, 3f);
         miniMapCamera.lookAt(0f, 0f, 0f);
-        miniMapCamera.position.set(30f, 18f, 30f);
-        miniMapPreview = new Renderer(miniMapFrameRegion, false, 1, Util.forward, Util.up);
-        miniMapPreview.setLocalPosition(0, 2, 0);
 
         camera.near = 1f;
-        camera.far = 50f;
+        camera.far = 200f;
         camera.update();
 
-        miniMapCamera.near = 2f;
-        miniMapCamera.far = 100f;
+        miniMapCamera.near = 5f;
+        miniMapCamera.far = 1000f;
         miniMapCamera.update();
 
         decalBatch = Util.createDecalBatch(camera);
@@ -137,6 +136,9 @@ public class testingGameScreen extends Menu {
         soldierControlWindow = new SoldierControlWindow(skin1, game, this);
         soldierControlWindow.setVisible(false);
 
+        miniMapImage = new Image(miniMapFrameRegion);
+
+
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
         uiStage.addActor(currentPlayerWindow);
@@ -148,8 +150,12 @@ public class testingGameScreen extends Menu {
         uiStage.addActor(buyingWindow);
         uiStage.addActor(popularityWindow);
         uiStage.addActor(changeRateWindow);
+
         uiStage.addActor(buyingUnitWindow);
         uiStage.addActor(soldierControlWindow);
+
+        uiStage.addActor(miniMapImage);
+
     }
 
     @Override
@@ -181,6 +187,9 @@ public class testingGameScreen extends Menu {
 //        if (input.isKeyPressed(Input.Keys.M))
 //            camera.rotate(new Vector3(0, 1, 0), dt * 180);
         camera.update();
+        miniMapCamera.position.set(camera.position);
+        miniMapCamera.position.add(minimapDist, minimapDist, minimapDist);
+        miniMapCamera.update();
 
 
         for (Renderer renderer : renderers) {
@@ -196,7 +205,6 @@ public class testingGameScreen extends Menu {
 
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        miniMapPreview.render(decalBatch, new Vector3());
 /////////////////////////////////////////////////////////////////////////////////////////
         Cell currentCell = Util.getMouseCell(game);
 
@@ -270,6 +278,10 @@ public class testingGameScreen extends Menu {
         miniWindow.setHeight(uiStage.getHeight() / 4);
         miniWindow.setWidth(200);
         miniWindow.setPosition(uiStage.getWidth() - miniWindow.getWidth(), 0);
+
+        miniMapImage.setHeight(uiStage.getHeight() / 4);
+        miniMapImage.setWidth(1.0f * miniMapFrameRegion.getRegionWidth() / miniMapFrameRegion.getRegionHeight() * miniMapImage.getHeight());
+        miniMapImage.setPosition(miniWindow.getX() - miniMapImage.getWidth(), 0);
 
         buildingWindow.setWidth(uiStage.getWidth() * 3 / 5);
         buildingWindow.setHeight(uiStage.getHeight() / 4);
