@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.sun.jdi.event.ThreadStartEvent;
 import org.group16.Model.*;
 import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
@@ -33,25 +34,38 @@ public class JoinRoomScreen extends Menu {
         Label waiting = new Label("waiting...", skin1);
 
         table.add(waiting);
+        uiStage.addActor(table);
 
 
-        GameInfo gameInfo = LobbySocket.joinGameLobby();
+        Thread cmdThread = new Thread(() -> {
+            GameInfo gameInfo = null;
+            try {
+                {
+                    gameInfo = LobbySocket.joinGameLobby();
+                    Scene scene = null;
+                    Map map = LobbySocket.downloadMap(gameInfo.mapname());
+                    PlayerList playerList = gameInfo.playerList();
+                    Long random = gameInfo.randomSeed();
+                    scene = new Scene(map, random);
+                    Game game1 = new Game();
 
+                    for (int i = 0; i < playerList.users.size(); i++) {
+                        game1.addUser(playerList.users.get(i), playerList.kingdomTypes.get(i));
+                    }
 
-        Scene scene = null;
-        Map map = LobbySocket.downloadMap(gameInfo.mapname());
-        PlayerList playerList = gameInfo.playerList();
-        Long random = gameInfo.randomSeed();
-        scene = new Scene(map, random);
-        Game game1 = new Game();
+                    game1.setScene(scene);
+                    testingGameScreen gameScreen = new testingGameScreen(game, game1, gameInfo, user);
+                    synchronized (game) {
+                        game.setScreen(gameScreen);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        cmdThread.setDaemon(true);
+        cmdThread.start();
 
-        for (int i = 0; i < playerList.users.size(); i++) {
-            game1.addUser(playerList.users.get(i), playerList.kingdomTypes.get(i));
-        }
-
-        game1.setScene(scene);
-        testingGameScreen gameScreen = new testingGameScreen(game, game1, gameInfo, user);
-        game.setScreen(gameScreen);
     }
 
 
