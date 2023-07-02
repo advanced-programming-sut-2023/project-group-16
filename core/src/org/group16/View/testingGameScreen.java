@@ -52,7 +52,7 @@ public class testingGameScreen extends Menu {
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
-    Boolean inputControlling = true ;
+    Boolean inputControlling = true;
     BuildingSelectWindow buildingSelectWindow;
     CurrentPlayerWindow currentPlayerWindow;
     CellDetailWindow cellDetailWindow;
@@ -182,7 +182,7 @@ public class testingGameScreen extends Menu {
         float camSpeed = 3;
 
         if (inputControlling)
-            inputHandlingWhileRendering(dt , camSpeed);
+            inputHandlingWhileRendering(dt, camSpeed);
 
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
@@ -208,8 +208,6 @@ public class testingGameScreen extends Menu {
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 /////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 
         if (time - miniWindow.lastChangeTime >= 1) {
@@ -272,7 +270,7 @@ public class testingGameScreen extends Menu {
         uiStage.draw();
     }
 
-    public void inputHandlingWhileRendering(float dt , float camSpeed){
+    public void inputHandlingWhileRendering(float dt, float camSpeed) {
 
 
         if (input.isKeyPressed(Input.Keys.J))
@@ -386,6 +384,9 @@ public class testingGameScreen extends Menu {
             inputProcessor.submitCommandToServer(new InitResourceCommand(user));
 
             inputProcessor.submitCommandToServer(new EndTurnCommand(user));
+
+            camera.position.set(x, 0, y);
+            camera.position.add(3, 3, 3);
         }
     }
 
