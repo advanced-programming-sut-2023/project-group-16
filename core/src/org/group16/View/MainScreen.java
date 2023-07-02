@@ -25,7 +25,7 @@ public class MainScreen extends Menu {
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
     private TextButton profileMenu, gameMenu, chatButton, chatBack, publicChat, privateChat,
-            createRoomButton, openRoom, roomNameSend , joinGame , createGame;
+            createRoomButton, openRoom, roomNameSend, joinGame, createGame;
 
     private TextButton logoutButton;
 
@@ -70,12 +70,12 @@ public class MainScreen extends Menu {
             }
         });
 
-        joinGame = new TextButton("joinGame" , skin1) ;
+        joinGame = new TextButton("joinGame", skin1);
         joinGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
-                    game.setScreen(new JoinRoomScreen(game , user));
+                    game.setScreen(new JoinRoomScreen(game, user));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (ClassNotFoundException e) {
@@ -116,7 +116,7 @@ public class MainScreen extends Menu {
         table.add(createGame).row();
         table.add(joinGame).row();
 
-        table.add(lobbyMenu).row();
+//        table.add(lobbyMenu).row();
         table.add(logoutButton).row();
 
         uiStage.addActor(table);

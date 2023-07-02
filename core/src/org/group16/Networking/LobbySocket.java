@@ -99,6 +99,12 @@ public class LobbySocket {
         return utfInputStream.readUTF();
     }
 
+    public static String selectMap(String mapname) throws IOException {
+        utfOutputStream.writeUTF(
+                String.format("select map -m \"%s\"", mapname));
+        return utfInputStream.readUTF();
+    }
+
     public static String addUser(String username, String kingdomType) throws IOException {
         utfOutputStream.writeUTF(
                 String.format("add user -u \"%s\" -t \"%s\"", username, kingdomType));
