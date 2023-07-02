@@ -22,6 +22,7 @@ public class ChangeRateWindow extends Window {
     Image soilBackground;
 
     ImageButton back;
+    TextButton change ;
 
     Game game ;
     testingGameScreen gameScreen;
@@ -57,7 +58,6 @@ public class ChangeRateWindow extends Window {
         imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
         back.setStyle(imageStyle);
 
-        this.add(back) ;
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -65,28 +65,38 @@ public class ChangeRateWindow extends Window {
             }
         }) ;
 
+        change = new TextButton("change" , skin) ;
 
-        foodSlideBar.slider.addListener(new ChangeListener() {
+
+
+        change.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 User user = gameScreen.getCurUser() ;
                 gameScreen.inputProcessor.submitCommand(new SetFoodRateCommand(user , (int) foodSlideBar.slider.getValue()));
+                gameScreen.inputProcessor.submitCommand(new SetTaxRateCommand(user , (int) taxSlideBar.slider.getValue()));
+                gameScreen.inputProcessor.submitCommand(new SetFearRateCommand(user , (int) fearSlideBar.slider.getValue()));
+            }
+        }) ;
+
+        this.add(change).pad(0 , 0 , 0 , 5) ;
+        this.add(back) ;
+
+        foodSlideBar.slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
                 foodSlideBar.amount.setText(foodSlideBar.slider.getValue()+"");
             }
         });
         taxSlideBar.slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                User user = gameScreen.getCurUser() ;
-                gameScreen.inputProcessor.submitCommand(new SetTaxRateCommand(user , (int) taxSlideBar.slider.getValue()));
                 taxSlideBar.amount.setText(taxSlideBar.slider.getValue()+"");
             }
         });
         fearSlideBar.slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                User user = gameScreen.getCurUser() ;
-                gameScreen.inputProcessor.submitCommand(new SetFearRateCommand(user , (int) fearSlideBar.slider.getValue()));
                 fearSlideBar.amount.setText(fearSlideBar.slider.getValue()+"");
             }
         });

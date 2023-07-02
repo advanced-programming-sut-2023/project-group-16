@@ -61,6 +61,8 @@ public class testingGameScreen extends Menu {
     PopularityWindow popularityWindow;
     ChangeRateWindow changeRateWindow;
     BuyingUnitWindow buyingUnitWindow;
+
+    SoldierControlWindow soldierControlWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -128,7 +130,14 @@ public class testingGameScreen extends Menu {
         changeRateWindow = new ChangeRateWindow(skin1, game, this);
         changeRateWindow.setVisible(false);
 
+        buyingUnitWindow = new BuyingUnitWindow(skin1, game, this);
+        buyingUnitWindow.setVisible(false);
+
+        soldierControlWindow = new SoldierControlWindow(skin1, game, this);
+        soldierControlWindow.setVisible(false);
+
         miniMapImage = new Image(miniMapFrameRegion);
+
 
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
@@ -141,7 +150,12 @@ public class testingGameScreen extends Menu {
         uiStage.addActor(buyingWindow);
         uiStage.addActor(popularityWindow);
         uiStage.addActor(changeRateWindow);
+
+        uiStage.addActor(buyingUnitWindow);
+        uiStage.addActor(soldierControlWindow);
+
         uiStage.addActor(miniMapImage);
+
     }
 
     @Override
@@ -222,6 +236,16 @@ public class testingGameScreen extends Menu {
         if (input.isKeyPressed(Input.Keys.Z)) {
             resetSelection();
         }
+        if (input.isKeyPressed(Input.Keys.S)&& lastSelectedCell!=null){
+            ArrayList<Soldier> soldiers = new ArrayList<>() ;
+            for (Cell cell : selectedCells){
+                for (GameObject gameObject : cell.getGameObjects())
+                    if (gameObject instanceof Soldier)
+                        soldiers.add((Soldier) gameObject) ;
+            }
+            soldierControlWindow.makeWindow(game , soldiers);
+            setCurrentRunningWindow(soldierControlWindow);
+        }
 
 
         if (currentCell != null && time - cellDetailWindow.lastRemakeTime >= 1) {
@@ -276,6 +300,12 @@ public class testingGameScreen extends Menu {
 
         changeRateWindow.setWidth(uiStage.getWidth() * 3 / 5);
         changeRateWindow.setHeight(uiStage.getHeight() / 4);
+
+        buyingUnitWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        buyingUnitWindow.setHeight(uiStage.getHeight() / 4);
+
+        soldierControlWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        soldierControlWindow.setHeight(uiStage.getHeight() / 4);
 
         uiStage.draw();
     }

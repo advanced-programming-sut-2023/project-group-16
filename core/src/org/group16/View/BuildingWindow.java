@@ -104,6 +104,14 @@ public class BuildingWindow extends Window {
                 gameScreen.setCurrentRunningWindow(gameScreen.shopWindow);
             }
         });
+
+        buildUnit.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.buyingUnitWindow.remake((EconomicBuilding) building);
+                gameScreen.setCurrentRunningWindow(gameScreen.buyingUnitWindow);
+            }
+        });
     }
 
     public void changeBuilding(Building building) {

@@ -3,6 +3,7 @@ package org.group16.GameGraphics;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public enum BuildingGraphics {
+
     SMALL_TOWER("SQUARE_TOWER", .7f, .5f, 0, .45f, .12f), //TESTED
     BIG_TOWER("DEFENCE_TURRET", .85f, .55f, 0, .52f, .15f), //TESTED
     SQUARE_TOWER("PRIMER_TOWER", 1, .6f, 0, .65f, .3f), //TESTED
@@ -43,6 +44,7 @@ public enum BuildingGraphics {
     BREWER("BREWER", .4f, .2f, -.05f, 0, 0),//TESTED
     GRANARY("GRANARY", .5f, .15f, -.05f, 0, 0),//TESTED
     UNEMPLOYED_PLACE("UNEMPLOYED_PLACE", 0.5f, .1f, -.1f, 0, 0),
+
 
 
     ;
