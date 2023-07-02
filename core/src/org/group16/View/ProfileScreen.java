@@ -237,7 +237,7 @@ public class ProfileScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 if (newNicknameError.getText().isEmpty()) {
                     try {
-                        String response = LobbySocket.changeProfile(user, username.getName(), user.getPassword(), newNickname.getText(), user.getEmail(), user.getSlogan());
+                        String response = LobbySocket.changeProfile(user, user.getUsername(), user.getPassword(), newNickname.getText(), user.getEmail(), user.getSlogan());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
