@@ -5,6 +5,7 @@ import org.group16.Model.User;
 import org.group16.ViewTerminal.Command.Command;
 import org.group16.ViewTerminal.Command.CommandHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -166,9 +167,13 @@ public class LoginMenu {
 
     public void run() {
         scanner = new Scanner(System.in);
-        if (LoginMenuController.getStayLoggedInUser() != null) {
-            MainMenu mainMenu = new MainMenu(scanner, LoginMenuController.getStayLoggedInUser());
-            mainMenu.run();
+        try {
+            if (LoginMenuController.loginStayLoggedInUser() != null) {
+                MainMenu mainMenu = new MainMenu(scanner, LoginMenuController.loginStayLoggedInUser());
+                mainMenu.run();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();

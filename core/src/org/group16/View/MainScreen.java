@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import org.group16.Controller.LoginMenuController;
 import org.group16.Model.Messenger.Room;
 import org.group16.Model.User;
+import org.group16.Networking.LobbySocket;
 import org.group16.Server.ChatServer;
 import org.group16.StrongholdGame;
 
@@ -21,8 +23,12 @@ public class MainScreen extends Menu {
     private final Image background, white;
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+
     private TextButton profileMenu, gameMenu, chatButton, chatBack, publicChat, privateChat,
             createRoomButton, openRoom, roomNameSend , joinGame , createGame;
+
+    private TextButton logoutButton;
+
     private Dialog chat, roomNameDialog;
     private TextField roomName;
     private Label roomNameError;
@@ -78,6 +84,21 @@ public class MainScreen extends Menu {
             }
         });
 
+
+        logoutButton = new TextButton("Logout", skin1);
+        logoutButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    LobbySocket.logout();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                LoginMenuController.setStayLoggedInUser("", "");
+                setScreen(new LoginScreen(game));
+            }
+        });
+
         uiStage.addActor(background);
 
         table = new Table(skin1);
@@ -91,8 +112,13 @@ public class MainScreen extends Menu {
         uiStage.addActor(background);
         table.add(profileMenu).row();
         table.add(gameMenu).row();
+
         table.add(createGame).row();
         table.add(joinGame).row();
+
+        table.add(lobbyMenu).row();
+        table.add(logoutButton).row();
+
         uiStage.addActor(table);
     }
 
