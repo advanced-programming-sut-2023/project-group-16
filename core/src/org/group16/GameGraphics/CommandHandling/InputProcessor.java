@@ -3,6 +3,7 @@ package org.group16.GameGraphics.CommandHandling;
 import org.group16.GameGraphics.GameRenderer;
 import org.group16.Model.Game;
 import org.group16.Model.User;
+import org.group16.Networking.GameSocket;
 
 import java.util.*;
 
@@ -23,6 +24,10 @@ public class InputProcessor {
         cmd.add(new UserJoinCommand(user, 0));
         commands.put(user, cmd);
         commandIter.put(user, 0);
+    }
+
+    public void submitCommandToServer(UserCommand command) {
+        GameSocket.submitCommand(command);
     }
 
     public void submitCommand(UserCommand command) {

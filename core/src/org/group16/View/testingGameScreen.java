@@ -22,7 +22,6 @@ import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
-import org.group16.Model.People.SoldierDetail;
 import org.group16.StrongholdGame;
 
 import java.util.ArrayList;
@@ -236,14 +235,14 @@ public class testingGameScreen extends Menu {
         if (input.isKeyPressed(Input.Keys.Z)) {
             resetSelection();
         }
-        if (input.isKeyPressed(Input.Keys.S)&& lastSelectedCell!=null){
-            ArrayList<Soldier> soldiers = new ArrayList<>() ;
-            for (Cell cell : selectedCells){
+        if (input.isKeyPressed(Input.Keys.S) && lastSelectedCell != null) {
+            ArrayList<Soldier> soldiers = new ArrayList<>();
+            for (Cell cell : selectedCells) {
                 for (GameObject gameObject : cell.getGameObjects())
                     if (gameObject instanceof Soldier)
-                        soldiers.add((Soldier) gameObject) ;
+                        soldiers.add((Soldier) gameObject);
             }
-            soldierControlWindow.makeWindow(game , soldiers);
+            soldierControlWindow.makeWindow(game, soldiers);
             setCurrentRunningWindow(soldierControlWindow);
         }
 
@@ -345,18 +344,18 @@ public class testingGameScreen extends Menu {
             Kingdom kingdom = game.getKingdoms().get(i);
             User user = kingdom.getUser();
 
-            inputProcessor.submitCommand(new CreateBuildingCommand(user, BuildingType.TOWN_BUILDING, x, y));
-            inputProcessor.submitCommand(new CreateBuildingCommand(user, BuildingType.STOCKPILE, x + 1, y));
-            inputProcessor.submitCommand(new CreateBuildingCommand(user, BuildingType.UNEMPLOYED_PLACE, x, y + 1));
-            inputProcessor.submitCommand(new InitResourceCommand(user));
+            inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.TOWN_BUILDING, x, y));
+            inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.STOCKPILE, x + 1, y));
+            inputProcessor.submitCommandToServer(new CreateBuildingCommand(user, BuildingType.UNEMPLOYED_PLACE, x, y + 1));
+            inputProcessor.submitCommandToServer(new InitResourceCommand(user));
 
-            inputProcessor.submitCommand(new EndTurnCommand(user));
+            inputProcessor.submitCommandToServer(new EndTurnCommand(user));
         }
     }
 
     public void nextPlayer() {
 
-        inputProcessor.submitCommand(new EndTurnCommand(getCurUser()));
+        inputProcessor.submitCommandToServer(new EndTurnCommand(getCurUser()));
         curUser++;
         curUser = curUser % game.getKingdoms().size();
         currentPlayerWindow.makeWindow(getCurUser());
@@ -373,7 +372,7 @@ public class testingGameScreen extends Menu {
     public void makeBuilding(BuildingType buildingType) {
         System.out.println(buildingType.GetName());
         if (lastSelectedCell != null)
-            inputProcessor.submitCommand(new CreateBuildingCommand(getCurUser(), buildingType, lastSelectedCell.getX(), lastSelectedCell.getY()));
+            inputProcessor.submitCommandToServer(new CreateBuildingCommand(getCurUser(), buildingType, lastSelectedCell.getX(), lastSelectedCell.getY()));
     }
 
     public void setCurrentRunningWindow(Window currentRunningWindow) {

@@ -1,9 +1,6 @@
 package org.group16.Networking;
 
-import org.group16.Model.Map;
-import org.group16.Model.StringList;
-import org.group16.Model.User;
-import org.group16.Model.UserList;
+import org.group16.Model.*;
 import org.group16.StrongholdGame;
 
 import java.awt.desktop.UserSessionEvent;
@@ -114,13 +111,21 @@ public class LobbySocket {
         return inputStream.readUTF();
     }
 
-    public static String joinGameLobby() throws IOException {
+    public static GameInfo joinGameLobby() throws IOException, ClassNotFoundException {
         cmdStream.writeUTF("join game lobby");
-        return inputStream.readUTF();
+        inputStream.readUTF(); //OK
+        inputStream.readUTF(); //START GAME
+        return (GameInfo) inputStream.readObject();
     }
 
-    public static String leaveGameLobby() throws IOException {
-        cmdStream.writeUTF("leave game lobby");
-        return inputStream.readUTF();
+    //    public static String leaveGameLobby() throws IOException {
+//        cmdStream.writeUTF("leave game lobby");
+//        return inputStream.readUTF();
+//    }
+    public static Object startGame() throws IOException, ClassNotFoundException {
+        cmdStream.writeUTF("start game");
+        String response = inputStream.readUTF();
+        if (!response.equals("START GAME")) return response;
+        return (GameInfo) inputStream.readObject();
     }
 }

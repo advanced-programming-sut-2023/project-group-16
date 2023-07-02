@@ -13,15 +13,14 @@ import org.group16.Model.Buildings.EconomicBuildingDetail;
 import org.group16.Model.Game;
 import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.Resources.ProductData;
-import org.group16.Model.Resources.Resource;
 
 import java.util.ArrayList;
 
 public class BuyingUnitWindow extends Window {
+    final int xUp = 120, yUp = 120, xDown = 115, yDown = 115;
+    public Skin skin;
     Stage uistage;
     Image soilBackground, grayBackGround;
-    public Skin skin;
-    final int xUp = 120, yUp = 120, xDown = 115, yDown = 115;
     int numberOfPics;
     ImageButton back;
 
@@ -74,7 +73,7 @@ public class BuyingUnitWindow extends Window {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         status.setText(soldierDetail.GetName());
-                        gameScreen.inputProcessor.submitCommand(new CreateSoldierCommand(gameScreen.getCurUser() ,economicBuilding , soldierDetail , 1 ));
+                        gameScreen.inputProcessor.submitCommandToServer(new CreateSoldierCommand(gameScreen.getCurUser(), economicBuilding, soldierDetail, 1));
                     }
                 });
             } catch (Exception e) {

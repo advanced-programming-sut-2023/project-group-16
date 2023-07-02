@@ -20,7 +20,6 @@ import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
 import org.group16.Model.People.SoldierDetail;
 import org.group16.Model.Resources.BasicResource;
-import org.group16.Model.Resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +132,7 @@ public class TestingGDX extends Game {
 
     private void initGameObjects() {
         GameMenuController.dropBuilding(game, k1.getUser(), 0, 0, BuildingType.TOWN_BUILDING);
-        inputProcessor.submitCommand(new CreateBuildingCommand(k1.getUser(), BuildingType.GRANARY, 3, 2));
+        inputProcessor.submitCommandToServer(new CreateBuildingCommand(k1.getUser(), BuildingType.GRANARY, 3, 2));
         GameMenuController.dropBuilding(game, k2.getUser(), 19, 19, BuildingType.TOWN_BUILDING);
         gameRenderer.createRenderer(k1.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
         gameRenderer.createRenderer(k2.getEconomicBuildingsByType(BuildingType.TOWN_BUILDING).get(0));
@@ -209,18 +208,18 @@ public class TestingGDX extends Game {
             camera.position.add(5 * dt, 5 * dt, 5 * dt);
 
         if (input.isKeyJustPressed(Input.Keys.B)) {
-            inputProcessor.submitCommand(new CreateBuildingCommand(k1.getUser(), BuildingType.LOOKOUT_TOWER, 4, 2));
+            inputProcessor.submitCommandToServer(new CreateBuildingCommand(k1.getUser(), BuildingType.LOOKOUT_TOWER, 4, 2));
         }
         if (input.isKeyJustPressed(Input.Keys.V)) {
-            inputProcessor.submitCommand(new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(1)));
+            inputProcessor.submitCommandToServer(new DeleteBuildingCommand(k1.getUser(), k1.getBuildings().get(1)));
 
         }
-        if (input.isKeyPressed(Input.Keys.N)) inputProcessor.submitCommand(new EndTurnCommand(k1.getUser()));
-        if (input.isKeyPressed(Input.Keys.M)) inputProcessor.submitCommand(new EndTurnCommand(k2.getUser()));
+        if (input.isKeyPressed(Input.Keys.N)) inputProcessor.submitCommandToServer(new EndTurnCommand(k1.getUser()));
+        if (input.isKeyPressed(Input.Keys.M)) inputProcessor.submitCommandToServer(new EndTurnCommand(k2.getUser()));
 
-       if (input.isTouched()) {
-           System.out.println(Util.getMouseCell(game).getGameObjects()) ;
-       }
+        if (input.isTouched()) {
+            System.out.println(Util.getMouseCell(game).getGameObjects());
+        }
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
 //        if (input.isKeyPressed(Input.Keys.M))
