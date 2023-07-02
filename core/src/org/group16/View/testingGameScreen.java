@@ -51,6 +51,8 @@ public class testingGameScreen extends Menu {
     Cell lastSelectedCell = null;
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+
+    Boolean inputControlling = true ;
     BuildingSelectWindow buildingSelectWindow;
     CurrentPlayerWindow currentPlayerWindow;
     CellDetailWindow cellDetailWindow;
@@ -64,6 +66,7 @@ public class testingGameScreen extends Menu {
     ChangeRateWindow changeRateWindow;
     BuyingUnitWindow buyingUnitWindow;
     SoldierControlWindow soldierControlWindow;
+    ChatControllingWindow chatControllingWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -141,6 +144,8 @@ public class testingGameScreen extends Menu {
 
         miniMapImage = new Image(miniMapFrameRegion);
 
+        chatControllingWindow = new ChatControllingWindow(skin1, uiStage, game1, this, getCurUser());
+
 
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
@@ -159,6 +164,8 @@ public class testingGameScreen extends Menu {
 
         uiStage.addActor(miniMapImage);
 
+        uiStage.addActor(chatControllingWindow);
+
     }
 
     @Override
@@ -173,18 +180,10 @@ public class testingGameScreen extends Menu {
         }
         time += dt;
         float camSpeed = 3;
-        if (input.isKeyPressed(Input.Keys.J))
-            camera.position.add(-dt * camSpeed, 0, dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.L))
-            camera.position.add(dt * camSpeed, 0, -dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.I))
-            camera.position.add(-dt * camSpeed, 0, -dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.K))
-            camera.position.add(dt * camSpeed, 0, dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.U))
-            camera.position.add(-5 * dt, -5 * dt, -5 * dt);
-        if (input.isKeyPressed(Input.Keys.O))
-            camera.position.add(5 * dt, 5 * dt, 5 * dt);
+
+        if (inputControlling)
+            inputHandlingWhileRendering(dt , camSpeed);
+
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
 //        if (input.isKeyPressed(Input.Keys.M))
@@ -209,6 +208,87 @@ public class testingGameScreen extends Menu {
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 /////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+        if (time - miniWindow.lastChangeTime >= 1) {
+            Kingdom curKingdom = game.getKingdom(getCurUser());
+            miniWindow.remake(curKingdom.getPopularity(), curKingdom.getPopulation(), curKingdom.getPopulationCapacity(), curKingdom.getGold());
+        }
+
+
+        decalBatch.flush();
+
+        buildingSelectWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        buildingSelectWindow.setHeight(uiStage.getHeight() / 4);
+
+
+        currentPlayerWindow.setPosition(0, uiStage.getHeight() - 100);
+        currentPlayerWindow.setWidth(100);
+        currentPlayerWindow.setHeight(100);
+
+        cellDetailWindow.setWidth(200);
+        cellDetailWindow.setHeight(200);
+        cellDetailWindow.setPosition(uiStage.getWidth() - 200, uiStage.getHeight() - 200);
+
+        chatControllingWindow.setWidth(200);
+        chatControllingWindow.setHeight(50);
+        chatControllingWindow.setPosition(uiStage.getWidth() - 200, uiStage.getHeight() - 250);
+
+
+        miniWindow.setHeight(uiStage.getHeight() / 4);
+        miniWindow.setWidth(200);
+        miniWindow.setPosition(uiStage.getWidth() - miniWindow.getWidth(), 0);
+
+        miniMapImage.setHeight(uiStage.getHeight() / 4);
+        miniMapImage.setWidth(1.0f * miniMapFrameRegion.getRegionWidth() / miniMapFrameRegion.getRegionHeight() * miniMapImage.getHeight());
+        miniMapImage.setPosition(miniWindow.getX() - miniMapImage.getWidth(), 0);
+
+        buildingWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        buildingWindow.setHeight(uiStage.getHeight() / 4);
+
+        storageWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        storageWindow.setHeight(uiStage.getHeight() / 4);
+
+        shopWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        shopWindow.setHeight(uiStage.getHeight() / 4);
+
+        buyingWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        buyingWindow.setHeight(uiStage.getHeight() / 4);
+
+        popularityWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        popularityWindow.setHeight(uiStage.getHeight() / 4);
+
+        changeRateWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        changeRateWindow.setHeight(uiStage.getHeight() / 4);
+
+        buyingUnitWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        buyingUnitWindow.setHeight(uiStage.getHeight() / 4);
+
+        soldierControlWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        soldierControlWindow.setHeight(uiStage.getHeight() / 4);
+
+        uiStage.draw();
+    }
+
+    public void inputHandlingWhileRendering(float dt , float camSpeed){
+
+
+        if (input.isKeyPressed(Input.Keys.J))
+            camera.position.add(-dt * camSpeed, 0, dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.L))
+            camera.position.add(dt * camSpeed, 0, -dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.I))
+            camera.position.add(-dt * camSpeed, 0, -dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.K))
+            camera.position.add(dt * camSpeed, 0, dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.U))
+            camera.position.add(-5 * dt, -5 * dt, -5 * dt);
+        if (input.isKeyPressed(Input.Keys.O))
+            camera.position.add(5 * dt, 5 * dt, 5 * dt);
+
+
         Cell currentCell = Util.getMouseCell(game);
 
         if (input.isTouched() && input.getY() < 3 * uiStage.getHeight() / 4) {
@@ -249,68 +329,12 @@ public class testingGameScreen extends Menu {
             soldierControlWindow.makeWindow(game, soldiers);
             setCurrentRunningWindow(soldierControlWindow);
         }
-
-
         if (currentCell != null && time - cellDetailWindow.lastRemakeTime >= 1) {
             int x = currentCell.getX();
             int y = currentCell.getY();
             cellDetailWindow.remake(GameMenuController.showMapDetails(game, x, y));
             cellDetailWindow.lastRemakeTime = time;
         }
-
-        if (time - miniWindow.lastChangeTime >= 1) {
-            Kingdom curKingdom = game.getKingdom(getCurUser());
-            miniWindow.remake(curKingdom.getPopularity(), curKingdom.getPopulation(), curKingdom.getPopulationCapacity(), curKingdom.getGold());
-        }
-
-
-        decalBatch.flush();
-
-        buildingSelectWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        buildingSelectWindow.setHeight(uiStage.getHeight() / 4);
-
-
-        currentPlayerWindow.setPosition(0, uiStage.getHeight() - 100);
-        currentPlayerWindow.setWidth(100);
-        currentPlayerWindow.setHeight(100);
-
-        cellDetailWindow.setWidth(200);
-        cellDetailWindow.setHeight(200);
-        cellDetailWindow.setPosition(uiStage.getWidth() - 200, uiStage.getHeight() - 200);
-
-        miniWindow.setHeight(uiStage.getHeight() / 4);
-        miniWindow.setWidth(200);
-        miniWindow.setPosition(uiStage.getWidth() - miniWindow.getWidth(), 0);
-
-        miniMapImage.setHeight(uiStage.getHeight() / 4);
-        miniMapImage.setWidth(1.0f * miniMapFrameRegion.getRegionWidth() / miniMapFrameRegion.getRegionHeight() * miniMapImage.getHeight());
-        miniMapImage.setPosition(miniWindow.getX() - miniMapImage.getWidth(), 0);
-
-        buildingWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        buildingWindow.setHeight(uiStage.getHeight() / 4);
-
-        storageWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        storageWindow.setHeight(uiStage.getHeight() / 4);
-
-        shopWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        shopWindow.setHeight(uiStage.getHeight() / 4);
-
-        buyingWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        buyingWindow.setHeight(uiStage.getHeight() / 4);
-
-        popularityWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        popularityWindow.setHeight(uiStage.getHeight() / 4);
-
-        changeRateWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        changeRateWindow.setHeight(uiStage.getHeight() / 4);
-
-        buyingUnitWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        buyingUnitWindow.setHeight(uiStage.getHeight() / 4);
-
-        soldierControlWindow.setWidth(uiStage.getWidth() * 3 / 5);
-        soldierControlWindow.setHeight(uiStage.getHeight() / 4);
-
-        uiStage.draw();
     }
 
     private void resetSelection() {
@@ -348,7 +372,7 @@ public class testingGameScreen extends Menu {
 
         gameRenderer = new GameRenderer(game, inputProcessor);
         for (int i = 0; i < game.getKingdoms().size(); i++) {
-            if(!game.getKingdoms().get(i).getUser().equals(getCurUser())){
+            if (!game.getKingdoms().get(i).getUser().equals(getCurUser())) {
                 continue;
             }
             int x = (i % 4) * 15;
@@ -378,7 +402,7 @@ public class testingGameScreen extends Menu {
     }
 
     public User getCurUser() {
-        return currentUser ;
+        return currentUser;
     }
 
     public void makeBuilding(BuildingType buildingType) {
