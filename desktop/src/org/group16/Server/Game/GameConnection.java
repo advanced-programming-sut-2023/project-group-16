@@ -12,7 +12,7 @@ public class GameConnection extends Thread {
     private final DataInputStream dataInputStream;
     private final DataOutputStream dataOutputStream;
     private final ObjectInputStream inputStream;
-    private final ObjectOutputStream outputStream;
+    //    private final ObjectOutputStream outputStream;
     private final GameServer server;
 
     public GameConnection(GameServer server, Socket socket) throws IOException, ClassNotFoundException {
@@ -20,7 +20,7 @@ public class GameConnection extends Thread {
         this.socket = socket;
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataInputStream = new DataInputStream(socket.getInputStream());
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
+//        outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         gameInfo = (GameInfo) inputStream.readObject();
         System.out.printf("gameId : %s", gameInfo.gameID().toString());
@@ -31,8 +31,6 @@ public class GameConnection extends Thread {
     public void run() {
         try {
             while (true) {
-//                String cmd = dataInputStream.readUTF();
-//                UserCommand obj = (UserCommand) inputStream.readObject();
                 UserCommand obj = UserCommand.tryDeserialize(dataInputStream.readUTF());
                 System.out.printf(" Received Command %s\n", obj);
                 server.shareCommand(gameInfo.gameID(), obj);
@@ -43,13 +41,6 @@ public class GameConnection extends Thread {
     }
 
     public void sendCommand(UserCommand obj) throws IOException {
-//        dataOutputStream.writeUTF("cmd");
-        try {
-            Thread.sleep(10, 0);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         dataOutputStream.writeUTF(obj.serialize());
-//        outputStream.writeObject(obj);
     }
 }

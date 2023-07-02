@@ -8,7 +8,7 @@ import org.group16.Networking.GameSocket;
 import java.util.*;
 
 public class InputProcessor {
-    private static final int TRY_COUNT = 3;
+    private static final int TRY_COUNT = 1;
     private final HashMap<String, List<UserCommand>> commands = new HashMap<>();
     private final HashMap<String, Integer> commandIter = new HashMap<>();
     private final HashSet<String> finalizedUsers = new HashSet<>();

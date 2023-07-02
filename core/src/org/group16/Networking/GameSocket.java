@@ -11,7 +11,7 @@ public class GameSocket {
     public static Socket socket;
     public static DataOutputStream dataOutputStream;
     public static DataInputStream dataInputStream;
-    public static ObjectInputStream inputStream;
+    //    public static ObjectInputStream inputStream;
     public static ObjectOutputStream outputStream;
     public static String host;
     public static int port;
@@ -23,7 +23,7 @@ public class GameSocket {
         socket = new Socket(host, port);
         dataInputStream = new DataInputStream(socket.getInputStream());
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        inputStream = new ObjectInputStream(socket.getInputStream());
+//        inputStream = new ObjectInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
 
@@ -34,10 +34,11 @@ public class GameSocket {
 
     public static void createSocket(GameInfo gameInfo, InputProcessor inputProcessor) throws IOException {
         createSocket();
+        outputStream.writeObject(gameInfo);
+
         connection = new Thread(() -> {
             try {
                 while (true) {
-                    Thread.sleep(10, 0);
                     UserCommand userCommand = UserCommand.tryDeserialize(dataInputStream.readUTF());
                     System.out.printf("Received %s\n", userCommand.getClass().getSimpleName());
                     synchronized (inputProcessor) {
@@ -50,14 +51,12 @@ public class GameSocket {
             }
         });
         connection.start();
-        outputStream.writeObject(gameInfo);
     }
 
     public static void submitCommand(UserCommand command) {
         try {
             Thread.sleep(100, 0);
             dataOutputStream.writeUTF(command.serialize());
-//            outputStream.writeObject(command);
         } catch (Exception e) {
             alive = false;
             System.out.println("Client Disconnected");
