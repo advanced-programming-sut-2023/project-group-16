@@ -31,8 +31,9 @@ public class GameConnection extends Thread {
     public void run() {
         try {
             while (true) {
-                UserCommand obj = UserCommand.tryDeserialize(dataInputStream.readUTF());
-                System.out.printf(" Received Command %s\n", obj);
+                String stream = dataInputStream.readUTF();
+                UserCommand obj = UserCommand.tryDeserialize(stream);
+                System.out.printf(" Received Command %s\n", stream);
                 server.shareCommand(gameInfo.gameID(), obj);
             }
         } catch (Exception e) {

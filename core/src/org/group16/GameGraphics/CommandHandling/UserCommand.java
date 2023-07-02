@@ -13,11 +13,12 @@ import java.util.regex.Pattern;
 public abstract class UserCommand implements Serializable {
     private static final Pattern dataPattern = Pattern.compile("\\[\\[(?<type>\\S+)]](?<json>.+)");
     public final UUID uuid = UUID.randomUUID();
-    public User user;
+    public final String username;
+    public transient User user;
     protected boolean executed;
 
     public UserCommand(User user) {
-        this.user = user;
+        username = user.getUsername();
     }
 
     //    @Deprecated
@@ -40,7 +41,7 @@ public abstract class UserCommand implements Serializable {
     }
 
     public void resolveUser(Game game) {
-        user = game.getUserByUsername(user.getUsername());
+        user = game.getUserByUsername(username);
     }
 
     public abstract String execute(Game game, GameRenderer gameRenderer);

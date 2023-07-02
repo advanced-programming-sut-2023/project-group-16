@@ -39,8 +39,9 @@ public class GameSocket {
         connection = new Thread(() -> {
             try {
                 while (true) {
-                    UserCommand userCommand = UserCommand.tryDeserialize(dataInputStream.readUTF());
-                    System.out.printf("Received %s\n", userCommand.getClass().getSimpleName());
+                    String stream = dataInputStream.readUTF();
+                    UserCommand userCommand = UserCommand.tryDeserialize(stream);
+                    System.out.printf(" Received Command %s\n", stream);
                     synchronized (inputProcessor) {
                         inputProcessor.submitCommand(userCommand);
                     }

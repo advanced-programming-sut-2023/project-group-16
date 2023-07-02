@@ -37,10 +37,10 @@ public class InputProcessor {
         if (receivedCMDs.contains(command.uuid)) return;
         receivedCMDs.add(command.uuid);
 
-        if (!finalizedUsers.contains(command.user.getUsername())) {
-            commands.get(command.user.getUsername()).add(command);
+        if (!finalizedUsers.contains(command.username)) {
+            commands.get(command.username).add(command);
             if (command instanceof EndTurnCommand)
-                finalizedUsers.add(command.user.getUsername());
+                finalizedUsers.add(command.username);
         }
     }
 
