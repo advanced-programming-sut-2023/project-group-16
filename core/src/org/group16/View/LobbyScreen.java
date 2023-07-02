@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.sun.tools.javac.Main;
-import org.group16.Controller.GameMenuController;
 import org.group16.Model.*;
-import org.group16.Model.Buildings.BuildingType;
 import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
@@ -197,7 +194,7 @@ public class LobbyScreen extends Menu {
                             try {
                                 Map map = LobbySocket.downloadMap(gameInfo.mapname());
                                 PlayerList playerList = gameInfo.playerList();
-                                Long random = gameInfo.randomSeed();
+                                long random = gameInfo.randomSeed();
                                 scene = new Scene(map, random);
                                 Game game1 = new Game();
 
@@ -206,7 +203,7 @@ public class LobbyScreen extends Menu {
                                 }
 
                                 game1.setScene(scene);
-                                testingGameScreen gameScreen = new testingGameScreen(game, game1);
+                                testingGameScreen gameScreen = new testingGameScreen(game, game1, gameInfo, user);
                                 game.setScreen(gameScreen);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);

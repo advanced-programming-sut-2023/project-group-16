@@ -13,46 +13,44 @@ import org.group16.StrongholdGame;
 
 import java.io.IOException;
 
-public class JoinRoomScreen extends Menu{
-    User user ;
-    private Image soilBackground;
+public class JoinRoomScreen extends Menu {
     private final Skin skin1 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-
+    User user;
+    private Image soilBackground;
     private Table table;
-
 
 
     public JoinRoomScreen(StrongholdGame game, User user) throws IOException, ClassNotFoundException {
         super(game);
-        this.user = user ;
+        this.user = user;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
 
-        table = new Table() ;
-        table.background(soilBackground.getDrawable()) ;
+        table = new Table();
+        table.background(soilBackground.getDrawable());
         table.setFillParent(true);
-        Label waiting = new Label("waiting..." , skin1) ;
+        Label waiting = new Label("waiting...", skin1);
 
-        table.add(waiting) ;
-
-
-        GameInfo gameInfo = LobbySocket.joinGameLobby() ;
+        table.add(waiting);
 
 
-        Scene scene = null ;
-        Map map = LobbySocket.downloadMap(gameInfo.mapname()) ;
-        PlayerList playerList = gameInfo.playerList() ;
-        Long random = gameInfo.randomSeed() ;
+        GameInfo gameInfo = LobbySocket.joinGameLobby();
+
+
+        Scene scene = null;
+        Map map = LobbySocket.downloadMap(gameInfo.mapname());
+        PlayerList playerList = gameInfo.playerList();
+        Long random = gameInfo.randomSeed();
         scene = new Scene(map, random);
-        Game game1 = new Game() ;
+        Game game1 = new Game();
 
-        for (int i = 0 ; i < playerList.users.size() ; i++){
-            game1.addUser(playerList.users.get(i) , playerList.kingdomTypes.get(i));
+        for (int i = 0; i < playerList.users.size(); i++) {
+            game1.addUser(playerList.users.get(i), playerList.kingdomTypes.get(i));
         }
 
         game1.setScene(scene);
-        testingGameScreen gameScreen = new testingGameScreen(game , game1) ;
+        testingGameScreen gameScreen = new testingGameScreen(game, game1, gameInfo, user);
         game.setScreen(gameScreen);
     }
 

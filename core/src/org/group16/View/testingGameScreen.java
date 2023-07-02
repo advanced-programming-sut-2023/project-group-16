@@ -22,8 +22,10 @@ import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
+import org.group16.Networking.GameSocket;
 import org.group16.StrongholdGame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,8 @@ public class testingGameScreen extends Menu {
     ////////////////////////////////////// render stuff
     private final List<Renderer> renderers = new ArrayList<>();
     private final float minimapDist = 15;
+    private final GameInfo gameInfo;
+    private final User currentUser;
     public AssetManager assetManager;
     public Window currentRunningWindow;
     Image miniMapImage;
@@ -60,7 +64,6 @@ public class testingGameScreen extends Menu {
     PopularityWindow popularityWindow;
     ChangeRateWindow changeRateWindow;
     BuyingUnitWindow buyingUnitWindow;
-
     SoldierControlWindow soldierControlWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
@@ -69,9 +72,11 @@ public class testingGameScreen extends Menu {
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
 
-    public testingGameScreen(StrongholdGame game1, Game game) {
+    public testingGameScreen(StrongholdGame game1, Game game, GameInfo gameInfo, User currentUser) {
         super(game1);
         this.game = game;
+        this.gameInfo = gameInfo;
+        this.currentUser = currentUser;
 
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
         miniMapCamera = new PerspectiveCamera(30, 5f, 3);
@@ -336,6 +341,11 @@ public class testingGameScreen extends Menu {
         for (Kingdom kingdom : game.getKingdoms())
             allUsers.add(kingdom.getUser());
         inputProcessor = new InputProcessor(allUsers);
+        try {
+            GameSocket.createSocket(gameInfo, inputProcessor);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         gameRenderer = new GameRenderer(game, inputProcessor);
         for (int i = 0; i < game.getKingdoms().size(); i++) {
