@@ -176,7 +176,11 @@ public class LobbyConnection extends Thread {
             }
         response = "OK";
 
+
         utfOutputStream.writeUTF(response);
+
+        server.userLogout(currentUser.getUsername());
+
         if (!currentUser.getPassword().equals(newPassword))
             currentUser.setPassword(newPassword);
         if (!currentUser.getEmail().equals(newEmail))
@@ -187,6 +191,8 @@ public class LobbyConnection extends Thread {
             currentUser.setSlogan(newSlog);
         if (!currentUser.getUsername().equals(newUsername))
             currentUser.setUsername(newUsername);
+
+        server.userLoggedIn(currentUser.getUsername());
     }
 
     private void displayScore() throws IOException {
