@@ -53,7 +53,7 @@ public class LobbyConnection extends Thread {
                 else if ((map = CommandHandler.matches(Command.DISPLAY_RANK, msg)) != null) displayRank();
                 else if ((map = CommandHandler.matches(Command.GET_USER, msg)) != null) getUser(map);
                 else if ((map = CommandHandler.matches(Command.GET_ALL_USERS, msg)) != null) getAllUsers();
-                else if ((map = CommandHandler.matches(Command.CREATE_GAME, msg)) != null) createGame(map);
+                else if ((map = CommandHandler.matches(Command.CREATE_GAME, msg)) != null) createGame();
                 else if ((map = CommandHandler.matches(Command.GET_ALL_MAPS, msg)) != null) getAllMaps();
                 else if ((map = CommandHandler.matches(Command.SELECT_MAP, msg)) != null) selectMap(map);
                 else if ((map = CommandHandler.matches(Command.ADD_USER, msg)) != null) addUser(map);
@@ -222,14 +222,9 @@ public class LobbyConnection extends Thread {
         outputStream.writeObject(userList);
     }
 
-    private void createGame(TreeMap<String, ArrayList<String>> map) throws IOException {
-        KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
-        if (kingdomType == null) {
-            utfOutputStream.writeUTF("invalid kingdom type");
-            return;
-        }
+    private void createGame() throws IOException {
         utfOutputStream.writeUTF("OK");
-        currentGame = new Game(kingdomType, currentUser);
+        currentGame = new Game();
     }
 
     private void selectMap(TreeMap<String, ArrayList<String>> map) throws IOException {

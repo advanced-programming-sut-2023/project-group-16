@@ -94,9 +94,8 @@ public class LobbySocket {
         return ((StringList) inputStream.readObject()).strings;
     }
 
-    public static String createGame(String kingdomType) throws IOException {
-        utfOutputStream.writeUTF(
-                String.format("create game -t \"%s\"", kingdomType));
+    public static String createGame() throws IOException {
+        utfOutputStream.writeUTF("create game");
         return utfInputStream.readUTF();
     }
 
