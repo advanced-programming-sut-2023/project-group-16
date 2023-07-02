@@ -52,7 +52,7 @@ public class GameRenderer extends Renderer {
         currentTime += dt;
         if (!executeLogic)
             executeLogic = inputProcessor.process(game, this);
-        
+
         if (executeLogic)
             if (currentTime >= lastActionTime + Time.deltaTime) {
                 if (currentStep == 0)
@@ -72,7 +72,9 @@ public class GameRenderer extends Renderer {
             if (renderers.containsKey(go))
                 go.updateRenderer(renderers.get(go));
             else {
-                go.createRenderer() ;
+                Renderer renderer = go.createRenderer();
+                renderers.put(go, renderer);
+                addChild(renderer);
             }
         }
         super.update(dt);
