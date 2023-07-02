@@ -47,6 +47,7 @@ public class BuyingUnitWindow extends Window {
     public void remake(EconomicBuilding economicBuilding) {
         this.clear();
         this.economicBuildingDetail = economicBuilding.getDetail();
+        soldierDetails.clear();
         for (ProductData productData : economicBuildingDetail.getProductsData()) {
             soldierDetails.add((SoldierDetail) productData.resource());
         }
