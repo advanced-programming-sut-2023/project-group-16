@@ -39,39 +39,53 @@ public class LobbySocket {
 
     public static String login(String username, String password) throws IOException {
         cmdStream.writeUTF(
-                String.format("get user -u \"%s\" -p \"%s\"", username, password));
+                String.format("login -u \"%s\" -p \"%s\"", username, password));
         return inputStream.readUTF();
     }
 
-    public static String register(String username, String password, String nick, String email, String slogan, String question, String answer) {
-        
+    public static String register(String username, String password, String nick, String email, String slogan, String question, String answer) throws IOException {
+        cmdStream.writeUTF(
+                String.format("register -u \"%s\" -p \"%s\" -s \"%s\" -n \"%s\" -e \"%s\" -q \"%s\" \"%s\"",
+                        username, password, slogan, nick, email, question, answer));
+        return inputStream.readUTF();
     }
 
-    public static String forgotPassword(String username, String answer, String newPassword) {
-
+    public static String forgotPassword(String username, String answer, String newPassword) throws IOException {
+        cmdStream.writeUTF(
+                String.format("forgot password -u \"%s\" -p \"%s\" -a \"%s\"",
+                        username, newPassword, answer));
+        return inputStream.readUTF();
     }
 
-    public static String logout() {
-
+    public static String logout() throws IOException {
+        cmdStream.writeUTF("logout");
+        return inputStream.readUTF();
     }
 
-    public static String changeProfile(String username, String password, String nick, String email, String slogan) {
-
+    public static String changeProfile(String username, String password, String nick, String email, String slogan) throws IOException {
+        cmdStream.writeUTF(
+                String.format("change profile -u \"%s\" -p \"%s\" -s \"%s\" -n \"%s\" -e \"%s\"",
+                        username, password, slogan, nick, email));
+        return inputStream.readUTF();
     }
 
-    public static int displayScore() {
-
+    public static int displayScore() throws IOException {
+        cmdStream.writeUTF("display score");
+        return inputStream.readInt();
     }
 
-    public static int displayRank() {
-
+    public static int displayRank() throws IOException {
+        cmdStream.writeUTF("display rank");
+        return inputStream.readInt();
     }
 
-    public static void uploadMap(Map map) {
-
+    public static void uploadMap(Map map) throws IOException {
+        cmdStream.writeUTF("upload map");
+        outputStream.writeObject(map);
     }
 
-    public static Map downloadMap(String mapname) {
-
+    public static Map downloadMap(String mapname) throws IOException, ClassNotFoundException {
+        cmdStream.writeUTF("download map");
+        return (Map) inputStream.readObject();
     }
 }
