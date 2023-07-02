@@ -153,8 +153,8 @@ public class LobbyScreen extends Menu {
                 } else {
                     boolean canStart = true ;
                     Scene scene = null;
-//                    realGame.setScene(scene);
-//                    game.setScreen(new testingGameScreen(game, realGame));
+
+
                     try {
                         String status = LobbySocket.createGame() ;
                         if (!status.equals("OK")) {
@@ -176,6 +176,11 @@ public class LobbyScreen extends Menu {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
+                    }
+                    try {
+                        LobbySocket.selectMap(mapSelectBox.getSelected()) ;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                     if (!canStart){
                         startStatus.setText("some problem with server!");
