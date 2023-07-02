@@ -292,7 +292,8 @@ public class LobbyConnection extends Thread {
     }
 
     private void joinGameLobby() throws IOException {
-        outputStream.writeObject("OK");
+        System.out.println("jgl");
+        utfOutputStream.writeUTF("OK");
         inGameLobby = true;
     }
 
