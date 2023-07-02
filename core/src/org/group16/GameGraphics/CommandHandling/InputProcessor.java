@@ -60,4 +60,7 @@ public class InputProcessor {
         return true;
     }
 
+    public boolean isWaiting(User currentUser) {
+        return !finalizedUsers.contains(currentUser);
+    }
 }

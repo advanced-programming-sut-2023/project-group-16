@@ -73,6 +73,7 @@ public class testingGameScreen extends Menu {
     private TextureRegion miniMapFrameRegion;
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
+    private float lastTurn = 0;
 
     public testingGameScreen(StrongholdGame game1, Game game, GameInfo gameInfo, User currentUser) {
         super(game1);
@@ -174,9 +175,15 @@ public class testingGameScreen extends Menu {
         uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         long milis = TimeUtils.timeSinceMillis(lastFrame);
         float dt = milis / 1000f;
+        if (inputProcessor.isWaiting(currentUser))
+            lastTurn += dt;
         lastFrame += milis;
         for (Renderer renderer : renderers) {
             renderer.update(dt);
+        }
+        if (lastTurn >= 1.25f) {
+            lastTurn = 0;
+            inputProcessor.submitCommandToServer(new EndTurnCommand(currentUser));
         }
         time += dt;
         float camSpeed = 3;
