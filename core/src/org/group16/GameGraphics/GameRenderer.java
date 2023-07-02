@@ -72,9 +72,7 @@ public class GameRenderer extends Renderer {
             if (renderers.containsKey(go))
                 go.updateRenderer(renderers.get(go));
             else {
-                Renderer renderer = go.createRenderer();
-                renderers.put(go, renderer);
-                addChild(renderer);
+                createRenderer(go);
             }
         }
         super.update(dt);
