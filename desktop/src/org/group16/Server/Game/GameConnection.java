@@ -31,9 +31,10 @@ public class GameConnection extends Thread {
     public void run() {
         try {
             while (true) {
-                String cmd = dataInputStream.readUTF();
-                UserCommand obj = (UserCommand) inputStream.readObject();
-                System.out.printf(" Received Command %s\n", obj.getClass().getSimpleName());
+//                String cmd = dataInputStream.readUTF();
+//                UserCommand obj = (UserCommand) inputStream.readObject();
+                UserCommand obj = UserCommand.tryDeserialize(dataInputStream.readUTF());
+                System.out.printf(" Received Command %s\n", obj);
                 server.shareCommand(gameInfo.gameID(), obj);
             }
         } catch (Exception e) {
@@ -42,7 +43,13 @@ public class GameConnection extends Thread {
     }
 
     public void sendCommand(UserCommand obj) throws IOException {
-        dataOutputStream.writeUTF("cmd");
-        outputStream.writeObject(obj);
+//        dataOutputStream.writeUTF("cmd");
+        try {
+            Thread.sleep(10, 0);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        dataOutputStream.writeUTF(obj.serialize());
+//        outputStream.writeObject(obj);
     }
 }

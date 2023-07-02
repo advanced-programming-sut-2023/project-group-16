@@ -8,10 +8,12 @@ import org.group16.Networking.GameSocket;
 import java.util.*;
 
 public class InputProcessor {
+    private static final int TRY_COUNT = 1;
     private final HashMap<String, List<UserCommand>> commands = new HashMap<>();
     private final HashMap<String, Integer> commandIter = new HashMap<>();
     private final HashSet<String> finalizedUsers = new HashSet<>();
     private final List<User> allUsers = new ArrayList<>();
+    private final HashSet<UUID> receivedCMDs = new HashSet<>();
 
     public InputProcessor(List<User> allUsers) {
         for (User user : allUsers)
@@ -27,10 +29,14 @@ public class InputProcessor {
     }
 
     public synchronized void submitCommandToServer(UserCommand command) {
-        GameSocket.submitCommand(command);
+        for (int i = 0; i < TRY_COUNT; i++)
+            GameSocket.submitCommand(command);
     }
 
     public synchronized void submitCommand(UserCommand command) {
+        if (receivedCMDs.contains(command.uuid)) return;
+        receivedCMDs.add(command.uuid);
+
         if (!finalizedUsers.contains(command.user.getUsername())) {
             commands.get(command.user.getUsername()).add(command);
             if (command instanceof EndTurnCommand)

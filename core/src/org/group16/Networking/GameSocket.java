@@ -37,8 +37,7 @@ public class GameSocket {
         connection = new Thread(() -> {
             try {
                 while (true) {
-                    String cmd = dataInputStream.readUTF();
-                    UserCommand userCommand = (UserCommand) inputStream.readObject();
+                    UserCommand userCommand = UserCommand.tryDeserialize(dataInputStream.readUTF());
                     System.out.printf("Received %s\n", userCommand.getClass().getSimpleName());
                     synchronized (inputProcessor) {
                         inputProcessor.submitCommand(userCommand);
@@ -50,14 +49,20 @@ public class GameSocket {
             }
         });
         connection.start();
+        try {
+            Thread.sleep(10, 0);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         outputStream.writeObject(gameInfo);
     }
 
     public static void submitCommand(UserCommand command) {
         try {
-            dataOutputStream.writeUTF("cmd");
-            outputStream.writeObject(command);
-        } catch (IOException e) {
+            Thread.sleep(10, 0);
+            dataOutputStream.writeUTF(command.serialize());
+//            outputStream.writeObject(command);
+        } catch (Exception e) {
             alive = false;
             System.out.println("Client Disconnected");
             connection.interrupt();
