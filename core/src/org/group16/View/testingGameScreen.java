@@ -47,7 +47,6 @@ public class testingGameScreen extends Menu {
     InputProcessor inputProcessor;
     org.group16.Model.Game game;
     ///////////////////////////////////////////////////
-    int curUser = 0;
     ArrayList<Cell> selectedCells = new ArrayList<>();
     Cell lastSelectedCell = null;
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
@@ -349,6 +348,9 @@ public class testingGameScreen extends Menu {
 
         gameRenderer = new GameRenderer(game, inputProcessor);
         for (int i = 0; i < game.getKingdoms().size(); i++) {
+            if(!game.getKingdoms().get(i).getUser().equals(getCurUser())){
+                continue;
+            }
             int x = (i % 4) * 15;
             int y = (i / 2) * 30;
             Kingdom kingdom = game.getKingdoms().get(i);
@@ -366,17 +368,17 @@ public class testingGameScreen extends Menu {
     public void nextPlayer() {
 
         inputProcessor.submitCommandToServer(new EndTurnCommand(getCurUser()));
-        curUser++;
-        curUser = curUser % game.getKingdoms().size();
-        currentPlayerWindow.makeWindow(getCurUser());
-        System.out.println(getCurUser().getNickname());
+        //curUser++;
+        //curUser = curUser % game.getKingdoms().size();
+        //currentPlayerWindow.makeWindow(getCurUser());
+        //System.out.println(getCurUser().getNickname());
 
         resetSelection();
 
     }
 
     public User getCurUser() {
-        return game.getKingdoms().get(curUser).getUser();
+        return currentUser ;
     }
 
     public void makeBuilding(BuildingType buildingType) {
