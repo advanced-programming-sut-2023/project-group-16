@@ -12,7 +12,7 @@ import org.group16.Model.User;
 import org.group16.View.LoginScreen;
 import org.group16.View.MainScreen;
 
-import java.net.Socket;
+import java.io.IOException;
 
 
 public class StrongholdGame extends Game {
@@ -29,7 +29,11 @@ public class StrongholdGame extends Game {
 
         fileChooserConfiguration.directory = Gdx.files.absolute(System.getProperty("user.home"));
 
-        checkStayLogIn();
+        try {
+            checkStayLogIn();
+        } catch (IOException e) {
+            throw new RuntimeException("Couldnt Connect To Server");
+        }
     }
 
     private void manageAssets() {
@@ -49,9 +53,11 @@ public class StrongholdGame extends Game {
         assetManager.dispose();
     }
 
-    void checkStayLogIn() {
-        User user = LoginMenuController.getStayLoggedInUser();
-        if (user != null) setScreen(new MainScreen(this, user));
-        else setScreen(new LoginScreen(this));
+    void checkStayLogIn() throws IOException {
+        User user = LoginMenuController.loginStayLoggedInUser();
+        if (user != null) {
+            setScreen(new MainScreen(this, user));
+            System.out.println(user.getNickname());
+        } else setScreen(new LoginScreen(this));
     }
 }

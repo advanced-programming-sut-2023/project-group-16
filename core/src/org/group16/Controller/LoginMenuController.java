@@ -1,14 +1,12 @@
 package org.group16.Controller;
 
 import org.group16.Model.User;
-import org.group16.ViewTerminal.LoginMenu;
+import org.group16.Networking.LobbySocket;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -130,17 +128,39 @@ public class LoginMenuController {
         User.getUserByName(username).setPassword(password);
     }
 
-    public static User getStayLoggedInUser() {
+    public static User loginStayLoggedInUser() throws IOException {
         String folderPath = new File("").getAbsolutePath().concat("/Data");
+        String username;
+        String password;
         try {
             new File(folderPath).mkdirs();
             BufferedReader reader = new BufferedReader(new FileReader(folderPath + "/stayLoggedIn.txt"));
-            String username = reader.readLine();
+            username = reader.readLine();
+            password = reader.readLine();
             reader.close();
-            return User.getUserByName(username);
         } catch (IOException e) {
             new File(folderPath + "/stayLoggedIn.txt");
             return null;
+        }
+
+        try {
+            if (LobbySocket.login(username, password).equals("OK"))
+                return LobbySocket.getUser(username);
+        } catch (ClassNotFoundException ignored) {
+        }
+        return null;
+    }
+
+    public static void setStayLoggedInUser(String username, String password) {
+        String filePath = new File("").getAbsolutePath().concat("/Data/stayLoggedIn.txt");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            writer.write(username);
+            writer.newLine();
+            writer.write(password);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
