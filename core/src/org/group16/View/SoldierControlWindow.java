@@ -22,7 +22,7 @@ import java.util.Iterator;
 public class SoldierControlWindow extends Window {
     Image soilBackground, grayBackGround;
 
-    ImageButton attackButton, disbandButton, patrolButton, defensiveButton, offensiveButton, standingButton , back;
+    ImageButton attackButton, disbandButton, patrolButton, defensiveButton, offensiveButton, standingButton, moveButton, back;
 
     public Skin skin;
 
@@ -91,6 +91,8 @@ public class SoldierControlWindow extends Window {
         makeButtons(offensiveButton, "ButtonImages/Offensive.png", "ButtonImages/Offensive.png");
         standingButton = new ImageButton(skin);
         makeButtons(standingButton, "ButtonImages/Standing.png", "ButtonImages/Standing.png");
+        moveButton = new ImageButton(skin) ;
+        makeButtons(moveButton , "ButtonImages/Move.png" , "ButtonImages/Move.png");
 
         this.row();
         this.add(standingButton).pad(0, 0, 0, 5);
@@ -99,6 +101,7 @@ public class SoldierControlWindow extends Window {
         this.add(attackButton).pad(0, 0, 0, 5);
         this.add(disbandButton).pad(0, 0, 0, 5);
         this.add(patrolButton).row();
+        this.add(moveButton).row();
 
         this.add(back).row();
 
@@ -152,6 +155,18 @@ public class SoldierControlWindow extends Window {
                     gameScreen.inputProcessor.submitCommand(new unitPatrolCommand(gameScreen.getCurUser() , unit , cell1.getX() , cell1.getY() , cell2.getX() , cell2.getY()));
                 }catch (Exception e){
                     System.out.println(e.getMessage());
+                }
+            }
+        });
+
+        moveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Cell cell = gameScreen.lastSelectedCell ;
+                try {
+                    gameScreen.inputProcessor.submitCommand(new unitMoveCommand(gameScreen.getCurUser() , unit , cell.getX() , cell.getY()));
+                }catch (Exception e){
+                    e.getMessage() ;
                 }
             }
         });
