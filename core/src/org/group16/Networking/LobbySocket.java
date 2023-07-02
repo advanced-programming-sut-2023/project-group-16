@@ -59,11 +59,14 @@ public class LobbySocket {
         return utfInputStream.readUTF();
     }
 
-    public static String changeProfile(String username, String password, String nick, String email, String slogan) throws IOException {
+    public static String changeProfile(User user, String username, String password, String nick, String email, String slogan) throws IOException {
         utfOutputStream.writeUTF(
                 String.format("change profile -u \"%s\" -p \"%s\" -s \"%s\" -n \"%s\" -e \"%s\"",
                         username, password, slogan, nick, email));
-        return utfInputStream.readUTF();
+        String response = utfInputStream.readUTF();
+        if (response.equals("OK"))
+            user.updateLocal(username, password, email, slogan, nick);
+        return response;
     }
 
     public static int displayScore() throws IOException {

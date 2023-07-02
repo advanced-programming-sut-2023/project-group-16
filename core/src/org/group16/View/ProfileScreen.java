@@ -5,11 +5,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import games.spooky.gdx.nativefilechooser.NativeFileChooserCallback;
@@ -18,11 +16,7 @@ import org.group16.Model.User;
 import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
 
 public class ProfileScreen extends Menu {
     private final User user;
@@ -169,12 +163,12 @@ public class ProfileScreen extends Menu {
 
         newUsername.setTextFieldListener((textField, c) -> {
             String username = newUsername.getText();
-            String status = "" ;
+            String status = "";
             try {
                 if (LobbySocket.getUser(username) != null)
                     status = "username already exists";
-                if (username.length()==0)
-                    status = "username can no tbe empty" ;
+                if (username.length() == 0)
+                    status = "username can no tbe empty";
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {
@@ -188,7 +182,7 @@ public class ProfileScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 if (newUsernameError.getText().isEmpty()) {
                     try {
-                        LobbySocket.changeProfile(newUsername.getText() ,user.getPassword() , user.getNickname() ,user.getEmail() , user.getSlogan()) ;
+                        String response = LobbySocket.changeProfile(user, newUsername.getText(), user.getPassword(), user.getNickname(), user.getEmail(), user.getSlogan());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -242,7 +236,7 @@ public class ProfileScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 if (newNicknameError.getText().isEmpty()) {
                     try {
-                        LobbySocket.changeProfile(username.getName() ,user.getPassword() , newNickname.getText() ,user.getEmail() , user.getSlogan()) ;
+                        String response = LobbySocket.changeProfile(user, username.getName(), user.getPassword(), newNickname.getText(), user.getEmail(), user.getSlogan());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -298,7 +292,7 @@ public class ProfileScreen extends Menu {
                 if (newEmailError.getText().isEmpty()) {
 
                     try {
-                        LobbySocket.changeProfile(user.getUsername() ,user.getPassword() , user.getNickname() ,newEmail.getText(), user.getSlogan()) ;
+                        String response = LobbySocket.changeProfile(user, user.getUsername(), user.getPassword(), user.getNickname(), newEmail.getText(), user.getSlogan());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -319,7 +313,7 @@ public class ProfileScreen extends Menu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
-                    LobbySocket.changeProfile(user.getUsername() , user.getPassword() , user.getNickname() , user.getEmail() , "") ;
+                    String response = LobbySocket.changeProfile(user, user.getUsername(), user.getPassword(), user.getNickname(), user.getEmail(), "");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -360,7 +354,7 @@ public class ProfileScreen extends Menu {
             String slogan = newSlogan.getText();
             if (slogan.isEmpty())
                 newSloganError.setText("fill this part");
-            newSloganError.setText("") ;
+            newSloganError.setText("");
         });
 
         saveSlogan.addListener(new ChangeListener() {
@@ -368,7 +362,7 @@ public class ProfileScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 if (newSloganError.getText().isEmpty()) {
                     try {
-                        LobbySocket.changeProfile(user.getUsername() , user.getPassword() , user.getNickname() , user.getEmail() , newSlogan.getText()) ;
+                        String response = LobbySocket.changeProfile(user, user.getUsername(), user.getPassword(), user.getNickname(), user.getEmail(), newSlogan.getText());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -452,7 +446,7 @@ public class ProfileScreen extends Menu {
                     oldPasswordError.setText(status);
                     if (status.isEmpty()) {
                         try {
-                            LobbySocket.changeProfile(user.getUsername() , newPassword.getText() , user.getNickname() , user.getEmail() , user.getSlogan()) ;
+                            String response = LobbySocket.changeProfile(user, user.getUsername(), newPassword.getText(), user.getNickname(), user.getEmail(), user.getSlogan());
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }

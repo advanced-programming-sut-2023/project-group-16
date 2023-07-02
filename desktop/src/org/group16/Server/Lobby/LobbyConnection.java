@@ -149,6 +149,7 @@ public class LobbyConnection extends Thread {
     }
 
     private void changeProfile(TreeMap<String, ArrayList<String>> matcher) throws IOException {
+        System.out.println(" hello profile ");
         String newUsername = matcher.get("u").get(0);
         String newPassword = matcher.get("p").get(0);
         String newEmail = matcher.get("e").get(0);
@@ -156,20 +157,24 @@ public class LobbyConnection extends Thread {
         String newSlog = matcher.get("s").get(0);
 
         String response = LoginMenuController.checkUsername(newUsername);
-        if (!response.equals("OK")) {
-            utfOutputStream.writeUTF(response);
-            return;
-        }
+        if (!currentUser.getUsername().equals(newUsername))
+            if (!response.equals("OK")) {
+                utfOutputStream.writeUTF(response);
+                return;
+            }
         response = LoginMenuController.checkPassword(newPassword);
-        if (!response.equals("OK")) {
-            utfOutputStream.writeUTF(response);
-            return;
-        }
+        if (!currentUser.getPassword().equals(newPassword))
+            if (!response.equals("OK")) {
+                utfOutputStream.writeUTF(response);
+                return;
+            }
         response = LoginMenuController.checkEmail(newEmail);
-        if (!response.equals("OK")) {
-            utfOutputStream.writeUTF(response);
-            return;
-        }
+        if (!currentUser.getEmail().equals(newEmail))
+            if (!response.equals("OK")) {
+                utfOutputStream.writeUTF(response);
+                return;
+            }
+        response = "OK";
 
         utfOutputStream.writeUTF(response);
         if (!currentUser.getPassword().equals(newPassword))

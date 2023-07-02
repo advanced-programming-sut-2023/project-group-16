@@ -200,4 +200,14 @@ public class User implements Serializable {
         User user = (User) o;
         return username.equals(user.username);
     }
+
+    public void updateLocal(String newUsername, String newPassword,
+                            String newEmail, String newSlogan,
+                            String newNickname) {
+        username = newUsername;
+        password = newPassword;
+        email = newEmail;
+        slogan = newSlogan;
+        nickname = newNickname;
+    }
 }
