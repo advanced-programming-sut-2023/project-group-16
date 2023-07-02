@@ -202,7 +202,14 @@ public class LoginScreen extends Menu {
                         throw new RuntimeException(e);
                     }
                     if (status.equals("OK")) {
-                        game.setScreen(new MainScreen(game, User.getUserByName(username.getText())));
+                        try {
+                            game.setScreen(new MainScreen(game, LobbySocket.getUser(username.getText()))) ;
+                            System.out.println(LobbySocket.getUser(username.getText()).getNickname());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
                     } else {
                         passwordStatus.setText(status);
                         System.out.println(":" + password.getText() + ":");

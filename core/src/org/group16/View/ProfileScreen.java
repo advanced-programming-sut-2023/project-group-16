@@ -41,6 +41,7 @@ public class ProfileScreen extends Menu {
     public ProfileScreen(StrongholdGame game, User user) {
         super(game);
         this.user = user;
+        System.out.println(this.user.getUsername());
 
         uiStage.clear();
         white = new Image(new Texture(Gdx.files.internal("backgrounds/white.jpg")));
@@ -236,7 +237,7 @@ public class ProfileScreen extends Menu {
             public void changed(ChangeEvent event, Actor actor) {
                 if (newNicknameError.getText().isEmpty()) {
                     try {
-                        String response = LobbySocket.changeProfile(user, username.getName(), user.getPassword(), newNickname.getText(), user.getEmail(), user.getSlogan());
+                        String response = LobbySocket.changeProfile(user, user.getUsername(), user.getPassword(), newNickname.getText(), user.getEmail(), user.getSlogan());
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
