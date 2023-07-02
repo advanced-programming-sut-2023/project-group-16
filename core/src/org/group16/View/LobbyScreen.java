@@ -100,11 +100,11 @@ public class LobbyScreen extends Menu {
                     } else {
                         if (selectBox.getSelected().equals("ARABIAN")) {
                             users.add(LobbySocket.getUser(usernameField.getText()));
-                            hashMap.put(LobbySocket.getUser(usernameField.getText()) , KingdomType.ARAB) ;
+                            hashMap.put(users.get(users.size()-1) , KingdomType.ARAB) ;
                         }
                         else {
                             users.add(LobbySocket.getUser(usernameField.getText()));
-                            hashMap.put(LobbySocket.getUser(usernameField.getText()), KingdomType.EUROPEAN);
+                            hashMap.put(users.get(users.size()-1), KingdomType.EUROPEAN);
                         }
                         remake();
                     }
