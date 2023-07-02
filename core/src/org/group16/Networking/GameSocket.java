@@ -4,13 +4,13 @@ import org.group16.GameGraphics.CommandHandling.InputProcessor;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.GameInfo;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class GameSocket {
     public static Socket socket;
+    public static DataOutputStream dataOutputStream;
+    public static DataInputStream dataInputStream;
     public static ObjectInputStream inputStream;
     public static ObjectOutputStream outputStream;
     public static String host;
@@ -21,6 +21,8 @@ public class GameSocket {
     private static void createSocket() throws IOException {
         alive = true;
         socket = new Socket(host, port);
+        dataInputStream = new DataInputStream(socket.getInputStream());
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
@@ -35,7 +37,8 @@ public class GameSocket {
         connection = new Thread(() -> {
             try {
                 while (true) {
-                    UserCommand userCommand = (UserCommand) inputStream.readObject();
+                    UserCommand userCommand = UserCommand.tryDeserialize(dataInputStream.readUTF());
+                    System.out.printf("Received %s\n", userCommand.getClass().getSimpleName());
                     synchronized (inputProcessor) {
                         inputProcessor.submitCommand(userCommand);
                     }
@@ -46,13 +49,20 @@ public class GameSocket {
             }
         });
         connection.start();
+        try {
+            Thread.sleep(10, 0);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         outputStream.writeObject(gameInfo);
     }
 
     public static void submitCommand(UserCommand command) {
         try {
-            outputStream.writeObject(command);
-        } catch (IOException e) {
+            Thread.sleep(10, 0);
+            dataOutputStream.writeUTF(command.serialize());
+//            outputStream.writeObject(command);
+        } catch (Exception e) {
             alive = false;
             System.out.println("Client Disconnected");
             connection.interrupt();
