@@ -1,9 +1,10 @@
 package org.group16.Model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
-public class SerializedReference<T extends ReferenceSerializable> {
+public class SerializedReference<T extends ReferenceSerializable> implements Serializable {
     private UUID uuid;
 
     public SerializedReference(T obj) {

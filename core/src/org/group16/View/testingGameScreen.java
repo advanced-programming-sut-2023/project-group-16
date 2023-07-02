@@ -58,6 +58,8 @@ public class testingGameScreen extends Menu {
     PopularityWindow popularityWindow;
     ChangeRateWindow changeRateWindow;
     BuyingUnitWindow buyingUnitWindow;
+
+    SoldierControlWindow soldierControlWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -132,6 +134,9 @@ public class testingGameScreen extends Menu {
         buyingUnitWindow = new BuyingUnitWindow(skin1, game, this);
         buyingUnitWindow.setVisible(false);
 
+        soldierControlWindow = new SoldierControlWindow(skin1, game, this);
+        soldierControlWindow.setVisible(false);
+
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
         uiStage.addActor(currentPlayerWindow);
@@ -144,6 +149,7 @@ public class testingGameScreen extends Menu {
         uiStage.addActor(popularityWindow);
         uiStage.addActor(changeRateWindow);
         uiStage.addActor(buyingUnitWindow);
+        uiStage.addActor(soldierControlWindow);
     }
 
     @Override
@@ -275,6 +281,9 @@ public class testingGameScreen extends Menu {
 
         buyingUnitWindow.setWidth(uiStage.getWidth() * 3 / 5);
         buyingUnitWindow.setHeight(uiStage.getHeight() / 4);
+
+        soldierControlWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        soldierControlWindow.setHeight(uiStage.getHeight() / 4);
 
         uiStage.draw();
     }
