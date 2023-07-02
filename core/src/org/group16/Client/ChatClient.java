@@ -11,7 +11,7 @@ import java.net.Socket;
 
 public class ChatClient {
     private static final String host = "localhost";
-    private static final int port = 8080;
+    private static final int port = 8082;
 
     private final Socket socket;
     private final DataInputStream dataInputStream;

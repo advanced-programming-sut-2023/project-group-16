@@ -12,24 +12,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class ChatServer {
-    private static final int port = 8080;
+public class ChatServer extends Thread {
+    private static final int port = 8082;
     private static final TreeMap<String, ArrayList<ChatConnection>> chats = new TreeMap<>();
     private static ServerSocket serverSocket;
 
-    public ChatServer() {
-        System.out.println("Chat Server Starting...");
-        try {
-            serverSocket = new ServerSocket(port);
-            while (true) {
-                Socket socket = serverSocket.accept();
-                ChatConnection chatConnection = new ChatConnection(socket);
-                chatConnection.start();
-            }
-        } catch (IOException ignored) {
-            System.out.println("Error");
-        }
-        System.out.println("Server Died");
+    public ChatServer(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
     }
 
     public static void addConnection(Room room, ChatConnection connection) {
@@ -91,5 +80,20 @@ public class ChatServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Chat Server Starting...");
+        try {
+            while (true) {
+                Socket socket = serverSocket.accept();
+                ChatConnection chatConnection = new ChatConnection(socket);
+                chatConnection.start();
+            }
+        } catch (IOException ignored) {
+            System.out.println("Error");
+        }
+        System.out.println("Server Died");
     }
 }

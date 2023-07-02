@@ -10,10 +10,10 @@ public class Server {
         try {
             LobbyServer lobbyServer = new LobbyServer(new ServerSocket(lobbyPort));
 //            GameServer gameServer = new GameServer(new ServerSocket(gamePort));
-//            TelegramServer telegramServer = new TelegramServer(new ServerSocket(telegramPort));
+            ChatServer chatServer = new ChatServer(new ServerSocket(telegramPort)); //Server(new ServerSocket(telegramPort));
 
 //            gameServer.start();
-//            telegramServer.start();
+            chatServer.start();
             lobbyServer.start();
         } catch (Exception ex) {
             ex.printStackTrace();
