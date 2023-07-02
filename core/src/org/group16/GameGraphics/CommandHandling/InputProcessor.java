@@ -18,7 +18,7 @@ public class InputProcessor {
             addUser(user);
     }
 
-    public void addUser(User user) {
+    public synchronized void addUser(User user) {
         allUsers.add(user);
         List<UserCommand> cmd = new ArrayList<>();
         cmd.add(new UserJoinCommand(user, 0));
@@ -26,11 +26,11 @@ public class InputProcessor {
         commandIter.put(user, 0);
     }
 
-    public void submitCommandToServer(UserCommand command) {
+    public synchronized void submitCommandToServer(UserCommand command) {
         GameSocket.submitCommand(command);
     }
 
-    public void submitCommand(UserCommand command) {
+    public synchronized void submitCommand(UserCommand command) {
         if (!finalizedUsers.contains(command.user)) {
             commands.get(command.user).add(command);
             if (command instanceof EndTurnCommand)
@@ -38,7 +38,7 @@ public class InputProcessor {
         }
     }
 
-    public boolean process(Game game, GameRenderer gameRenderer) {
+    public synchronized boolean process(Game game, GameRenderer gameRenderer) {
         for (User user : allUsers) if (!finalizedUsers.contains(user)) return false;
         for (User user : allUsers) {
             int i = commandIter.get(user);
