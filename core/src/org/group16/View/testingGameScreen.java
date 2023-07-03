@@ -247,7 +247,7 @@ public class testingGameScreen extends Menu {
         miniWindow.setPosition(uiStage.getWidth() - miniWindow.getWidth(), 0);
 
         miniMapImage.setHeight(uiStage.getHeight() / 4);
-        miniMapImage.setWidth(100+uiStage.getWidth() * 3 / 5);
+        miniMapImage.setWidth(miniWindow.getX() - buildingSelectWindow.getWidth());
         miniMapImage.setPosition(miniWindow.getX() - miniMapImage.getWidth(), 0);
 
         buildingWindow.setWidth(uiStage.getWidth() * 3 / 5);
