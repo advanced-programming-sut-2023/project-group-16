@@ -1,5 +1,6 @@
 package org.group16.Server.Game;
 
+import org.group16.GameGraphics.CommandHandling.EndTurnCommand;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.GameInfo;
 
@@ -48,7 +49,8 @@ public class GameConnection extends Thread {
             while (true) {
                 String stream = dataInputStream.readUTF();
                 UserCommand obj = UserCommand.tryDeserialize(stream);
-                System.out.printf(" Received Command %s\n", stream);
+                if (!(obj instanceof EndTurnCommand))
+                    System.out.printf(" Received Command %s\n", obj.getClass().getSimpleName());
                 server.shareCommand(gameInfo.gameID(), obj);
             }
         } catch (Exception e) {

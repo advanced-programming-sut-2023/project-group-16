@@ -15,7 +15,7 @@ public abstract class UserCommand implements Serializable {
     public final UUID uuid = UUID.randomUUID();
     public final String username;
     public transient User user;
-    protected boolean executed;
+    protected transient boolean executed;
 
     public UserCommand(User user) {
         username = user.getUsername();

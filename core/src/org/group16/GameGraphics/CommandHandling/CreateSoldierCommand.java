@@ -12,22 +12,22 @@ import org.group16.Model.User;
 public class CreateSoldierCommand extends UserCommand {
 
     private final SerializedReference<EconomicBuilding> economicBuilding;
-    private final SoldierDetail soldierDetail ;
-    private final int count ;
+    private final SoldierDetail soldierDetail;
+    private final int count;
 
-    public CreateSoldierCommand(User user, EconomicBuilding economicBuilding, SoldierDetail soldierDetail , int count) {
+    public CreateSoldierCommand(User user, EconomicBuilding economicBuilding, SoldierDetail soldierDetail, int count) {
         super(user);
         this.economicBuilding = new SerializedReference<EconomicBuilding>(economicBuilding);
         this.soldierDetail = soldierDetail;
-        this.count = count ;
+        this.count = count;
     }
 
     @Override
     public String execute(Game game, GameRenderer gameRenderer) {
-        String res = BuildingMenuController.createUnit( (MilitaryBuilding) economicBuilding.getValue() , soldierDetail , count) ;
+        String res = BuildingMenuController.createUnit((MilitaryBuilding) economicBuilding.getValue(), soldierDetail, count);
         if (!res.equals("OK"))
-            return res ;
-        return success() ;
+            return res;
+        return success();
     }
 
     @Override
