@@ -52,7 +52,7 @@ public class testingGameScreen extends Menu {
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
-    Boolean inputControlling = true ;
+    Boolean inputControlling = true;
     BuildingSelectWindow buildingSelectWindow;
     CurrentPlayerWindow currentPlayerWindow;
     CellDetailWindow cellDetailWindow;
@@ -73,6 +73,7 @@ public class testingGameScreen extends Menu {
     private TextureRegion miniMapFrameRegion;
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
+    private float lastTurn = 0;
 
     public testingGameScreen(StrongholdGame game1, Game game, GameInfo gameInfo, User currentUser) {
         super(game1);
@@ -174,15 +175,21 @@ public class testingGameScreen extends Menu {
         uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         long milis = TimeUtils.timeSinceMillis(lastFrame);
         float dt = milis / 1000f;
+        if (inputProcessor.isWaiting(currentUser))
+            lastTurn += dt;
         lastFrame += milis;
         for (Renderer renderer : renderers) {
             renderer.update(dt);
+        }
+        if (lastTurn >= 2f) {
+            lastTurn = 0;
+            inputProcessor.submitCommandToServer(new EndTurnCommand(currentUser));
         }
         time += dt;
         float camSpeed = 3;
 
         if (inputControlling)
-            inputHandlingWhileRendering(dt , camSpeed);
+            inputHandlingWhileRendering(dt, camSpeed);
 
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
@@ -208,8 +215,6 @@ public class testingGameScreen extends Menu {
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 /////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 
         if (time - miniWindow.lastChangeTime >= 1) {
@@ -272,7 +277,7 @@ public class testingGameScreen extends Menu {
         uiStage.draw();
     }
 
-    public void inputHandlingWhileRendering(float dt , float camSpeed){
+    public void inputHandlingWhileRendering(float dt, float camSpeed) {
 
 
         if (input.isKeyPressed(Input.Keys.J))
@@ -365,7 +370,7 @@ public class testingGameScreen extends Menu {
             allUsers.add(kingdom.getUser());
         inputProcessor = new InputProcessor(allUsers);
         try {
-            GameSocket.createSocket(gameInfo, inputProcessor);
+            GameSocket.createSocket(gameInfo, inputProcessor, currentUser, true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -386,6 +391,9 @@ public class testingGameScreen extends Menu {
             inputProcessor.submitCommandToServer(new InitResourceCommand(user));
 
             inputProcessor.submitCommandToServer(new EndTurnCommand(user));
+
+            camera.position.set(x, 0, y);
+            camera.position.add(3, 3, 3);
         }
     }
 

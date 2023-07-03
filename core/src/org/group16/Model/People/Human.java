@@ -6,6 +6,7 @@ import org.group16.GameGraphics.HumanRenderer;
 import org.group16.GameGraphics.Renderer;
 import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
+import org.group16.Model.Buildings.BuildingType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +147,7 @@ public class Human extends GameObject implements Alive {
         float x = relativeX;
         float y = relativeY;
         Building building = getCell().getBuilding();
-        if (building == null || building.isTraversable())
+        if (building == null || (building.isTraversable() && building.getBuildingType() != BuildingType.TOWN_BUILDING))
             return new Vector3(getCell().getX() + x, 0, getCell().getY() + y);
         return building.getRenderer().getRoofPosition(x + .5f, y + .5f);
     }
