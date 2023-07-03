@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class CreateBuildingCommand extends UserCommand {
     private final BuildingType buildingType;
     private final int x, y;
-    private Building building;
+    private transient Building building;
 
     public CreateBuildingCommand(User user, BuildingType buildingType, int x, int y) {
         super(user);
