@@ -33,6 +33,7 @@ public class TradeMenuController {
 
     public static String tradeAccept(Game game, User currentUser, int id, String massage) {
         Trade trade = game.getTradeById(id);
+        trade.setSeller(game.getKingdom(currentUser));
         if (trade == null) return "no trade with this id exist";
         return game.completeTrade(trade, massage);
     }

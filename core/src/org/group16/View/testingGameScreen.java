@@ -51,7 +51,6 @@ public class testingGameScreen extends Menu {
     Cell lastSelectedCell = null;
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-
     Boolean inputControlling = true;
     BuildingSelectWindow buildingSelectWindow;
     CurrentPlayerWindow currentPlayerWindow;
@@ -67,6 +66,8 @@ public class testingGameScreen extends Menu {
     BuyingUnitWindow buyingUnitWindow;
     SoldierControlWindow soldierControlWindow;
     ChatControllingWindow chatControllingWindow;
+
+    TradeWindow tradeWindow ;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -147,6 +148,9 @@ public class testingGameScreen extends Menu {
 
         chatControllingWindow = new ChatControllingWindow(skin1, uiStage, game1, this, getCurUser());
 
+        tradeWindow = new TradeWindow(skin1 , game , getCurUser() , this) ;
+        tradeWindow.setVisible(false);
+
 
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
@@ -159,6 +163,7 @@ public class testingGameScreen extends Menu {
         uiStage.addActor(buyingWindow);
         uiStage.addActor(popularityWindow);
         uiStage.addActor(changeRateWindow);
+        uiStage.addActor(tradeWindow);
 
         uiStage.addActor(buyingUnitWindow);
         uiStage.addActor(soldierControlWindow);
@@ -217,6 +222,8 @@ public class testingGameScreen extends Menu {
 /////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
         if (time - miniWindow.lastChangeTime >= 1) {
             Kingdom curKingdom = game.getKingdom(getCurUser());
             miniWindow.remake(curKingdom.getPopularity(), curKingdom.getPopulation(), curKingdom.getPopulationCapacity(), curKingdom.getGold());
@@ -273,6 +280,9 @@ public class testingGameScreen extends Menu {
 
         soldierControlWindow.setWidth(uiStage.getWidth() * 3 / 5);
         soldierControlWindow.setHeight(uiStage.getHeight() / 4);
+
+        tradeWindow.setWidth(uiStage.getWidth() * 3 / 5);
+        tradeWindow.setHeight(uiStage.getHeight() / 4);
 
         uiStage.draw();
     }
