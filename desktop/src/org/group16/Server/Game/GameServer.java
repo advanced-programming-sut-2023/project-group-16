@@ -1,6 +1,8 @@
 package org.group16.Server.Game;
 
 import org.group16.GameGraphics.CommandHandling.UserCommand;
+import org.group16.Model.*;
+import org.group16.Networking.LobbySocket;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -14,7 +16,7 @@ import java.util.UUID;
 public class GameServer extends Thread {
     private final ServerSocket serverSocket;
 
-    private final HashMap<UUID, ArrayList<GameConnection>> games = new HashMap<>();
+    private final HashMap<UUID, ServerGameRunner> games = new HashMap<>();
 
     public GameServer(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
@@ -37,18 +39,44 @@ public class GameServer extends Thread {
         return games.containsKey(gameID);
     }
 
-    public void subscribeConnection(UUID gameID, GameConnection gameConnection) {
-        if (!gameExists(gameID)) games.put(gameID, new ArrayList<>());
-        games.get(gameID).add(gameConnection);
+    private synchronized void createGame(GameInfo gameInfo) {
+        Map map = Map.getMapByName(gameInfo.mapname());
+        PlayerList playerList = gameInfo.playerList();
+        long random = gameInfo.randomSeed();
+        Scene scene = new Scene(map, random);
+        Game game = new Game();
+        ArrayList<String> usernames = new ArrayList<>();
+
+        for (int i = 0; i < playerList.users.size(); i++) {
+            usernames.add(playerList.users.get(i).getUsername());
+            game.addUser(playerList.users.get(i), playerList.kingdomTypes.get(i));
+        }
+
+        game.setScene(scene);
+
+
+        ServerGameRunner gameRunner = new ServerGameRunner(game, usernames);
+        games.put(gameInfo.gameID(), gameRunner);
     }
 
-    public void shareCommand(UUID gameID, UserCommand obj) throws IOException {
-        System.out.println("sharing?");
+    public synchronized void shareCommand(UUID gameID, UserCommand command) throws IOException {
         if (!gameExists(gameID)) return;
-        ArrayList<GameConnection> connections = games.get(gameID);
-        System.out.printf("Sending %s to %d connections\n", obj.getClass().toString(), connections.size());
-        for (GameConnection connection : connections) {
-            connection.sendCommand(obj);
+        games.get(gameID).shareCommand(command);
+    }
+
+    public synchronized void subscribePlayer(GameInfo gameInfo, GameConnection connection) {
+        if (!gameExists(gameInfo.gameID())) createGame(gameInfo);
+        games.get(gameInfo.gameID()).addPlayer(connection);
+    }
+
+    public synchronized void subscribeSpectator(UUID gameId, GameConnection connection) {
+        while (!games.containsKey(gameId)) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+
+            }
         }
+        games.get(gameId).addSpectator(connection);
     }
 }

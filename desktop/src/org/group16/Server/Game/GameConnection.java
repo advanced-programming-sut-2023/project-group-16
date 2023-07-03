@@ -5,9 +5,12 @@ import org.group16.Model.GameInfo;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.UUID;
 
 public class GameConnection extends Thread {
+    private final String username;
     private final GameInfo gameInfo;
+    private final UUID gameId;
     private final Socket socket;
     private final DataInputStream dataInputStream;
     private final DataOutputStream dataOutputStream;
@@ -20,11 +23,23 @@ public class GameConnection extends Thread {
         this.socket = socket;
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataInputStream = new DataInputStream(socket.getInputStream());
-//        outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
-        gameInfo = (GameInfo) inputStream.readObject();
-        System.out.printf("gameId : %s", gameInfo.gameID().toString());
-        server.subscribeConnection(gameInfo.gameID(), this);
+
+        username = dataInputStream.readUTF();
+        String type = dataInputStream.readUTF();
+        if (type.equals("p")) {
+            gameInfo = (GameInfo) inputStream.readObject();
+            gameId = gameInfo.gameID();
+            type = "Player";
+            server.subscribePlayer(gameInfo, this);
+        } else {
+            gameInfo = null;
+            gameId = (UUID) inputStream.readObject();
+            type = "Spectator";
+            server.subscribeSpectator(gameId, this);
+        }
+
+        System.out.printf("%s Connected as %s to Game(%s)", username, type, gameId);
     }
 
     @Override
@@ -41,7 +56,7 @@ public class GameConnection extends Thread {
         }
     }
 
-    public void sendCommand(UserCommand obj) throws IOException {
-        dataOutputStream.writeUTF(obj.serialize());
+    public void sendCommand(UserCommand command) throws IOException {
+        dataOutputStream.writeUTF(command.serialize());
     }
 }

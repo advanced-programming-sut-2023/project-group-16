@@ -370,7 +370,7 @@ public class testingGameScreen extends Menu {
             allUsers.add(kingdom.getUser());
         inputProcessor = new InputProcessor(allUsers);
         try {
-            GameSocket.createSocket(gameInfo, inputProcessor);
+            GameSocket.createSocket(gameInfo, inputProcessor, currentUser, true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

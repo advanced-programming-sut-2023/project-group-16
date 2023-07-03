@@ -3,6 +3,7 @@ package org.group16.Networking;
 import org.group16.GameGraphics.CommandHandling.InputProcessor;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.GameInfo;
+import org.group16.Model.User;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,9 +24,7 @@ public class GameSocket {
         socket = new Socket(host, port);
         dataInputStream = new DataInputStream(socket.getInputStream());
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
-//        inputStream = new ObjectInputStream(socket.getInputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
-        System.out.println();
     }
 
     public static void initSocket(String host, int port) {
@@ -33,9 +32,16 @@ public class GameSocket {
         GameSocket.port = port;
     }
 
-    public static void createSocket(GameInfo gameInfo, InputProcessor inputProcessor) throws IOException {
+    public static void createSocket(GameInfo gameInfo, InputProcessor inputProcessor, User user, boolean isPlayer) throws IOException {
         createSocket();
-        outputStream.writeObject(gameInfo);
+        dataOutputStream.writeUTF(user.getUsername());
+        if (isPlayer) {
+            dataOutputStream.writeUTF("p");
+            outputStream.writeObject(gameInfo);
+        } else {
+            dataOutputStream.writeUTF("s");
+            outputStream.writeObject(gameInfo.gameID());
+        }
 
         connection = new Thread(() -> {
             try {
