@@ -19,7 +19,7 @@ public class DesktopLauncher {
             System.out.println("Didnt Connect To Server");
             return;
         }
-        GameSocket.initSocket(Server.host, Server.lobbyPort);
+        GameSocket.initSocket(Server.host, Server.gamePort);
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
