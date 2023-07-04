@@ -14,7 +14,7 @@ public class Game {
         kingdoms.add(new Kingdom(kingdomType, user));
     }
 
-    public  Game(){
+    public Game() {
 
     }
 

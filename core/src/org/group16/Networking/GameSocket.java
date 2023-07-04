@@ -58,6 +58,7 @@ public class GameSocket {
                 alive = false;
             }
         });
+        connection.setDaemon(true);
         connection.start();
     }
 
