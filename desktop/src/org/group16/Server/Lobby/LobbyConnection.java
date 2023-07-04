@@ -18,11 +18,11 @@ public class LobbyConnection extends Thread {
     private final DataOutputStream utfOutputStream;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
+    public boolean inGameLobby = false;
     private User currentUser;
-    private Game currentGame;
+    private GameLobby currentLobby;
     private String mapname;
     private long randSeed;
-    private boolean inGameLobby;
 
     public LobbyConnection(LobbyServer server, Socket socket) throws IOException {
         this.server = server;
@@ -35,8 +35,16 @@ public class LobbyConnection extends Thread {
         System.out.println("Connected to client");
     }
 
-    public boolean isInGameLobby() {
-        return inGameLobby;
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public GameLobby getCurrentLobby() {
+        return currentLobby;
+    }
+
+    public void setCurrentLobby(GameLobby currentLobby) {
+        this.currentLobby = currentLobby;
     }
 
     @Override
@@ -55,14 +63,32 @@ public class LobbyConnection extends Thread {
                 else if ((map = CommandHandler.matches(Command.DISPLAY_RANK, msg)) != null) displayRank();
                 else if ((map = CommandHandler.matches(Command.GET_USER, msg)) != null) getUser(map);
                 else if ((map = CommandHandler.matches(Command.GET_ALL_USERS, msg)) != null) getAllUsers();
-                else if ((map = CommandHandler.matches(Command.CREATE_GAME, msg)) != null) createGame();
-                else if ((map = CommandHandler.matches(Command.GET_ALL_MAPS, msg)) != null) getAllMaps();
-                else if ((map = CommandHandler.matches(Command.SELECT_MAP, msg)) != null) selectMap(map);
-                else if ((map = CommandHandler.matches(Command.ADD_USER, msg)) != null) addUser(map);
-                else if ((map = CommandHandler.matches(Command.REMOVE_USER, msg)) != null) removeUser(map);
-                else if ((map = CommandHandler.matches(Command.JOIN_GAME_LOBBY, msg)) != null) joinGameLobby();
-                else if ((map = CommandHandler.matches(Command.LEAVE_GAME_LOBBY, msg)) != null) leaveGameLobby();
-                else if ((map = CommandHandler.matches(Command.START_GAME, msg)) != null) startGame();
+
+                else if ((map = CommandHandler.matches(Command.GET_ALL_PUBLIC_GAME_LOBBIES, msg)) != null)
+                    getAllPublicGameLobbies();
+                else if ((map = CommandHandler.matches(Command.CREATE_GAME_LOBBY, msg)) != null)
+                    createGameLobby(map);
+                else if ((map = CommandHandler.matches(Command.SET_GAME_LOBBY_PRIVACY, msg)) != null)
+                    setGameLobbyPrivacy(map);
+                else if ((map = CommandHandler.matches(Command.SET_GAME_CAPACITY, msg)) != null)
+                    setGameCapacity(map);
+                else if ((map = CommandHandler.matches(Command.GET_ALL_MAPS, msg)) != null)
+                    getAllMaps();
+                else if ((map = CommandHandler.matches(Command.SELECT_MAP, msg)) != null)
+                    selectMap(map);
+                else if ((map = CommandHandler.matches(Command.ADD_USER, msg)) != null)
+                    addUser(map);
+                else if ((map = CommandHandler.matches(Command.REMOVE_USER, msg)) != null)
+                    removeUser(map);
+                else if ((map = CommandHandler.matches(Command.ENTER_GAME_LOBBY, msg)) != null)
+                    enterGameLobby();
+                else if ((map = CommandHandler.matches(Command.JOIN_GAME_LOBBY, msg)) != null)
+                    joinGameLobby(map);
+                else if ((map = CommandHandler.matches(Command.LEAVE_GAME_LOBBY, msg)) != null)
+                    leaveGameLobby();
+                else if ((map = CommandHandler.matches(Command.EXIT_GAME_LOBBY, msg)) != null)
+                    exitGameLobby();
+
                 else if ((map = CommandHandler.matches(Command.UPLOAD_MAP, msg)) != null) uploadMap();
                 else if ((map = CommandHandler.matches(Command.DOWNLOAD_MAP, msg)) != null) downloadMap(map);
                 else if ((map = CommandHandler.matches(Command.GET_RUNNING_GAMES, msg)) != null) getRunningGames();
@@ -79,6 +105,41 @@ public class LobbyConnection extends Thread {
                 server.userLogout(currentUser.getUsername());
             System.out.println("User Disconnected");
         }
+    }
+
+    private void exitGameLobby() {
+        inGameLobby = false;
+    }
+
+    private void setGameCapacity(TreeMap<String, ArrayList<String>> map) {
+        int n = Integer.parseInt(map.get("n").get(0));
+        if (n < 2) return;
+        currentLobby.setCapacity(n);
+        while (currentLobby.size() > currentLobby.getCapacity())
+            server.leaveLobby(currentLobby.getPlayers().get(currentLobby.getPlayers().size() - 1));
+    }
+
+    private void setGameLobbyPrivacy(TreeMap<String, ArrayList<String>> map) {
+        String t = map.get("t").get(0);
+        if (t.equals("private")) server.setAsPrivateGameLobby(currentLobby);
+        else server.setAsPublicGameLobby(currentLobby);
+    }
+
+    private void enterGameLobby() {
+        inGameLobby = true;
+    }
+
+    private void createGameLobby(TreeMap<String, ArrayList<String>> map) {
+        String kingdomType = map.get("t").get(0);
+        server.createLobby(this, KingdomType.getKingdomTypeByName(kingdomType));
+    }
+
+    private void getAllPublicGameLobbies() throws IOException {
+        UUIDList list = new UUIDList();
+        for (GameLobby lobby : server.publicLobbies) {
+            list.uuids.add(lobby.uuid);
+        }
+        outputStream.writeObject(list);
     }
 
     private void isOnline(TreeMap<String, ArrayList<String>> map) throws IOException {
@@ -120,14 +181,12 @@ public class LobbyConnection extends Thread {
         outputStream.writeObject(list);
     }
 
-
     private void getAllMaps() throws IOException {
         List<String> res = Map.getAllMapNames();
         StringList data = new StringList();
         data.strings.addAll(res);
         outputStream.writeObject(data);
     }
-
 
     private void register(TreeMap<String, ArrayList<String>> matcher) throws IOException {
         String username = matcher.get("u").get(0);
@@ -269,97 +328,65 @@ public class LobbyConnection extends Thread {
         outputStream.writeObject(userList);
     }
 
-    private void createGame() throws IOException {
-        utfOutputStream.writeUTF("OK");
-        currentGame = new Game();
-    }
-
     private void selectMap(TreeMap<String, ArrayList<String>> map) throws IOException {
         String mapname = map.get("m").get(0);
-        Map newMap = Map.getMapByName(mapname);
-        if (newMap == null) {
-            utfOutputStream.writeUTF("no map with this name exist");
-            return;
-        }
-        utfOutputStream.writeUTF("OK");
-        this.mapname = mapname;
-        randSeed = new Random().nextLong();
-        currentGame.setScene(new Scene(newMap, randSeed));
+        currentLobby.setMapName(mapname);
     }
 
     private void addUser(TreeMap<String, ArrayList<String>> map) throws IOException {
-        User user = User.getUserByName(map.get("u").get(0));
+        String username = map.get("u").get(0);
         KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
         if (kingdomType == null) {
             utfOutputStream.writeUTF("invalid kingdom type");
             return;
         }
-        if (currentGame.getKingdoms().size() == 8) {
+        if (currentLobby.size() >= currentLobby.getCapacity()) {
             utfOutputStream.writeUTF("game is full");
             return;
         }
-        if (currentGame.getKingdom(user) != null) {
+        if (server.getConnection(username) == null) {
+            utfOutputStream.writeUTF("user is offline");
+            return;
+        }
+        if (!server.getConnection(username).inGameLobby) {
+            utfOutputStream.writeUTF("user is not ready");
+            return;
+        }
+        if (currentLobby.getPlayers().contains(server.getConnection(username))) {
             utfOutputStream.writeUTF("this user already exist");
             return;
         }
         utfOutputStream.writeUTF("OK");
-        currentGame.addUser(user, kingdomType);
+        server.enterLobby(server.getConnection(username), kingdomType, currentLobby.uuid);
     }
 
     private void removeUser(TreeMap<String, ArrayList<String>> map) throws IOException {
-        User user = User.getUserByName(map.get("u").get(0));
-        if (currentGame.getKingdom(user) == null) {
+        String username = map.get("u").get(0);
+        if (!currentLobby.getPlayers().contains(server.getConnection(username))) {
             utfOutputStream.writeUTF("this user doesn't exist");
             return;
         }
         utfOutputStream.writeUTF("OK");
-        currentGame.removeUser(user);
+        server.leaveLobby(server.getConnection(username));
     }
 
-    private void startGame() throws IOException {
-        if (currentGame.getKingdoms().size() < 2) {
-            System.out.println("insufficient user to start game");
-            utfOutputStream.writeUTF("insufficient user to start game");
-            return;
-        }
-        if (currentGame.getScene() == null) {
-            System.out.println("no map is selected");
-            utfOutputStream.writeUTF("no map is selected");
-            return;
-        }
-        PlayerList players = new PlayerList();
-        for (Kingdom kingdom : currentGame.getKingdoms()) {
-            players.users.add(kingdom.getUser());
-            players.kingdomTypes.add(kingdom.getKingdomType());
-        }
-        GameInfo gameInfo = new GameInfo(UUID.randomUUID()
-                , randSeed, mapname, players);
-        inGameLobby = true;
-        server.submitGame(gameInfo);
-    }
 
-    private void joinGameLobby() throws IOException {
-        System.out.println("jgl");
-        utfOutputStream.writeUTF("OK");
-        inGameLobby = true;
+    private void joinGameLobby(TreeMap<String, ArrayList<String>> map) throws IOException, ClassNotFoundException {
+        UUID uuid = (UUID) inputStream.readObject();
+        KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
+        server.enterLobby(this, kingdomType, uuid);
     }
 
     private void leaveGameLobby() throws IOException {
-        outputStream.writeObject("OK");
-        inGameLobby = false;
+        server.leaveLobby(this);
     }
 
     public void startGameFailed() throws IOException {
-        inGameLobby = false;
-        System.out.println("one of users is offline");
-        utfOutputStream.writeUTF("one of users is offline");
+        //TODO
     }
 
     public void startGameSuccessful(GameInfo gameInfo) throws IOException {
-        inGameLobby = false;
-        System.out.println("START GAME");
-        utfOutputStream.writeUTF("START GAME");
-        outputStream.writeObject(gameInfo);
+        //TODO
     }
 
     public void uploadMap() throws IOException, ClassNotFoundException {
@@ -371,6 +398,10 @@ public class LobbyConnection extends Thread {
         String mapname = map.get("m").get(0);
         Map mp = Map.getMapByName(mapname);
         outputStream.writeObject(mp);
+    }
+
+    public void setAsLobbyHost() {
+        ///TODO : send message to client
     }
 }
 

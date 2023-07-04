@@ -27,7 +27,16 @@ public enum Command {
     ))),
     GET_ALL_USERS("get\\s+all\\s+users", new ArrayList<>()),
     // GAME LOBBY
-    CREATE_GAME("create\\s+game", new ArrayList<>()),
+    GET_ALL_PUBLIC_GAME_LOBBIES("get\\s+all\\s+game\\s+lobbies", new ArrayList<>()),
+    CREATE_GAME_LOBBY("create\\s+game\\s+lobby", new ArrayList<>(List.of(
+            new Option("t", 1, true)
+    ))),
+    SET_GAME_LOBBY_PRIVACY("set\\s+game\\s+lobby\\s+privacy", new ArrayList<>(List.of(
+            new Option("t", 1, true)
+    ))),
+    SET_GAME_CAPACITY("set\\s+game\\s+capacity", new ArrayList<>(List.of(
+            new Option("n", 1, true)
+    ))),
     GET_ALL_MAPS("get\\s+all\\s+maps", new ArrayList<>()),
     SELECT_MAP("select\\s+map", new ArrayList<>(List.of(
             new Option("m", 1, true)
@@ -36,9 +45,13 @@ public enum Command {
             new Option("u", 1, true), new Option("t", 1, true)))),
     REMOVE_USER("remove\\s+user", new ArrayList<>(List.of(
             new Option("u", 1, true)))),
-    JOIN_GAME_LOBBY("join\\s+game\\s+lobby", new ArrayList<>()),
+    ENTER_GAME_LOBBY("enter\\s+game\\s+lobby", new ArrayList<>()),
+    JOIN_GAME_LOBBY("join\\s+game\\s+lobby", new ArrayList<>(List.of(
+            new Option("t", 1, true)
+    ))), //UUID
     LEAVE_GAME_LOBBY("leave\\s+game\\s+lobby", new ArrayList<>()),
     START_GAME("start\\s+game", new ArrayList<>()),
+    EXIT_GAME_LOBBY("exit\\s+game\\s+lobby", new ArrayList<>()),
 
 
     UPLOAD_MAP("upload\\s+map", new ArrayList<>()),
