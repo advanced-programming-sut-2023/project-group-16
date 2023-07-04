@@ -15,6 +15,8 @@ public class StartGameScreen extends Menu{
     public StartGameScreen(StrongholdGame game) {
         super(game);
 
+
+
     }
 
 
