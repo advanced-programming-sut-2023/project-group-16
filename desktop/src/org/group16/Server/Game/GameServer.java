@@ -69,4 +69,8 @@ public class GameServer extends Thread {
         }
         games.get(gameId).addSpectator(connection);
     }
+
+    public void sendAllCommands(UUID gameId, GameConnection connection) throws IOException {
+        connection.sendAllCommands(games.get(gameId).getTotalUserCommands());
+    }
 }

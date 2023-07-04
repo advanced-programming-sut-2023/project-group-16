@@ -67,7 +67,7 @@ public class testingGameScreen extends Menu {
     SoldierControlWindow soldierControlWindow;
     ChatControllingWindow chatControllingWindow;
 
-    TradeWindow tradeWindow ;
+    TradeWindow tradeWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -148,7 +148,7 @@ public class testingGameScreen extends Menu {
 
         chatControllingWindow = new ChatControllingWindow(skin1, uiStage, game1, this, getCurUser());
 
-        tradeWindow = new TradeWindow(skin1 , game , getCurUser() , this) ;
+        tradeWindow = new TradeWindow(skin1, game, getCurUser(), this);
         tradeWindow.setVisible(false);
 
 
@@ -220,8 +220,6 @@ public class testingGameScreen extends Menu {
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 /////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 
         if (time - miniWindow.lastChangeTime >= 1) {
@@ -380,7 +378,7 @@ public class testingGameScreen extends Menu {
             allUsers.add(kingdom.getUser());
         inputProcessor = new InputProcessor(allUsers);
         try {
-            GameSocket.createSocket(gameInfo, inputProcessor, currentUser, true);
+            GameSocket.createSocket(gameInfo, inputProcessor, currentUser, true, allUsers.get(0).equals(currentUser));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

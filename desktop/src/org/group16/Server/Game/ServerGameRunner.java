@@ -14,11 +14,14 @@ public class ServerGameRunner {
     private final ArrayList<GameConnection> players = new ArrayList<>();
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<GameConnection> spectators = new ArrayList<>();
-
     public ServerGameRunner(List<String> usernames) {
         for (String username : usernames) {
             users.add(User.getUserByName(username));
         }
+    }
+
+    public ArrayList<UserCommand> getTotalUserCommands() {
+        return totalUserCommands;
     }
 
     public synchronized void addPlayer(GameConnection connection) {

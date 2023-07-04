@@ -23,7 +23,6 @@ public class InputProcessor {
     public synchronized void addUser(User user) {
         allUsers.add(user);
         List<UserCommand> cmd = new ArrayList<>();
-        cmd.add(new UserJoinCommand(user, 0));
         commands.put(user.getUsername(), cmd);
         commandIter.put(user.getUsername(), 0);
     }
