@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MapTest {
     @Test
     public void testGettersAndSetters() {
-        Map map = new Map("testMap", 100, 200);
+        Map map = new Map("Map0", 100, 200);
         assertNull(map.getCellAt(100, 200));
         assertNull(map.getCellAt(10, 1000));
         assertNull(map.getCellAt(10, -10));

@@ -19,8 +19,8 @@ public class ScoreBoardWindow extends Window {
     final int playersInTable = 5;
     Image soilBackground;
     User user;
-
-    public ScoreBoardWindow(Skin skin, User user) {
+    ArrayList<User> users ;
+    public ScoreBoardWindow(Skin skin, User user , ArrayList<User> users) {
         this("ScoreBoard", skin);
         this.user = user;
         this.skin = skin;
@@ -31,7 +31,7 @@ public class ScoreBoardWindow extends Window {
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         this.setBackground(soilBackground.getDrawable());
-        ArrayList<User> users = User.getAllUsers();
+        this.users = users ;
 
         for (int i = 0; i < users.size(); i++) {
             for (int j = 0; j < users.size() - 1; j++) {
@@ -64,18 +64,27 @@ public class ScoreBoardWindow extends Window {
             public void changed(ChangeEvent event, Actor actor) {
                 if (firstShow != 0)
                     firstShow -= playersInTable;
+                int cnt = 0 ;
                 for (int i = firstShow; i < playersInTable + firstShow && i < users.size(); i++) {
+                    cnt++ ;
                     scoreBoardRows[i - firstShow].setUser(users.get(i), i);
                 }
+                for (int i = cnt+firstShow ; i < playersInTable + firstShow ; i++)
+                    scoreBoardRows[i-firstShow].setUser(null , 0) ;
             }
         });
         downButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                firstShow += playersInTable;
+                if (firstShow + playersInTable<users.size())
+                    firstShow += playersInTable;
+                int cnt = 0 ;
                 for (int i = firstShow; i < playersInTable + firstShow && i < users.size(); i++) {
+                    cnt++ ;
                     scoreBoardRows[i - firstShow].setUser(users.get(i), i);
                 }
+                for (int i = cnt+firstShow ; i < playersInTable+firstShow ; i++)
+                    scoreBoardRows[i-firstShow].setUser(null , 0) ;
             }
         });
 
@@ -114,7 +123,7 @@ public class ScoreBoardWindow extends Window {
 
         public void makeNull() {
             name.setText("***");
-            avatar.setDrawable(new TextureRegionDrawable(picChange.changer(Gdx.files.internal("backgrounds/white").path(), 60, 60)));
+            avatar.setDrawable(new TextureRegionDrawable(picChange.changer(Gdx.files.internal("backgrounds/white.jpg").path(), 60, 60)));
             score.setText("score : " + 0);
             rank.setText("*. ");
         }
