@@ -16,7 +16,7 @@ public class SetFoodRateCommand extends UserCommand{
 
     @Override
     public String execute(Game game, GameRenderer gameRenderer) {
-        String res = GameMenuController.setTaxRate(game , user , food) ;
+        String res = GameMenuController.setFoodRate(game , user , food) ;
         if (!res.equals("OK"))
             return res ;
         return success() ;
