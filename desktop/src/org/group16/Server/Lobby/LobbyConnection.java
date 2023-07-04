@@ -2,6 +2,8 @@ package org.group16.Server.Lobby;
 
 import org.group16.Model.*;
 import org.group16.Model.Map;
+import org.group16.Server.Game.GameServer;
+import org.group16.Server.Game.ServerGameRunner;
 import org.group16.Server.Lobby.Command.Command;
 import org.group16.Server.Lobby.Command.CommandHandler;
 
@@ -63,6 +65,11 @@ public class LobbyConnection extends Thread {
                 else if ((map = CommandHandler.matches(Command.START_GAME, msg)) != null) startGame();
                 else if ((map = CommandHandler.matches(Command.UPLOAD_MAP, msg)) != null) uploadMap();
                 else if ((map = CommandHandler.matches(Command.DOWNLOAD_MAP, msg)) != null) downloadMap(map);
+                else if ((map = CommandHandler.matches(Command.GET_RUNNING_GAMES, msg)) != null) getRunningGames();
+                else if ((map = CommandHandler.matches(Command.GET_PLAYER_GAME, msg)) != null) getPlayerGame(map);
+                else if ((map = CommandHandler.matches(Command.END_GAME, msg)) != null) endGame();
+                else if ((map = CommandHandler.matches(Command.ADD_SCORE, msg)) != null) addScore(map);
+                else if ((map = CommandHandler.matches(Command.IS_ONLINE, msg)) != null) isOnline(map);
 
 
 //                else if((map = CommandHandler.matches(Command.))
@@ -73,6 +80,46 @@ public class LobbyConnection extends Thread {
             System.out.println("User Disconnected");
         }
     }
+
+    private void isOnline(TreeMap<String, ArrayList<String>> map) throws IOException {
+        String username = map.get("u").get(0);
+        utfOutputStream.writeBoolean(server.userLoggedIn(username));
+    }
+
+    private void addScore(TreeMap<String, ArrayList<String>> map) throws IOException {
+        String u = map.get("u").get(0);
+        String v = map.get("v").get(0);
+
+        User user = User.getUserByName(u);
+        if (user == null) {
+            utfOutputStream.writeUTF("invalid user");
+            return;
+        }
+
+        utfOutputStream.writeUTF("OK");
+        user.addScore(Integer.parseInt(v));
+    }
+
+    private void endGame() throws IOException, ClassNotFoundException {
+        UUID uuid = (UUID) inputStream.readObject();
+        GameServer.singleton.endGame(uuid);
+        utfOutputStream.writeUTF("OK");
+    }
+
+    private void getPlayerGame(TreeMap<String, ArrayList<String>> map) throws IOException {
+        String username = map.get("u").get(0);
+        outputStream.writeObject(GameServer.singleton.getPlayerGame(username));
+    }
+
+    private void getRunningGames() throws IOException {
+        ArrayList<ServerGameRunner> games = GameServer.singleton.getGames();
+        GameInfoList list = new GameInfoList();
+        for (ServerGameRunner gameRunner : games) {
+            list.gameInfos.add(gameRunner.getGameInfo());
+        }
+        outputStream.writeObject(list);
+    }
+
 
     private void getAllMaps() throws IOException {
         List<String> res = Map.getAllMapNames();

@@ -14,12 +14,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class GameServer extends Thread {
+    public static GameServer singleton;
     private final ServerSocket serverSocket;
-
     private final HashMap<UUID, ServerGameRunner> games = new HashMap<>();
+    private final HashMap<String, UUID> playerGames = new HashMap<>();
 
     public GameServer(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        singleton = this;
     }
 
     @Override
@@ -45,8 +47,18 @@ public class GameServer extends Thread {
         for (int i = 0; i < playerList.users.size(); i++) {
             usernames.add(playerList.users.get(i).getUsername());
         }
-        ServerGameRunner gameRunner = new ServerGameRunner(usernames);
+        for (String username : usernames) {
+            playerGames.put(username, gameInfo.gameID());
+        }
+        ServerGameRunner gameRunner = new ServerGameRunner(gameInfo, usernames);
         games.put(gameInfo.gameID(), gameRunner);
+    }
+
+    public synchronized void endGame(UUID gameId) {
+        for (GameConnection connection : games.get(gameId).getPLayers()) {
+            playerGames.remove(connection.getUsername());
+        }
+        games.remove(gameId);
     }
 
     public synchronized void shareCommand(UUID gameID, UserCommand command) throws IOException {
@@ -72,5 +84,13 @@ public class GameServer extends Thread {
 
     public void sendAllCommands(UUID gameId, GameConnection connection) throws IOException {
         connection.sendAllCommands(games.get(gameId).getTotalUserCommands());
+    }
+
+    public UUID getPlayerGame(String username) {
+        return playerGames.getOrDefault(username, null);
+    }
+
+    public ArrayList<ServerGameRunner> getGames() {
+        return new ArrayList<>(games.values());
     }
 }

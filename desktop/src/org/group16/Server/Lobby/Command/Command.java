@@ -45,6 +45,22 @@ public enum Command {
     DOWNLOAD_MAP("download\\s+map", new ArrayList<>(List.of(
             new Option("m", 1, true)
     ))),
+
+    GET_RUNNING_GAMES("get\\s+running\\s+games", new ArrayList<>()),
+    //    SPECTATE_GAME("spectate\\s+game", new ArrayList<>()),
+    GET_PLAYER_GAME("get\\s+player\\s+game", new ArrayList<>(List.of(
+            new Option("u", 1, true)
+    ))),
+    //    REJOIN_GAME("rejoin\\s+game", new ArrayList<>()),
+    END_GAME("end\\s+game", new ArrayList<>()),
+    ADD_SCORE("add\\s+score", new ArrayList<>(List.of(
+            new Option("u", 1, true),
+            new Option("v", 1, true)
+    ))),
+    IS_ONLINE("is\\s+online", new ArrayList<>(List.of(
+            new Option("u", 1, true)
+    ))),
+
     // MISC
 
     UPLOAD_PFP("upload\\s+pfp", new ArrayList<>(List.of())),

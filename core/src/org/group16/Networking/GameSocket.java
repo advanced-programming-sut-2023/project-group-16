@@ -78,7 +78,7 @@ public class GameSocket {
 
     public static void submitCommand(UserCommand command) {
         try {
-//            Thread.sleep(10, 0);
+            Thread.sleep(20, 0);
             dataOutputStream.writeUTF("c");
             dataOutputStream.writeUTF(command.serialize());
         } catch (Exception e) {
