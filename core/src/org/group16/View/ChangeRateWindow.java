@@ -74,6 +74,7 @@ public class ChangeRateWindow extends Window {
                 gameScreen.inputProcessor.submitCommandToServer(new SetFoodRateCommand(user, (int) foodSlideBar.slider.getValue()));
                 gameScreen.inputProcessor.submitCommandToServer(new SetTaxRateCommand(user, (int) taxSlideBar.slider.getValue()));
                 gameScreen.inputProcessor.submitCommandToServer(new SetFearRateCommand(user, (int) fearSlideBar.slider.getValue()));
+                gameScreen.popularityWindow.reset((int) foodSlideBar.slider.getValue() , (int) taxSlideBar.slider.getValue() , (int) fearSlideBar.slider.getValue() , 0);
             }
         });
 

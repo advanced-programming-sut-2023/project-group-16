@@ -182,7 +182,7 @@ public class TradeWindow extends Window {
         for (Trade trade : game.getUserTrades(user)) {
             Label tradeLabel;
             if (trade.getSeller() != null) {
-                tradeLabel = new Label(rowCounter + "." + trade.getId() + " : " + trade.getBuyer() + " , " + trade.getSellerMessage(), skin);
+                tradeLabel = new Label(rowCounter + "." + trade.getId() + " : " + trade.getBuyer().getUser().getUsername() + " , " + trade.getSellerMessage(), skin);
             } else {
                 tradeLabel = new Label(rowCounter + "." + trade.getId() + " : " + "not accepted yet" + " , " + trade.getBuyerMessage(), skin);
             }
