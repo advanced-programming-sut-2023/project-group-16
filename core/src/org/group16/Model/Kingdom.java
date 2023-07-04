@@ -419,7 +419,7 @@ public class Kingdom {
             while (true) {
                 foodNeeded = (int) getFoodForEachPerson() * getPopulation();
                 if (availableFood < foodNeeded)
-                    setFoodRate(getFearRate() - 1);
+                    setFoodRate(getFoodRate() - 1);
                 else
                     break;
             }
@@ -429,6 +429,7 @@ public class Kingdom {
                 if (foodNeeded == 0)
                     break;
                 int eatenFood = Math.min(foodNeeded, getResourceCount(food));
+                foodNeeded-=eatenFood ;
                 useResource(food, eatenFood);
             }
             //fearRate

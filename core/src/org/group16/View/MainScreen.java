@@ -45,7 +45,13 @@ public class MainScreen extends Menu {
         profileMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new ProfileScreen(game, user));
+                try {
+                    game.setScreen(new ProfileScreen(game, user));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         gameMenu = new TextButton("Game", skin1);
