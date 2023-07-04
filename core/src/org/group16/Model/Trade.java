@@ -6,7 +6,7 @@ public class Trade {
     private static int totalTrades = 0;
     private final Resource resource;
 
-    private  Kingdom seller;
+    private  Kingdom seller = null;
     private final int price, amount, id;
     private final String sellerMessage;
     private Kingdom buyer;

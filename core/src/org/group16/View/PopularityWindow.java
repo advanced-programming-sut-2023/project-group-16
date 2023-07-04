@@ -76,10 +76,10 @@ public class PopularityWindow extends Window {
         this.add(foodLabel);
         this.add(rateToEmoji(food)).pad(0, 0, 0, 60);
         this.add(fearLabel);
-        this.add(rateToEmoji(fear)).row();
+        this.add(rateToEmoji(-fear)).row();
 
         this.add(taxLabel);
-        this.add(rateToEmoji(tax)).pad(0, 0, 0, 60);
+        this.add(rateToEmoji(-tax)).pad(0, 0, 0, 60);
         this.add(religionLabel);
         this.add(rateToEmoji(religion)).row();
         this.add(changeRates).row();
