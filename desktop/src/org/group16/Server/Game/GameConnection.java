@@ -6,6 +6,7 @@ import org.group16.Model.GameInfo;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class GameConnection extends Thread {
@@ -47,11 +48,16 @@ public class GameConnection extends Thread {
     public void run() {
         try {
             while (true) {
-                String stream = dataInputStream.readUTF();
-                UserCommand obj = UserCommand.tryDeserialize(stream);
-                if (!(obj instanceof EndTurnCommand))
-                    System.out.printf(" Received Command %s\n", obj.getClass().getSimpleName());
-                server.shareCommand(gameInfo.gameID(), obj);
+                String cmd = dataInputStream.readUTF();
+                if (cmd.equals("c")) { //CMD
+                    String stream = dataInputStream.readUTF();
+                    UserCommand obj = UserCommand.tryDeserialize(stream);
+                    if (!(obj instanceof EndTurnCommand))
+                        System.out.printf(" Received Command %s\n", obj.getClass().getSimpleName());
+                    server.shareCommand(gameId, obj);
+                } else if (cmd.equals("g")) { //GET_ALL
+                    server.sendAllCommands(gameId, this);
+                }
             }
         } catch (Exception e) {
             System.out.println("Client Disconnected");
@@ -59,6 +65,17 @@ public class GameConnection extends Thread {
     }
 
     public void sendCommand(UserCommand command) throws IOException {
+        dataOutputStream.writeUTF("c");
         dataOutputStream.writeUTF(command.serialize());
+    }
+
+    public void sendAllCommands(ArrayList<UserCommand> commands) throws IOException {
+        dataOutputStream.writeUTF("g");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (UserCommand cmd : commands) {
+            if (!stringBuilder.isEmpty()) stringBuilder.append("|");
+            stringBuilder.append(cmd.serialize());
+        }
+        dataOutputStream.writeUTF(stringBuilder.toString());
     }
 }

@@ -9,24 +9,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerGameRunner extends Thread {
-    public final Game game;
-    private final InputProcessor inputProcessor;
+public class ServerGameRunner {
+    private final ArrayList<UserCommand> totalUserCommands = new ArrayList<>();
     private final ArrayList<GameConnection> players = new ArrayList<>();
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<GameConnection> spectators = new ArrayList<>();
-
-    public ServerGameRunner(Game game, List<String> usernames) {
-        this.game = game;
+    public ServerGameRunner(List<String> usernames) {
         for (String username : usernames) {
             users.add(User.getUserByName(username));
         }
-        inputProcessor = new InputProcessor(users);
     }
 
-    @Override
-    public void run() {
-//        inputProcessor.process(game, );
+    public ArrayList<UserCommand> getTotalUserCommands() {
+        return totalUserCommands;
     }
 
     public synchronized void addPlayer(GameConnection connection) {
@@ -46,6 +41,7 @@ public class ServerGameRunner extends Thread {
     }
 
     public synchronized void shareCommand(UserCommand command) {
+        totalUserCommands.add(command);
         for (int i = players.size() - 1; i >= 0; i--) {
             GameConnection connection = players.get(i);
             try {
