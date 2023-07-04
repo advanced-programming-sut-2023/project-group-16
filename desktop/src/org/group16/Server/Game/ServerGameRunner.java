@@ -3,6 +3,7 @@ package org.group16.Server.Game;
 import org.group16.GameGraphics.CommandHandling.InputProcessor;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.Game;
+import org.group16.Model.GameInfo;
 import org.group16.Model.User;
 
 import java.io.IOException;
@@ -14,7 +15,11 @@ public class ServerGameRunner {
     private final ArrayList<GameConnection> players = new ArrayList<>();
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<GameConnection> spectators = new ArrayList<>();
-    public ServerGameRunner(List<String> usernames) {
+
+    private final GameInfo gameInfo;
+
+    public ServerGameRunner(GameInfo info, List<String> usernames) {
+        gameInfo = info;
         for (String username : usernames) {
             users.add(User.getUserByName(username));
         }
@@ -58,5 +63,13 @@ public class ServerGameRunner {
                 players.remove(connection);
             }
         }
+    }
+
+    public ArrayList<GameConnection> getPLayers() {
+        return players;
+    }
+
+    public GameInfo getGameInfo() {
+        return gameInfo;
     }
 }

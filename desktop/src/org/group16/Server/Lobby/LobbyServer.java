@@ -10,12 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LobbyServer extends Thread {
+    public static LobbyServer singleton;
     private final ServerSocket serverSocket;
     private final List<GameInfo> runningGames = new ArrayList<>();
     private final HashMap<String, LobbyConnection> userConnections = new HashMap<>();
 
     public LobbyServer(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        singleton = this;
     }
 
     @Override

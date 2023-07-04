@@ -19,7 +19,6 @@ public class GameConnection extends Thread {
     private final ObjectInputStream inputStream;
     //    private final ObjectOutputStream outputStream;
     private final GameServer server;
-
     public GameConnection(GameServer server, Socket socket) throws IOException, ClassNotFoundException {
         this.server = server;
         this.socket = socket;
@@ -42,6 +41,10 @@ public class GameConnection extends Thread {
         }
 
         System.out.printf("%s Connected as %s to Game(%s)", username, type, gameId);
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     @Override

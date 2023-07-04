@@ -5,6 +5,7 @@ import org.group16.Model.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class LobbySocket {
     public static Socket socket;
@@ -135,5 +136,34 @@ public class LobbySocket {
         String response = utfInputStream.readUTF();
         if (!response.equals("START GAME")) return response;
         return (GameInfo) inputStream.readObject();
+    }
+
+    public static GameInfoList getRunningGames() throws IOException, ClassNotFoundException {
+        utfOutputStream.writeUTF("get running games");
+        return (GameInfoList) inputStream.readObject();
+    }
+
+    public static UUID getPlayerGame(String username) throws IOException, ClassNotFoundException {
+        utfOutputStream.writeUTF(
+                String.format("get player game -u \"%s\"", username));
+        return (UUID) inputStream.readObject();
+    }
+
+    public static String endGame(UUID gameId) throws IOException {
+        utfOutputStream.writeUTF("end game");
+        outputStream.writeObject(gameId);
+        return utfInputStream.readUTF();
+    }
+
+    public static String addScore(String username, int value) throws IOException {
+        utfOutputStream.writeUTF(
+                String.format("add score -u \"%s\" -v \"%d\"", username, value));
+        return utfInputStream.readUTF();
+    }
+
+    public static boolean isOnline(String username) throws IOException {
+        utfOutputStream.writeUTF(
+                String.format("is online -u \"%s\"", username));
+        return utfInputStream.readBoolean();
     }
 }
