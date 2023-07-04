@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class CommandHandler {
     private static Pattern getPattern(Command command) {
-        String input = "(\\s+[^\"\\s]\\S*)|(\\s+\"[^\"]+\")";
+        String input = "(\\s+[^\"\\s]\\S*)|(\\s+\"[^\"]*\")";
         String optionsRegex = "";
         for (Option option : command.getOptions()) {
             optionsRegex += (optionsRegex.isEmpty() ? "" : "|") + "(\\s+-" + option.getName() +
@@ -22,14 +22,14 @@ public class CommandHandler {
         if (!getPattern(command).matcher(input).matches()) return null;
         TreeMap<String, ArrayList<String>> map = new TreeMap<>();
         for (Option option : command.getOptions()) {
-            String regex = "\\s+-" + option.getName() + "(?<inputs>((\\s+[^\"\\s]\\S*)|(\\s+\"[^\"]+\")){" +
+            String regex = "\\s+-" + option.getName() + "(?<inputs>((\\s+[^\"\\s]\\S*)|(\\s+\"[^\"]*\")){" +
                     option.getInputsCount() + "})";
             Matcher matcher = Pattern.compile(regex).matcher(input);
             if (!matcher.find()) {
                 if (option.isRequired()) return null;
                 continue;
             }
-            Matcher inputsMatcher = Pattern.compile("(?<input>(\\s+[^\"\\s]\\S*)|(\\s+\"[^\"]+\"))").
+            Matcher inputsMatcher = Pattern.compile("(?<input>(\\s+[^\"\\s]\\S*)|(\\s+\"[^\"]*\"))").
                     matcher(matcher.group("inputs"));
             ArrayList<String> inputs = new ArrayList<>();
             for (int i = 0; i < option.getInputsCount(); i++) {

@@ -1,6 +1,5 @@
 package org.group16.Model;
 
-import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -9,12 +8,6 @@ import java.util.ArrayList;
 
 public class User implements Serializable {
     private String username, password, nickname, email, passwordRecoveryQuestion, passwordRecoveryAnswer, slogan;
-
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     private String avatarPictureP;
     private int score;
 
@@ -118,6 +111,10 @@ public class User implements Serializable {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public void addScore(int score) {
         this.score += score;
         saveChanges(this);
@@ -138,7 +135,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+        this.password = password;
         saveChanges(this);
     }
 
@@ -186,6 +183,7 @@ public class User implements Serializable {
         this.slogan = slogan;
         saveChanges(this);
     }
+
     public String getAvatarPicture() {
         return avatarPictureP;
     }
@@ -201,5 +199,15 @@ public class User implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return username.equals(user.username);
+    }
+
+    public void updateLocal(String newUsername, String newPassword,
+                            String newEmail, String newSlogan,
+                            String newNickname) {
+        username = newUsername;
+        password = newPassword;
+        email = newEmail;
+        slogan = newSlogan;
+        nickname = newNickname;
     }
 }

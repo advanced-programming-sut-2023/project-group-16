@@ -3,31 +3,52 @@ package org.group16.Server.Game;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.GameInfo;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.util.UUID;
 
 public class GameConnection extends Thread {
+    private final String username;
     private final GameInfo gameInfo;
+    private final UUID gameId;
     private final Socket socket;
+    private final DataInputStream dataInputStream;
+    private final DataOutputStream dataOutputStream;
     private final ObjectInputStream inputStream;
-    private final ObjectOutputStream outputStream;
+    //    private final ObjectOutputStream outputStream;
     private final GameServer server;
 
     public GameConnection(GameServer server, Socket socket) throws IOException, ClassNotFoundException {
         this.server = server;
         this.socket = socket;
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataInputStream = new DataInputStream(socket.getInputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
-        gameInfo = (GameInfo) inputStream.readObject();
+
+        username = dataInputStream.readUTF();
+        String type = dataInputStream.readUTF();
+        if (type.equals("p")) {
+            gameInfo = (GameInfo) inputStream.readObject();
+            gameId = gameInfo.gameID();
+            type = "Player";
+            server.subscribePlayer(gameInfo, this);
+        } else {
+            gameInfo = null;
+            gameId = (UUID) inputStream.readObject();
+            type = "Spectator";
+            server.subscribeSpectator(gameId, this);
+        }
+
+        System.out.printf("%s Connected as %s to Game(%s)", username, type, gameId);
     }
 
     @Override
     public void run() {
         try {
             while (true) {
-                UserCommand obj = (UserCommand) inputStream.readObject();
+                String stream = dataInputStream.readUTF();
+                UserCommand obj = UserCommand.tryDeserialize(stream);
+                System.out.printf(" Received Command %s\n", stream);
                 server.shareCommand(gameInfo.gameID(), obj);
             }
         } catch (Exception e) {
@@ -35,7 +56,7 @@ public class GameConnection extends Thread {
         }
     }
 
-    public void sendCommand(UserCommand obj) throws IOException {
-        outputStream.writeObject(obj);
+    public void sendCommand(UserCommand command) throws IOException {
+        dataOutputStream.writeUTF(command.serialize());
     }
 }

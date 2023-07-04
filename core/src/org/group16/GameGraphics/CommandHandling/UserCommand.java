@@ -6,19 +6,22 @@ import org.group16.Model.Game;
 import org.group16.Model.User;
 
 import java.io.Serializable;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class UserCommand implements Serializable {
     private static final Pattern dataPattern = Pattern.compile("\\[\\[(?<type>\\S+)]](?<json>.+)");
-    public User user;
+    public final UUID uuid = UUID.randomUUID();
+    public final String username;
+    public transient User user;
     protected boolean executed;
 
     public UserCommand(User user) {
-        this.user = user;
+        username = user.getUsername();
     }
 
-    @Deprecated
+    //    @Deprecated
     public static UserCommand tryDeserialize(String data) {
         Gson gson = new Gson();
         Matcher matcher = dataPattern.matcher(data);
@@ -38,14 +41,14 @@ public abstract class UserCommand implements Serializable {
     }
 
     public void resolveUser(Game game) {
-        user = game.getUserByUsername(user.getUsername());
+        user = game.getUserByUsername(username);
     }
 
     public abstract String execute(Game game, GameRenderer gameRenderer);
 
     public abstract UserCommand getUndoCommand();
 
-    @Deprecated
+    //    @Deprecated
     public String serialize() {
         Gson gson = new Gson();
         return String.format("[[%s]]%s", getClass().getName(), gson.toJson(this));

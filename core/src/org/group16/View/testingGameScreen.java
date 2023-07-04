@@ -22,8 +22,10 @@ import org.group16.Model.*;
 import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
+import org.group16.Networking.GameSocket;
 import org.group16.StrongholdGame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,8 @@ public class testingGameScreen extends Menu {
     ////////////////////////////////////// render stuff
     private final List<Renderer> renderers = new ArrayList<>();
     private final float minimapDist = 15;
+    private final GameInfo gameInfo;
+    private final User currentUser;
     public AssetManager assetManager;
     public Window currentRunningWindow;
     Image miniMapImage;
@@ -43,11 +47,12 @@ public class testingGameScreen extends Menu {
     InputProcessor inputProcessor;
     org.group16.Model.Game game;
     ///////////////////////////////////////////////////
-    int curUser = 0;
     ArrayList<Cell> selectedCells = new ArrayList<>();
     Cell lastSelectedCell = null;
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+
+    Boolean inputControlling = true;
     BuildingSelectWindow buildingSelectWindow;
     CurrentPlayerWindow currentPlayerWindow;
     CellDetailWindow cellDetailWindow;
@@ -60,18 +65,21 @@ public class testingGameScreen extends Menu {
     PopularityWindow popularityWindow;
     ChangeRateWindow changeRateWindow;
     BuyingUnitWindow buyingUnitWindow;
-
     SoldierControlWindow soldierControlWindow;
+    ChatControllingWindow chatControllingWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
     private TextureRegion miniMapFrameRegion;
     private long lastFrame = TimeUtils.millis();
     private DetailRenderer testProbe;
+    private float lastTurn = 0;
 
-    public testingGameScreen(StrongholdGame game1, Game game) {
+    public testingGameScreen(StrongholdGame game1, Game game, GameInfo gameInfo, User currentUser) {
         super(game1);
         this.game = game;
+        this.gameInfo = gameInfo;
+        this.currentUser = currentUser;
 
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
         miniMapCamera = new PerspectiveCamera(30, 5f, 3);
@@ -137,6 +145,8 @@ public class testingGameScreen extends Menu {
 
         miniMapImage = new Image(miniMapFrameRegion);
 
+        chatControllingWindow = new ChatControllingWindow(skin1, uiStage, game1, this, getCurUser());
+
 
         currentRunningWindow = buildingSelectWindow;
         uiStage.addActor(buildingSelectWindow);
@@ -155,6 +165,8 @@ public class testingGameScreen extends Menu {
 
         uiStage.addActor(miniMapImage);
 
+        uiStage.addActor(chatControllingWindow);
+
     }
 
     @Override
@@ -163,24 +175,22 @@ public class testingGameScreen extends Menu {
         uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         long milis = TimeUtils.timeSinceMillis(lastFrame);
         float dt = milis / 1000f;
+        if (inputProcessor.isWaiting(currentUser))
+            lastTurn += dt;
         lastFrame += milis;
         for (Renderer renderer : renderers) {
             renderer.update(dt);
         }
+        if (lastTurn >= 2f) {
+            lastTurn = 0;
+            inputProcessor.submitCommandToServer(new EndTurnCommand(currentUser));
+        }
         time += dt;
         float camSpeed = 3;
-        if (input.isKeyPressed(Input.Keys.J))
-            camera.position.add(-dt * camSpeed, 0, dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.L))
-            camera.position.add(dt * camSpeed, 0, -dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.I))
-            camera.position.add(-dt * camSpeed, 0, -dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.K))
-            camera.position.add(dt * camSpeed, 0, dt * camSpeed);
-        if (input.isKeyPressed(Input.Keys.U))
-            camera.position.add(-5 * dt, -5 * dt, -5 * dt);
-        if (input.isKeyPressed(Input.Keys.O))
-            camera.position.add(5 * dt, 5 * dt, 5 * dt);
+
+        if (inputControlling)
+            inputHandlingWhileRendering(dt, camSpeed);
+
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
 //        if (input.isKeyPressed(Input.Keys.M))
@@ -205,54 +215,7 @@ public class testingGameScreen extends Menu {
         gl.glClearColor(.3f, .7f, 1, 1);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 /////////////////////////////////////////////////////////////////////////////////////////
-        Cell currentCell = Util.getMouseCell(game);
 
-        if (input.isTouched() && input.getY() < 3 * uiStage.getHeight() / 4) {
-            if (!input.isKeyPressed(Input.Keys.SHIFT_LEFT) && !input.isKeyPressed(Input.Keys.SHIFT_RIGHT))
-                resetSelection();
-            if (currentCell != null && currentCell != lastSelectedCell) {
-                for (GameObject gameObject : currentCell.getGameObjects()) {
-                    if (gameObject instanceof Building) {
-                        if (((Building) gameObject).getBuildingType().equals(BuildingType.TOWN_BUILDING)) {
-                            Kingdom kingdom = game.getKingdom(getCurUser());
-                            popularityWindow.reset(kingdom.getFoodRate(), kingdom.getFearRate(), kingdom.getTax(), 0);
-                            setCurrentRunningWindow(popularityWindow);
-                        } else {
-                            buildingWindow.changeBuilding((Building) gameObject);
-                            setCurrentRunningWindow(buildingWindow);
-                        }
-                        break;
-                    }
-                }
-            }
-            lastSelectedCell = currentCell;
-            if (currentCell != null && !selectedCells.contains(currentCell)) {
-                selectedCells.add(currentCell);
-                CellRenderer cellRenderer = Util.getMouseCellRenderer(currentCell.getX(), currentCell.getY(), gameRenderer);
-                cellRenderer.getDecal().setColor(Color.GREEN);
-            }
-        }
-        if (input.isKeyPressed(Input.Keys.Z)) {
-            resetSelection();
-        }
-        if (input.isKeyPressed(Input.Keys.S) && lastSelectedCell != null) {
-            ArrayList<Soldier> soldiers = new ArrayList<>();
-            for (Cell cell : selectedCells) {
-                for (GameObject gameObject : cell.getGameObjects())
-                    if (gameObject instanceof Soldier)
-                        soldiers.add((Soldier) gameObject);
-            }
-            soldierControlWindow.makeWindow(game, soldiers);
-            setCurrentRunningWindow(soldierControlWindow);
-        }
-
-
-        if (currentCell != null && time - cellDetailWindow.lastRemakeTime >= 1) {
-            int x = currentCell.getX();
-            int y = currentCell.getY();
-            cellDetailWindow.remake(GameMenuController.showMapDetails(game, x, y));
-            cellDetailWindow.lastRemakeTime = time;
-        }
 
         if (time - miniWindow.lastChangeTime >= 1) {
             Kingdom curKingdom = game.getKingdom(getCurUser());
@@ -273,6 +236,11 @@ public class testingGameScreen extends Menu {
         cellDetailWindow.setWidth(200);
         cellDetailWindow.setHeight(200);
         cellDetailWindow.setPosition(uiStage.getWidth() - 200, uiStage.getHeight() - 200);
+
+        chatControllingWindow.setWidth(200);
+        chatControllingWindow.setHeight(50);
+        chatControllingWindow.setPosition(uiStage.getWidth() - 200, uiStage.getHeight() - 250);
+
 
         miniWindow.setHeight(uiStage.getHeight() / 4);
         miniWindow.setWidth(200);
@@ -309,6 +277,71 @@ public class testingGameScreen extends Menu {
         uiStage.draw();
     }
 
+    public void inputHandlingWhileRendering(float dt, float camSpeed) {
+
+
+        if (input.isKeyPressed(Input.Keys.J))
+            camera.position.add(-dt * camSpeed, 0, dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.L))
+            camera.position.add(dt * camSpeed, 0, -dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.I))
+            camera.position.add(-dt * camSpeed, 0, -dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.K))
+            camera.position.add(dt * camSpeed, 0, dt * camSpeed);
+        if (input.isKeyPressed(Input.Keys.U))
+            camera.position.add(-5 * dt, -5 * dt, -5 * dt);
+        if (input.isKeyPressed(Input.Keys.O))
+            camera.position.add(5 * dt, 5 * dt, 5 * dt);
+
+
+        Cell currentCell = Util.getMouseCell(game);
+
+        if (input.isTouched() && input.getY() < 3 * uiStage.getHeight() / 4) {
+            if (!input.isKeyPressed(Input.Keys.SHIFT_LEFT) && !input.isKeyPressed(Input.Keys.SHIFT_RIGHT))
+                resetSelection();
+            if (currentCell != null && currentCell != lastSelectedCell) {
+                for (GameObject gameObject : currentCell.getGameObjects()) {
+                    if (gameObject instanceof Building && gameObject.getKingdom().getUser().equals(getCurUser())) {
+                        if (((Building) gameObject).getBuildingType().equals(BuildingType.TOWN_BUILDING)) {
+                            Kingdom kingdom = game.getKingdom(getCurUser());
+                            popularityWindow.reset(kingdom.getFoodRate(), kingdom.getFearRate(), kingdom.getTax(), 0);
+                            setCurrentRunningWindow(popularityWindow);
+                        } else {
+                            buildingWindow.changeBuilding((Building) gameObject);
+                            setCurrentRunningWindow(buildingWindow);
+                        }
+                        break;
+                    }
+                }
+            }
+            lastSelectedCell = currentCell;
+            if (currentCell != null && !selectedCells.contains(currentCell)) {
+                selectedCells.add(currentCell);
+                CellRenderer cellRenderer = Util.getMouseCellRenderer(currentCell.getX(), currentCell.getY(), gameRenderer);
+                cellRenderer.getDecal().setColor(Color.GREEN);
+            }
+        }
+        if (input.isKeyPressed(Input.Keys.Z)) {
+            resetSelection();
+        }
+        if (input.isKeyPressed(Input.Keys.S) && lastSelectedCell != null) {
+            ArrayList<Soldier> soldiers = new ArrayList<>();
+            for (Cell cell : selectedCells) {
+                for (GameObject gameObject : cell.getGameObjects())
+                    if (gameObject instanceof Soldier && gameObject.getKingdom().getUser().equals(getCurUser()))
+                        soldiers.add((Soldier) gameObject);
+            }
+            soldierControlWindow.makeWindow(game, soldiers);
+            setCurrentRunningWindow(soldierControlWindow);
+        }
+        if (currentCell != null && time - cellDetailWindow.lastRemakeTime >= 1) {
+            int x = currentCell.getX();
+            int y = currentCell.getY();
+            cellDetailWindow.remake(GameMenuController.showMapDetails(game, x, y));
+            cellDetailWindow.lastRemakeTime = time;
+        }
+    }
+
     private void resetSelection() {
         for (Cell cell : selectedCells) {
             CellRenderer cellRenderer = Util.getMouseCellRenderer(cell.getX(), cell.getY(), gameRenderer);
@@ -336,9 +369,17 @@ public class testingGameScreen extends Menu {
         for (Kingdom kingdom : game.getKingdoms())
             allUsers.add(kingdom.getUser());
         inputProcessor = new InputProcessor(allUsers);
+        try {
+            GameSocket.createSocket(gameInfo, inputProcessor, currentUser, true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         gameRenderer = new GameRenderer(game, inputProcessor);
         for (int i = 0; i < game.getKingdoms().size(); i++) {
+            if (!game.getKingdoms().get(i).getUser().equals(getCurUser())) {
+                continue;
+            }
             int x = (i % 4) * 15;
             int y = (i / 2) * 30;
             Kingdom kingdom = game.getKingdoms().get(i);
@@ -350,23 +391,26 @@ public class testingGameScreen extends Menu {
             inputProcessor.submitCommandToServer(new InitResourceCommand(user));
 
             inputProcessor.submitCommandToServer(new EndTurnCommand(user));
+
+            camera.position.set(x, 0, y);
+            camera.position.add(3, 3, 3);
         }
     }
 
     public void nextPlayer() {
 
         inputProcessor.submitCommandToServer(new EndTurnCommand(getCurUser()));
-        curUser++;
-        curUser = curUser % game.getKingdoms().size();
-        currentPlayerWindow.makeWindow(getCurUser());
-        System.out.println(getCurUser().getNickname());
+        //curUser++;
+        //curUser = curUser % game.getKingdoms().size();
+        //currentPlayerWindow.makeWindow(getCurUser());
+        //System.out.println(getCurUser().getNickname());
 
         resetSelection();
 
     }
 
     public User getCurUser() {
-        return game.getKingdoms().get(curUser).getUser();
+        return currentUser;
     }
 
     public void makeBuilding(BuildingType buildingType) {

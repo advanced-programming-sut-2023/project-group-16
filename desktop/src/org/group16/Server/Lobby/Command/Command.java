@@ -27,8 +27,7 @@ public enum Command {
     ))),
     GET_ALL_USERS("get\\s+all\\s+users", new ArrayList<>()),
     // GAME LOBBY
-    CREATE_GAME("create\\s+game", new ArrayList<>(List.of(
-            new Option("t", 1, true)))),
+    CREATE_GAME("create\\s+game", new ArrayList<>()),
     GET_ALL_MAPS("get\\s+all\\s+maps", new ArrayList<>()),
     SELECT_MAP("select\\s+map", new ArrayList<>(List.of(
             new Option("m", 1, true)

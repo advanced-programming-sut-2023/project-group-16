@@ -3,15 +3,16 @@ package org.group16.Networking;
 import org.group16.GameGraphics.CommandHandling.InputProcessor;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.GameInfo;
+import org.group16.Model.User;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class GameSocket {
     public static Socket socket;
-    public static ObjectInputStream inputStream;
+    public static DataOutputStream dataOutputStream;
+    public static DataInputStream dataInputStream;
+    //    public static ObjectInputStream inputStream;
     public static ObjectOutputStream outputStream;
     public static String host;
     public static int port;
@@ -21,7 +22,8 @@ public class GameSocket {
     private static void createSocket() throws IOException {
         alive = true;
         socket = new Socket(host, port);
-        inputStream = new ObjectInputStream(socket.getInputStream());
+        dataInputStream = new DataInputStream(socket.getInputStream());
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
         outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
 
@@ -30,27 +32,40 @@ public class GameSocket {
         GameSocket.port = port;
     }
 
-    public static void createSocket(GameInfo gameInfo, InputProcessor inputProcessor) throws IOException {
+    public static void createSocket(GameInfo gameInfo, InputProcessor inputProcessor, User user, boolean isPlayer) throws IOException {
         createSocket();
+        dataOutputStream.writeUTF(user.getUsername());
+        if (isPlayer) {
+            dataOutputStream.writeUTF("p");
+            outputStream.writeObject(gameInfo);
+        } else {
+            dataOutputStream.writeUTF("s");
+            outputStream.writeObject(gameInfo.gameID());
+        }
+
         connection = new Thread(() -> {
             try {
                 while (true) {
-                    UserCommand userCommand = (UserCommand) inputStream.readObject();
+                    String stream = dataInputStream.readUTF();
+                    UserCommand userCommand = UserCommand.tryDeserialize(stream);
+                    System.out.printf(" Received Command %s\n", stream);
                     synchronized (inputProcessor) {
                         inputProcessor.submitCommand(userCommand);
                     }
                 }
             } catch (Exception e) {
                 System.out.println("Client Disconnected");
+                alive = false;
             }
         });
-        outputStream.writeObject(gameInfo);
+        connection.start();
     }
 
     public static void submitCommand(UserCommand command) {
         try {
-            outputStream.writeObject(command);
-        } catch (IOException e) {
+            Thread.sleep(100, 0);
+            dataOutputStream.writeUTF(command.serialize());
+        } catch (Exception e) {
             alive = false;
             System.out.println("Client Disconnected");
             connection.interrupt();

@@ -8,33 +8,31 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.sun.tools.javac.Main;
-import org.group16.Controller.GameMenuController;
 import org.group16.Model.*;
-import org.group16.Model.Buildings.BuildingType;
+import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LobbyScreen extends Menu {
 
 
     User user;
     Table table;
-    private Image background, white, soilBackground;
     Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
     Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
     TextButton back, add, start;
-
     TextField usernameField;
     Label usernameStatus, startStatus;
-
     SelectBox<String> selectBox = new SelectBox<String>(skin1);
     SelectBox<String> mapSelectBox = new SelectBox<String>(skin1);
+    ArrayList<User> users = new ArrayList<>();
+    HashMap<User, KingdomType> hashMap = new HashMap<>();
+    private Image background, white, soilBackground;
 
-    Game realGame = new Game();
-
-    public LobbyScreen(StrongholdGame game, User user) {
+    public LobbyScreen(StrongholdGame game, User user) throws IOException, ClassNotFoundException {
         super(game);
         uiStage.clear();
 
@@ -54,11 +52,12 @@ public class LobbyScreen extends Menu {
 
 
         Array<String> mapArray = new Array<>();
-        for (Map map : Map.getAllMaps()) {
-            mapArray.add(map.getName());
+        for (String mapName : LobbySocket.getAllMaps()) {
+            mapArray.add(mapName);
         }
+
         mapSelectBox.setItems(mapArray);
-        ;
+
 
         uiStage.addActor(background);
         uiStage.addActor(table);
@@ -86,30 +85,38 @@ public class LobbyScreen extends Menu {
         add.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (User.getUserByName(usernameField.getText()) == null) {
-                    usernameStatus.setText("no user Found");
-                } else if (realGame.getKingdom(User.getUserByName(usernameField.getText())) != null) {
-                    usernameStatus.setText("user already added");
-                } else {
-                    if (selectBox.getSelected().equals("ARABIAN"))
-                        realGame.addUser(User.getUserByName(usernameField.getText()), KingdomType.ARAB);
-                    else
-                        realGame.addUser(User.getUserByName(usernameField.getText()), KingdomType.EUROPEAN);
-                    remake();
+                try {
+                    if (LobbySocket.getUser(usernameField.getText()) == null) {
+                        usernameStatus.setText("no user Found");
+                    } else if (users.contains(LobbySocket.getUser(usernameField.getText()))) {
+                        usernameStatus.setText("user already added");
+                    } else {
+                        if (selectBox.getSelected().equals("ARABIAN")) {
+                            users.add(LobbySocket.getUser(usernameField.getText()));
+                            hashMap.put(users.get(users.size() - 1), KingdomType.ARAB);
+                        } else {
+                            users.add(LobbySocket.getUser(usernameField.getText()));
+                            hashMap.put(users.get(users.size() - 1), KingdomType.EUROPEAN);
+                        }
+                        remake();
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
 
         int rowCounter = 1;
-        for (Kingdom kingdom : realGame.getKingdoms()) {
-            User user1 = kingdom.getUser();
+        for (User user1 : users) {
             table.add(new Label(rowCounter + " : " + user1.getNickname(), skin1)).pad(0, 0, 0, 5);
             TextButton delButton = new TextButton("delete", skin1);
             table.add(delButton).row();
             delButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    realGame.removeUser(user1);
+                    users.remove(user1);
                     remake();
                 }
             });
@@ -131,16 +138,80 @@ public class LobbyScreen extends Menu {
         start.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (realGame.getKingdoms().size() < 2) {
+                if (users.size() < 2) {
                     startStatus.setText("not enough players");
-                } else if (realGame.getKingdoms().size() >= 8) {
+                } else if (users.size() >= 8) {
                     startStatus.setText("game is full");
                 } else {
+                    boolean canStart = true;
+                    Scene scene = null;
 
-                    Scene scene = new Scene(Map.getMapByName(mapSelectBox.getSelected()), 0);
-                    realGame.setScene(scene);
-                    game.setScreen(new testingGameScreen(game, realGame));
 
+                    try {
+                        String status = LobbySocket.createGame();
+                        if (!status.equals("OK")) {
+                            startStatus.setText(status);
+                            canStart = false;
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    for (User user : users) {
+                        if (!canStart)
+                            break;
+                        try {
+                            String status = LobbySocket.addUser(user.getUsername(), hashMap.get(user).toString());
+                            if (!status.equals("OK")) {
+                                canStart = false;
+                                break;
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    try {
+                        LobbySocket.selectMap(mapSelectBox.getSelected());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (!canStart) {
+                        startStatus.setText("some problem with server!");
+                    } else {
+                        GameInfo gameInfo = null;
+                        try {
+                            var res = LobbySocket.startGame();
+                            if (res instanceof String) {
+                                //TODO : ERROR
+                            } else {
+                                gameInfo = (GameInfo) res;
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                        if (gameInfo != null)
+                            try {
+                                Map map = LobbySocket.downloadMap(gameInfo.mapname());
+                                PlayerList playerList = gameInfo.playerList();
+                                long random = gameInfo.randomSeed();
+                                scene = new Scene(map, random);
+                                Game game1 = new Game();
+
+                                for (int i = 0; i < playerList.users.size(); i++) {
+                                    game1.addUser(playerList.users.get(i), playerList.kingdomTypes.get(i));
+                                }
+
+                                game1.setScene(scene);
+                                testingGameScreen gameScreen = new testingGameScreen(game, game1, gameInfo, user);
+                                game.setScreen(gameScreen);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                    }
                 }
             }
         });
