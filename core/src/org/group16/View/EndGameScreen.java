@@ -29,10 +29,11 @@ public class EndGameScreen extends Menu{
         super(game);
         this.realGame = realGame ;
         this.curUser = curUser ;
-        this.table = new Table() ;
+        this.table = new Table(skin1) ;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         table.setBackground(soilBackground.getDrawable()) ;
+        table.setSize(600, 300);
 
         background = new Image(new Texture(Gdx.files.internal("backgrounds/endGame.jpg")));
         background.setFillParent(true);
@@ -54,7 +55,7 @@ public class EndGameScreen extends Menu{
             Image image = new Image() ;
             image.setDrawable(new TextureRegionDrawable(picChange.changer(user.getAvatarPicture(), 60, 60)));
             name.setColor(Color.GREEN);
-
+            user.addScore(3);
             table.add(name) ;
             table.add(image).row();
         }
@@ -67,7 +68,7 @@ public class EndGameScreen extends Menu{
             Image image = new Image() ;
             image.setDrawable(new TextureRegionDrawable(picChange.changer(user.getAvatarPicture(), 60, 60)));
             name.setColor(Color.RED);
-
+            user.addScore(-3);
             table.add(name) ;
             table.add(image).row();
         }
