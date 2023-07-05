@@ -88,6 +88,9 @@ public class LobbyConnection extends Thread {
                     leaveGameLobby();
                 else if ((map = CommandHandler.matches(Command.EXIT_GAME_LOBBY, msg)) != null)
                     exitGameLobby();
+                else if ((map = CommandHandler.matches(Command.START_GAME, msg)) != null)
+                    startGame();
+
 
                 else if ((map = CommandHandler.matches(Command.UPLOAD_MAP, msg)) != null) uploadMap();
                 else if ((map = CommandHandler.matches(Command.DOWNLOAD_MAP, msg)) != null) downloadMap(map);
@@ -105,6 +108,10 @@ public class LobbyConnection extends Thread {
                 server.userLogout(currentUser.getUsername());
             System.out.println("User Disconnected");
         }
+    }
+
+    private void startGame() throws IOException {
+        server.startLobbyGame(currentLobby.uuid);
     }
 
     private void exitGameLobby() {
@@ -328,45 +335,45 @@ public class LobbyConnection extends Thread {
         outputStream.writeObject(userList);
     }
 
-    private void selectMap(TreeMap<String, ArrayList<String>> map) throws IOException {
+    private void selectMap(TreeMap<String, ArrayList<String>> map) {
         String mapname = map.get("m").get(0);
         currentLobby.setMapName(mapname);
     }
 
-    private void addUser(TreeMap<String, ArrayList<String>> map) throws IOException {
+    private void addUser(TreeMap<String, ArrayList<String>> map) {
         String username = map.get("u").get(0);
         KingdomType kingdomType = KingdomType.getKingdomTypeByName(map.get("t").get(0));
         if (kingdomType == null) {
-            utfOutputStream.writeUTF("invalid kingdom type");
+//            utfOutputStream.writeUTF("invalid kingdom type");
             return;
         }
         if (currentLobby.size() >= currentLobby.getCapacity()) {
-            utfOutputStream.writeUTF("game is full");
+//            utfOutputStream.writeUTF("game is full");
             return;
         }
         if (server.getConnection(username) == null) {
-            utfOutputStream.writeUTF("user is offline");
+//            utfOutputStream.writeUTF("user is offline");
             return;
         }
         if (!server.getConnection(username).inGameLobby) {
-            utfOutputStream.writeUTF("user is not ready");
+//            utfOutputStream.writeUTF("user is not ready");
             return;
         }
         if (currentLobby.getPlayers().contains(server.getConnection(username))) {
-            utfOutputStream.writeUTF("this user already exist");
+//            utfOutputStream.writeUTF("this user already exist");
             return;
         }
-        utfOutputStream.writeUTF("OK");
+//        utfOutputStream.writeUTF("OK");
         server.enterLobby(server.getConnection(username), kingdomType, currentLobby.uuid);
     }
 
-    private void removeUser(TreeMap<String, ArrayList<String>> map) throws IOException {
+    private void removeUser(TreeMap<String, ArrayList<String>> map) {
         String username = map.get("u").get(0);
         if (!currentLobby.getPlayers().contains(server.getConnection(username))) {
-            utfOutputStream.writeUTF("this user doesn't exist");
+//            utfOutputStream.writeUTF("this user doesn't exist");
             return;
         }
-        utfOutputStream.writeUTF("OK");
+//        utfOutputStream.writeUTF("OK");
         server.leaveLobby(server.getConnection(username));
     }
 
@@ -381,12 +388,9 @@ public class LobbyConnection extends Thread {
         server.leaveLobby(this);
     }
 
-    public void startGameFailed() throws IOException {
-        //TODO
-    }
 
     public void startGameSuccessful(GameInfo gameInfo) throws IOException {
-        //TODO
+        outputStream.writeObject(gameInfo);
     }
 
     public void uploadMap() throws IOException, ClassNotFoundException {

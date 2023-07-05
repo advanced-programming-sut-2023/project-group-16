@@ -50,8 +50,8 @@ public enum Command {
             new Option("t", 1, true)
     ))), //UUID
     LEAVE_GAME_LOBBY("leave\\s+game\\s+lobby", new ArrayList<>()),
-    START_GAME("start\\s+game", new ArrayList<>()),
     EXIT_GAME_LOBBY("exit\\s+game\\s+lobby", new ArrayList<>()),
+    START_GAME("start\\s+game", new ArrayList<>()),
 
 
     UPLOAD_MAP("upload\\s+map", new ArrayList<>()),
