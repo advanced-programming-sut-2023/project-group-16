@@ -25,7 +25,7 @@ public class MainScreen extends Menu {
     private final Skin skin2 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
 
     private TextButton profileMenu, gameMenu, chatButton, chatBack, publicChat, privateChat,
-            createRoomButton, openRoom, roomNameSend, joinGame, createGame;
+            createRoomButton, openRoom, roomNameSend, joinGame, createGame, spectate;
 
     private TextButton logoutButton;
 
@@ -105,6 +105,18 @@ public class MainScreen extends Menu {
             }
         });
 
+        spectate = new TextButton("Spectate", skin1);
+        spectate.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    setScreen(new TvSelectScreen(game, user));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         uiStage.addActor(background);
 
         table = new Table(skin1);
@@ -117,10 +129,11 @@ public class MainScreen extends Menu {
 
         uiStage.addActor(background);
         table.add(profileMenu).row();
-        table.add(gameMenu).row();
+//        table.add(gameMenu).row();
 
         table.add(createGame).row();
         table.add(joinGame).row();
+        table.add(spectate).row();
 
 //        table.add(lobbyMenu).row();
         table.add(logoutButton).row();

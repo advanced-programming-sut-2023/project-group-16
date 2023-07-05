@@ -83,7 +83,9 @@ public class GameServer extends Thread {
     }
 
     public void sendAllCommands(UUID gameId, GameConnection connection) throws IOException {
-        connection.sendAllCommands(games.get(gameId).getTotalUserCommands());
+        synchronized (games.get(gameId)) {
+            connection.sendAllCommands(games.get(gameId).getTotalUserCommands());
+        }
     }
 
     public UUID getPlayerGame(String username) {
