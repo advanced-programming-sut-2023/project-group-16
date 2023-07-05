@@ -68,6 +68,7 @@ public class testingGameScreen extends Menu {
     ChatControllingWindow chatControllingWindow;
 
     TradeWindow tradeWindow;
+    StrongholdGame game1;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
@@ -76,14 +77,12 @@ public class testingGameScreen extends Menu {
     private DetailRenderer testProbe;
     private float lastTurn = 0;
 
-    StrongholdGame game1 ;
-
     public testingGameScreen(StrongholdGame game1, Game game, GameInfo gameInfo, User currentUser) {
         super(game1);
         this.game = game;
         this.gameInfo = gameInfo;
         this.currentUser = currentUser;
-        this.game1 = game1 ;
+        this.game1 = game1;
 
         camera = new PerspectiveCamera(30, 1f, 1f * graphics.getHeight() / graphics.getWidth());
         miniMapCamera = new PerspectiveCamera(30, 5f, 3);
@@ -189,10 +188,10 @@ public class testingGameScreen extends Menu {
         for (Renderer renderer : renderers) {
             renderer.update(dt);
         }
-        if (lastTurn >= 2f) {
-            lastTurn = 0;
-            inputProcessor.submitCommandToServer(new EndTurnCommand(currentUser));
-        }
+//        if (lastTurn >= 2f) {
+//            lastTurn = 0;
+//            inputProcessor.submitCommandToServer(new EndTurnCommand(currentUser));
+//        }
         time += dt;
         float camSpeed = 3;
 
@@ -290,8 +289,8 @@ public class testingGameScreen extends Menu {
 
     public void inputHandlingWhileRendering(float dt, float camSpeed) {
 
-        if (GameMenuController.checkEndGame(game)){
-            game1.setScreen(new EndGameScreen(game1 , game , getCurUser()));
+        if (GameMenuController.checkEndGame(game)) {
+            game1.setScreen(new EndGameScreen(game1, game, getCurUser()));
         }
 
         if (input.isKeyPressed(Input.Keys.J))

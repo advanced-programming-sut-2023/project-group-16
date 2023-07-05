@@ -3,6 +3,7 @@ package org.group16.Server.Game;
 import org.group16.GameGraphics.CommandHandling.EndTurnCommand;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.GameInfo;
+import org.group16.Model.User;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 public class GameConnection extends Thread {
     private final String username;
+    private final User user;
     private final GameInfo gameInfo;
     private final UUID gameId;
     private final Socket socket;
@@ -19,6 +21,7 @@ public class GameConnection extends Thread {
     private final ObjectInputStream inputStream;
     //    private final ObjectOutputStream outputStream;
     private final GameServer server;
+
     public GameConnection(GameServer server, Socket socket) throws IOException, ClassNotFoundException {
         this.server = server;
         this.socket = socket;
@@ -27,6 +30,7 @@ public class GameConnection extends Thread {
         inputStream = new ObjectInputStream(socket.getInputStream());
 
         username = dataInputStream.readUTF();
+        user = User.getUserByName(username);
         String type = dataInputStream.readUTF();
         if (type.equals("p")) {
             gameInfo = (GameInfo) inputStream.readObject();
@@ -80,5 +84,9 @@ public class GameConnection extends Thread {
             stringBuilder.append(cmd.serialize());
         }
         dataOutputStream.writeUTF(stringBuilder.toString());
+    }
+
+    public User getUser() {
+        return user;
     }
 }
