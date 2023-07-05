@@ -36,7 +36,7 @@ public class ServerGameRunner {
                 }
             }
         };
-        timer.schedule(task, 2500, 2000);
+        timer.schedule(task, 4000, 2000);
     }
 
     public ArrayList<UserCommand> getTotalUserCommands() {
