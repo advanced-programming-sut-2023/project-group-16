@@ -121,39 +121,44 @@ public class LobbySocket {
         return utfInputStream.readBoolean();
     }
 
-    public static void getAllMaps() {
-        //TODO
+    public static void getAllMaps() throws IOException {
+        utfOutputStream.writeUTF("get all maps");
     }
 
-    public static void selectMap(String mapName) {
-        //TODO
+    public static void selectMap(String mapName) throws IOException {
+        utfOutputStream.writeUTF(
+                String.format("select map -m \"%s\"", mapName));
     }
 
-    public static void addUser(String username, String kingdomType) {
-        //TODO
+    public static void addUser(String username, String kingdomType) throws IOException {
+        utfOutputStream.writeUTF(
+                String.format("add user -u \"%s\" -t \"%s\"", username, kingdomType));
     }
 
-    public static void removeUser(String username) {
-        //TODO
+    public static void removeUser(String username) throws IOException {
+        utfOutputStream.writeUTF(
+                String.format("add user -u \"%s\"", username));
     }
 
-    public static void enterGameLobby() {
-        //TODO
+    public static void enterGameLobby() throws IOException {
+        utfOutputStream.writeUTF("enter game lobby");
     }
 
-    public static void joinGameLobby(String kingdomType, UUID lobbyId) {
-        //TODO
+    public static void joinGameLobby(String kingdomType, UUID lobbyId) throws IOException {
+        utfOutputStream.writeUTF(
+                String.format("join game lobby -t \"%s\"", kingdomType));
+        outputStream.writeObject(lobbyId);
     }
 
-    public static void leaveGameLobby() {
-        //TODO
+    public static void leaveGameLobby() throws IOException {
+        utfOutputStream.writeUTF("leave game lobby");
     }
 
-    public static void exitGameLobby() {
-        //TODO
+    public static void exitGameLobby() throws IOException {
+        utfOutputStream.writeUTF("exit game lobby");
     }
 
-    public static void startGame() {
-        //TODO
+    public static void startGame() throws IOException {
+        utfOutputStream.writeUTF("start game");
     }
 }
