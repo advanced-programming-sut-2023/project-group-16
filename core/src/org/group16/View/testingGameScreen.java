@@ -23,6 +23,7 @@ import org.group16.Model.Buildings.Building;
 import org.group16.Model.Buildings.BuildingType;
 import org.group16.Model.People.Soldier;
 import org.group16.Networking.GameSocket;
+import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
 import java.io.IOException;
@@ -195,8 +196,13 @@ public class testingGameScreen extends Menu {
         time += dt;
         float camSpeed = 3;
 
-        if (inputControlling)
-            inputHandlingWhileRendering(dt, camSpeed);
+        if (inputControlling) {
+            try {
+                inputHandlingWhileRendering(dt, camSpeed);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
 //        if (input.isKeyPressed(Input.Keys.N))
 //            camera.rotateAround(, Vector3.Y, -dt * 180);
@@ -287,10 +293,11 @@ public class testingGameScreen extends Menu {
         uiStage.draw();
     }
 
-    public void inputHandlingWhileRendering(float dt, float camSpeed) {
+    public void inputHandlingWhileRendering(float dt, float camSpeed) throws IOException {
 
         if (GameMenuController.checkEndGame(game)) {
             game1.setScreen(new EndGameScreen(game1, game, getCurUser()));
+            LobbySocket.endGame(gameInfo.gameID()) ;
         }
 
         if (input.isKeyPressed(Input.Keys.J))
