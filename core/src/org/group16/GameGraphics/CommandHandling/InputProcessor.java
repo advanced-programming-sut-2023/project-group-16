@@ -4,6 +4,7 @@ import org.group16.GameGraphics.GameRenderer;
 import org.group16.Model.Game;
 import org.group16.Model.User;
 import org.group16.Networking.GameSocket;
+import org.group16.Vec2;
 
 import java.util.*;
 
@@ -14,6 +15,7 @@ public class InputProcessor {
     private final HashSet<String> finalizedUsers = new HashSet<>();
     private final List<User> allUsers = new ArrayList<>();
     private final HashSet<UUID> receivedCMDs = new HashSet<>();
+    public ArrayList<UserCommand> initialCommands = new ArrayList<>();
 
     public InputProcessor(List<User> allUsers) {
         for (User user : allUsers)

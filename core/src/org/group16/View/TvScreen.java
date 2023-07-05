@@ -21,12 +21,11 @@ import org.group16.GameGraphics.CommandHandling.InputProcessor;
 import org.group16.GameGraphics.GameRenderer;
 import org.group16.GameGraphics.Renderer;
 import org.group16.GameGraphics.Util;
-import org.group16.Model.Cell;
-import org.group16.Model.Game;
-import org.group16.Model.GameInfo;
-import org.group16.Model.User;
+import org.group16.Model.*;
+import org.group16.Networking.GameSocket;
 import org.group16.StrongholdGame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,19 +44,16 @@ public class TvScreen extends Menu {
     GameRenderer gameRenderer;
     InputProcessor inputProcessor;
     org.group16.Model.Game game;
-
+    Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
+    Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
+    CellDetailWindow cellDetailWindow;
     private Camera camera, miniMapCamera;
     private DecalBatch decalBatch, miniMapDecalBatch;
     private FrameBuffer miniMapFrameBuffer;
     private TextureRegion miniMapFrameRegion;
     private long lastFrame = TimeUtils.millis();
 
-    Skin skin2 = new Skin(Gdx.files.internal("neon/skin/default.json"));
-    Skin skin1 = new Skin(Gdx.files.internal("neon/skin/monochrome.json"));
-
-
-    CellDetailWindow cellDetailWindow ;
-    public TvScreen(StrongholdGame game1, Game game ,  GameInfo gameInfo, User currentUser) {
+    public TvScreen(StrongholdGame game1, Game game, GameInfo gameInfo, User currentUser) throws IOException {
         super(game1);
         this.game = game;
         this.gameInfo = gameInfo;
@@ -88,12 +84,28 @@ public class TvScreen extends Menu {
 
         Util.load(assetManager);
 
-        renderers.add(gameRenderer);
 
         cellDetailWindow = new CellDetailWindow("", skin1, "");
 
 
         uiStage.addActor(cellDetailWindow);
+
+
+        ArrayList<User> allUsers = new ArrayList<>();
+        for (Kingdom kingdom : game.getKingdoms())
+            allUsers.add(kingdom.getUser());
+        inputProcessor = new InputProcessor(allUsers);
+        gameRenderer = new GameRenderer(game, inputProcessor);
+        GameSocket.createSocket(gameInfo, inputProcessor, currentUser, false, false);
+        synchronized (this) {
+            for (var cmd : inputProcessor.initialCommands) {
+                inputProcessor.submitCommand(cmd);
+                for (int i = 0; i < Time.updateIterationCount; i++)
+                    gameRenderer.update((float) Time.deltaTime);
+            }
+        }
+
+        renderers.add(gameRenderer);
     }
 
     @Override
@@ -110,14 +122,13 @@ public class TvScreen extends Menu {
     }
 
 
-
     @Override
     public void render(float delta) {
         Util.updateMousePosition(camera);
         uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         long milis = TimeUtils.timeSinceMillis(lastFrame);
         float dt = milis / 1000f;
-
+        lastFrame += milis;
 
 
         for (Renderer renderer : renderers) {
@@ -176,7 +187,6 @@ public class TvScreen extends Menu {
         cellDetailWindow.setWidth(200);
         cellDetailWindow.setHeight(200);
         cellDetailWindow.setPosition(uiStage.getWidth() - 200, uiStage.getHeight() - 200);
-
 
 
         uiStage.draw();

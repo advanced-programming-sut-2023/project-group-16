@@ -42,6 +42,17 @@ public class GameSocket {
             dataOutputStream.writeUTF("s");
             outputStream.writeObject(gameInfo.gameID());
             dataOutputStream.writeUTF("g");
+            String cmd = dataInputStream.readUTF();
+            String stream = dataInputStream.readUTF();
+            System.out.println(stream);
+            String[] cmds = stream.split("\\|");
+            synchronized (inputProcessor) {
+                for (String cd : cmds) {
+                    UserCommand userCommand = UserCommand.tryDeserialize(cd);
+                    System.out.printf(" Loading Command %s\n", userCommand.getClass().getSimpleName());
+                    inputProcessor.initialCommands.add(userCommand);
+                }
+            }
         }
 
         connection = new Thread(() -> {
@@ -54,16 +65,6 @@ public class GameSocket {
                         System.out.printf(" Received Command %s\n", stream);
                         synchronized (inputProcessor) {
                             inputProcessor.submitCommand(userCommand);
-                        }
-                    } else if (cmd.equals("g")) {
-                        String stream = dataInputStream.readUTF();
-                        String[] cmds = stream.split("\\|");
-                        for (String cd : cmds) {
-                            UserCommand userCommand = UserCommand.tryDeserialize(cd);
-                            System.out.printf(" Loading Command %s\n", stream);
-                            synchronized (inputProcessor) {
-                                inputProcessor.submitCommand(userCommand);
-                            }
                         }
                     }
                 }
