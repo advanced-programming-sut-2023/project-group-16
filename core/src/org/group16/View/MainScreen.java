@@ -129,7 +129,7 @@ public class MainScreen extends Menu {
 
         uiStage.addActor(background);
         table.add(profileMenu).row();
-//        table.add(gameMenu).row();
+        table.add(gameMenu).row();
 
         table.add(createGame).row();
         table.add(joinGame).row();

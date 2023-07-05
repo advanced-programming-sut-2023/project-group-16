@@ -36,7 +36,7 @@ public class ProfileScreen extends Menu {
 
     private SelectBox<String> selectAvatar;
 
-    private Window scoreBoardWindow;
+    private ScoreBoardWindow scoreBoardWindow;
 
     public ProfileScreen(StrongholdGame game, User user) throws IOException, ClassNotFoundException {
         super(game);
@@ -513,6 +513,11 @@ public class ProfileScreen extends Menu {
         table.setPosition(uiStage.getWidth() / 2 - table.getWidth() / 2,
                 uiStage.getHeight() / 2 - table.getHeight() / 2);
         scoreBoardWindow.setHeight(uiStage.getHeight() - 100);
+        try {
+            scoreBoardWindow.remake();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         uiStage.draw();
     }
 }

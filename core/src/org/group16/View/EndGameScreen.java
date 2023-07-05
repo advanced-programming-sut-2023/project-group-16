@@ -13,6 +13,7 @@ import org.group16.Model.Game;
 import org.group16.Model.Kingdom;
 import org.group16.Model.Team;
 import org.group16.Model.User;
+import org.group16.Networking.LobbySocket;
 import org.group16.StrongholdGame;
 
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ public class EndGameScreen extends Menu{
         this.realGame = realGame ;
         this.curUser = curUser ;
         this.table = new Table(skin1) ;
-
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
         table.setBackground(soilBackground.getDrawable()) ;
         table.setSize(600, 300);
