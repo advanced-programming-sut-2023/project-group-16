@@ -91,52 +91,6 @@ public class LobbySocket {
         return (Map) inputStream.readObject();
     }
 
-    public static ArrayList<String> getAllMaps() throws IOException, ClassNotFoundException {
-        utfOutputStream.writeUTF("get all maps");
-        return ((StringList) inputStream.readObject()).strings;
-    }
-
-    public static String createGame() throws IOException {
-        utfOutputStream.writeUTF("create game");
-        return utfInputStream.readUTF();
-    }
-
-    public static String selectMap(String mapname) throws IOException {
-        utfOutputStream.writeUTF(
-                String.format("select map -m \"%s\"", mapname));
-        return utfInputStream.readUTF();
-    }
-
-    public static String addUser(String username, String kingdomType) throws IOException {
-        utfOutputStream.writeUTF(
-                String.format("add user -u \"%s\" -t \"%s\"", username, kingdomType));
-        return utfInputStream.readUTF();
-    }
-
-    public static String removeUser(String username, String kingdomType) throws IOException {
-        utfOutputStream.writeUTF(
-                String.format("remove user -u \"%s\"", username, kingdomType));
-        return utfInputStream.readUTF();
-    }
-
-    public static GameInfo joinGameLobby() throws IOException, ClassNotFoundException {
-        System.out.println("JOIN");
-        utfOutputStream.writeUTF("join game lobby");
-        System.out.println(utfInputStream.readUTF()); //OK
-        System.out.println(utfInputStream.readUTF()); //START GAME
-        return (GameInfo) inputStream.readObject();
-    }
-
-    //    public static String leaveGameLobby() throws IOException {
-//        cmdStream.writeUTF("leave game lobby");
-//        return utfInputStream.readUTF()();
-//    }
-    public static Object startGame() throws IOException, ClassNotFoundException {
-        utfOutputStream.writeUTF("start game");
-        String response = utfInputStream.readUTF();
-        if (!response.equals("START GAME")) return response;
-        return (GameInfo) inputStream.readObject();
-    }
 
     public static GameInfoList getRunningGames() throws IOException, ClassNotFoundException {
         utfOutputStream.writeUTF("get running games");
@@ -165,5 +119,41 @@ public class LobbySocket {
         utfOutputStream.writeUTF(
                 String.format("is online -u \"%s\"", username));
         return utfInputStream.readBoolean();
+    }
+
+    public static void getAllMaps() {
+        //TODO
+    }
+
+    public static void selectMap(String mapName) {
+        //TODO
+    }
+
+    public static void addUser(String username, String kingdomType) {
+        //TODO
+    }
+
+    public static void removeUser(String username) {
+        //TODO
+    }
+
+    public static void enterGameLobby() {
+        //TODO
+    }
+
+    public static void joinGameLobby(String kingdomType, UUID lobbyId) {
+        //TODO
+    }
+
+    public static void leaveGameLobby() {
+        //TODO
+    }
+
+    public static void exitGameLobby() {
+        //TODO
+    }
+
+    public static void startGame() {
+        //TODO
     }
 }
