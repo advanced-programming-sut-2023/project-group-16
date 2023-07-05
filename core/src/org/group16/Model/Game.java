@@ -14,7 +14,7 @@ public class Game {
         kingdoms.add(new Kingdom(kingdomType, user));
     }
 
-    public  Game(){
+    public Game() {
 
     }
 
@@ -70,6 +70,9 @@ public class Game {
         if (!trade.getBuyer().addResource(trade.getResource(), trade.getAmount()))
             return "insufficient storage capacity";
         trade.getSeller().useResource(trade.getResource(), trade.getAmount());
+        trade.getBuyer().addResource(trade.getResource(), trade.getAmount()) ;
+        trade.getSeller().addGold(trade.getResource().getPrice()*trade.getAmount()) ;
+        trade.getBuyer().addGold(-trade.getResource().getPrice()*trade.getAmount()) ;
         trade.setBuyerMessage(buyerMessage);
         tradeHistory.add(trade);
         tradeOffers.remove(trade);
@@ -95,10 +98,23 @@ public class Game {
 
     public ArrayList<Trade> getUserTrades(User user) {
         ArrayList<Trade> trades = new ArrayList<>();
-        for (Trade trade : getTradeHistory())
-            if (trade.getSeller().equals(user) || trade.getBuyer().equals(user)) trades.add(trade);
-        for (Trade trade : getTradeOffers())
-            if (trade.getSeller().equals(user)) trades.add(trade);
+        for (Trade trade : getTradeHistory()) {
+            try {
+                if (trade.getSeller().equals(getKingdom(user)) || trade.getBuyer().equals(getKingdom(user)))
+                    trades.add(trade);
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+        for (Trade trade : getTradeOffers()) {
+            try {
+                if (trade.getSeller().equals(getKingdom(user))) trades.add(trade);
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         return trades;
     }
 

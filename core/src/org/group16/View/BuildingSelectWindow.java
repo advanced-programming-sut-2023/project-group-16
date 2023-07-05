@@ -167,6 +167,9 @@ public class BuildingSelectWindow extends Window {
             if (startPic > EconomicBuildingDetail.values().length)
                 startPic-=numberOfPics ;
             for (int i = startPic; i < startPic + numberOfPics && i < EconomicBuildingDetail.values().length; i++) {
+                if (EconomicBuildingDetail.values()[i].equals(EconomicBuildingDetail.TOWN_BUILDING) ||
+                EconomicBuildingDetail.values()[i].equals(EconomicBuildingDetail.UNEMPLOYED_PLACE))
+                    continue;
                 imageButtonElements[i - startPic].setNewBuilding(EconomicBuildingDetail.values()[i].name(), "Economic");
                 i2 = i - startPic ;
             }

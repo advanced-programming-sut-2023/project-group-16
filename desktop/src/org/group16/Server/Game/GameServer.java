@@ -14,12 +14,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class GameServer extends Thread {
+    public static GameServer singleton;
     private final ServerSocket serverSocket;
-
     private final HashMap<UUID, ServerGameRunner> games = new HashMap<>();
+    private final HashMap<String, UUID> playerGames = new HashMap<>();
 
     public GameServer(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        singleton = this;
     }
 
     @Override
@@ -40,23 +42,23 @@ public class GameServer extends Thread {
     }
 
     private synchronized void createGame(GameInfo gameInfo) {
-        Map map = Map.getMapByName(gameInfo.mapname());
         PlayerList playerList = gameInfo.playerList();
-        long random = gameInfo.randomSeed();
-        Scene scene = new Scene(map, random);
-        Game game = new Game();
         ArrayList<String> usernames = new ArrayList<>();
-
         for (int i = 0; i < playerList.users.size(); i++) {
             usernames.add(playerList.users.get(i).getUsername());
-            game.addUser(playerList.users.get(i), playerList.kingdomTypes.get(i));
         }
-
-        game.setScene(scene);
-
-
-        ServerGameRunner gameRunner = new ServerGameRunner(game, usernames);
+        for (String username : usernames) {
+            playerGames.put(username, gameInfo.gameID());
+        }
+        ServerGameRunner gameRunner = new ServerGameRunner(gameInfo, usernames);
         games.put(gameInfo.gameID(), gameRunner);
+    }
+
+    public synchronized void endGame(UUID gameId) {
+        for (GameConnection connection : games.get(gameId).getPLayers()) {
+            playerGames.remove(connection.getUsername());
+        }
+        games.remove(gameId);
     }
 
     public synchronized void shareCommand(UUID gameID, UserCommand command) throws IOException {
@@ -78,5 +80,17 @@ public class GameServer extends Thread {
             }
         }
         games.get(gameId).addSpectator(connection);
+    }
+
+    public void sendAllCommands(UUID gameId, GameConnection connection) throws IOException {
+        connection.sendAllCommands(games.get(gameId).getTotalUserCommands());
+    }
+
+    public UUID getPlayerGame(String username) {
+        return playerGames.getOrDefault(username, null);
+    }
+
+    public ArrayList<ServerGameRunner> getGames() {
+        return new ArrayList<>(games.values());
     }
 }

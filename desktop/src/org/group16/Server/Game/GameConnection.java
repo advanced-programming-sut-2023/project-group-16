@@ -1,14 +1,18 @@
 package org.group16.Server.Game;
 
+import org.group16.GameGraphics.CommandHandling.EndTurnCommand;
 import org.group16.GameGraphics.CommandHandling.UserCommand;
 import org.group16.Model.GameInfo;
+import org.group16.Model.User;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class GameConnection extends Thread {
     private final String username;
+    private final User user;
     private final GameInfo gameInfo;
     private final UUID gameId;
     private final Socket socket;
@@ -26,6 +30,7 @@ public class GameConnection extends Thread {
         inputStream = new ObjectInputStream(socket.getInputStream());
 
         username = dataInputStream.readUTF();
+        user = User.getUserByName(username);
         String type = dataInputStream.readUTF();
         if (type.equals("p")) {
             gameInfo = (GameInfo) inputStream.readObject();
@@ -42,14 +47,24 @@ public class GameConnection extends Thread {
         System.out.printf("%s Connected as %s to Game(%s)", username, type, gameId);
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     @Override
     public void run() {
         try {
             while (true) {
-                String stream = dataInputStream.readUTF();
-                UserCommand obj = UserCommand.tryDeserialize(stream);
-                System.out.printf(" Received Command %s\n", stream);
-                server.shareCommand(gameInfo.gameID(), obj);
+                String cmd = dataInputStream.readUTF();
+                if (cmd.equals("c")) { //CMD
+                    String stream = dataInputStream.readUTF();
+                    UserCommand obj = UserCommand.tryDeserialize(stream);
+                    if (!(obj instanceof EndTurnCommand))
+                        System.out.printf(" Received Command %s\n", obj.getClass().getSimpleName());
+                    server.shareCommand(gameId, obj);
+                } else if (cmd.equals("g")) { //GET_ALL
+                    server.sendAllCommands(gameId, this);
+                }
             }
         } catch (Exception e) {
             System.out.println("Client Disconnected");
@@ -57,6 +72,21 @@ public class GameConnection extends Thread {
     }
 
     public void sendCommand(UserCommand command) throws IOException {
+        dataOutputStream.writeUTF("c");
         dataOutputStream.writeUTF(command.serialize());
+    }
+
+    public void sendAllCommands(ArrayList<UserCommand> commands) throws IOException {
+        dataOutputStream.writeUTF("g");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (UserCommand cmd : commands) {
+            if (!stringBuilder.isEmpty()) stringBuilder.append("|");
+            stringBuilder.append(cmd.serialize());
+        }
+        dataOutputStream.writeUTF(stringBuilder.toString());
+    }
+
+    public User getUser() {
+        return user;
     }
 }

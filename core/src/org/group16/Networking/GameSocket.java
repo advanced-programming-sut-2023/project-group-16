@@ -32,7 +32,7 @@ public class GameSocket {
         GameSocket.port = port;
     }
 
-    public static void createSocket(GameInfo gameInfo, InputProcessor inputProcessor, User user, boolean isPlayer) throws IOException {
+    public static void createSocket(GameInfo gameInfo, InputProcessor inputProcessor, User user, boolean isPlayer, boolean isHost) throws IOException {
         createSocket();
         dataOutputStream.writeUTF(user.getUsername());
         if (isPlayer) {
@@ -41,16 +41,30 @@ public class GameSocket {
         } else {
             dataOutputStream.writeUTF("s");
             outputStream.writeObject(gameInfo.gameID());
+            dataOutputStream.writeUTF("g");
         }
 
         connection = new Thread(() -> {
             try {
                 while (true) {
-                    String stream = dataInputStream.readUTF();
-                    UserCommand userCommand = UserCommand.tryDeserialize(stream);
-                    System.out.printf(" Received Command %s\n", stream);
-                    synchronized (inputProcessor) {
-                        inputProcessor.submitCommand(userCommand);
+                    String cmd = dataInputStream.readUTF();
+                    if (cmd.equals("c")) {
+                        String stream = dataInputStream.readUTF();
+                        UserCommand userCommand = UserCommand.tryDeserialize(stream);
+                        System.out.printf(" Received Command %s\n", stream);
+                        synchronized (inputProcessor) {
+                            inputProcessor.submitCommand(userCommand);
+                        }
+                    } else if (cmd.equals("g")) {
+                        String stream = dataInputStream.readUTF();
+                        String[] cmds = stream.split("\\|");
+                        for (String cd : cmds) {
+                            UserCommand userCommand = UserCommand.tryDeserialize(cd);
+                            System.out.printf(" Loading Command %s\n", stream);
+                            synchronized (inputProcessor) {
+                                inputProcessor.submitCommand(userCommand);
+                            }
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -58,12 +72,14 @@ public class GameSocket {
                 alive = false;
             }
         });
+        connection.setDaemon(true);
         connection.start();
     }
 
     public static void submitCommand(UserCommand command) {
         try {
-            Thread.sleep(100, 0);
+            Thread.sleep(20, 0);
+            dataOutputStream.writeUTF("c");
             dataOutputStream.writeUTF(command.serialize());
         } catch (Exception e) {
             alive = false;

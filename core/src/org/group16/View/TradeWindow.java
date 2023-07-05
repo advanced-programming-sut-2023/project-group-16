@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.group16.GameGraphics.CommandHandling.CreateTradeRequestCommand;
+import org.group16.GameGraphics.CommandHandling.TradeAcceptCommand;
 import org.group16.Model.Game;
 import org.group16.Model.Kingdom;
 import org.group16.Model.Resources.BasicResource;
@@ -22,71 +24,31 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TradeWindow extends Window {
-
-
     Image soilBackground, grayBackGround;
     public Skin skin;
 
     Game game;
     User user;
-
     ImageButton back;
-
     TextButton newTrade, receivedTrades, submittedTrades;
+    testingGameScreen gameScreen;
 
-    public TradeWindow(Skin skin, Game game, User user) {
+    public TradeWindow(Skin skin, Game game, User user, testingGameScreen gameScreen) {
         super("", skin);
 
         this.skin = skin;
-
+        this.gameScreen = gameScreen;
         this.game = game;
         this.user = user;
 
         soilBackground = new Image(new Texture(Gdx.files.internal("backgrounds/soilBackground.jpg")));
-        this.setBackground(soilBackground.getDrawable());
-
-        newTrade = new TextButton("new trade", skin);
-        receivedTrades = new TextButton("received trades", skin);
-        submittedTrades = new TextButton("submitted trades", skin);
-
-        back = new ImageButton(skin);
-        ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
-        imageStyle.imageUp = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 30, 30));
-        imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
-        back.setStyle(imageStyle);
-
-        back.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-
-            }
-        });
-
-        newTrade.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                makeNewTradeWindow();
-            }
-        });
-        receivedTrades.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                makeReceivedWindow();
-            }
-        });
-
-        submittedTrades.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                makeSubmittedWindow();
-            }
-        });
 
         makeNewTradeWindow();
     }
-    
+
     public void makeNewTradeWindow() {
         this.clear();
+        initWindow();
         Label seeResourcesOf = new Label("see resources of : ", skin);
         this.add(seeResourcesOf).row();
         for (Kingdom kingdom : game.getKingdoms()) {
@@ -116,7 +78,7 @@ public class TradeWindow extends Window {
 
     public void showResourcesWindow(User curUser) {
         this.clear();
-
+        initWindow();
         for (Resource resource : BasicResource.values())
             addImageButtonOfResource(resource, curUser);
 
@@ -150,30 +112,35 @@ public class TradeWindow extends Window {
     public void addImageButtonOfResource(Resource resource, User curUser) {
         if (resource.getPrice() == Integer.MAX_VALUE)
             return;
-        ImageButton resourceImageButton = new ImageButton(skin);
-        ImageButton.ImageButtonStyle imageButtonStyle = new ImageButton.ImageButtonStyle();
-        imageButtonStyle.imageUp = new TextureRegionDrawable(picChange.changer(
-                "MenuPictures/Resources/" + getPathByType(resource) + "/" + resource.GetName() + ".png", 30, 30));
-        imageButtonStyle.imageDown = new TextureRegionDrawable(picChange.changer(
-                "MenuPictures/Resources/" + getPathByType(resource) + "/" + resource.GetName() + ".png", 27, 27));
-        resourceImageButton.setStyle(imageButtonStyle);
+        try {
+            ImageButton resourceImageButton = new ImageButton(skin);
+            ImageButton.ImageButtonStyle imageButtonStyle = new ImageButton.ImageButtonStyle();
+            imageButtonStyle.imageUp = new TextureRegionDrawable(picChange.changer(
+                    "MenuPictures/Resources/" + getPathByType(resource) + "/" + resource.GetName() + ".png", 30, 30));
+            imageButtonStyle.imageDown = new TextureRegionDrawable(picChange.changer(
+                    "MenuPictures/Resources/" + getPathByType(resource) + "/" + resource.GetName() + ".png", 27, 27));
+            resourceImageButton.setStyle(imageButtonStyle);
 
-        Label resourceAmount = new Label(":" + game.getKingdom(curUser).getResourceCount(resource), skin);
+            Label resourceAmount = new Label(":" + game.getKingdom(curUser).getResourceCount(resource), skin);
 
-        this.add(resourceImageButton);
-        this.add(resourceAmount).pad(0, 0, 0, 5);
+            this.add(resourceImageButton);
+            this.add(resourceAmount).pad(0, 0, 0, 5);
 
-        resourceImageButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                makeRequestWindow(resource, curUser);
-            }
-        });
+            resourceImageButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    makeRequestWindow(resource, curUser);
+                }
+            });
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public void makeRequestWindow(Resource resource, User curUser) {
         this.clear();
-
+        initWindow();
         Image ResourceImage = new Image(picChange.changer("MenuPictures/Resources/" + getPathByType(resource) + "/" + resource.GetName() + ".png", 100, 100));
 
         TextField price = new TextField("enter price", skin);
@@ -192,7 +159,13 @@ public class TradeWindow extends Window {
         submitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO
+                try {
+                    int amountNum = Integer.parseInt(amount.getText());
+                    int priceNum = Integer.parseInt(price.getText());
+                    gameScreen.inputProcessor.submitCommandToServer(new CreateTradeRequestCommand(user, amountNum, priceNum, message.getText(), resource));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
         });
 
@@ -204,12 +177,12 @@ public class TradeWindow extends Window {
 
     public void makeSubmittedWindow() {
         this.clear();
-
+        initWindow();
         int rowCounter = 1;
         for (Trade trade : game.getUserTrades(user)) {
             Label tradeLabel;
             if (trade.getSeller() != null) {
-                tradeLabel = new Label(rowCounter + "." + trade.getId() + " : " + trade.getBuyer() + " , " + trade.getSellerMessage(), skin);
+                tradeLabel = new Label(rowCounter + "." + trade.getId() + " : " + trade.getBuyer().getUser().getUsername() + " , " + trade.getSellerMessage(), skin);
             } else {
                 tradeLabel = new Label(rowCounter + "." + trade.getId() + " : " + "not accepted yet" + " , " + trade.getBuyerMessage(), skin);
             }
@@ -225,7 +198,7 @@ public class TradeWindow extends Window {
 
     public void makeReceivedWindow() {
         this.clear();
-
+        initWindow();
         int rowCounter = 1;
         for (Trade trade : game.getTradeOffers()) {
             if (trade.getBuyer().getUser().equals(user))
@@ -241,7 +214,11 @@ public class TradeWindow extends Window {
             accept.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    //TODO
+                    try {
+                        gameScreen.inputProcessor.submitCommandToServer(new TradeAcceptCommand(user, trade.getId(), "trade accepted by" + user.getUsername()));
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
             });
         }
@@ -252,5 +229,44 @@ public class TradeWindow extends Window {
         this.add(submittedTrades).pad(0, 0, 0, 5);
     }
 
+    public void initWindow() {
+        this.setBackground(soilBackground.getDrawable());
+
+        newTrade = new TextButton("new trade", skin);
+        receivedTrades = new TextButton("received trades", skin);
+        submittedTrades = new TextButton("submitted trades", skin);
+
+        back = new ImageButton(skin);
+        ImageButton.ImageButtonStyle imageStyle = new ImageButton.ImageButtonStyle();
+        imageStyle.imageUp = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 30, 30));
+        imageStyle.imageDown = new TextureRegionDrawable(picChange.changer(Gdx.files.internal("ButtonImages/BackButton.png").path(), 27, 27));
+        back.setStyle(imageStyle);
+
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.setCurrentRunningWindow(gameScreen.buildingWindow);
+            }
+        });
+
+        newTrade.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                makeNewTradeWindow();
+            }
+        });
+        receivedTrades.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                makeReceivedWindow();
+            }
+        });
+        submittedTrades.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                makeSubmittedWindow();
+            }
+        });
+    }
 
 }

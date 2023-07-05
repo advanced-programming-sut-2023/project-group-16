@@ -38,7 +38,7 @@ public class ProfileScreen extends Menu {
 
     private Window scoreBoardWindow;
 
-    public ProfileScreen(StrongholdGame game, User user) {
+    public ProfileScreen(StrongholdGame game, User user) throws IOException, ClassNotFoundException {
         super(game);
         this.user = user;
         System.out.println(this.user.getUsername());
@@ -52,7 +52,7 @@ public class ProfileScreen extends Menu {
         createSlogan();
         createPassword();
         createBack();
-        scoreBoardWindow = new ScoreBoardWindow(skin2, user);
+        scoreBoardWindow = new ScoreBoardWindow(skin2, user , LobbySocket.getAllUsers());
         scoreBoardWindow.setMovable(true);
 
         background = new Image(new Texture(Gdx.files.internal("backgrounds/profileMenu.jpg")));

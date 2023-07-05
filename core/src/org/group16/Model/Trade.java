@@ -5,7 +5,8 @@ import org.group16.Model.Resources.Resource;
 public class Trade {
     private static int totalTrades = 0;
     private final Resource resource;
-    private final Kingdom seller;
+
+    private  Kingdom seller = null;
     private final int price, amount, id;
     private final String sellerMessage;
     private Kingdom buyer;
@@ -13,7 +14,7 @@ public class Trade {
 
     public Trade(Resource resource, Kingdom buyer, int price, int amount, String sellerMessage) {
         this.resource = resource;
-        this.seller = buyer;
+        this.buyer = buyer;
         this.price = price;
         this.amount = amount;
         this.sellerMessage = sellerMessage;
@@ -58,6 +59,9 @@ public class Trade {
 
     public void setBuyerMessage(String buyerMessage) {
         this.buyerMessage = buyerMessage;
+    }
+    public void setSeller(Kingdom seller) {
+        this.seller = seller;
     }
 
     @Override
