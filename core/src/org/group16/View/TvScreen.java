@@ -97,10 +97,12 @@ public class TvScreen extends Menu {
         inputProcessor = new InputProcessor(allUsers);
         gameRenderer = new GameRenderer(game, inputProcessor);
         GameSocket.createSocket(gameInfo, inputProcessor, currentUser, false, false);
-        for (var cmd : inputProcessor.initialCommands) {
-            inputProcessor.submitCommand(cmd);
-            for (int i = 0; i < Time.updateIterationCount; i++)
-                gameRenderer.update((float) Time.deltaTime);
+        synchronized (this) {
+            for (var cmd : inputProcessor.initialCommands) {
+                inputProcessor.submitCommand(cmd);
+                for (int i = 0; i < Time.updateIterationCount; i++)
+                    gameRenderer.update((float) Time.deltaTime);
+            }
         }
 
         renderers.add(gameRenderer);
