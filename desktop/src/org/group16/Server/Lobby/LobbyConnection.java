@@ -118,7 +118,7 @@ public class LobbyConnection extends Thread {
         inGameLobby = false;
     }
 
-    private void setGameCapacity(TreeMap<String, ArrayList<String>> map) {
+    private void setGameCapacity(TreeMap<String, ArrayList<String>> map) throws IOException {
         int n = Integer.parseInt(map.get("n").get(0));
         if (n < 2) return;
         currentLobby.setCapacity(n);
@@ -136,7 +136,7 @@ public class LobbyConnection extends Thread {
         inGameLobby = true;
     }
 
-    private void createGameLobby(TreeMap<String, ArrayList<String>> map) {
+    private void createGameLobby(TreeMap<String, ArrayList<String>> map) throws IOException {
         String kingdomType = map.get("t").get(0);
         server.createLobby(this, KingdomType.getKingdomTypeByName(kingdomType));
     }
@@ -367,7 +367,7 @@ public class LobbyConnection extends Thread {
         server.enterLobby(server.getConnection(username), kingdomType, currentLobby.uuid);
     }
 
-    private void removeUser(TreeMap<String, ArrayList<String>> map) {
+    private void removeUser(TreeMap<String, ArrayList<String>> map) throws IOException {
         String username = map.get("u").get(0);
         if (!currentLobby.getPlayers().contains(server.getConnection(username))) {
 //            utfOutputStream.writeUTF("this user doesn't exist");
@@ -404,8 +404,8 @@ public class LobbyConnection extends Thread {
         outputStream.writeObject(mp);
     }
 
-    public void setAsLobbyHost() {
-        ///TODO : send message to client
+    public void setAsLobbyHost() throws IOException {
+        outputStream.writeObject("host");
     }
 }
 

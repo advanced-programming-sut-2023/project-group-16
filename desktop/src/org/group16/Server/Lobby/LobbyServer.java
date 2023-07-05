@@ -53,7 +53,7 @@ public class LobbyServer extends Thread {
         userConnections.remove(username);
     }
 
-    public synchronized void createLobby(LobbyConnection user, KingdomType kingdomType) {
+    public synchronized void createLobby(LobbyConnection user, KingdomType kingdomType) throws IOException {
         GameLobby lobby = new GameLobby();
         lobbies.put(lobby.uuid, lobby);
         lobby.addPlayer(user, kingdomType);
@@ -68,7 +68,7 @@ public class LobbyServer extends Thread {
         user.setCurrentLobby(lobby);
     }
 
-    public synchronized void leaveLobby(LobbyConnection user) {
+    public synchronized void leaveLobby(LobbyConnection user) throws IOException {
         GameLobby lobby = user.getCurrentLobby();
         if (lobby == null) return;
         lobby.removePlayer(user);
